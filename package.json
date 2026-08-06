@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://mazenabutahoun404-maker.github.io/ThaaerOnlineCoaching/",
+  "homepage": "https://mazenabutahoun404-maker.github.io/ThaaerCoaching/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
