@@ -1787,6 +1787,7 @@ export default function App() {
         <SceneSection id="plans" bg="#050505" index="06"><Plans /></SceneSection>
         <SceneSection id="faq" bg="#080808" index="07"><FAQ /></SceneSection>
       </main>
+       
 
       <Footer onGo={go} />
     </div>
