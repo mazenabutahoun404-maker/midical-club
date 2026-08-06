@@ -965,8 +965,6 @@ function Nav({ onGo }: { onGo: (id: string) => void }) {
    =================================================================== */
 
 function Hero({ onGo }: { onGo: (id: string) => void; reduced?: boolean; introDone?: boolean }) {
-  const settled = true;
-
   return (
     <header id="hero" className="hero-shell relative h-[100svh] min-h-[580px] overflow-hidden" style={{ background: BLACK }}>
       <div className="hero-media absolute inset-0">
@@ -1168,8 +1166,6 @@ function EvolutionSlider({ subscriber }: { subscriber: SubscriberData }) {
     };
   }, [update]);
 
-  const bf = (subscriber.stats.bodyFatBefore - (subscriber.stats.bodyFatBefore - subscriber.stats.bodyFatAfter) * (pos / 100)).toFixed(1);
-
   return (
     <div className="relative">
       <div aria-hidden="true" className="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 z-20" style={{ borderColor: GOLD }} />
@@ -1278,99 +1274,7 @@ function Proof() {
   );
 }
 
-/* ---------------- THE SYSTEM — swipeable phase strip ---------------- */
 
-function SystemStrip() {
-  const PHASES = [
-    { n: "01", t: "INTAKE", ar: "التقييم", d: "Goals, history, measurements and lifestyle. Everything is on the table before a single rep is written." },
-    { n: "02", t: "THE BLUEPRINT", ar: "الخطة", d: "Your custom workout + diet plan, engineered for you and delivered within 24–48 hours of your intake." },
-    { n: "03", t: "THE GRIND", ar: "المتابعة", d: "WhatsApp support and follow-up. VIP athletes get daily communication, form review and error correction." },
-    { n: "04", t: "ADAPT", ar: "التعديل", d: "Weight, photos and measurements drive continuous adjustments to your program — until the goal falls." },
-  ];
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [idx, setIdx] = useState(0);
-
-  const onScroll = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    const card = el.firstElementChild as HTMLElement | null;
-    if (!card) return;
-    setIdx(Math.round(el.scrollLeft / (card.offsetWidth + 16)));
-  };
-  const go = (i: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const card = el.firstElementChild as HTMLElement | null;
-    if (!card) return;
-    el.scrollTo({ left: i * (card.offsetWidth + 16), behavior: "smooth" });
-  };
-
-  return (
-    <div className="relative overflow-hidden py-20 sm:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:pl-24 w-full mb-8 sm:mb-12">
-        <Eyebrow rep="03" label="THE SYSTEM" ar="النظام" />
-        <div className="flex items-end justify-between gap-4">
-          <PunchIn as="h2" text="HOW THE MACHINE WORKS."
-            className="uppercase leading-[0.9]"
-            style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2.4rem, 8vw, 5.5rem)", color: "#fff" }} />
-          <div className="hidden sm:flex gap-2">
-            {[-1, 1].map((d) => (
-              <button key={d} onClick={() => go(Math.max(0, Math.min(PHASES.length - 1, idx + d)))}
-                aria-label={d === -1 ? "Previous phase" : "Next phase"}
-                className="w-11 h-11 grid place-items-center transition-colors hover:bg-red-600/20 focus-visible:outline focus-visible:outline-2"
-                style={{ border: "1px solid rgba(255,255,255,0.2)", outlineColor: GOLD }}>
-                <svg className="w-5 h-5" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24" style={{ transform: d === -1 ? "rotate(180deg)" : "none" }}>
-                  <path d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            ))}
-          </div>
-        </div>
-        <p className="text-[10px] sm:hidden font-bold tracking-[0.35em] uppercase mt-2" style={{ color: GOLD, fontFamily: "'Archivo', sans-serif" }}>
-          ← SWIPE THE PHASES →
-        </p>
-      </div>
-
-      <div ref={trackRef} onScroll={onScroll}
-        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 sm:px-10 lg:pl-24 pb-4"
-        style={{ scrollPaddingLeft: "1rem" }}>
-        {PHASES.map((ph, i) => (
-          <article key={ph.n} className="relative flex-none snap-center w-[80vw] sm:w-[380px] p-6 sm:p-8 flex flex-col justify-between min-h-[360px] sm:min-h-[420px] transition-colors"
-            style={{
-              background: idx === i ? "linear-gradient(160deg, rgba(255,34,51,0.1), rgba(8,8,8,0.98) 60%)" : "rgba(255,255,255,0.03)",
-              border: `1px solid ${idx === i ? RED : "rgba(255,255,255,0.1)"}`,
-            }}>
-            <div>
-              <div className="flex items-start justify-between mb-6">
-                <span className="text-6xl sm:text-7xl leading-none tabular-nums" aria-hidden="true"
-                  style={{ fontFamily: "'Anton', sans-serif", color: "transparent", WebkitTextStroke: `1.5px ${idx === i ? RED : "rgba(255,255,255,0.2)"}` }}>
-                  {ph.n}
-                </span>
-                <span className="text-3xl sm:text-4xl font-bold leading-none mt-1" dir="rtl"
-                  style={{ fontFamily: "'Changa', sans-serif", color: idx === i ? GOLD : "rgba(212,175,55,0.35)" }}>
-                  {ph.ar}
-                </span>
-              </div>
-              <h3 className="text-3xl sm:text-4xl leading-none mb-4" style={{ fontFamily: "'Anton', sans-serif", color: "#fff" }}>{ph.t}</h3>
-              <p className="text-xs sm:text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.65)", fontFamily: "'Archivo', sans-serif" }}>{ph.d}</p>
-            </div>
-            <div className="mt-8 h-[3px] w-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }} aria-hidden="true">
-              <div className="h-full transition-all duration-700" style={{ width: idx >= i ? "100%" : "0%", background: `linear-gradient(90deg, ${RED}, ${GOLD})` }} />
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <div className="flex justify-center gap-2 mt-6">
-        {PHASES.map((_, i) => (
-          <button key={i} onClick={() => go(i)} aria-label={`Go to phase ${i + 1}`}
-            className="h-1 transition-all duration-300 focus-visible:outline focus-visible:outline-2"
-            style={{ width: idx === i ? 28 : 12, background: idx === i ? RED : "rgba(255,255,255,0.2)", outlineColor: GOLD }} />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 
 /* ---------------- VIDEOS — THE ARCHIVE (placeholders, ready for real videos) ----------------
