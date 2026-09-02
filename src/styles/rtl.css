@@ -1,0 +1,268 @@
+[dir="rtl"] {
+  font-family: var(--font-arabic);
+}
+[dir="rtl"] .directional {
+  transform: scaleX(-1);
+}
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+[dir="rtl"] .hero h1 {
+  font-size: clamp(34px, 3.7vw, 62px);
+  line-height: 1.6;
+  letter-spacing: -0.02em;
+  margin-block: 15px;
+}
+[dir="rtl"] .hero-accent {
+  white-space: normal;
+}
+[dir="rtl"] .heading-spark {
+  margin-inline: 8px 0;
+  vertical-align: middle;
+}
+[dir="rtl"] .hero-copy > p {
+  line-height: 2;
+}
+[dir="rtl"] .eyebrow,
+[dir="rtl"] .hero-eyebrow,
+[dir="rtl"] .navigation-label,
+[dir="rtl"] .artwork-label {
+  letter-spacing: 0;
+}
+[dir="rtl"] .brand-title,
+[dir="rtl"] .account-symbol {
+  font-family: var(--font-sans);
+}
+[dir="rtl"] .brand-caption {
+  letter-spacing: 0;
+  font-size: 9px;
+}
+[dir="rtl"] .artwork-caption {
+  direction: rtl;
+}
+[dir="rtl"] .artwork-caption strong {
+  letter-spacing: 0;
+  font-size: 23px;
+}
+[dir="rtl"] .artwork-label {
+  font-size: 10px;
+}
+[dir="rtl"] .resource-body h3 {
+  min-height: 3em;
+}
+[dir="rtl"] .resource-meta {
+  flex-wrap: wrap;
+}
+[dir="rtl"] .navigation-item {
+  font-size: 12px;
+}
+[dir="rtl"] .navigation-version {
+  font-size: 9px;
+}
+[dir="rtl"] .navigation-label {
+  font-size: 10px;
+}
+[dir="rtl"] .hero-note {
+  font-size: 10px;
+}
+[dir="rtl"] .hero-eyebrow {
+  font-size: 9px;
+}
+[dir="rtl"] .hero-secondary {
+  font-size: 11px;
+}
+[dir="rtl"] .workspace-welcome {
+  font-size: 11px;
+}
+[dir="rtl"] .search-result-copy {
+  line-height: 1.7;
+}
+[dir="rtl"] .section-heading .eyebrow {
+  font-size: 9px;
+}
+[dir="rtl"] .pathway h3 {
+  font-size: 14px;
+}
+[dir="rtl"] .pathway p {
+  font-size: 11px;
+}
+[dir="rtl"] .announcement p {
+  font-size: 11px;
+}
+[dir="rtl"] .announcement p > span {
+  font-size: 9px;
+}
+[dir="rtl"] .journal-card h3 {
+  font-size: 25px;
+  line-height: 1.6;
+}
+[dir="rtl"] .hero-search-copy strong {
+  font-size: 13px;
+}
+[dir="rtl"] .community h2 {
+  font-size: 28px;
+}
+[dir="rtl"] .community p {
+  font-size: 12px;
+  line-height: 2;
+}
+[dir="rtl"] .settings-note {
+  line-height: 2;
+}
+[dir="rtl"] .layout-option-label {
+  font-size: 13px;
+}
+[dir="rtl"] .layout-option small {
+  font-size: 10px;
+}
+[dir="rtl"] .appearance-heading [data-slot="dialog-title"] {
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+[dir="rtl"] .footer-links {
+  font-size: 11px;
+  line-height: 1.9;
+}
+[dir="rtl"] .footer-bottom {
+  font-size: 9px;
+}
+[dir="rtl"] .modal-heading [data-slot="dialog-title"] {
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  [dir="rtl"] .hero h1 {
+    font-size: 34px;
+  }
+  [dir="rtl"] .workspace-welcome {
+    display: none;
+  }
+  [dir="rtl"] .workspace-header {
+    justify-content: flex-end;
+  }
+  [dir="rtl"] .artwork-caption strong {
+    font-size: 20px;
+  }
+  [dir="rtl"] .pathway h3 {
+    font-size: 13px;
+  }
+  [dir="rtl"] .pathway p {
+    font-size: 10px;
+  }
+  [dir="rtl"] .hero-secondary {
+    font-size: 10px;
+  }
+  [dir="rtl"] .opportunity h3 {
+    font-size: 12px;
+  }
+  [dir="rtl"] .navigation-item {
+    font-size: 11px;
+  }
+  [dir="rtl"] [data-navigation="horizontal"] .navigation-item {
+    font-size: 10px;
+  }
+  [dir="rtl"] .navigation-version {
+    font-size: 8px;
+  }
+  [dir="rtl"] .hero-search-copy strong {
+    font-size: 12px;
+  }
+}
+@media (min-width: 768px) and (max-width: 959px) {
+  [dir="rtl"] .hero h1 {
+    font-size: 49px;
+  }
+  [dir="rtl"] [data-navigation="horizontal"] .hero h1 {
+    font-size: 35px;
+  }
+  [dir="rtl"] .navigation-item {
+    font-size: 10px;
+  }
+}
+@media (max-width: 767px) {
+  [dir="rtl"] .hero h1 {
+    font-size: clamp(36px, 10.1vw, 62px);
+    line-height: 1.55;
+    margin-block: 15px;
+  }
+  [dir="rtl"] .hero-eyebrow {
+    font-size: 8px;
+  }
+  [dir="rtl"] .hero-secondary {
+    font-size: 10px;
+  }
+  [dir="rtl"] .hero-actions {
+    gap: 16px;
+  }
+  [dir="rtl"] .brand-caption {
+    font-size: 9px !important;
+  }
+  [dir="rtl"] .phone-brand .brand-title {
+    font-size: 22px;
+  }
+  [dir="rtl"] .phone-navigation > a,
+  [dir="rtl"] .phone-navigation > button {
+    font-size: 9px;
+  }
+  [dir="rtl"] .phone-search > span:last-child {
+    font-size: 9px;
+  }
+  [dir="rtl"] .artwork-label {
+    font-size: 9px;
+  }
+  [dir="rtl"] .hero-search-copy strong {
+    font-size: 11px;
+  }
+  [dir="rtl"] .hero-search-copy > span {
+    font-size: 9px;
+  }
+  [dir="rtl"] .section-heading h2 {
+    font-size: 25px;
+  }
+  [dir="rtl"] .section-heading .eyebrow {
+    font-size: 8px;
+  }
+  [dir="rtl"] .section-heading > .text-link {
+    font-size: 10px;
+  }
+  [dir="rtl"] .pathway h3 {
+    font-size: 13px;
+  }
+  [dir="rtl"] .pathway p {
+    font-size: 10px;
+  }
+  [dir="rtl"] .resource-body h3 {
+    font-size: 12px;
+  }
+  [dir="rtl"] .course-title {
+    font-size: 14px;
+  }
+  [dir="rtl"] .resource-meta .tag {
+    font-size: 9px;
+  }
+  [dir="rtl"] .resource-bottom {
+    font-size: 8px;
+  }
+  [dir="rtl"] .filter-tabs > [data-slot="tabs-trigger"] {
+    font-size: 10px !important;
+    padding-inline: 10px !important;
+  }
+  [dir="rtl"] .event-card h3 {
+    font-size: 17px;
+  }
+  [dir="rtl"] .opportunity h3 {
+    font-size: 14px;
+  }
+  [dir="rtl"] .community h2 {
+    font-size: 29px;
+  }
+  [dir="rtl"] .journal-card h3 {
+    font-size: 28px;
+  }
+  [dir="rtl"] .page-intro h1 {
+    font-size: 34px;
+  }
+}

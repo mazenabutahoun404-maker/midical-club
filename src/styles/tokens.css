@@ -1,0 +1,88 @@
+:root {
+  --font-sans: "Manrope", "Segoe UI", Arial, sans-serif;
+  --background: #f4f0e9;
+  --foreground: #392b24;
+  --card: #fff;
+  --card-foreground: #251d1b;
+  --popover: #fff;
+  --popover-foreground: #251d1b;
+  --primary: #a50f15;
+  --primary-foreground: #fff;
+  --secondary: #f1eae5;
+  --secondary-foreground: #51231d;
+  --muted: #f1eae5;
+  --muted-foreground: #756b67;
+  --accent: #f6e9e6;
+  --accent-foreground: #7d0b10;
+  --destructive: #a50f15;
+  --border: #e4d9d3;
+  --input: #e4d9d3;
+  --ring: #a50f15;
+  --radius: 1rem;
+  --russet: #7a3025;
+  --deep-red: #7d0b10;
+  --sidebar: #fbf8f5;
+  --sidebar-foreground: #251d1b;
+  --sidebar-primary: #a50f15;
+  --sidebar-primary-foreground: #fff;
+  --sidebar-accent: #f1eae5;
+  --sidebar-accent-foreground: #51231d;
+  --sidebar-border: #e4d9d3;
+  --sidebar-ring: #a50f15;
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: "Manrope", "Segoe UI", Arial, sans-serif;
+  --font-mono: ui-monospace, monospace;
+}
+:root {
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-meta: 0.75rem;
+  --radius-control: 999px;
+  --radius-card: 1.5rem;
+  --radius-panel: 2rem;
+  --shadow-card: 0 5px 25px #51231d09;
+  --shadow-overlay: 0 8px 30px #51231d18;
+  --motion-fast: 150ms;
+  --motion-normal: 200ms;
+  --motion-slow: 300ms;
+  --container-max: 85rem;
+  --font-arabic: "Noto Sans Arabic", "Manrope", Tahoma, sans-serif;
+}
+@theme {
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}

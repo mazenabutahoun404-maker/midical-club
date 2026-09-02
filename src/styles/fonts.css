@@ -1,0 +1,20 @@
+/* Bundled OFL fonts: no third-party network requests. */
+@font-face {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../assets/fonts/manrope-latin-wght-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Sans Arabic";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/noto-sans-arabic-arabic-wght-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+200C-200E,
+    U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FEFC, U+10E60-10E7F,
+    U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EEFF;
+}

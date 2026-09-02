@@ -1,0 +1,81 @@
+/* Shared accessibility rules apply to both navigation orientations. */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 12px;
+  left: 14px;
+  transform: translateY(-180%);
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  padding: 12px 22px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.15s;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+#main:focus,
+[data-page-heading]:focus {
+  outline: none;
+}
+.navigation-item,
+.phone-navigation > a,
+.phone-navigation > button,
+.mobile-nav-list a {
+  min-height: 44px;
+}
+.resource-title:focus-visible {
+  border-radius: 4px;
+}
+.workspace-icon:hover {
+  background: #ece2d6;
+}
+.medclub-modal .button {
+  min-height: 44px;
+}
+[dir="rtl"] .text-link:hover svg {
+  transform: scaleX(-1) translateX(3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .hero-artwork:hover .sculpture {
+    transform: translate(-50%, -50%) rotate(-16deg);
+  }
+}
+@media (prefers-contrast: more) {
+  .eyebrow,
+  .resource-meta,
+  .resource-bottom,
+  .event-place,
+  .opportunity-copy > p,
+  .opportunity-footer > span,
+  .hero-copy > p,
+  .footer-links,
+  .workspace-welcome,
+  .pathway p,
+  .section-heading p,
+  .navigation-label,
+  .navigation-version {
+    color: #5e4937;
+  }
+  .resource-card,
+  .pathway,
+  .event-card,
+  .opportunity {
+    border: 1px solid #9c8570;
+  }
+}

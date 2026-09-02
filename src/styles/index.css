@@ -1,0 +1,10 @@
+@import "tailwindcss" source("../");
+@import "tw-animate-css";
+@import "../vendor/shadcn-tailwind-4.13.0.css";
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./foundation.css";
+@import "./accessibility.css";
+@import "./rtl.css";
+
+@import "./workspaces.css";
