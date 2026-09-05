@@ -1,4 +1,4 @@
-import { FileText } from "lucide-react";
+import { FileText, UsersRound } from "lucide-react";
 import type { Resource, Course } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
@@ -39,7 +39,9 @@ export function ResourceCard({
             {label(r.kind)}
           </span>
           <span>
-            {r.pages} {label("pages")}
+            {r.durationMinutes
+              ? `${r.durationMinutes} min`
+              : `${r.pages} ${label("pages")}`}
           </span>
         </div>
         <h3>
@@ -51,11 +53,17 @@ export function ResourceCard({
           </button>
         </h3>
         <div className="resource-bottom">
-          <span>
-            {label("updated")} {formatDate(r.updatedAt, locale)}
+          <span className="resource-audience">
+            <UsersRound size={12} />
+            {label(
+              r.audience === "shared" ? "sharedResource" : "batchResource",
+            )}
           </span>
           <SaveButton id={r.id} title={t(r.title)} />
         </div>
+        <span className="resource-updated">
+          {label("updated")} {formatDate(r.updatedAt, locale)}
+        </span>
       </div>
     </article>
   );

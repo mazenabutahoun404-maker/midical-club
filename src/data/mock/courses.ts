@@ -1,129 +1,568 @@
-import type { Course } from "../../types/content";
-export const courses: Course[] = [
+import type {
+  Course,
+  CourseSection,
+  CourseSectionKind,
+} from "../../types/content";
+import { text } from "../../lib/localize";
+
+const sectionCopy: Record<CourseSectionKind, [string, string, string, string]> =
   {
+    overview: [
+      "Overview",
+      "نظرة عامة",
+      "Start with the shape of this course.",
+      "ابدأ بصورة واضحة عن المساق.",
+    ],
+    guidance: [
+      "Guidance",
+      "دليل المساق",
+      "A suggested route through the material.",
+      "مسار مقترح للتنقل بين المواد.",
+    ],
+    slides: [
+      "Slides",
+      "الشرائح",
+      "Lecture decks organized by topic.",
+      "شرائح المحاضرات مرتبة حسب الموضوع.",
+    ],
+    notes: [
+      "Notes",
+      "الملاحظات",
+      "Student-friendly notes and explanations.",
+      "ملاحظات وشروحات ميسّرة للطلبة.",
+    ],
+    summary: [
+      "Summaries",
+      "الملخصات",
+      "Condensed revision material.",
+      "مواد مراجعة مختصرة.",
+    ],
+    recording: [
+      "Recordings",
+      "التسجيلات",
+      "Audio and video session references.",
+      "مراجع الجلسات الصوتية والمرئية.",
+    ],
+    book: [
+      "Books",
+      "الكتب",
+      "Recommended books and reading lists.",
+      "الكتب والقراءات المقترحة.",
+    ],
+    questions: [
+      "Questions",
+      "الأسئلة",
+      "Practice sets organized by topic.",
+      "تدريبات مرتبة حسب الموضوع.",
+    ],
+    external: [
+      "External",
+      "مصادر خارجية",
+      "Reviewed links beyond MedClub.",
+      "روابط مراجعة خارج النادي الطبي.",
+    ],
+  };
+const sectionSet = (kinds: CourseSectionKind[]): CourseSection[] =>
+  kinds.map((kind, order) => {
+    const [en, ar, descriptionEn, descriptionAr] = sectionCopy[kind];
+    return {
+      id: kind,
+      kind,
+      title: text(en, ar),
+      description: text(descriptionEn, descriptionAr),
+      order,
+    };
+  });
+const full: CourseSectionKind[] = [
+  "overview",
+  "guidance",
+  "slides",
+  "notes",
+  "summary",
+  "recording",
+  "book",
+  "questions",
+  "external",
+];
+const focused: CourseSectionKind[] = [
+  "overview",
+  "guidance",
+  "slides",
+  "notes",
+  "summary",
+  "questions",
+  "external",
+];
+const base = (course: Omit<Course, "sections">, sections = full): Course => ({
+  ...course,
+  sections: sectionSet(sections),
+});
+
+export const courses: Course[] = [
+  base(
+    {
+      id: "cell-biology",
+      slug: "cell-biology",
+      title: text("Cell Biology", "علم الخلية"),
+      code: "MED 101",
+      track: "basic",
+      year: 1,
+      batch: text("Nabd", "نبض"),
+      description: text(
+        "Explore the cell as medicine’s smallest living system.",
+        "استكشف الخلية بوصفها أصغر نظام حي في الطب.",
+      ),
+      accent: "olive",
+      icon: "flask",
+      credits: 4,
+      semester: 1,
+      lastUpdated: "2026-09-02T10:00:00+03:00",
+      sharedWithBatchIds: ["nabd", "wareed", "shifaa"],
+      outcomes: [
+        text(
+          "Connect organelles to cell function.",
+          "اربط العضيات بوظيفة الخلية.",
+        ),
+        text(
+          "Read basic cellular pathways.",
+          "اقرأ المسارات الخلوية الأساسية.",
+        ),
+      ],
+    },
+    focused,
+  ),
+  base(
+    {
+      id: "medical-genetics",
+      slug: "medical-genetics",
+      title: text("Medical Genetics", "الوراثة الطبية"),
+      code: "MED 105",
+      track: "basic",
+      year: 1,
+      batch: text("Nabd", "نبض"),
+      description: text(
+        "Inheritance, variation and the molecular story behind disease.",
+        "الوراثة والتباين والقصة الجزيئية وراء المرض.",
+      ),
+      accent: "purple",
+      icon: "flask",
+      credits: 3,
+      semester: 1,
+      lastUpdated: "2026-09-01T11:30:00+03:00",
+      sharedWithBatchIds: ["nabd", "wareed", "shifaa"],
+      outcomes: [
+        text(
+          "Recognize common inheritance patterns.",
+          "ميّز أنماط الوراثة الشائعة.",
+        ),
+        text("Interpret a simple pedigree.", "فسّر شجرة نسب بسيطة."),
+      ],
+    },
+    focused,
+  ),
+  base(
+    {
+      id: "histology",
+      slug: "human-histology",
+      title: text("Human Histology", "علم الأنسجة"),
+      code: "MED 108",
+      track: "basic",
+      year: 1,
+      batch: text("Nabd", "نبض"),
+      description: text(
+        "Learn how tissue architecture reveals function.",
+        "تعلّم كيف تكشف بنية الأنسجة عن وظيفتها.",
+      ),
+      accent: "russet",
+      icon: "bone",
+      credits: 3,
+      semester: 1,
+      lastUpdated: "2026-08-30T09:00:00+03:00",
+      sharedWithBatchIds: ["nabd", "wareed"],
+      outcomes: [
+        text(
+          "Identify foundational tissue patterns.",
+          "تعرّف إلى الأنماط النسيجية الأساسية.",
+        ),
+        text("Relate structure to function.", "اربط البنية بالوظيفة."),
+      ],
+    },
+    focused,
+  ),
+  base({
     id: "anatomy",
     slug: "human-anatomy",
-    title: {
-      en: "Human Anatomy",
-      ar: "تشريح الإنسان",
-    },
+    title: text("Human Anatomy", "تشريح الإنسان"),
     code: "MED 201",
     track: "basic",
     year: 2,
-    batch: {
-      en: "Shifaa",
-      ar: "شفاء",
-    },
-    description: {
-      en: "Explore the structure of the human body, organized by region and system.",
-      ar: "تعرّف إلى بنية جسم الإنسان من خلال مصادر منظّمة حسب المنطقة والجهاز.",
-    },
+    batch: text("Wareed", "وريد"),
+    description: text(
+      "Explore the structure of the human body by region and system.",
+      "تعرّف إلى بنية جسم الإنسان حسب المنطقة والجهاز.",
+    ),
     accent: "russet",
     icon: "bone",
-  },
-  {
-    id: "physiology",
-    slug: "cardiovascular-physiology",
-    title: {
-      en: "Cardiovascular Physiology",
-      ar: "فسيولوجيا القلب والأوعية الدموية",
-    },
-    code: "MED 302",
-    track: "basic",
-    year: 3,
-    batch: {
-      en: "Shifaa",
-      ar: "شفاء",
-    },
-    description: {
-      en: "A course collection for cardiovascular function and its underlying mechanisms.",
-      ar: "مجموعة مساق عن وظائف القلب والأوعية الدموية وآليات عملها.",
-    },
-    accent: "red",
-    icon: "heart",
-  },
-  {
+    credits: 6,
+    semester: 3,
+    lastUpdated: "2026-09-02T09:00:00+03:00",
+    sharedWithBatchIds: ["wareed", "shifaa"],
+    outcomes: [
+      text(
+        "Describe regional relationships.",
+        "صف العلاقات التشريحية الإقليمية.",
+      ),
+      text(
+        "Use anatomical language precisely.",
+        "استخدم المصطلحات التشريحية بدقة.",
+      ),
+    ],
+  }),
+  base({
     id: "biochemistry",
     slug: "medical-biochemistry",
-    title: {
-      en: "Medical Biochemistry",
-      ar: "الكيمياء الحيوية الطبية",
-    },
+    title: text("Medical Biochemistry", "الكيمياء الحيوية الطبية"),
     code: "MED 203",
     track: "basic",
     year: 2,
-    batch: {
-      en: "Wareed",
-      ar: "وريد",
-    },
-    description: {
-      en: "Molecular foundations, metabolism and cellular processes.",
-      ar: "الأسس الجزيئية والأيض والعمليات الخلوية.",
-    },
+    batch: text("Wareed", "وريد"),
+    description: text(
+      "Molecular foundations, metabolism and cellular processes.",
+      "الأسس الجزيئية والأيض والعمليات الخلوية.",
+    ),
     accent: "olive",
     icon: "flask",
-  },
-  {
-    id: "neurology",
-    slug: "clinical-neurology",
-    title: {
-      en: "Clinical Neurology",
-      ar: "طب الأعصاب السريري",
+    credits: 4,
+    semester: 3,
+    lastUpdated: "2026-08-31T11:00:00+03:00",
+    sharedWithBatchIds: ["wareed", "shifaa"],
+    outcomes: [
+      text("Trace major metabolic pathways.", "تتبّع مسارات الأيض الرئيسية."),
+      text(
+        "Connect molecular changes to disease.",
+        "اربط التغيرات الجزيئية بالمرض.",
+      ),
+    ],
+  }),
+  base(
+    {
+      id: "immunology",
+      slug: "medical-immunology",
+      title: text("Medical Immunology", "علم المناعة الطبي"),
+      code: "MED 207",
+      track: "basic",
+      year: 2,
+      batch: text("Wareed", "وريد"),
+      description: text(
+        "A systems view of defense, tolerance and immune response.",
+        "نظرة جهازية إلى الدفاع والتحمل والاستجابة المناعية.",
+      ),
+      accent: "red",
+      icon: "heart",
+      credits: 3,
+      semester: 3,
+      lastUpdated: "2026-08-29T13:00:00+03:00",
+      sharedWithBatchIds: ["wareed", "shifaa"],
+      outcomes: [
+        text(
+          "Map innate and adaptive responses.",
+          "ارسم مسارات المناعة الفطرية والمكتسبة.",
+        ),
+        text("Explain immune tolerance.", "اشرح التحمل المناعي."),
+      ],
     },
-    code: "MED 501",
-    track: "clinical",
-    year: 5,
-    batch: {
-      en: "Clinical",
-      ar: "المرحلة السريرية",
-    },
-    description: {
-      en: "Your neurology rotation resources, seminar notes and revision materials.",
-      ar: "مصادر تدريب طب الأعصاب وملاحظات الندوات ومواد المراجعة.",
-    },
+    focused,
+  ),
+  base({
+    id: "physiology",
+    slug: "cardiovascular-physiology",
+    title: text("Cardiovascular Physiology", "فسيولوجيا القلب والأوعية"),
+    code: "MED 302",
+    track: "basic",
+    year: 3,
+    batch: text("Shifaa", "شفاء"),
+    description: text(
+      "Cardiovascular function and the mechanisms that keep it in balance.",
+      "وظائف القلب والأوعية والآليات التي تحافظ على توازنها.",
+    ),
+    accent: "red",
+    icon: "heart",
+    credits: 4,
+    semester: 5,
+    lastUpdated: "2026-09-01T14:00:00+03:00",
+    sharedWithBatchIds: ["shifaa"],
+    outcomes: [
+      text("Explain the cardiac cycle.", "اشرح الدورة القلبية."),
+      text(
+        "Interpret core pressure-flow relationships.",
+        "فسّر علاقات الضغط والتدفق الأساسية.",
+      ),
+    ],
+  }),
+  base({
+    id: "pathology",
+    slug: "general-pathology",
+    title: text("General Pathology", "علم الأمراض العام"),
+    code: "MED 305",
+    track: "basic",
+    year: 3,
+    batch: text("Shifaa", "شفاء"),
+    description: text(
+      "The patterns and mechanisms through which disease changes tissue.",
+      "الأنماط والآليات التي يغيّر بها المرض الأنسجة.",
+    ),
     accent: "purple",
-    icon: "brain",
-  },
-  {
+    icon: "flask",
+    credits: 5,
+    semester: 5,
+    lastUpdated: "2026-09-02T08:20:00+03:00",
+    sharedWithBatchIds: ["shifaa"],
+    outcomes: [
+      text(
+        "Recognize core patterns of injury.",
+        "ميّز الأنماط الأساسية للأذية.",
+      ),
+      text("Connect mechanism to morphology.", "اربط الآلية بالشكل المرضي."),
+    ],
+  }),
+  base({
+    id: "pharmacology",
+    slug: "general-pharmacology",
+    title: text("General Pharmacology", "علم الأدوية العام"),
+    code: "MED 307",
+    track: "basic",
+    year: 3,
+    batch: text("Shifaa", "شفاء"),
+    description: text(
+      "How medicines move, act and interact across body systems.",
+      "كيف تتحرك الأدوية وتعمل وتتفاعل عبر أجهزة الجسم.",
+    ),
+    accent: "olive",
+    icon: "flask",
+    credits: 4,
+    semester: 5,
+    lastUpdated: "2026-08-31T15:20:00+03:00",
+    sharedWithBatchIds: ["shifaa"],
+    outcomes: [
+      text(
+        "Read basic dose-response curves.",
+        "اقرأ منحنيات الجرعة والاستجابة الأساسية.",
+      ),
+      text(
+        "Explain pharmacokinetic principles.",
+        "اشرح مبادئ الحرائك الدوائية.",
+      ),
+    ],
+  }),
+  base(
+    {
+      id: "microbiology",
+      slug: "medical-microbiology",
+      title: text("Medical Microbiology", "الأحياء الدقيقة الطبية"),
+      code: "MED 309",
+      track: "basic",
+      year: 3,
+      batch: text("Shifaa", "شفاء"),
+      description: text(
+        "Organisms, transmission and the foundations of host interaction.",
+        "الكائنات وطرق الانتقال وأسس التفاعل مع المضيف.",
+      ),
+      accent: "russet",
+      icon: "flask",
+      credits: 4,
+      semester: 5,
+      lastUpdated: "2026-08-30T12:00:00+03:00",
+      sharedWithBatchIds: ["shifaa"],
+      outcomes: [
+        text(
+          "Classify common organism groups.",
+          "صنّف مجموعات الكائنات الشائعة.",
+        ),
+        text("Connect transmission to prevention.", "اربط الانتقال بالوقاية."),
+      ],
+    },
+    focused,
+  ),
+  base({
     id: "medicine",
     slug: "internal-medicine",
-    title: {
-      en: "Internal Medicine",
-      ar: "الطب الباطني",
-    },
+    title: text("Internal Medicine", "الطب الباطني"),
     code: "MED 401",
     track: "clinical",
     year: 4,
-    batch: {
-      en: "Clinical",
-      ar: "المرحلة السريرية",
-    },
-    description: {
-      en: "Study collections to support your internal medicine rotation.",
-      ar: "مجموعات دراسية لدعم تدريبك في الطب الباطني.",
-    },
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "Clinical reasoning collections for the internal medicine rotation.",
+      "مجموعات للاستدلال السريري خلال تدريب الطب الباطني.",
+    ),
     accent: "red",
-    icon: "heart",
-  },
-  {
+    icon: "stethoscope",
+    credits: 8,
+    semester: 7,
+    lastUpdated: "2026-09-02T07:45:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text("Structure a focused assessment.", "نظّم تقييماً سريرياً مركّزاً."),
+      text(
+        "Build a reasoned problem list.",
+        "ابنِ قائمة مشكلات قائمة على الاستدلال.",
+      ),
+    ],
+  }),
+  base({
+    id: "surgery",
+    slug: "general-surgery",
+    title: text("General Surgery", "الجراحة العامة"),
+    code: "MED 402",
+    track: "clinical",
+    year: 4,
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "Preparation, core principles and reflection for surgical learning.",
+      "التحضير والمبادئ الأساسية والتأمل في التعلم الجراحي.",
+    ),
+    accent: "russet",
+    icon: "stethoscope",
+    credits: 8,
+    semester: 8,
+    lastUpdated: "2026-08-30T10:00:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text(
+        "Approach common surgical presentations.",
+        "تعامل منهجياً مع الحالات الجراحية الشائعة.",
+      ),
+      text(
+        "Explain perioperative priorities.",
+        "اشرح أولويات الرعاية المحيطة بالجراحة.",
+      ),
+    ],
+  }),
+  base({
+    id: "neurology",
+    slug: "clinical-neurology",
+    title: text("Clinical Neurology", "طب الأعصاب السريري"),
+    code: "MED 501",
+    track: "clinical",
+    year: 5,
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "Neurology rotation resources, examination notes and revision maps.",
+      "مصادر تدريب الأعصاب وملاحظات الفحص وخرائط المراجعة.",
+    ),
+    accent: "purple",
+    icon: "brain",
+    credits: 5,
+    semester: 9,
+    lastUpdated: "2026-08-30T12:00:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text(
+        "Localize common neurological findings.",
+        "حدّد موضع الموجودات العصبية الشائعة.",
+      ),
+      text("Perform a structured examination.", "أجرِ فحصاً منظماً."),
+    ],
+  }),
+  base({
     id: "pediatrics",
     slug: "pediatrics",
-    title: {
-      en: "Pediatrics",
-      ar: "طب الأطفال",
-    },
+    title: text("Pediatrics", "طب الأطفال"),
+    code: "MED 502",
+    track: "clinical",
+    year: 5,
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "Teaching sessions, rotation notes and structured revision.",
+      "جلسات تعليمية وملاحظات التدريب ومراجعة منظمة.",
+    ),
+    accent: "russet",
+    icon: "heart",
+    credits: 6,
+    semester: 10,
+    lastUpdated: "2026-08-27T12:00:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text("Use age-aware assessment.", "استخدم تقييماً يراعي العمر."),
+      text("Recognize growth patterns.", "ميّز أنماط النمو."),
+    ],
+  }),
+  base({
+    id: "obgyn",
+    slug: "obstetrics-gynecology",
+    title: text("Obstetrics & Gynecology", "النسائية والتوليد"),
+    code: "MED 503",
+    track: "clinical",
+    year: 5,
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "A guided collection for women’s health and maternity rotations.",
+      "مجموعة موجهة لتدريب صحة المرأة والأمومة.",
+    ),
+    accent: "red",
+    icon: "heart",
+    credits: 6,
+    semester: 10,
+    lastUpdated: "2026-08-26T09:30:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text(
+        "Structure a respectful focused history.",
+        "نظّم قصة مرضية مركزة باحترام.",
+      ),
+      text(
+        "Understand routine care pathways.",
+        "افهم مسارات الرعاية المعتادة.",
+      ),
+    ],
+  }),
+  base({
+    id: "emergency",
+    slug: "emergency-medicine",
+    title: text("Emergency Medicine", "طب الطوارئ"),
     code: "MED 601",
     track: "clinical",
     year: 6,
-    batch: {
-      en: "Clinical",
-      ar: "المرحلة السريرية",
-    },
-    description: {
-      en: "Teaching sessions, rotation notes and exam preparation.",
-      ar: "جلسات تعليمية وملاحظات التدريب والتحضير للامتحانات.",
-    },
-    accent: "russet",
-    icon: "bone",
-  },
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "Prioritization, first assessment and safe team communication.",
+      "ترتيب الأولويات والتقييم الأول والتواصل الآمن ضمن الفريق.",
+    ),
+    accent: "red",
+    icon: "stethoscope",
+    credits: 5,
+    semester: 11,
+    lastUpdated: "2026-09-01T08:00:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text("Prioritize an initial assessment.", "رتّب أولويات التقييم الأولي."),
+      text("Communicate a concise handover.", "قدّم تسليماً موجزاً وواضحاً."),
+    ],
+  }),
+  base({
+    id: "family-medicine",
+    slug: "family-medicine",
+    title: text("Family Medicine", "طب الأسرة"),
+    code: "MED 603",
+    track: "clinical",
+    year: 6,
+    batch: text("Clinical", "المرحلة السريرية"),
+    description: text(
+      "Continuity, prevention and whole-person care in the community.",
+      "الاستمرارية والوقاية والرعاية الشاملة في المجتمع.",
+    ),
+    accent: "olive",
+    icon: "users",
+    credits: 5,
+    semester: 12,
+    lastUpdated: "2026-08-28T14:10:00+03:00",
+    sharedWithBatchIds: [],
+    outcomes: [
+      text(
+        "Frame prevention across life stages.",
+        "نظّم الوقاية عبر مراحل الحياة.",
+      ),
+      text("Plan continuity of care.", "خطّط لاستمرارية الرعاية."),
+    ],
+  }),
 ];

@@ -1,150 +1,257 @@
-import type { Resource } from "../../types/content";
+import type { Resource, ResourceKind } from "../../types/content";
+import { text } from "../../lib/localize";
+
+type Seed = Pick<Resource, "id" | "courseId" | "kind" | "pages"> & {
+  en: string;
+  ar: string;
+  date?: string;
+  audience?: Resource["audience"];
+  batchIds?: string[];
+  durationMinutes?: number;
+};
+const formats: Record<ResourceKind, [string, string]> = {
+  guidance: ["Course guide", "دليل المساق"],
+  slides: ["PDF slides", "شرائح PDF"],
+  notes: ["PDF notes", "ملاحظات PDF"],
+  summary: ["PDF summary", "ملخص PDF"],
+  recording: ["Video reference", "مرجع مرئي"],
+  book: ["Reading list", "قائمة قراءة"],
+  questions: ["Practice set", "مجموعة تدريب"],
+  external: ["Reviewed link", "رابط مراجع"],
+};
+const make = ({
+  en,
+  ar,
+  date = "2026-09-02T09:00:00+03:00",
+  audience = "shared",
+  batchIds = [],
+  ...seed
+}: Seed): Resource => ({
+  ...seed,
+  title: text(en, ar),
+  updatedAt: date,
+  description: text(
+    `An illustrative ${formats[seed.kind][0].toLowerCase()} organized inside the ${en} topic collection.`,
+    `سجل توضيحي من نوع ${formats[seed.kind][1]} منظّم ضمن مجموعة موضوع ${ar}.`,
+  ),
+  contributor: text("Scientific Team", "الفريق العلمي"),
+  fileUrl: null,
+  keywords: [en.toLowerCase(), ar, seed.courseId, seed.kind],
+  audience,
+  batchIds,
+  format: text(...formats[seed.kind]),
+});
+
 export const resources: Resource[] = [
-  {
+  make({
     id: "r1",
-    title: {
-      en: "Upper limb anatomy",
-      ar: "تشريح الطرف العلوي",
-    },
     courseId: "anatomy",
     kind: "slides",
-    updatedAt: "2026-09-02T09:00:00+03:00",
     pages: 48,
-    description: {
-      en: "Lecture 08 slide collection. This sample record shows how material will be organized by course and topic.",
-      ar: "مجموعة شرائح المحاضرة الثامنة. يوضّح هذا السجل التجريبي تنظيم المواد حسب المساق والموضوع.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["anatomy", "upper limb", "lecture 8", "تشريح"],
-  },
-  {
+    en: "Upper limb anatomy",
+    ar: "تشريح الطرف العلوي",
+    audience: "batch",
+    batchIds: ["wareed"],
+  }),
+  make({
     id: "r2",
-    title: {
-      en: "The cardiac cycle",
-      ar: "الدورة القلبية",
-    },
     courseId: "physiology",
     kind: "summary",
-    updatedAt: "2026-09-01T14:00:00+03:00",
     pages: 12,
-    description: {
-      en: "A sample revision-summary listing for cardiovascular physiology.",
-      ar: "سجل توضيحي لملخص مراجعة في فسيولوجيا القلب والأوعية الدموية.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["cardio", "cardiac", "heart", "physiology", "قلب"],
-  },
-  {
+    en: "The cardiac cycle",
+    ar: "الدورة القلبية",
+    date: "2026-09-01T14:00:00+03:00",
+  }),
+  make({
     id: "r3",
-    title: {
-      en: "Enzymes & kinetics",
-      ar: "الإنزيمات والحركية",
-    },
     courseId: "biochemistry",
     kind: "notes",
-    updatedAt: "2026-08-31T11:00:00+03:00",
     pages: 24,
-    description: {
-      en: "A sample lecture-note record for the medical biochemistry collection.",
-      ar: "سجل توضيحي لملاحظات محاضرة ضمن مجموعة الكيمياء الحيوية الطبية.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["biochem", "enzymes", "metabolism", "الإنزيمات والحركية"],
-  },
-  {
+    en: "Enzymes & kinetics",
+    ar: "الإنزيمات والحركية",
+    date: "2026-08-31T11:00:00+03:00",
+  }),
+  make({
     id: "r4",
-    title: {
-      en: "Neurological examination",
-      ar: "الفحص العصبي",
-    },
     courseId: "neurology",
     kind: "questions",
-    updatedAt: "2026-08-30T12:00:00+03:00",
     pages: 18,
-    description: {
-      en: "A sample question-bank record for the neurology course. No clinical teaching material is included in this preview.",
-      ar: "سجل توضيحي لبنك أسئلة مساق الأعصاب. لا تتضمن هذه المعاينة مواد تعليمية سريرية.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["neuro", "osce", "neurology", "الفحص العصبي"],
-  },
-  {
+    en: "Neurological examination",
+    ar: "الفحص العصبي",
+    date: "2026-08-30T12:00:00+03:00",
+  }),
+  make({
     id: "r5",
-    title: {
-      en: "Thorax overview",
-      ar: "مراجعة الصدر",
-    },
     courseId: "anatomy",
     kind: "summary",
-    updatedAt: "2026-08-29T12:00:00+03:00",
     pages: 16,
-    description: {
-      en: "A sample regional-anatomy revision collection.",
-      ar: "مجموعة توضيحية لمراجعة التشريح حسب المنطقة.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["thorax", "anatomy", "تشريح"],
-  },
-  {
+    en: "Thorax overview",
+    ar: "مراجعة الصدر",
+    date: "2026-08-29T12:00:00+03:00",
+  }),
+  make({
     id: "r6",
-    title: {
-      en: "Clinical seminar notes",
-      ar: "ملاحظات الندوة السريرية",
-    },
     courseId: "medicine",
     kind: "notes",
-    updatedAt: "2026-08-28T12:00:00+03:00",
     pages: 22,
-    description: {
-      en: "A sample internal medicine seminar collection.",
-      ar: "مجموعة توضيحية لندوة في الطب الباطني.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["clinical", "internal medicine", "ملاحظات الندوة السريرية"],
-  },
-  {
+    en: "Clinical reasoning seminar",
+    ar: "ندوة الاستدلال السريري",
+    date: "2026-08-28T12:00:00+03:00",
+  }),
+  make({
     id: "r7",
-    title: {
-      en: "Rotation revision collection",
-      ar: "مصادر مراجعة التدريب",
-    },
     courseId: "pediatrics",
     kind: "slides",
-    updatedAt: "2026-08-27T12:00:00+03:00",
     pages: 32,
-    description: {
-      en: "A sample pediatric rotation resource listing.",
-      ar: "سجل توضيحي لمصدر في تدريب طب الأطفال.",
-    },
-    contributor: {
-      en: "Scientific Team",
-      ar: "الفريق العلمي",
-    },
-    fileUrl: null,
-    keywords: ["pediatrics", "clinical", "مصادر مراجعة التدريب"],
-  },
+    en: "Rotation revision collection",
+    ar: "مصادر مراجعة التدريب",
+    date: "2026-08-27T12:00:00+03:00",
+  }),
+  make({
+    id: "r8",
+    courseId: "anatomy",
+    kind: "guidance",
+    pages: 6,
+    en: "How to approach the anatomy collection",
+    ar: "كيف تستخدم مجموعة التشريح",
+  }),
+  make({
+    id: "r9",
+    courseId: "anatomy",
+    kind: "recording",
+    pages: 0,
+    en: "Surface anatomy workshop",
+    ar: "ورشة التشريح السطحي",
+    durationMinutes: 34,
+  }),
+  make({
+    id: "r10",
+    courseId: "anatomy",
+    kind: "book",
+    pages: 4,
+    en: "Recommended anatomy reading",
+    ar: "قراءات التشريح المقترحة",
+  }),
+  make({
+    id: "r11",
+    courseId: "anatomy",
+    kind: "questions",
+    pages: 20,
+    en: "Upper limb practice set",
+    ar: "تدريبات الطرف العلوي",
+    audience: "batch",
+    batchIds: ["wareed", "shifaa"],
+  }),
+  make({
+    id: "r12",
+    courseId: "anatomy",
+    kind: "external",
+    pages: 1,
+    en: "Reviewed anatomy atlas link",
+    ar: "رابط أطلس تشريح مراجع",
+  }),
+  make({
+    id: "r13",
+    courseId: "physiology",
+    kind: "slides",
+    pages: 41,
+    en: "Pressure, flow and resistance",
+    ar: "الضغط والتدفق والمقاومة",
+  }),
+  make({
+    id: "r14",
+    courseId: "physiology",
+    kind: "questions",
+    pages: 15,
+    en: "Cardiovascular checkpoints",
+    ar: "تدريبات فسيولوجيا القلب",
+  }),
+  make({
+    id: "r15",
+    courseId: "cell-biology",
+    kind: "slides",
+    pages: 36,
+    en: "Cell membrane & transport",
+    ar: "غشاء الخلية والنقل",
+  }),
+  make({
+    id: "r16",
+    courseId: "medical-genetics",
+    kind: "notes",
+    pages: 19,
+    en: "Patterns of inheritance",
+    ar: "أنماط الوراثة",
+  }),
+  make({
+    id: "r17",
+    courseId: "histology",
+    kind: "slides",
+    pages: 44,
+    en: "Foundational tissues",
+    ar: "الأنسجة الأساسية",
+  }),
+  make({
+    id: "r18",
+    courseId: "immunology",
+    kind: "summary",
+    pages: 14,
+    en: "Innate & adaptive map",
+    ar: "خريطة المناعة الفطرية والمكتسبة",
+  }),
+  make({
+    id: "r19",
+    courseId: "pathology",
+    kind: "slides",
+    pages: 52,
+    en: "Cell injury patterns",
+    ar: "أنماط أذية الخلية",
+  }),
+  make({
+    id: "r20",
+    courseId: "pharmacology",
+    kind: "notes",
+    pages: 27,
+    en: "Dose-response essentials",
+    ar: "أساسيات الجرعة والاستجابة",
+  }),
+  make({
+    id: "r21",
+    courseId: "microbiology",
+    kind: "summary",
+    pages: 17,
+    en: "Organism classification map",
+    ar: "خريطة تصنيف الكائنات",
+  }),
+  make({
+    id: "r22",
+    courseId: "surgery",
+    kind: "guidance",
+    pages: 8,
+    en: "Before your surgery rotation",
+    ar: "قبل تدريب الجراحة",
+  }),
+  make({
+    id: "r23",
+    courseId: "obgyn",
+    kind: "notes",
+    pages: 20,
+    en: "Rotation orientation notes",
+    ar: "ملاحظات تهيئة التدريب",
+  }),
+  make({
+    id: "r24",
+    courseId: "emergency",
+    kind: "questions",
+    pages: 16,
+    en: "Prioritization practice",
+    ar: "تدريبات ترتيب الأولويات",
+  }),
+  make({
+    id: "r25",
+    courseId: "family-medicine",
+    kind: "summary",
+    pages: 13,
+    en: "Continuity of care map",
+    ar: "خريطة استمرارية الرعاية",
+  }),
 ];

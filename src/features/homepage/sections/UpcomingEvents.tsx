@@ -9,7 +9,7 @@ export function UpcomingEvents() {
   if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
   return (
     <div className="events-grid">
-      {query.data.map((event) => (
+      {query.data.slice(0, 3).map((event) => (
         <EventCard key={event.id} event={event} />
       ))}
       {query.data.length === 0 && <EmptyState />}

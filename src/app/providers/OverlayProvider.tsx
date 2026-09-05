@@ -3,11 +3,11 @@ import {
   createContext,
   useContext,
   useEffect,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
 import type { DetailRecord } from "../../types/content";
+import { useWorkspace } from "./WorkspaceProvider";
 interface OverlayContextValue {
   searchOpen: boolean;
   detail: DetailRecord | null;
@@ -19,45 +19,37 @@ interface OverlayContextValue {
 const Context = createContext<OverlayContextValue | null>(null);
 export function OverlayProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const { send } = useWorkspace();
   useEffect(() => {
     setSearch(false);
     setDetail(null);
   }, [location.pathname]);
   const [searchOpen, setSearch] = useState(false);
   const [detail, setDetail] = useState<DetailRecord | null>(null);
-  const returnFocus = useRef<HTMLElement | null>(null);
-  const remember = () => {
-    if (document.activeElement instanceof HTMLElement)
-      returnFocus.current = document.activeElement;
-  };
-  const restore = () =>
-    requestAnimationFrame(() => {
-      if (returnFocus.current?.isConnected) returnFocus.current.focus();
-    });
   function openSearch() {
     if (detail) return;
-    remember();
     setSearch(true);
   }
   function closeSearch() {
     setSearch(false);
-    restore();
   }
   function openDetail(record: DetailRecord) {
-    if (!searchOpen) remember();
+    if (record.kind === "resource")
+      void send({ type: "view-resource", id: record.item.id });
     setSearch(false);
     setDetail(record);
   }
   function closeDetail() {
     setDetail(null);
-    restore();
   }
   useEffect(() => {
     function key(e: KeyboardEvent) {
-      const target = e.target as HTMLElement;
+      const target = e.target;
       const editing =
-        target.isContentEditable || target.matches("input,textarea,select");
-      if (editing || document.querySelector('[role="dialog"]')) return;
+        target instanceof HTMLElement &&
+        (target.isContentEditable || target.matches("input,textarea,select"));
+      if (editing || document.querySelector('dialog[open], [role="dialog"]'))
+        return;
       if (
         ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") ||
         e.key === "/"

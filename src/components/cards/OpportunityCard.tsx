@@ -1,16 +1,16 @@
 import { ArrowRight, Microscope } from "lucide-react";
 import type { Opportunity } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { useOverlays } from "../../app/providers/OverlayProvider";
 import { formatDate } from "../../lib/dates";
 import { SaveButton } from "./SaveButton";
+import { AppLink } from "../navigation/AppLink";
+import { opportunityPath } from "../../constants/routes";
 export function OpportunityCard({
   opportunity: o,
 }: {
   opportunity: Opportunity;
 }) {
   const { t, label, locale } = useLocale();
-  const { openDetail } = useOverlays();
   return (
     <article className="opportunity">
       <span className="opportunity-icon">
@@ -21,25 +21,22 @@ export function OpportunityCard({
           {t(o.type)} · {t(o.location)}
         </span>
         <h3>
-          <button
-            className="resource-title"
-            onClick={() => openDetail({ kind: "opportunity", item: o })}
-          >
+          <AppLink className="resource-title" href={opportunityPath(o.slug)}>
             {t(o.title)}
-          </button>
+          </AppLink>
         </h3>
         <p>{t(o.organization)}</p>
         <div className="opportunity-footer">
           <span>
             {label("deadline")} {formatDate(o.deadline, locale)}
           </span>
-          <button
+          <AppLink
             className="text-link"
             aria-label={`${label("view")} ${t(o.title)}`}
-            onClick={() => openDetail({ kind: "opportunity", item: o })}
+            href={opportunityPath(o.slug)}
           >
             <ArrowRight className="directional" size={18} />
-          </button>
+          </AppLink>
         </div>
       </div>
       <SaveButton id={o.id} title={t(o.title)} />

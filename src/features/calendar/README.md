@@ -1,5 +1,5 @@
-# Reserved for a later release
+# Calendar — V0.3
 
-Student calendar and upcoming deadlines.
+Implemented at /my/calendar: month/agenda views, illustrative course dates, saved events/deadlines, and personal study block creation, editing and deletion. Keyboard arrows move the date cursor. All displayed times use Amman time.
 
-This directory preserves the agreed architecture. It contains no implemented V0.1 workflow.
+useCalendar composes service records with workspace state. Data models live in types/workspace.ts; date composition lives in lib/calendar.ts. The stable demo anchor is constants/config.ts. There is no registration engine or background alert delivery.

@@ -1,12 +1,12 @@
 import { ArrowRight, MapPin } from "lucide-react";
 import type { ClubEvent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { useOverlays } from "../../app/providers/OverlayProvider";
 import { formatDate } from "../../lib/dates";
 import { SaveButton } from "./SaveButton";
+import { AppLink } from "../navigation/AppLink";
+import { eventPath } from "../../constants/routes";
 export function EventCard({ event: e }: { event: ClubEvent }) {
   const { t, label, locale } = useLocale();
-  const { openDetail } = useOverlays();
   return (
     <article className="event-card">
       <div className="event-top">
@@ -24,13 +24,10 @@ export function EventCard({ event: e }: { event: ClubEvent }) {
         {t(e.location)}
       </p>
       <div className="event-actions">
-        <button
-          className="text-link"
-          onClick={() => openDetail({ kind: "event", item: e })}
-        >
+        <AppLink className="text-link" href={eventPath(e.slug)}>
           {label("eventView")}
           <ArrowRight className="directional" size={15} />
-        </button>
+        </AppLink>
         <SaveButton id={e.id} title={t(e.title)} />
       </div>
     </article>

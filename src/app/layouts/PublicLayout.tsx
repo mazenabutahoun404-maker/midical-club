@@ -7,6 +7,7 @@ import { Navbar } from "../../components/navigation/Navbar";
 import { Footer } from "../../components/navigation/Footer";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
+import { WelcomeSequence } from "../../components/feedback/WelcomeSequence";
 export function PublicLayout() {
   const site = useSiteContent();
   const { navigation, sidebarCollapsed } = useAppearance();
@@ -29,6 +30,7 @@ export function PublicLayout() {
       data-sidebar={sidebarCollapsed ? "collapsed" : "expanded"}
       data-space="public"
     >
+      <WelcomeSequence />
       <Navbar site={site.data} />
       <div className="app-content">
         <WorkspaceHeader site={site.data} />

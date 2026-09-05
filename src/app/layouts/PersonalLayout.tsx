@@ -6,10 +6,12 @@ import { useStudentProfile } from "../../hooks/useContent";
 import { PersonalNavigation } from "../../components/navigation/PersonalNavigation";
 import { PersonalHeader } from "../../components/navigation/PersonalHeader";
 import { LoadingState } from "../../components/feedback/LoadingState";
+import { useWorkspace } from "../providers/WorkspaceProvider";
 export function PersonalLayout() {
   const { navigation, sidebarCollapsed } = useAppearance();
   const { label } = useLocale();
   const profile = useStudentProfile();
+  const workspace = useWorkspace();
   return (
     <div
       className="app-shell personal-shell"
@@ -24,6 +26,11 @@ export function PersonalLayout() {
       <div className="app-content">
         <PersonalHeader />
         <main id="main" tabIndex={-1}>
+          {!workspace.persistent && (
+            <p className="container workspace-warning" role="status">
+              {label("sessionNotice")}
+            </p>
+          )}
           <Suspense fallback={<LoadingState />}>
             <Outlet />
           </Suspense>

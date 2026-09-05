@@ -1,88 +1,71 @@
-# MedClub V0.1 — personal workspace revision
+# MedClub V0.5 — Community & Medical Journal
 
-This archive contains `src/` only for your existing React + TypeScript + Vite project. Start with this file; the feature-by-feature status is in `V0.1-CHECKLIST.md`.
+Source-only release for an existing React + TypeScript + Vite + Tailwind CSS 4 setup. It contains the complete V0.1–V0.4 source plus the V0.5 community and journal release. Project scaffolding, `node_modules`, build output and secrets are intentionally excluded.
 
-## Integrate with your setup
+## Integrate
 
-1. Keep a copy of your current source, then use this `src/` directory in your project.
-2. Keep your existing `package.json`, Vite configuration and HTML entry. The HTML must contain `<div id="root"></div>` and load `/src/main.tsx`.
-3. Check the packages in `DEPENDENCIES.md`. This source uses Tailwind CSS **4**, React Router, TanStack Query, Framer Motion and Radix primitives. It will not compile unchanged against Tailwind 3.
-4. Start your usual development command. `src/App.tsx` imports the complete stylesheet. If you keep your own entry file, import the default `App` from this folder.
+1. Back up your current `src` directory.
+2. Replace it with this complete `src` directory. Routes, contracts, navigation, messages and styles changed together, so do not copy only the new pages.
+3. Keep the existing package and Vite/Tailwind configuration. V0.5 adds no dependency.
+4. Run the normal type-check, tests and production build.
+5. Test with existing browser storage intact. V0.1–V0.4 saves, registrations, collections, language and appearance preferences remain compatible.
 
-Imports are relative: no `@/` alias or private project packages are required. The original uploaded logo is included under `assets/brand/medclub-logo.png`; no external images or font requests are needed.
+## V0.5 outcome
 
-`App` supplies BrowserRouter automatically. If it is already mounted inside a router, it reuses that router. Configure a matching Vite `base` and host fallback to `index.html` if deploying under a subpath or opening routes directly. This release is a client-rendered Vite app, not an SSR package.
+| Area                | Implemented behavior                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Community           | Dedicated landing page joining activities, journal, media, executive bodies, recognitions and club identity                             |
+| Activities          | Search, animated category tabs, participation details and clearly labelled illustrative outcomes                                        |
+| Medical Journal     | Searchable/filterable article index, dedicated article routes, authorship, scientific reviewer, dates, tags and save-to-library support |
+| Media               | Rights-aware archive shell with designed placeholders instead of fabricated club photography                                            |
+| Governance          | Executive-body terms and public titles kept separate from application permissions                                                       |
+| Recognition         | Separate Honor Plate and Hall of Honor routes with structured records                                                                   |
+| About               | Logo-led club story, values and accountable content principles                                                                          |
+| Experience          | Clinical-signal route reveals, pulse-based icon motion, red/russet diagnostic surfaces, responsive/RTL/reduced-motion support           |
+| Personal navigation | Hidden scrollbar with position-aware top/bottom or start/end shadow cues                                                                |
+| Data boundary       | Expanded typed records and replaceable community/journal service adapters                                                               |
 
-## Navigation and appearance
+The original public and personal shells, collapsible vertical desktop navigation, optional horizontal desktop navigation, phone dock, academic journeys, search, library, calendar, notifications, dashboard, events, opportunities and utilities remain included.
 
-The default on screens 768 px and wider is a **left sidebar**. Phones use a **horizontal bottom dock** with Home, Learn, Search, Saved and More. The sidebar stays on the left in both languages; Arabic text and content layouts use RTL.
+## New routes
 
-Open **Appearance** to choose Vertical or Horizontal navigation for larger screens. Changes take effect immediately and persist on this device. The phone dock stays horizontal in either mode. These preferences are isolated in `app/providers/AppearanceProvider.tsx`, ready to be connected to future account settings.
+| Route                         | Screen                                   |
+| ----------------------------- | ---------------------------------------- |
+| `/community`                  | Community gateway                        |
+| `/community/activities`       | Searchable activity archive              |
+| `/community/media`            | Rights-aware media archive               |
+| `/community/executive-bodies` | Public team terms and positions          |
+| `/community/honor-plate`      | Academic and service recognition         |
+| `/community/hall-of-honor`    | Long-term club recognition               |
+| `/community/about`            | Club identity and values                 |
+| `/journal`                    | Medical Journal index                    |
+| `/journal/:slug`              | Article reading view and review metadata |
 
-The circular control on the sidebar edge **collapses or expands** it. Compact mode retains the icons, keyboard-accessible names and hover/focus tooltips. Its saved preference follows you between the public and personal spaces. Switching to horizontal navigation preserves that preference for the next time you use the sidebar.
+All earlier public, academic, discovery and personal routes remain available.
 
-## Your personal space
+## API readiness
 
-Choose **My profile** from the public header, sidebar or phone's More menu to enter `/my`. A short transition leads into a separate My MedClub layout with a darker russet sidebar and a quieter canvas. Public navigation and the public footer are replaced by personal destinations. The phone dock also changes to personal destinations.
+The UI continues to follow `UI → hooks/providers → MedClubServices → adapter`.
 
-| Route | Contents |
-| --- | --- |
-| `/my` | Personal home, own courses, valid saved-item count and recent saves |
-| `/my/learning` | The sample student's courses, with search |
-| `/my/learning/:slug` | Course materials inside the personal layout |
-| `/my/library` | Saved resources, events and opportunities |
-| `/my/focus` | Focus timer using the profile's sample session length |
-| `/my/profile` | Read-only sample identity and academic profile |
-| `/my/settings` | Desktop orientation, compact sidebar and language |
+- `types/content.ts` defines articles, activities, media stories, executive bodies, members, recognitions and club values.
+- `services/contracts.ts` exposes list/detail methods without coupling pages to fetch calls.
+- `services/mock-services.ts` is the current replaceable adapter.
+- `data/mock/community.ts` and `data/mock/journal.ts` contain explicit illustrative fixtures.
+- Journal records join the existing global search and personal-library systems through the same domain IDs.
 
-**Back to MedClub** is available in the header on every personal page and returns to `/`. Personal search searches the student's courses and their study materials; personal course links stay in the same layout. `/my/dashboard` redirects to `/my`. The old `/my` library entry is now the personal home; use `/my/library` for the saved collection.
+A production publishing API must enforce contributor identity, source, rights, references, scientific review and approval before publication. These rules cannot be secured by React alone.
 
-The profile is an explicitly labeled preview. Sign-in, profile editing and server sync are future work. Layout separation does not provide authentication or access control. See `PERSONAL-WORKSPACE.md` for extension points.
+## Console note
 
-The redesign uses bundled Manrope and Noto Sans Arabic fonts, larger headings, pill controls, rounded cards and an abstract brand composition. Font licenses are included under `assets/fonts`. Read `DESIGN-REVISION.md` for the exact changes.
+`[vite] connecting`, `[vite] connected` and the React DevTools suggestion are normal development messages. The supplied `VM### … reportAllChanges … undefined.startTime` stack points to an anonymous injected script: `reportAllChanges` is absent from this source and the inspected runtime packages. Test the direct localhost page in a clean browser profile or Incognito window with extensions disabled; do not suppress global errors in the app. See `CONSOLE-TROUBLESHOOTING.md`.
 
-## Where to change things
+## Honest limitations
 
-| Change | Location |
-| --- | --- |
-| Red/russet palette, typography, spacing, radii and motion tokens | `styles/tokens.css` |
-| Global and responsive layout | `styles/foundation.css`, `styles/accessibility.css` |
-| Compact navigation and personal layout | `styles/workspaces.css` |
-| Arabic layout adjustments | `styles/rtl.css` |
-| Homepage copy, section order/enabled state, navigation | `data/mock/site.ts` |
-| Courses, resources, events, opportunities, journal | Separate files in `data/mock/` |
-| Sample student identity and course selection | `data/mock/student.ts` |
-| Interface translations | `constants/messages.ts` |
-| Desktop orientation, collapse state and persistence | `app/providers/AppearanceProvider.tsx` |
-| Time zone, locale and storage keys | `constants/config.ts` |
-| Route definitions | `app/router/AppRouter.tsx` |
-| API boundary | `services/contracts.ts` and `services/mock-services.ts` |
+- People, activities, dates, awards and club-history records are illustrative until verified by MedClub.
+- Media tiles are intentional placeholders; approved assets still need source, contributor and rights metadata.
+- Journal copy is demonstration content, not medical guidance or a substitute for institutional clinical protocols.
+- The scientific contribution/review workflow, real authentication, backend permissions, CMS/admin and store checkout remain later milestones.
+- The production build passes, but the consumer Vite project should configure vendor chunk groups to reduce the current main-bundle warning.
+- Native dialog, motion, responsive layout and assistive-technology behavior still need final real-browser and real-device acceptance in the integrating project.
 
-The full English/Arabic interface switches from the navbar and remembers its language on this device. Dates are ISO strings with explicit offsets; display formatting uses `Intl` in the configured `Asia/Amman` time zone.
-
-## Replacing static data with APIs later
-
-Components call query hooks in `hooks/useContent.ts`. Those hooks call a registry that implements `MedClubServices`. Only `services/mock-services.ts` imports the fixture data. Every service returns a Promise and fresh mock response objects, so components cannot mutate the original fixtures.
-
-Implement the same interface in an HTTP adapter and supply it to the root:
-
-```tsx
-import App from './App';
-import { apiServices } from './services/api-services'; // create this when endpoints exist
-
-<App services={apiServices} />
-```
-
-Map server responses into the existing TypeScript models inside the adapter. Authentication, request validation, upload/download rights and backend permissions must be implemented with the real backend. There are no invented API endpoints or credentials in this release.
-
-This revision adds `personal.getProfile(): Promise<StudentProfile>` to `MedClubServices`. If you already wrote an adapter against the previous source, implement that method too. Student data lives outside the UI, and `hooks/useContent.ts` exposes its query.
-
-`site.sections` controls section visibility and ordering. Optional `startsAt` and `endsAt` are evaluated when the homepage renders: start is inclusive and end is exclusive. This is a frontend preview, not a server publishing or authorization mechanism. The hero is separately configured by `site.hero` and remains at the top.
-
-## Scope
-
-V0.1 is the foundation and complete public homepage, now with the requested separate personal workspace. A working sample course catalogue, resource detail/filter flow, local bookmarks, scoped search, profile preview, appearance settings and focus timer are included. They demonstrate the shared components and route structure; they do not constitute the full academic or authenticated student platform.
-
-All records are clearly marked as illustrative. PDFs are not attached. Event registration, applications, account sync, store checkout, exams, CMS, administration and backend security are not implemented in V0.1. Reserved feature/admin directories include a `README.md` stating their status.
-
-The next planned milestone is V0.2: academic structure, batches, clinical years, archives and configurable course content. V0.3 covers the full student workspace. Later modules are split into additional releases; there is no fixed total version count yet.
+Read `V0.5-CHECKLIST.md`, `V0.5-DESIGN.md`, `ARCHITECTURE.md` and `CONSOLE-TROUBLESHOOTING.md` before integration.

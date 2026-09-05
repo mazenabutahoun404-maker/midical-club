@@ -54,8 +54,26 @@ function Section({
       <div className={section.type === "resources" ? "container" : undefined}>
         <SectionHeading
           heading={site.headings[section.type]}
-          href={section.type === "resources" ? "/learn" : undefined}
-          linkLabel={label("browse")}
+          href={
+            section.type === "resources"
+              ? "/learn"
+              : section.type === "events"
+                ? "/events"
+                : section.type === "opportunities"
+                  ? "/opportunities"
+                  : section.type === "journal"
+                    ? "/journal"
+                    : undefined
+          }
+          linkLabel={label(
+            section.type === "events"
+              ? "exploreAllEvents"
+              : section.type === "opportunities"
+                ? "exploreAllOpportunities"
+                : section.type === "journal"
+                  ? "allArticles"
+                  : "browse",
+          )}
         />
         <Component site={site} />
       </div>

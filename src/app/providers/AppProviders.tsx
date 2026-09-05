@@ -8,6 +8,7 @@ import { LocaleProvider, useLocale } from "./LocaleProvider";
 import { ServicesProvider } from "./ServicesProvider";
 import { SavedItemsProvider } from "./SavedItemsProvider";
 import { OverlayProvider } from "./OverlayProvider";
+import { WorkspaceProvider } from "./WorkspaceProvider";
 import { mockServices } from "../../services/mock-services";
 import { QUERY_STALE_TIME } from "../../constants/config";
 import type { MedClubServices } from "../../services/contracts";
@@ -50,12 +51,14 @@ export function AppProviders({
           <AppearanceProvider>
             <MotionConfig reducedMotion="user">
               <TooltipProvider delayDuration={350}>
-                <SavedItemsProvider>
-                  <OverlayProvider>
-                    {children}
-                    <Notifications />
-                  </OverlayProvider>
-                </SavedItemsProvider>
+                <WorkspaceProvider>
+                  <SavedItemsProvider>
+                    <OverlayProvider>
+                      {children}
+                      <Notifications />
+                    </OverlayProvider>
+                  </SavedItemsProvider>
+                </WorkspaceProvider>
               </TooltipProvider>
             </MotionConfig>
           </AppearanceProvider>

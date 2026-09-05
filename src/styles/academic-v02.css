@@ -1,0 +1,1651 @@
+/* V0.2 academic experience: expressive navigation without obstructing study content. */
+.academic-route-transition {
+  position: relative;
+  min-height: 45vh;
+}
+.academic-route-thread {
+  position: absolute;
+  z-index: 12;
+  left: 4%;
+  right: 4%;
+  top: 9px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #a74d42 35%,
+    #d6a08b 70%,
+    transparent
+  );
+  transform-origin: left;
+  pointer-events: none;
+}
+.academic-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #9b5b4d;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.academic-gateway {
+  padding-bottom: 90px;
+}
+.academic-gateway-hero {
+  position: relative;
+  max-width: 920px;
+  padding: 62px 0 45px;
+}
+.academic-gateway-hero::after {
+  content: "";
+  position: absolute;
+  right: 4%;
+  top: 47%;
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #bf8d7d, transparent);
+}
+.academic-gateway-hero h1,
+.academic-page-hero h1,
+.clinical-year-hero h1,
+.course-atlas-title h1 {
+  color: #4d332b;
+  font-size: clamp(43px, 6vw, 83px);
+  font-weight: 790;
+  letter-spacing: -0.073em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.academic-gateway-hero h1 {
+  margin: 17px 0 22px;
+  max-width: 760px;
+}
+.academic-gateway-hero > p,
+.academic-page-hero > p {
+  max-width: 640px;
+  color: #806b60;
+  font-size: 13px;
+  line-height: 1.95;
+}
+.academic-pulse {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 34px;
+  color: #95796c;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.academic-pulse span {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.academic-pulse b {
+  color: #6e443a;
+  font-size: 18px;
+  letter-spacing: -0.05em;
+}
+.academic-pulse i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #c68f80;
+}
+.academic-portals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.academic-portal {
+  --spot: #ffd8c433;
+  position: relative;
+  isolation: isolate;
+  min-height: 480px;
+  padding: 44px;
+  border-radius: 42px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #fff6ef;
+  box-shadow: 0 20px 70px #48291b16;
+  transform: translateZ(0);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s;
+}
+.portal-basic {
+  background: linear-gradient(145deg, #9b2f2f, #70211f 65%, #51211f);
+}
+.portal-clinical {
+  background: linear-gradient(145deg, #60473e, #3b2d29 68%, #2b2422);
+}
+.academic-portal:hover {
+  transform: translateY(-7px) scale(1.006);
+  box-shadow: 0 29px 90px #48291b25;
+}
+.portal-spot {
+  position: absolute;
+  z-index: -1;
+  left: var(--spot-x);
+  top: var(--spot-y);
+  width: 440px;
+  height: 440px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--spot), transparent 67%);
+  opacity: 0;
+  transition: opacity 0.24s;
+  pointer-events: none;
+}
+.academic-portal:hover .portal-spot,
+.academic-portal:focus-visible .portal-spot {
+  opacity: 1;
+}
+.portal-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(#fff 1px, transparent 1px),
+    linear-gradient(90deg, #fff 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(135deg, transparent, #000 30%, transparent 83%);
+}
+.portal-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 420px;
+}
+.academic-portal .academic-kicker {
+  color: #f0cfc1;
+}
+.portal-copy > strong {
+  margin-top: 14px;
+  font-size: clamp(31px, 3.5vw, 51px);
+  line-height: 1.03;
+  letter-spacing: -0.06em;
+}
+.portal-copy > span:last-child {
+  margin-top: 18px;
+  max-width: 370px;
+  color: #ecd8ce;
+  font-size: 12px;
+  line-height: 1.85;
+}
+.portal-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 25px;
+  border-top: 1px solid #ffffff20;
+  color: #fff8ef;
+  font-size: 11px;
+  font-weight: 750;
+}
+.portal-action svg {
+  transition: transform 0.28s;
+}
+.academic-portal:hover .portal-action svg {
+  transform: translate(4px, -4px);
+}
+.portal-orbit {
+  position: absolute;
+  right: 45px;
+  bottom: 79px;
+  width: 168px;
+  height: 168px;
+  border: 1px solid #ffffff2e;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.academic-portal:hover .portal-orbit {
+  transform: rotate(8deg) scale(1.06);
+}
+.portal-orbit::before,
+.portal-orbit::after {
+  content: "";
+  position: absolute;
+  border: 1px solid #ffffff1b;
+  border-radius: 50%;
+  inset: 22px;
+}
+.portal-orbit::after {
+  inset: 48px;
+  background: #ffffff0b;
+}
+.portal-orbit > svg {
+  width: 43px;
+  height: 43px;
+  stroke-width: 1.25;
+  z-index: 1;
+}
+.portal-orbit i {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f5c4ad;
+  box-shadow: 0 0 0 5px #ffffff12;
+}
+.portal-orbit i:nth-of-type(1) {
+  top: 9px;
+  left: 52px;
+}
+.portal-orbit i:nth-of-type(2) {
+  right: 2px;
+  bottom: 52px;
+}
+.portal-orbit i:nth-of-type(3) {
+  bottom: 19px;
+  left: 24px;
+}
+.portal-clinical .portal-orbit i {
+  background: #cba992;
+}
+.academic-finder {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+  margin-top: 18px;
+  padding: 24px 28px;
+  border: 1px solid #eaded5;
+  border-radius: 25px;
+  background: #fffaf6;
+}
+.finder-icon {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  color: #9a4a3d;
+  background: #f3dfd6;
+}
+.academic-finder h2 {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #64483d;
+}
+.academic-page-hero {
+  position: relative;
+  min-height: 410px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  margin: 10px 0 55px;
+  padding: 55px;
+  border-radius: 40px;
+}
+.basic-page-hero {
+  background:
+    radial-gradient(circle at 82% 45%, #dbaea044, transparent 20%),
+    linear-gradient(135deg, #fff9f4, #eadfd5);
+}
+.clinical-page-hero {
+  background:
+    radial-gradient(circle at 82% 45%, #b8564c33, transparent 22%),
+    linear-gradient(135deg, #5d3d36, #332925);
+}
+.clinical-page-hero h1 {
+  color: #fff3e8;
+  max-width: 750px;
+}
+.clinical-page-hero > p {
+  color: #d9c6bb;
+}
+.clinical-page-hero .academic-kicker {
+  color: #d8aa99;
+}
+.academic-page-hero h1 {
+  max-width: 780px;
+  margin: 19px 0;
+}
+.hero-ghost-word {
+  position: absolute;
+  right: -18px;
+  bottom: -36px;
+  color: transparent;
+  font-size: clamp(95px, 15vw, 210px);
+  font-weight: 850;
+  letter-spacing: -0.09em;
+  -webkit-text-stroke: 1px #7b514517;
+  user-select: none;
+}
+.clinical-page-hero .hero-ghost-word {
+  -webkit-text-stroke-color: #ffffff14;
+}
+.clinical-pulse-line {
+  position: absolute;
+  right: 7%;
+  top: 24%;
+  width: 220px;
+  height: 100px;
+}
+.clinical-pulse-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: #d3978566;
+}
+.clinical-pulse-line i {
+  position: absolute;
+  top: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e2aa97;
+  animation: academic-pulse 2.8s ease-in-out infinite;
+}
+.clinical-pulse-line i:nth-child(1) {
+  left: 0;
+}
+.clinical-pulse-line i:nth-child(2) {
+  left: 33%;
+  animation-delay: 0.35s;
+}
+.clinical-pulse-line i:nth-child(3) {
+  left: 66%;
+  animation-delay: 0.7s;
+}
+.clinical-pulse-line i:nth-child(4) {
+  right: 0;
+  animation-delay: 1.05s;
+}
+@keyframes academic-pulse {
+  0%,
+  100% {
+    transform: scale(0.65);
+    opacity: 0.35;
+  }
+  45% {
+    transform: scale(1.3);
+    opacity: 1;
+    box-shadow: 0 0 0 8px #df9f8b14;
+  }
+}
+.academic-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0 0 23px;
+}
+.academic-section-heading > span {
+  color: #a46455;
+  font-size: 11px;
+  font-weight: 800;
+}
+.academic-section-heading h2 {
+  color: #593d34;
+  font-size: 25px;
+  font-weight: 790;
+  letter-spacing: -0.045em;
+}
+.academic-section-heading small {
+  display: block;
+  color: #a38372;
+  font-size: 9px;
+  margin-bottom: 3px;
+}
+.academic-section-heading > i {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #d9c8bd, transparent);
+}
+.batch-passport-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding-bottom: 90px;
+}
+.batch-passport {
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+  padding: 31px;
+  border: 1px solid #eadfd5;
+  border-radius: 34px;
+  background: #fffcf9;
+  display: flex;
+  flex-direction: column;
+  color: #5b4037;
+  box-shadow: 0 12px 38px #4b2d2008;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s;
+}
+.batch-passport::before {
+  content: "";
+  position: absolute;
+  inset: auto -30% -42% 12%;
+  height: 65%;
+  border-radius: 50% 50% 0 0;
+  background: #a5493d0d;
+  transform: rotate(-8deg);
+  transition: transform 0.45s;
+}
+.batch-passport:hover {
+  transform: translateY(-8px) rotate(0.3deg);
+  box-shadow: 0 25px 60px #4b2d2016;
+}
+.batch-passport:hover::before {
+  transform: rotate(-2deg) scale(1.14);
+}
+.batch-olive {
+  --batch-color: #78805c;
+}
+.batch-russet {
+  --batch-color: #9a6248;
+}
+.batch-red {
+  --batch-color: #a6423a;
+}
+.passport-index {
+  position: absolute;
+  right: 25px;
+  top: 21px;
+  color: #b9a79c;
+  font-size: 10px;
+  font-weight: 800;
+}
+.passport-stamp {
+  position: relative;
+  width: 73px;
+  height: 73px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--batch-color) var(--batch-progress),
+    #eadfd6 0
+  );
+  margin-bottom: 35px;
+}
+.passport-stamp::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: #fffcf9;
+}
+.passport-stamp > span {
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--batch-color);
+}
+.passport-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.passport-copy > strong {
+  margin: 7px 0 5px;
+  font-size: 37px;
+  letter-spacing: -0.065em;
+}
+.passport-copy > em {
+  color: var(--batch-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 750;
+}
+.passport-copy > span:last-child {
+  margin-top: 15px;
+  min-height: 63px;
+  color: #826d62;
+  font-size: 10px;
+  line-height: 1.85;
+}
+.passport-term {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 14px 0;
+  border-top: 1px dashed #d9c9bf;
+  border-bottom: 1px dashed #d9c9bf;
+}
+.passport-term svg {
+  color: var(--batch-color);
+}
+.passport-term > span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.passport-term small {
+  color: #a08779;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+.passport-term b {
+  font-size: 10px;
+}
+.passport-action {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 20px;
+  color: var(--batch-color);
+  font-size: 10px;
+  font-weight: 800;
+}
+.passport-action svg {
+  transition: transform 0.25s;
+}
+.batch-passport:hover .passport-action svg {
+  transform: translate(4px, -4px);
+}
+.batch-page {
+  padding-bottom: 90px;
+}
+.batch-identity-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px 55px;
+  overflow: hidden;
+  margin: 10px 0 20px;
+  padding: 53px;
+  border-radius: 38px;
+  background: linear-gradient(135deg, #fffaf5, #e8dcd3);
+}
+.batch-identity-card::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -85px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid #9f67502a;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 33px #ffffff18,
+    inset 0 0 0 70px #9c5b4710;
+}
+.batch-identity-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 650px;
+}
+.batch-identity-copy h1 {
+  margin: 12px 0 4px;
+  color: #583a31;
+  font-size: clamp(49px, 7vw, 92px);
+  line-height: 0.96;
+  letter-spacing: -0.075em;
+}
+.batch-identity-copy > strong {
+  color: #a05b4a;
+  font-size: 14px;
+}
+.batch-identity-copy > p {
+  margin-top: 17px;
+  max-width: 560px;
+  color: #816b5f;
+  font-size: 11px;
+  line-height: 1.9;
+}
+.batch-progress-seal {
+  position: relative;
+  z-index: 1;
+  width: 130px;
+  height: 130px;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(#a34b40 var(--progress), #ddcfc4 0);
+}
+.batch-progress-seal::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  background: #eee3da;
+}
+.batch-progress-seal > span {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #937162;
+  font-size: 8px;
+}
+.batch-progress-seal b {
+  color: #854438;
+  font-size: 26px;
+  letter-spacing: -0.05em;
+}
+.batch-meta {
+  position: relative;
+  z-index: 1;
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  border-radius: 19px;
+  background: #d8c7ba;
+}
+.batch-meta > div {
+  background: #fff8f2d9;
+  padding: 17px 20px;
+}
+.batch-meta dt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #927768;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.batch-meta dd {
+  margin-top: 6px;
+  color: #614238;
+  font-size: 17px;
+  font-weight: 800;
+}
+.batch-view-switch {
+  display: inline-flex;
+  gap: 5px;
+  margin: 0 0 45px;
+  padding: 5px;
+  border: 1px solid #e2d5cb;
+  border-radius: 999px;
+  background: #f8f1eb;
+}
+.batch-view-switch a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 17px;
+  border-radius: 999px;
+  color: #8b7164;
+  font-size: 10px;
+  font-weight: 750;
+}
+.batch-view-switch a[aria-current="page"] {
+  background: #7e4138;
+  color: #fff5eb;
+  box-shadow: 0 5px 15px #69382c20;
+}
+.academic-course-grid {
+  margin-bottom: 40px;
+}
+.archive-term {
+  margin-bottom: 13px;
+  border: 1px solid #e6d9cf;
+  border-radius: 26px;
+  background: #fffaf6;
+  overflow: hidden;
+}
+.archive-term summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 28px;
+}
+.archive-term summary::-webkit-details-marker {
+  display: none;
+}
+.archive-term summary > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.archive-term summary > span:last-child {
+  flex-direction: row;
+  align-items: center;
+  color: #957668;
+  font-size: 9px;
+}
+.archive-term summary small {
+  color: #9c8274;
+  font-size: 9px;
+}
+.archive-term summary b {
+  color: #60443a;
+  font-size: 17px;
+}
+.archive-term[open] summary {
+  background: #efe2da;
+}
+.archive-term[open] summary svg {
+  transform: rotate(90deg);
+}
+.archive-term .course-grid {
+  padding: 10px 24px 25px;
+}
+.clinical-years-path {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+  padding-bottom: 90px;
+}
+.clinical-years-path::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b88675, transparent);
+}
+.clinical-year-card {
+  position: relative;
+  isolation: isolate;
+  min-height: 430px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid #e8dcd2;
+  border-radius: 33px;
+  background: #fffbf7;
+  color: #5c4037;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.35s,
+    color 0.35s;
+}
+.clinical-year-card:hover {
+  transform: translateY(-8px);
+  background: #503931;
+  color: #fff4e9;
+}
+.clinical-year-number {
+  position: absolute;
+  z-index: -1;
+  right: -9px;
+  top: 8px;
+  color: transparent;
+  font-size: 153px;
+  font-weight: 850;
+  letter-spacing: -0.1em;
+  -webkit-text-stroke: 1px #9b6c5b22;
+  transition:
+    transform 0.45s,
+    -webkit-text-stroke-color 0.35s;
+}
+.clinical-year-card:hover .clinical-year-number {
+  transform: translateX(-10px) rotate(-3deg);
+  -webkit-text-stroke-color: #ffffff1b;
+}
+.clinical-year-icon {
+  width: 49px;
+  height: 49px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  color: #9d5145;
+  background: #f1ded5;
+}
+.clinical-year-copy {
+  display: flex;
+  flex-direction: column;
+  margin-top: 74px;
+}
+.clinical-year-copy small {
+  color: #a17b6c;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.clinical-year-copy strong {
+  margin-top: 9px;
+  font-size: 27px;
+  letter-spacing: -0.05em;
+}
+.clinical-year-copy > span {
+  margin-top: 13px;
+  color: #816b60;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.clinical-year-card:hover .clinical-year-copy small,
+.clinical-year-card:hover .clinical-year-copy > span {
+  color: #d6beb2;
+}
+.clinical-year-focus {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 22px;
+  padding-top: 17px;
+  border-top: 1px dashed #d6c6bc;
+}
+.clinical-year-focus small {
+  color: #a38678;
+  font-size: 8px;
+  text-transform: uppercase;
+}
+.clinical-year-focus b {
+  font-size: 10px;
+}
+.clinical-year-card:hover .clinical-year-focus {
+  border-color: #ffffff24;
+}
+.clinical-year-card:hover .clinical-year-focus small {
+  color: #c8aca0;
+}
+.clinical-year-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 20px;
+  color: #9b4b41;
+  font-size: 10px;
+  font-weight: 800;
+}
+.clinical-year-card:hover .clinical-year-action {
+  color: #ffd9c8;
+}
+.clinical-year-page {
+  padding-bottom: 90px;
+}
+.clinical-year-hero {
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  align-items: end;
+  gap: 40px;
+  margin: 10px 0 16px;
+  padding: 55px;
+  border-radius: 39px;
+  background: linear-gradient(140deg, #5b3e37, #302724);
+  color: #fff5eb;
+}
+.clinical-year-huge {
+  position: absolute;
+  right: 24%;
+  top: -45px;
+  color: transparent;
+  font-size: 280px;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.12em;
+  -webkit-text-stroke: 1px #ffffff12;
+}
+.clinical-year-hero > div {
+  position: relative;
+  z-index: 1;
+}
+.clinical-year-hero h1 {
+  color: #fff5eb;
+  margin: 17px 0 19px;
+  max-width: 640px;
+}
+.clinical-year-hero p {
+  max-width: 590px;
+  color: #d5c1b6;
+  font-size: 11px;
+  line-height: 1.9;
+}
+.clinical-year-hero .academic-kicker {
+  color: #d7aa99;
+}
+.clinical-year-hero aside {
+  position: relative;
+  z-index: 1;
+  padding: 23px;
+  border: 1px solid #ffffff17;
+  border-radius: 23px;
+  background: #ffffff0a;
+  backdrop-filter: blur(10px);
+}
+.clinical-year-hero aside small {
+  display: block;
+  color: #caa99b;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.clinical-year-hero aside strong {
+  display: block;
+  margin: 8px 30px 0 0;
+  font-size: 14px;
+}
+.clinical-year-hero aside svg {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: #e3ad97;
+}
+.clinical-focus-strip {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(3, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  margin-bottom: 50px;
+  border-radius: 22px;
+  background: #decfc4;
+}
+.clinical-focus-strip > span {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px;
+  background: #fff9f4;
+  color: #72564b;
+  font-size: 10px;
+}
+.clinical-focus-strip > span:first-child {
+  color: #fff4e9;
+  background: #9a4b41;
+}
+.clinical-focus-strip i {
+  color: #a67f6f;
+  font-size: 8px;
+  font-style: normal;
+}
+.course-atlas {
+  --course-accent: #9d4d42;
+  --course-soft: #e3afa04f;
+  padding-bottom: 90px;
+}
+.course-atlas-russet {
+  --course-accent: #956044;
+  --course-soft: #d6ad864f;
+}
+.course-atlas-red {
+  --course-accent: #a53e38;
+  --course-soft: #e3afa04f;
+}
+.course-atlas-olive {
+  --course-accent: #6f7956;
+  --course-soft: #c0c99a4f;
+}
+.course-atlas-purple {
+  --course-accent: #765c78;
+  --course-soft: #c5abc74f;
+}
+.course-atlas-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 385px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 35px;
+  margin: 10px 0 18px;
+  padding: 52px;
+  border-radius: 39px;
+  background:
+    radial-gradient(circle at 78% 33%, var(--course-soft), transparent 25%),
+    linear-gradient(135deg, #fff9f4, #e9ded5);
+}
+.course-atlas-title {
+  position: relative;
+  z-index: 1;
+}
+.course-atlas-title h1 {
+  max-width: 780px;
+  margin: 16px 0;
+  font-size: clamp(43px, 5vw, 72px);
+}
+.course-atlas-title p {
+  max-width: 650px;
+  color: #7c675c;
+  font-size: 11px;
+  line-height: 1.9;
+}
+.course-atlas-meta {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  min-width: 290px;
+  border-radius: 20px;
+  background: #d9c7bc;
+}
+.course-atlas-meta > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 15px 18px;
+  background: #fff8f2cf;
+}
+.course-atlas-meta dt {
+  color: #987a6a;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.course-atlas-meta dd {
+  color: #6b463b;
+  font-size: 13px;
+  font-weight: 800;
+}
+.course-atlas-orbit {
+  position: absolute;
+  z-index: -1;
+  right: 16%;
+  top: -70px;
+  width: 330px;
+  height: 330px;
+  border: 1px solid #9b5d4921;
+  border-radius: 50%;
+  animation: atlas-orbit 24s linear infinite;
+}
+.course-atlas-orbit::before,
+.course-atlas-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 45px;
+  border: 1px solid #9b5d4918;
+  border-radius: 50%;
+}
+.course-atlas-orbit::after {
+  inset: 100px;
+}
+.course-atlas-orbit i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--course-accent);
+}
+.course-atlas-orbit i:nth-child(1) {
+  left: 53px;
+  top: 40px;
+}
+.course-atlas-orbit i:nth-child(2) {
+  right: 14px;
+  top: 170px;
+}
+.course-atlas-orbit i:nth-child(3) {
+  left: 100px;
+  bottom: 7px;
+}
+@keyframes atlas-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.course-atlas-layout {
+  display: grid;
+  grid-template-columns: 215px minmax(0, 1fr) 215px;
+  gap: 15px;
+  align-items: start;
+}
+.course-section-rail,
+.course-context-card {
+  position: sticky;
+  top: 18px;
+  padding: 22px;
+  border: 1px solid #eaded5;
+  border-radius: 25px;
+  background: #fffaf6;
+}
+[data-navigation="horizontal"] .course-section-rail,
+[data-navigation="horizontal"] .course-context-card {
+  top: 105px;
+}
+.course-section-rail nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 18px;
+}
+.course-section-rail button {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #846d61;
+  padding: 11px;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    transform 0.18s;
+}
+.course-section-rail button > span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.course-section-rail button b {
+  font-size: 10px;
+}
+.course-section-rail button small {
+  display: block;
+  margin: 5px 0 0 26px;
+  color: #ad9487;
+  font-size: 7px;
+}
+.course-section-rail button:hover {
+  background: #f0e2d9;
+  transform: translateX(3px);
+}
+.course-section-rail button[aria-current="page"] {
+  background: var(--course-accent);
+  color: #fff4ea;
+  box-shadow: 0 7px 18px #69372e18;
+}
+.course-section-rail button[aria-current="page"] small {
+  color: #dbb8a9;
+}
+.course-section-stage {
+  min-width: 0;
+  min-height: 560px;
+  padding: 31px;
+  border: 1px solid #eadfd7;
+  border-radius: 30px;
+  background: #fffcf9;
+}
+.course-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #eee3dc;
+}
+.course-section-heading h2 {
+  margin-top: 7px;
+  color: #583d34;
+  font-size: 32px;
+  letter-spacing: -0.055em;
+}
+.course-section-heading p {
+  margin-top: 8px;
+  max-width: 550px;
+  color: #8a7367;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.section-count {
+  width: 77px;
+  height: 77px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #9a7564;
+  background: #f2e3da;
+  font-size: 7px;
+  text-align: center;
+}
+.section-count b {
+  color: #84463c;
+  font-size: 23px;
+}
+.course-overview-panel {
+  padding-top: 25px;
+}
+.overview-note {
+  display: flex;
+  gap: 14px;
+  padding: 19px;
+  border-radius: 18px;
+  background: #f4e6dd;
+  color: #8b695a;
+}
+.overview-note svg {
+  flex: none;
+  color: #9c4d42;
+}
+.overview-note p {
+  font-size: 10px;
+  line-height: 1.85;
+}
+.course-overview-panel section {
+  margin: 30px 0;
+}
+.course-overview-panel ol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.course-overview-panel li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 74px;
+  padding: 16px;
+  border: 1px solid #ebded5;
+  border-radius: 18px;
+  color: #71574c;
+  font-size: 10px;
+  line-height: 1.7;
+}
+.course-overview-panel li span {
+  color: #ae7a68;
+  font-size: 8px;
+  font-weight: 800;
+}
+.course-material-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+.course-context-card > strong {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 19px 0;
+  color: var(--course-accent);
+  font-size: 46px;
+  letter-spacing: -0.07em;
+}
+.course-context-card > strong small {
+  color: #9b7c6d;
+  font-size: 8px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.course-context-card > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 13px 0;
+  border-top: 1px solid #eaded5;
+}
+.course-context-card > div span {
+  color: #9d8274;
+  font-size: 8px;
+  text-transform: uppercase;
+}
+.course-context-card > div b {
+  color: #65493e;
+  font-size: 9px;
+}
+.course-context-card p {
+  margin: 15px 0;
+  color: #8b7569;
+  font-size: 9px;
+  line-height: 1.8;
+}
+.course-context-card > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--course-accent);
+  font-size: 9px;
+  font-weight: 800;
+}
+.resource-audience {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.resource-updated {
+  display: block;
+  margin-top: 7px;
+  color: #a38d80;
+  font-size: 7px;
+}
+
+@media (max-width: 1199px) {
+  .academic-portal {
+    min-height: 430px;
+    padding: 35px;
+  }
+  .portal-orbit {
+    width: 140px;
+    height: 140px;
+    right: 30px;
+  }
+  .course-atlas-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+  .course-context-card {
+    position: static;
+    grid-column: 1/-1;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: center;
+    gap: 22px;
+  }
+  .course-context-card > strong,
+  .course-context-card p {
+    margin: 0;
+  }
+  .course-context-card > div {
+    border-top: 0;
+  }
+  .course-context-card > div:nth-of-type(2) {
+    display: none;
+  }
+}
+@media (max-width: 959px) {
+  .academic-gateway-hero::after {
+    display: none;
+  }
+  .academic-portals {
+    grid-template-columns: 1fr;
+  }
+  .academic-portal {
+    min-height: 390px;
+  }
+  .batch-passport-grid,
+  .clinical-years-path {
+    grid-template-columns: 1fr;
+  }
+  .batch-passport {
+    min-height: 330px;
+  }
+  .passport-copy > span:last-child {
+    min-height: 0;
+  }
+  .clinical-year-card {
+    min-height: 320px;
+  }
+  .clinical-year-copy {
+    margin-top: 35px;
+  }
+  .clinical-year-number {
+    font-size: 125px;
+  }
+  .batch-identity-card {
+    padding: 40px;
+  }
+  .course-atlas-hero {
+    grid-template-columns: 1fr;
+  }
+  .course-atlas-meta {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .course-atlas-meta > div {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .course-atlas-layout {
+    grid-template-columns: 1fr;
+  }
+  .course-section-rail {
+    position: static;
+    padding: 14px;
+    overflow: hidden;
+  }
+  .course-section-rail > .academic-kicker {
+    padding: 7px;
+  }
+  .course-section-rail nav {
+    flex-direction: row;
+    overflow-x: auto;
+    margin-top: 7px;
+    padding-bottom: 3px;
+    scrollbar-width: thin;
+  }
+  .course-section-rail button {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 115px;
+  }
+  .course-section-rail button small {
+    margin-inline-start: 26px;
+  }
+  .course-context-card {
+    grid-template-columns: auto 1fr auto;
+  }
+  .course-context-card > div {
+    display: none;
+  }
+  .course-context-card p {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .academic-gateway {
+    padding-bottom: 35px;
+  }
+  .academic-gateway-hero {
+    padding: 30px 3px;
+  }
+  .academic-gateway-hero h1,
+  .academic-page-hero h1,
+  .clinical-year-hero h1,
+  .course-atlas-title h1 {
+    font-size: 43px;
+  }
+  .academic-gateway-hero > p,
+  .academic-page-hero > p {
+    font-size: 11px;
+  }
+  .academic-pulse {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .academic-pulse b {
+    font-size: 15px;
+  }
+  .academic-portal {
+    min-height: 405px;
+    padding: 28px;
+    border-radius: 30px;
+  }
+  .portal-copy > strong {
+    font-size: 36px;
+  }
+  .portal-copy > span:last-child {
+    font-size: 11px;
+  }
+  .portal-orbit {
+    width: 125px;
+    height: 125px;
+    right: 23px;
+    bottom: 75px;
+  }
+  .portal-orbit::before {
+    inset: 18px;
+  }
+  .portal-orbit::after {
+    inset: 38px;
+  }
+  .academic-finder {
+    grid-template-columns: auto 1fr;
+    padding: 20px;
+  }
+  .academic-finder .button {
+    grid-column: 1/-1;
+    width: 100%;
+  }
+  .academic-finder h2 {
+    font-size: 12px;
+  }
+  .academic-page-hero {
+    min-height: 355px;
+    margin-top: 0;
+    padding: 29px;
+    border-radius: 30px;
+  }
+  .hero-ghost-word {
+    font-size: 95px;
+    bottom: -13px;
+  }
+  .clinical-pulse-line {
+    right: -40px;
+    top: 15%;
+    opacity: 0.55;
+  }
+  .batch-passport-grid {
+    padding-bottom: 45px;
+  }
+  .batch-passport {
+    padding: 26px;
+    border-radius: 28px;
+  }
+  .passport-copy > strong {
+    font-size: 35px;
+  }
+  .batch-page,
+  .clinical-year-page,
+  .course-atlas {
+    padding-bottom: 45px;
+  }
+  .batch-identity-card {
+    grid-template-columns: 1fr;
+    padding: 29px;
+    border-radius: 29px;
+  }
+  .batch-progress-seal {
+    width: 105px;
+    height: 105px;
+  }
+  .batch-meta {
+    grid-template-columns: 1fr;
+  }
+  .batch-view-switch {
+    display: flex;
+    width: 100%;
+  }
+  .batch-view-switch a {
+    flex: 1;
+    justify-content: center;
+  }
+  .archive-term summary {
+    padding: 20px;
+    align-items: flex-start;
+  }
+  .archive-term summary > span:last-child {
+    font-size: 8px;
+  }
+  .archive-term .course-grid {
+    padding: 8px 16px 18px;
+  }
+  .clinical-years-path {
+    padding-bottom: 45px;
+  }
+  .clinical-year-card {
+    min-height: 340px;
+    padding: 25px;
+    border-radius: 28px;
+  }
+  .clinical-year-hero {
+    grid-template-columns: 1fr;
+    min-height: 430px;
+    padding: 30px;
+    border-radius: 30px;
+  }
+  .clinical-year-huge {
+    font-size: 190px;
+    right: -10px;
+  }
+  .clinical-year-hero aside {
+    padding: 19px;
+  }
+  .clinical-focus-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+  .clinical-focus-strip > span:first-child {
+    grid-column: 1/-1;
+  }
+  .course-atlas-hero {
+    min-height: 420px;
+    padding: 29px;
+    border-radius: 30px;
+  }
+  .course-atlas-meta {
+    min-width: 0;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .course-atlas-meta > div {
+    padding: 12px;
+  }
+  .course-atlas-orbit {
+    right: -110px;
+  }
+  .course-section-stage {
+    padding: 21px;
+    border-radius: 25px;
+  }
+  .course-section-heading {
+    align-items: center;
+  }
+  .course-section-heading h2 {
+    font-size: 27px;
+  }
+  .course-section-heading p {
+    font-size: 9px;
+  }
+  .section-count {
+    width: 62px;
+    height: 62px;
+  }
+  .course-overview-panel ol {
+    grid-template-columns: 1fr;
+  }
+  .course-material-grid {
+    grid-template-columns: 1fr;
+  }
+  .course-context-card {
+    grid-template-columns: auto 1fr;
+    padding: 19px;
+  }
+  .course-context-card > a {
+    grid-column: 1/-1;
+    padding-top: 12px;
+    border-top: 1px solid #e2d4ca;
+  }
+  .course-context-card > strong {
+    font-size: 38px;
+  }
+}
+[dir="rtl"] .academic-section-heading > i {
+  background: linear-gradient(-90deg, #d9c8bd, transparent);
+}
+[dir="rtl"] .course-section-rail button:hover {
+  transform: translateX(-3px);
+}
+[dir="rtl"] .academic-portal:hover .portal-action svg,
+.batch-passport:hover .passport-action svg {
+  transform: translate(-4px, -4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .clinical-pulse-line i,
+  .course-atlas-orbit {
+    animation: none !important;
+  }
+  .academic-portal,
+  .batch-passport,
+  .clinical-year-card,
+  .portal-orbit {
+    transition: none !important;
+  }
+  .academic-portal:hover,
+  .batch-passport:hover,
+  .clinical-year-card:hover {
+    transform: none !important;
+  }
+}

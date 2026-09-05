@@ -3,7 +3,7 @@ import { useSavedItems } from "../../app/providers/SavedItemsProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { IconButton } from "../ui/IconButton";
 export function SaveButton({ id, title }: { id: string; title: string }) {
-  const { saved, toggle } = useSavedItems();
+  const { saved, toggle, isPending } = useSavedItems();
   const { label } = useLocale();
   const active = saved.includes(id);
   return (
@@ -11,6 +11,7 @@ export function SaveButton({ id, title }: { id: string; title: string }) {
       className="save-button"
       label={`${label(active ? "unsave" : "save")} ${title}`}
       aria-pressed={active}
+      disabled={isPending}
       onClick={() => toggle(id)}
     >
       <Bookmark size={18} fill={active ? "currentColor" : "none"} />

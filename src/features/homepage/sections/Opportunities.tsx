@@ -9,7 +9,7 @@ export function Opportunities() {
   if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
   return (
     <div className="opportunity-list">
-      {query.data.map((item) => (
+      {query.data.slice(0, 2).map((item) => (
         <OpportunityCard key={item.id} opportunity={item} />
       ))}
       {query.data.length === 0 && <EmptyState />}

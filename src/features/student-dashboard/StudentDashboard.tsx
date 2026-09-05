@@ -14,6 +14,7 @@ import { AppLink } from "../../components/navigation/AppLink";
 import { CourseCard } from "../../components/cards/CourseCard";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
+import { StudyOverview } from "./StudyOverview";
 export default function StudentDashboard() {
   const profile = useStudentProfile();
   const library = useLibraryContent();
@@ -93,6 +94,7 @@ export default function StudentDashboard() {
           <ArrowUpRight size={16} className="directional" />
         </AppLink>
       </div>
+      <StudyOverview />
       <div className="personal-dashboard-grid">
         <section>
           <div className="personal-section-heading">

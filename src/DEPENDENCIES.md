@@ -2,20 +2,20 @@
 
 The source was compiled with the versions below. Keep your existing setup and add only missing packages. The archive intentionally excludes project configuration, node_modules and build output.
 
-| Runtime package | Verified installed version |
-| --- | --- |
-| `@tanstack/react-query` | 5.102.8 |
-| `class-variance-authority` | 0.7.1 |
-| `clsx` | 2.1.1 |
-| `cmdk` | 1.1.1 |
-| `framer-motion` | 12.43.0 |
-| `lucide-react` | 1.39.0 |
-| `radix-ui` | 1.6.7 |
-| `react` | 19.2.6 |
-| `react-dom` | 19.2.6 |
-| `react-router-dom` | 7.18.3 |
-| `sonner` | 2.0.8 |
-| `tailwind-merge` | 3.6.0 |
+| Runtime package            | Verified installed version |
+| -------------------------- | -------------------------- |
+| `@tanstack/react-query`    | 5.102.8                    |
+| `class-variance-authority` | 0.7.1                      |
+| `clsx`                     | 2.1.1                      |
+| `cmdk`                     | 1.1.1                      |
+| `framer-motion`            | 12.43.0                    |
+| `lucide-react`             | 1.39.0                     |
+| `radix-ui`                 | 1.6.7                      |
+| `react`                    | 19.2.6                     |
+| `react-dom`                | 19.2.6                     |
+| `react-router-dom`         | 7.18.3                     |
+| `sonner`                   | 2.0.8                      |
+| `tailwind-merge`           | 3.6.0                      |
 
 Required styling packages: `tailwindcss` 4, `tw-animate-css`, and either your existing Tailwind Vite integration or `@tailwindcss/postcss` 4. The verification build used TypeScript 5.9.3 and Vite 8.0.13.
 

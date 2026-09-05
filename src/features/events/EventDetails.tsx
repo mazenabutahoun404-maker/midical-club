@@ -3,6 +3,8 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { formatDate } from "../../lib/dates";
 import { DetailFacts } from "../../components/data-display/DetailFacts";
 import { Notice } from "../../components/feedback/Notice";
+import { ActionLink } from "../../components/ui/ActionLink";
+import { eventPath } from "../../constants/routes";
 export function EventDetails({ item }: { item: ClubEvent }) {
   const { t, label, locale } = useLocale();
   return (
@@ -22,6 +24,7 @@ export function EventDetails({ item }: { item: ClubEvent }) {
             value: `${formatDate(item.startDate, locale, { hour: "numeric", minute: "2-digit" })} – ${formatDate(item.endDate, locale, { hour: "numeric", minute: "2-digit" })}`,
           },
           { label: label("location"), value: t(item.location) },
+          { label: label("audience"), value: t(item.audience) },
         ]}
       />
       <h3 className="detail-subtitle">{label("agenda")}</h3>
@@ -30,7 +33,8 @@ export function EventDetails({ item }: { item: ClubEvent }) {
           <li key={i}>{t(a)}</li>
         ))}
       </ul>
-      <Notice>{label("eventUnavailable")}</Notice>
+      <ActionLink href={eventPath(item.slug)}>{label("eventView")}</ActionLink>
+      <Notice>{label("eventRegistrationNote")}</Notice>
     </>
   );
 }

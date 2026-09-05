@@ -16,14 +16,14 @@ export const siteContent: SiteContent = {
       {
         id: "community",
         label: t("Community", "المجتمع"),
-        href: "/#community",
+        href: routes.community,
       },
       {
         id: "opportunities",
         label: t("Opportunities", "الفرص"),
-        href: "/#opportunities",
+        href: routes.opportunities,
       },
-      { id: "events", label: t("Events", "الفعاليات"), href: "/#events" },
+      { id: "events", label: t("Events", "الفعاليات"), href: routes.events },
       { id: "store", label: t("Store", "المتجر"), href: routes.store },
     ],
     academic: [
@@ -84,22 +84,22 @@ export const siteContent: SiteContent = {
       {
         id: "events",
         label: t("Events & workshops", "الفعاليات والورش"),
-        href: "/#events",
+        href: routes.events,
       },
       {
         id: "opportunities",
         label: t("Opportunities", "الفرص"),
-        href: "/#opportunities",
+        href: routes.opportunities,
       },
       {
         id: "journal",
         label: t("Medical journal", "المجلة الطبية"),
-        href: "/#journal",
+        href: routes.journal,
       },
       {
         id: "community",
         label: t("Our community", "مجتمعنا"),
-        href: "/#community",
+        href: routes.community,
       },
     ],
   },
@@ -119,7 +119,7 @@ export const siteContent: SiteContent = {
     secondary: {
       id: "community",
       label: t("Find your people", "تعرّف على مجتمعك"),
-      href: "/#community",
+      href: routes.community,
     },
     note: t(
       "Driven by students. Connected by purpose.",
@@ -241,7 +241,7 @@ export const siteContent: SiteContent = {
     action: {
       id: "event",
       label: t("Find your next club event", "اكتشف فعالية النادي القادمة"),
-      href: "/#events",
+      href: routes.community,
     },
   },
   footer: {

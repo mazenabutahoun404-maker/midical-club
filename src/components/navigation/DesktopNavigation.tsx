@@ -167,7 +167,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
             <Heart size={19} />
           </span>
           <p>{t(site.hero.note)}</p>
-          <AppLink href="/#community">
+          <AppLink href="/community">
             {label("findYourPeople")}
             <ArrowUpRight size={18} className="directional" />
           </AppLink>

@@ -12,7 +12,7 @@ import { Button } from "../../components/ui/button";
 export function AppOverlays() {
   const { detail, closeDetail } = useOverlays();
   const { t, label } = useLocale();
-  const { saved, toggle } = useSavedItems();
+  const { saved, toggle, isPending } = useSavedItems();
   return (
     <>
       <SearchDialog />
@@ -40,21 +40,19 @@ export function AppOverlays() {
           ) : (
             <ArticleDetails item={detail.item} />
           )}{" "}
-          {detail.kind !== "article" && (
-            <Button
-              className="button button-primary"
-              onClick={() => toggle(detail.item.id)}
-            >
-              {saved.includes(detail.item.id) ? (
-                <Check size={17} />
-              ) : (
-                <Bookmark size={17} />
-              )}{" "}
-              {label(
-                saved.includes(detail.item.id) ? "saved" : "saveToLibrary",
-              )}
-            </Button>
-          )}
+          <Button
+            className="button button-primary"
+            disabled={isPending}
+            aria-pressed={saved.includes(detail.item.id)}
+            onClick={() => toggle(detail.item.id)}
+          >
+            {saved.includes(detail.item.id) ? (
+              <Check size={17} />
+            ) : (
+              <Bookmark size={17} />
+            )}{" "}
+            {label(saved.includes(detail.item.id) ? "saved" : "saveToLibrary")}
+          </Button>
         </Modal>
       )}
     </>

@@ -8,7 +8,7 @@ export const student: StudentProfile = {
   program: text("Medicine", "الطب"),
   batch: text("Shifaa", "شفاء"),
   year: 3,
-  courseIds: ["anatomy", "physiology", "biochemistry"],
+  courseIds: ["physiology", "pathology", "pharmacology", "microbiology"],
   focusMinutes: 25,
   bio: text(
     "A little curiosity, a little consistency, and something new to learn every day.",

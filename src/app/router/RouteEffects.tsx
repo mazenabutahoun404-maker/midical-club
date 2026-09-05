@@ -7,6 +7,22 @@ export function RouteEffects() {
   useEffect(() => {
     const keys = {
       "/": "home",
+      "/search": "search",
+      "/my/search": "personalSearch",
+      "/my/calendar": "calendar",
+      "/my/notifications": "notifications",
+      "/my/events": "myEvents",
+      "/my/opportunities": "myOpportunities",
+      "/events": "events",
+      "/opportunities": "opportunities",
+      "/community": "community",
+      "/community/activities": "activities",
+      "/community/media": "media",
+      "/community/executive-bodies": "executiveBodies",
+      "/community/honor-plate": "honorPlate",
+      "/community/hall-of-honor": "hallOfHonor",
+      "/community/about": "aboutMedClub",
+      "/journal": "journal",
       "/learn": "learn",
       "/learn/basic-sciences": "basic",
       "/learn/clinical-sciences": "clinical",
@@ -21,10 +37,16 @@ export function RouteEffects() {
       "/learn/electronic-exams": "exams",
     } as const;
     const key = keys[location.pathname as keyof typeof keys];
-    document.title = `${key ? label(key) : label(location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : "notFound")} | MedClub`;
+    const academicChild =
+      location.pathname.includes("/batches/") ||
+      /^\/learn\/clinical-sciences\/(fourth|fifth|sixth)-year$/.test(
+        location.pathname,
+      );
+    document.title = `${key ? label(key) : label(location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
   }, [location.pathname, locale, label]);
   useEffect(() => {
     let observer: MutationObserver | undefined;
+    const focusAtNavigation = document.activeElement;
     const frame = requestAnimationFrame(() => {
       if (location.hash) {
         let id = location.hash.slice(1);
@@ -48,7 +70,15 @@ export function RouteEffects() {
         }
       } else {
         window.scrollTo({ top: 0, behavior: "auto" });
-        document.getElementById("main")?.focus({ preventScroll: true });
+        // Do not steal focus if the user already opened a menu/dialog or moved on
+        // while a lazy route was committing.
+        if (
+          !document.querySelector('dialog[open], [role="dialog"]') &&
+          (document.activeElement === focusAtNavigation ||
+            document.activeElement === document.body)
+        ) {
+          document.getElementById("main")?.focus({ preventScroll: true });
+        }
       }
     });
     return () => {

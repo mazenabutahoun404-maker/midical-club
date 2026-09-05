@@ -1,45 +1,46 @@
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { NavigationHint } from "./NavigationHint";
-import { Check, SlidersHorizontal, X } from "lucide-react";
+import { Check, SlidersHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Modal } from "../ui/Modal";
 import {
   useAppearance,
   type NavigationLayout,
 } from "../../app/providers/AppearanceProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from "../ui/dialog";
 export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
   const paths = useWorkspacePaths();
   const { navigation, setNavigation, persisted } = useAppearance();
-  const { label, dir } = useLocale();
+  const { label } = useLocale();
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => setOpen(false), [location.key]);
   return (
-    <Dialog>
+    <>
       <NavigationHint label={label("appearance")}>
-        <DialogTrigger asChild>
-          <button
-            className={
-              compact
-                ? "workspace-icon appearance-shortcut"
-                : "navigation-preferences"
-            }
-            aria-label={label("appearance")}
-          >
-            <SlidersHorizontal size={19} />
-            {!compact && <span>{label("appearance")}</span>}
-          </button>
-        </DialogTrigger>
+        <button
+          className={
+            compact
+              ? "workspace-icon appearance-shortcut"
+              : "navigation-preferences"
+          }
+          aria-label={label("appearance")}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          onClick={() => setOpen(true)}
+        >
+          <SlidersHorizontal size={19} />
+          {!compact && <span>{label("appearance")}</span>}
+        </button>
       </NavigationHint>
-      <DialogContent
-        dir={dir}
-        showCloseButton={false}
-        className="appearance-dialog medclub-modal"
-        onCloseAutoFocus={(event) => {
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title={label("appearanceTitle")}
+        description={label("appearanceDescription")}
+        className="appearance-dialog"
+        onAfterClose={() => {
           // Switching orientation can hide the trigger that originally opened this dialog.
           if (
             !paths.personal &&
@@ -51,8 +52,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
                 : ".desktop-navigation .navigation-preferences";
             const target = document.querySelector<HTMLButtonElement>(selector);
             if (target) {
-              event.preventDefault();
-              target.focus();
+              target.focus({ preventScroll: true });
             }
           }
         }}
@@ -61,10 +61,6 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           <span className="settings-symbol">
             <SlidersHorizontal size={25} />
           </span>
-          <DialogTitle>{label("appearanceTitle")}</DialogTitle>
-          <DialogDescription>
-            {label("appearanceDescription")}
-          </DialogDescription>
         </div>
         <fieldset className="layout-options">
           <legend>{label("desktopNavigation")}</legend>
@@ -113,14 +109,14 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
         <p className="settings-saved" role="status">
           {label(persisted ? "preferencesSaved" : "sessionOnly")}
         </p>
-        <DialogClose className="button button-primary appearance-done">
+        <button
+          className="button button-primary appearance-done"
+          onClick={() => setOpen(false)}
+        >
           {label("done")}
           <Check size={17} />
-        </DialogClose>
-        <DialogClose className="modal-close" aria-label={label("close")}>
-          <X size={20} />
-        </DialogClose>
-      </DialogContent>
-    </Dialog>
+        </button>
+      </Modal>
+    </>
   );
 }

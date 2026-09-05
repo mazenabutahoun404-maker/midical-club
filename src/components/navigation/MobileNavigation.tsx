@@ -1,41 +1,43 @@
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetDescription,
-  SheetHeader,
-  SheetTrigger,
-  SheetClose,
-} from "../ui/sheet";
+import { Modal } from "../ui/Modal";
 import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
 export function MobileNavigation({ site }: { site: SiteContent }) {
   const [open, setOpen] = useState(false);
-  const { label, t, dir } = useLocale();
+  const { label, t } = useLocale();
   const location = useLocation();
+  const secondaryActive = [
+    "/events",
+    "/opportunities",
+    "/community",
+    "/journal",
+    "/store",
+    "/utilities",
+  ].some((path) => location.pathname.startsWith(path));
   useEffect(() => setOpen(false), [location.key]);
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <button className="icon-button mobile-menu" aria-label={label("menu")}>
-          <Menu size={21} />
-          <span>{label("more")}</span>
-        </button>
-      </SheetTrigger>
-      <SheetContent
-        side={dir === "rtl" ? "left" : "right"}
-        dir={dir}
-        className="mobile-sheet"
-        showCloseButton={false}
+    <>
+      <button
+        className={`icon-button mobile-menu ${secondaryActive ? "active" : ""}`}
+        aria-current={secondaryActive ? "page" : undefined}
+        aria-label={label("menu")}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
       >
-        <SheetHeader>
-          <SheetTitle>{label("menuTitle")}</SheetTitle>
-          <SheetDescription>{label("menuDescription")}</SheetDescription>
-        </SheetHeader>
+        <Menu size={21} />
+        <span>{label("more")}</span>
+      </button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title={label("menuTitle")}
+        description={label("menuDescription")}
+        className="mobile-menu-dialog"
+      >
         <nav className="mobile-nav-list" aria-label={label("menuTitle")}>
           <AppLink href="/" onClick={() => setOpen(false)}>
             {label("home")}
@@ -56,14 +58,14 @@ export function MobileNavigation({ site }: { site: SiteContent }) {
               {t(item.label)}
             </AppLink>
           ))}
+          <AppLink href="/journal" onClick={() => setOpen(false)}>
+            {label("journal")}
+          </AppLink>
           <AppLink href="/my" onClick={() => setOpen(false)}>
             {label("myProfile")}
           </AppLink>
         </nav>
-        <SheetClose className="modal-close" aria-label={label("close")}>
-          <X size={20} />
-        </SheetClose>
-      </SheetContent>
-    </Sheet>
+      </Modal>
+    </>
   );
 }
