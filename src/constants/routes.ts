@@ -22,8 +22,16 @@ export const routes = {
   hallOfHonor: "/community/hall-of-honor",
   about: "/community/about",
   journal: "/journal",
+  mentorship: "/mentorship",
+  mentorshipSessions: "/mentorship/sessions",
+  mentorshipQuestions: "/mentorship/qa",
+  contributions: "/contribute",
   myEvents: "/my/events",
   myOpportunities: "/my/opportunities",
+  myMentorship: "/my/mentorship",
+  myContributions: "/my/contributions",
+  cart: "/store/cart",
+  myOrders: "/my/orders",
 } as const;
 export const eventPath = (slug: string) =>
   `/events/${encodeURIComponent(slug)}`;
@@ -31,6 +39,10 @@ export const opportunityPath = (slug: string) =>
   `/opportunities/${encodeURIComponent(slug)}`;
 export const articlePath = (slug: string) =>
   `/journal/${encodeURIComponent(slug)}`;
+export const mentorPath = (slug: string) =>
+  `/mentorship?mentor=${encodeURIComponent(slug)}`;
+export const productPath = (slug: string) =>
+  `/store/products/${encodeURIComponent(slug)}`;
 export const batchPath = (
   slug: string,
   view: "current" | "archive" = "current",

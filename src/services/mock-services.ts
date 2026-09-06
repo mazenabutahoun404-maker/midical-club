@@ -18,10 +18,22 @@ import {
 import type { MedClubServices } from "./contracts";
 import { searchRecords } from "./search-index";
 import { createLocalEventService } from "./local-event.service";
+import {
+  mentors,
+  mentorshipQuestions,
+  mentorshipSessions,
+} from "../data/mock/mentorship";
+import { createLocalMentorshipService } from "./local-mentorship.service";
+import { createLocalContributionService } from "./local-contribution.service";
+import { storeProducts } from "../data/mock/store";
+import { createLocalStoreService } from "./local-store.service";
 // Only this adapter imports mock data. Inject a matching HTTP-backed registry into App later.
 const clone = <T>(value: T): Promise<T> =>
   Promise.resolve(structuredClone(value));
 const eventActions = createLocalEventService();
+const mentorshipActions = createLocalMentorshipService();
+const contributionActions = createLocalContributionService();
+const storeActions = createLocalStoreService();
 export const mockServices: MedClubServices = {
   workspace: createLocalWorkspaceService(),
   calendar: { list: () => clone(academicCalendar) },
@@ -58,11 +70,33 @@ export const mockServices: MedClubServices = {
     listRecognitions: () => clone(recognitions),
     listValues: () => clone(clubValues),
   },
+  mentorship: {
+    listMentors: () => clone(mentors),
+    listSessions: () => clone(mentorshipSessions),
+    listQuestions: () => clone(mentorshipQuestions),
+    ...mentorshipActions,
+  },
+  contributions: contributionActions,
+  store: {
+    listProducts: () => clone(storeProducts),
+    getProduct: (slug) =>
+      clone(storeProducts.find((product) => product.slug === slug) || null),
+    ...storeActions,
+  },
   search: {
     query: (query, filters) =>
       clone(
         searchRecords(
-          { courses, resources, events, opportunities, journal },
+          {
+            courses,
+            resources,
+            events,
+            opportunities,
+            journal,
+            mentors,
+            mentorshipSessions,
+            storeProducts,
+          },
           query,
           filters,
         ),

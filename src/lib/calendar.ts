@@ -1,7 +1,14 @@
 import { APP_TIMEZONE } from "../constants/config";
 import { text } from "./localize";
 import type { CalendarItem, StudyEntry } from "../types/workspace";
-import type { ClubEvent, Opportunity } from "../types/content";
+import type {
+  ClubEvent,
+  Opportunity,
+  Mentor,
+  MentorshipRequest,
+  MentorshipSession,
+  MentorshipSessionRegistration,
+} from "../types/content";
 export function calendarDate(value: string): string {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: APP_TIMEZONE,
@@ -36,6 +43,10 @@ export function buildCalendar(
   saved: string[],
   courseIds: string[],
   registeredEventIds: string[] = [],
+  mentorshipSessions: MentorshipSession[] = [],
+  mentorshipRequests: MentorshipRequest[] = [],
+  mentorshipRegistrations: MentorshipSessionRegistration[] = [],
+  mentors: Mentor[] = [],
 ): CalendarItem[] {
   return [
     ...academic.filter(
@@ -77,5 +88,31 @@ export function buildCalendar(
         description: o.description,
         sourceId: o.id,
       })),
+    ...mentorshipSessions
+      .filter((session) =>
+        mentorshipRegistrations.some((item) => item.sessionId === session.id),
+      )
+      .map((session) => ({
+        id: `mentorship-session:${session.id}`,
+        title: session.title,
+        kind: "mentorship" as const,
+        startsAt: session.startsAt,
+        endsAt: session.endsAt,
+        description: session.summary,
+        sourceId: session.id,
+      })),
+    ...mentorshipRequests
+      .filter((request) => request.status === "accepted" && request.scheduledAt)
+      .map((request) => {
+        const mentor = mentors.find((item) => item.id === request.mentorId);
+        return {
+          id: `mentorship-request:${request.id}`,
+          title: mentor?.name || text("Mentorship session", "جلسة إرشاد"),
+          kind: "mentorship" as const,
+          startsAt: request.scheduledAt!,
+          description: request.response || text(request.note, request.note),
+          sourceId: request.id,
+        };
+      }),
   ].sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));
 }

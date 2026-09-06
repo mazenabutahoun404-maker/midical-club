@@ -23,6 +23,7 @@ export function AliveTabs<T extends string>({
       {items.map(({ id, label: tabLabel, icon: Icon, count }) => (
         <button
           key={id}
+          aria-label={count === undefined ? tabLabel : `${tabLabel} · ${count}`}
           aria-pressed={value === id}
           onClick={() => onChange(id)}
         >

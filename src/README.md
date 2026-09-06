@@ -1,71 +1,71 @@
-# MedClub V0.5 — Community & Medical Journal
+# MedClub V0.7 — Store, Cart & Orders
 
-Source-only release for an existing React + TypeScript + Vite + Tailwind CSS 4 setup. It contains the complete V0.1–V0.4 source plus the V0.5 community and journal release. Project scaffolding, `node_modules`, build output and secrets are intentionally excluded.
+Source-only release for an existing React + TypeScript + Vite + Tailwind CSS 4 setup. It contains the complete V0.1–V0.6 source plus the V0.7 store experience. Project scaffolding, dependencies, build output and secrets are intentionally excluded.
 
 ## Integrate
 
-1. Back up your current `src` directory.
-2. Replace it with this complete `src` directory. Routes, contracts, navigation, messages and styles changed together, so do not copy only the new pages.
-3. Keep the existing package and Vite/Tailwind configuration. V0.5 adds no dependency.
-4. Run the normal type-check, tests and production build.
-5. Test with existing browser storage intact. V0.1–V0.4 saves, registrations, collections, language and appearance preferences remain compatible.
+1. Back up the current `src` directory.
+2. Replace it with this complete `src` directory. Routes, contracts, navigation, messages and styles changed together; do not copy only the store pages.
+3. Keep the existing package and Vite/Tailwind configuration. V0.7 adds no dependency.
+4. Run the project's normal type-check, tests and production build.
+5. Test with existing browser storage intact. Earlier saves, registrations, collections, language, navigation and appearance preferences remain compatible.
 
-## V0.5 outcome
+## V0.7 outcome
 
-| Area                | Implemented behavior                                                                                                                    |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Community           | Dedicated landing page joining activities, journal, media, executive bodies, recognitions and club identity                             |
-| Activities          | Search, animated category tabs, participation details and clearly labelled illustrative outcomes                                        |
-| Medical Journal     | Searchable/filterable article index, dedicated article routes, authorship, scientific reviewer, dates, tags and save-to-library support |
-| Media               | Rights-aware archive shell with designed placeholders instead of fabricated club photography                                            |
-| Governance          | Executive-body terms and public titles kept separate from application permissions                                                       |
-| Recognition         | Separate Honor Plate and Hall of Honor routes with structured records                                                                   |
-| About               | Logo-led club story, values and accountable content principles                                                                          |
-| Experience          | Clinical-signal route reveals, pulse-based icon motion, red/russet diagnostic surfaces, responsive/RTL/reduced-motion support           |
-| Personal navigation | Hidden scrollbar with position-aware top/bottom or start/end shadow cues                                                                |
-| Data boundary       | Expanded typed records and replaceable community/journal service adapters                                                               |
+| Area          | Implemented behavior                                                                               |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| Catalog       | Responsive product grid, category tabs, text/material search, stock filter and featured treatment  |
+| Products      | Dedicated detail routes, variant selection, live stock limits, quantity controls and product notes |
+| Cart          | Persistent per-student cart, SKU/variant identity, stock validation, updates, removal and subtotal |
+| Reservation   | Explicit collection reservation confirmation that snapshots lines/prices and clears the cart       |
+| Orders        | Dedicated My Orders screen, status path, collection details, totals and safe cancellation rules    |
+| Discovery     | Product names, descriptions, materials, variants and SKUs join bilingual global search             |
+| Personal UX   | Order destination in My MedClub plus ready-order notifications                                     |
+| Experience    | Clinical-supply-shelf composition, scan-line hover effects, animated icons, RTL and reduced motion |
+| Data boundary | Typed products/cart/orders and a replaceable service adapter prepared for a real API               |
 
-The original public and personal shells, collapsible vertical desktop navigation, optional horizontal desktop navigation, phone dock, academic journeys, search, library, calendar, notifications, dashboard, events, opportunities and utilities remain included.
+V0.1–V0.6 remain included: the public/personal shells, collapsible navigation, homepage, academic journeys, course atlas, search, library, calendar, notifications, events, opportunities, community, Medical Journal, mentorship and scientific contributions.
 
 ## New routes
 
-| Route                         | Screen                                   |
-| ----------------------------- | ---------------------------------------- |
-| `/community`                  | Community gateway                        |
-| `/community/activities`       | Searchable activity archive              |
-| `/community/media`            | Rights-aware media archive               |
-| `/community/executive-bodies` | Public team terms and positions          |
-| `/community/honor-plate`      | Academic and service recognition         |
-| `/community/hall-of-honor`    | Long-term club recognition               |
-| `/community/about`            | Club identity and values                 |
-| `/journal`                    | Medical Journal index                    |
-| `/journal/:slug`              | Article reading view and review metadata |
+| Route                   | Screen                                             |
+| ----------------------- | -------------------------------------------------- |
+| `/store`                | Searchable and filterable product catalog          |
+| `/store/products/:slug` | Product details, variants and add-to-cart controls |
+| `/store/cart`           | Cart and collection-reservation preview            |
+| `/my/orders`            | Personal reservation and order tracking            |
 
-All earlier public, academic, discovery and personal routes remain available.
+`/store/orders` redirects to `/my/orders` so order history remains inside the private-feeling My MedClub workspace.
 
 ## API readiness
 
-The UI continues to follow `UI → hooks/providers → MedClubServices → adapter`.
+The UI follows `UI → hooks/providers → MedClubServices → adapter`.
 
-- `types/content.ts` defines articles, activities, media stories, executive bodies, members, recognitions and club values.
-- `services/contracts.ts` exposes list/detail methods without coupling pages to fetch calls.
-- `services/mock-services.ts` is the current replaceable adapter.
-- `data/mock/community.ts` and `data/mock/journal.ts` contain explicit illustrative fixtures.
-- Journal records join the existing global search and personal-library systems through the same domain IDs.
+- `types/content.ts` defines products, variants, carts, order snapshots and status records.
+- `services/contracts.ts` exposes store query and mutation interfaces without coupling screens to fetch calls.
+- `services/local-store.service.ts` is the browser-local preview adapter.
+- `data/mock/store.ts` contains explicitly illustrative catalog and order fixtures.
+- Search and notifications consume the same store domain records instead of duplicating page data.
 
-A production publishing API must enforce contributor identity, source, rights, references, scientific review and approval before publication. These rules cannot be secured by React alone.
+A production API must enforce authenticated identity, atomic stock/reservations, price authority, order status permissions, cancellation rules, audit history, notification delivery and administrator/treasurer access. React, route visibility and browser storage are not security boundaries.
+
+## Payment and fulfillment boundary
+
+V0.7 deliberately does **not** collect payment details, charge a customer or promise delivery. The current action reserves an illustrative cart for collection. Final payment, delivery and refund behavior must follow MedClub's future operational decision and workshop. Coupons, real inventory, financial reports, treasurer permissions and audit trails remain backend/admin work.
 
 ## Console note
 
-`[vite] connecting`, `[vite] connected` and the React DevTools suggestion are normal development messages. The supplied `VM### … reportAllChanges … undefined.startTime` stack points to an anonymous injected script: `reportAllChanges` is absent from this source and the inspected runtime packages. Test the direct localhost page in a clean browser profile or Incognito window with extensions disabled; do not suppress global errors in the app. See `CONSOLE-TROUBLESHOOTING.md`.
+`[vite] connecting`, `[vite] connected` and the React DevTools suggestion are normal development messages. The earlier `VM### … reportAllChanges … undefined.startTime` stack points to an anonymous injected script: `reportAllChanges` is absent from this source and the inspected runtime packages. Test the direct localhost page in a clean browser profile with extensions disabled; do not suppress global errors in the application. See `CONSOLE-TROUBLESHOOTING.md`.
 
 ## Honest limitations
 
-- People, activities, dates, awards and club-history records are illustrative until verified by MedClub.
-- Media tiles are intentional placeholders; approved assets still need source, contributor and rights metadata.
-- Journal copy is demonstration content, not medical guidance or a substitute for institutional clinical protocols.
-- The scientific contribution/review workflow, real authentication, backend permissions, CMS/admin and store checkout remain later milestones.
-- The production build passes, but the consumer Vite project should configure vendor chunk groups to reduce the current main-bundle warning.
-- Native dialog, motion, responsive layout and assistive-technology behavior still need final real-browser and real-device acceptance in the integrating project.
+- All products, prices, SKUs, materials, stock, collection details and supplier implications are illustrative.
+- Cart, reservation and order data are stored locally for preview; no reservation reaches MedClub staff.
+- Browser-side stock checks are not concurrency-safe. Real inventory and reservations require atomic server transactions.
+- No payment fields, payment processor, coupon engine, shipping, delivery, refund or financial report is implemented.
+- Product visuals are deliberate icon-led concepts, not photographs of verified merchandise.
+- Authentication, store administration, production notifications, treasurer permissions and audit logs remain future server-backed milestones.
+- The production build passes. Its host project should add vendor chunk groups to address the main-bundle size warning.
+- Native-dialog, motion, responsive and assistive-technology behavior still need final real-browser/device acceptance after integration.
 
-Read `V0.5-CHECKLIST.md`, `V0.5-DESIGN.md`, `ARCHITECTURE.md` and `CONSOLE-TROUBLESHOOTING.md` before integration.
+Read `V0.7-CHECKLIST.md`, `V0.7-DESIGN.md`, `ARCHITECTURE.md` and `CONSOLE-TROUBLESHOOTING.md` before integration.

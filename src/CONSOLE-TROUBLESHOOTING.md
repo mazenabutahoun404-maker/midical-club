@@ -1,4 +1,4 @@
-# Console report — V0.5
+# Console report — V0.7
 
 ## What the supplied messages mean
 
@@ -36,7 +36,7 @@ DOM tests exercise our open/close lifecycle with a native-dialog test double. Th
 
 ## The `VM###` / `startTime` exception
 
-`VM272`, `VM906` and similar names are runtime-generated script labels, not stable source filenames. The stack supplied for V0.5 contains `reportAllChanges` inside an anonymous two-line script. That symbol is absent from the MedClub source and from the inspected React, React DOM, Framer Motion, Radix, cmdk, Vite and TanStack runtime package trees. This is therefore not a MedClub component exception. It is injected by the preview host, developer tooling or a browser extension.
+`VM272`, `VM906` and similar names are runtime-generated script labels, not stable source filenames. The earlier supplied stack contains `reportAllChanges` inside an anonymous two-line script. That symbol is absent from the MedClub source and from the inspected React, React DOM, Framer Motion, Radix, cmdk, Vite and TanStack runtime package trees. This is therefore not a MedClub component exception. It is injected by the preview host, developer tooling or a browser extension.
 
 Do not add global error suppression or random `startTime` checks to MedClub components. There is no corresponding failing statement in the supplied source to patch, and hiding it would also hide real failures.
 

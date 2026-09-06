@@ -977,6 +977,9 @@
 [data-kind="deadline"] {
   --entry-color: #78618c;
 }
+[data-kind="mentorship"] {
+  --entry-color: #b34f46;
+}
 :is(.calendar-legend, .day-markers) i {
   background: var(--entry-color);
 }

@@ -81,6 +81,28 @@ const JournalPage = lazy(() => import("../../features/community/JournalPage"));
 const JournalArticlePage = lazy(
   () => import("../../features/community/JournalArticlePage"),
 );
+const MentorshipPage = lazy(
+  () => import("../../features/mentorship/MentorshipPage"),
+);
+const GroupSessionsPage = lazy(
+  () => import("../../features/mentorship/GroupSessionsPage"),
+);
+const MentorshipQAPage = lazy(
+  () => import("../../features/mentorship/MentorshipQAPage"),
+);
+const MyMentorshipPage = lazy(
+  () => import("../../features/mentorship/MyMentorshipPage"),
+);
+const ContributionsPage = lazy(
+  () => import("../../features/contributions/ContributionsPage"),
+);
+const MyContributionsPage = lazy(
+  () => import("../../features/contributions/MyContributionsPage"),
+);
+const StorePage = lazy(() => import("../../features/store/StorePage"));
+const ProductPage = lazy(() => import("../../features/store/ProductPage"));
+const CartPage = lazy(() => import("../../features/store/CartPage"));
+const MyOrdersPage = lazy(() => import("../../features/store/MyOrdersPage"));
 function NotFound({ personal = false }: { personal?: boolean }) {
   const { label } = useLocale();
   return (
@@ -182,6 +204,38 @@ export function AppRouter() {
               }
             />
             <Route
+              path="mentorship"
+              element={
+                <MedicalTransition>
+                  <MentorshipPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="mentorship/sessions"
+              element={
+                <MedicalTransition>
+                  <GroupSessionsPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="mentorship/qa"
+              element={
+                <MedicalTransition>
+                  <MentorshipQAPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="contribute"
+              element={
+                <MedicalTransition>
+                  <ContributionsPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
               path="learn"
               element={
                 <AcademicTransition>
@@ -251,7 +305,31 @@ export function AppRouter() {
             />
             <Route
               path="store"
-              element={<PlannedFeaturePage titleKey="store" />}
+              element={
+                <MedicalTransition>
+                  <StorePage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="store/products/:slug"
+              element={
+                <MedicalTransition>
+                  <ProductPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="store/cart"
+              element={
+                <MedicalTransition>
+                  <CartPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="store/orders"
+              element={<Navigate to="/my/orders" replace />}
             />
             <Route path="utilities" element={<StudyToolsPage />} />
             <Route path="*" element={<NotFound />} />
@@ -273,6 +351,9 @@ export function AppRouter() {
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="events" element={<MyEventsPage />} />
             <Route path="opportunities" element={<MyOpportunitiesPage />} />
+            <Route path="mentorship" element={<MyMentorshipPage />} />
+            <Route path="contributions" element={<MyContributionsPage />} />
+            <Route path="orders" element={<MyOrdersPage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="focus" element={<PersonalFocusPage />} />
             <Route path="profile" element={<ProfilePage />} />

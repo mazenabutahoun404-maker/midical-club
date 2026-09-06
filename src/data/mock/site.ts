@@ -19,12 +19,26 @@ export const siteContent: SiteContent = {
         href: routes.community,
       },
       {
+        id: "mentorship",
+        label: t("Mentorship", "الإرشاد"),
+        href: routes.mentorship,
+      },
+      {
         id: "opportunities",
         label: t("Opportunities", "الفرص"),
         href: routes.opportunities,
       },
       { id: "events", label: t("Events", "الفعاليات"), href: routes.events },
-      { id: "store", label: t("Store", "المتجر"), href: routes.store },
+      {
+        id: "contributions",
+        label: t("Contribute", "ساهم"),
+        href: routes.contributions,
+      },
+      {
+        id: "store",
+        label: t("Store", "المتجر"),
+        href: routes.store,
+      },
     ],
     academic: [
       {
@@ -100,6 +114,21 @@ export const siteContent: SiteContent = {
         id: "community",
         label: t("Our community", "مجتمعنا"),
         href: routes.community,
+      },
+      {
+        id: "mentorship",
+        label: t("Mentorship", "الإرشاد"),
+        href: routes.mentorship,
+      },
+      {
+        id: "contributions",
+        label: t("Contribute", "ساهم"),
+        href: routes.contributions,
+      },
+      {
+        id: "store",
+        label: t("Store", "المتجر"),
+        href: routes.store,
       },
     ],
   },

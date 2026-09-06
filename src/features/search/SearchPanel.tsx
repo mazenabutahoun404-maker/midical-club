@@ -9,6 +9,9 @@ import {
   Newspaper,
   LoaderCircle,
   History,
+  HeartHandshake,
+  UsersRound,
+  ShoppingBag,
 } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
@@ -35,6 +38,9 @@ const kinds = [
   "event",
   "opportunity",
   "article",
+  "mentor",
+  "mentorship-session",
+  "product",
 ] as const;
 const formats = [
   "guidance",
@@ -52,6 +58,9 @@ const icons = {
   event: CalendarDays,
   opportunity: Compass,
   article: Newspaper,
+  mentor: HeartHandshake,
+  "mentorship-session": UsersRound,
+  product: ShoppingBag,
 };
 export function SearchPanel({
   compact = false,
@@ -81,6 +90,17 @@ export function SearchPanel({
     if (item.record.kind === "course") {
       closeSearch();
       navigate(paths.course(item.record.item.slug));
+    } else if (item.record.kind === "mentor") {
+      closeSearch();
+      navigate(
+        `/mentorship?mentor=${encodeURIComponent(item.record.item.slug)}`,
+      );
+    } else if (item.record.kind === "mentorship-session") {
+      closeSearch();
+      navigate("/mentorship/sessions");
+    } else if (item.record.kind === "product") {
+      closeSearch();
+      navigate(`/store/products/${encodeURIComponent(item.record.item.slug)}`);
     } else openDetail(item.record);
   };
   const results = result.data || [];
@@ -115,7 +135,7 @@ export function SearchPanel({
             <option value="">{label("allContent")}</option>
             {kinds.map((k) => (
               <option key={k} value={k}>
-                {label(k)}
+                {label(k === "mentorship-session" ? "mentorshipSession" : k)}
               </option>
             ))}
           </SelectField>
@@ -226,7 +246,14 @@ export function SearchPanel({
                 const Icon = icons[kind];
                 return (
                   rows.length > 0 && (
-                    <CommandGroup key={kind} heading={label(kind)}>
+                    <CommandGroup
+                      key={kind}
+                      heading={label(
+                        kind === "mentorship-session"
+                          ? "mentorshipSession"
+                          : kind,
+                      )}
+                    >
                       {rows.map((row) => (
                         <CommandItem
                           key={row.id}

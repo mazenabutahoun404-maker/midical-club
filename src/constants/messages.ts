@@ -1,11 +1,15 @@
 import { workspaceMessages } from "./workspace-messages";
 import { v04Messages } from "./v04-messages";
 import { v05Messages } from "./v05-messages";
+import { v06Messages } from "./v06-messages";
+import { v07Messages } from "./v07-messages";
 export const messages = {
   en: {
     ...workspaceMessages.en,
     ...v04Messages.en,
     ...v05Messages.en,
+    ...v06Messages.en,
+    ...v07Messages.en,
     collapseSidebar: "Collapse sidebar",
     expandSidebar: "Expand sidebar",
     myProfile: "My profile",
@@ -89,7 +93,7 @@ export const messages = {
     libraryShort: "My library",
     studyToolsShort: "Study tools",
     findYourPeople: "Find your people",
-    previewShort: "V0.5 · Sample content",
+    previewShort: "V0.7 · Sample content",
     welcomeLine: "Your campus. Connected.",
     searchSomething: "Find something great…",
     savedShort: "Saved",
@@ -261,7 +265,7 @@ export const messages = {
     notFoundBody: "This page isn’t in the collection.",
     future: "Planned module",
     futureBody:
-      "This module belongs to a later release. It is not active in V0.5.",
+      "This module belongs to a later release. It is not active in V0.7.",
     exams: "Electronic Exams",
     store: "Store",
     back: "Back to homepage",
@@ -288,6 +292,8 @@ export const messages = {
     ...workspaceMessages.ar,
     ...v04Messages.ar,
     ...v05Messages.ar,
+    ...v06Messages.ar,
+    ...v07Messages.ar,
     collapseSidebar: "طيّ القائمة الجانبية",
     expandSidebar: "توسيع القائمة الجانبية",
     myProfile: "ملفي الشخصي",
@@ -365,7 +371,7 @@ export const messages = {
     libraryShort: "مكتبتي",
     studyToolsShort: "أدوات الدراسة",
     findYourPeople: "اكتشف مجتمعك",
-    previewShort: "نسخة ٠.٥ · محتوى توضيحي",
+    previewShort: "نسخة ٠.٧ · محتوى توضيحي",
     welcomeLine: "مجتمعك الجامعي، متصل.",
     searchSomething: "اكتشف شيئاً جديداً…",
     savedShort: "محفوظاتي",
@@ -533,7 +539,7 @@ export const messages = {
     notFound: "لنعد إلى الطريق الصحيح.",
     notFoundBody: "هذه الصفحة غير موجودة في المجموعة.",
     future: "قسم مخطّط",
-    futureBody: "هذا القسم ضمن إصدار لاحق، وهو غير مفعّل في النسخة ٠.٥.",
+    futureBody: "هذا القسم ضمن إصدار لاحق، وهو غير مفعّل في النسخة ٠.٧.",
     exams: "الامتحانات الإلكترونية",
     store: "المتجر",
     back: "العودة للرئيسية",

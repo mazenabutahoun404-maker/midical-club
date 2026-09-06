@@ -12,6 +12,8 @@ import {
   UserRound,
   Timer,
   Heart,
+  HeartHandshake,
+  FileCheck2,
 } from "lucide-react";
 import { SidebarToggle } from "./SidebarToggle";
 import { NavigationHint } from "./NavigationHint";
@@ -26,6 +28,8 @@ const icons = {
   opportunities: Sparkles,
   events: CalendarDays,
   store: ShoppingBag,
+  mentorship: HeartHandshake,
+  contributions: FileCheck2,
 };
 export function DesktopNavigation({ site }: { site: SiteContent }) {
   const { label, t } = useLocale();

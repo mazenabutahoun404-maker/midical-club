@@ -6,10 +6,12 @@ export function EmptyState({
   title,
   description,
   href,
+  actionLabel,
 }: {
   title?: string;
   description?: string;
   href?: string;
+  actionLabel?: string;
 }) {
   const { label } = useLocale();
   return (
@@ -19,7 +21,9 @@ export function EmptyState({
         <EmptyTitle>{title || label("emptyTitle")}</EmptyTitle>
         <EmptyDescription>{description || label("emptyBody")}</EmptyDescription>
       </EmptyHeader>
-      {href && <ActionLink href={href}>{label("browse")}</ActionLink>}
+      {href && (
+        <ActionLink href={href}>{actionLabel || label("browse")}</ActionLink>
+      )}
     </Empty>
   );
 }

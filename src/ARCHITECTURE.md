@@ -1,71 +1,65 @@
-# MedClub source architecture — V0.5
+# MedClub source architecture — V0.7
 
-| Directory                          | Responsibility                                                                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| app/router                         | Public/personal route branches, lazy pages, academic/workspace/medical transitions and safe route focus                  |
-| app/providers                      | Query client, service injection, locale, appearance, workspace state, compatibility saved-items facade and overlay state |
-| app/layouts                        | Public frame, personal frame and lazy search/detail overlays                                                             |
-| components/ui                      | Reusable UI primitives and native Modal                                                                                  |
-| components/navigation              | Desktop rail/top navigation, phone navigation, personal navigation, community tabs, mobile menus and appearance          |
-| components/cards                   | Resource, course, event, opportunity, article, activity, academic-portal, batch and clinical cards                       |
-| components/forms                   | SearchInput and SelectField                                                                                              |
-| components/feedback                | Loading, retry, empty, error and planned-feature states                                                                  |
-| components/data-display            | Headings, introductions and detail facts                                                                                 |
-| features                           | Feature-owned screens and selectors                                                                                      |
-| data/mock                          | Illustrative academic, discovery, community, journal and personal records                                                |
-| services                           | Typed API boundary, mock registry, metadata search index, workspace persistence and preview event registration           |
-| hooks                              | Shared query hooks and workspace-aware paths                                                                             |
-| types                              | Content, student and workspace contracts                                                                                 |
-| constants                          | Configuration, routes and bilingual interface messages                                                                   |
-| styles                             | Tokens, foundations, RTL/accessibility and cumulative public, academic, personal, discovery and community layers         |
-| admin and reserved feature folders | Future scope; their presence does not mean workflows are implemented                                                     |
+| Directory                    | Responsibility                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------- |
+| `app/router`                 | Lazy public/personal routes, transitions, titles and safe route focus             |
+| `app/providers`              | Query, services, locale, appearance, workspace and overlay state                  |
+| `app/layouts`                | Public and personal application frames                                            |
+| `components/ui`              | Reusable primitives and native-dialog modal lifecycle                             |
+| `components/navigation`      | Desktop rail/top navigation, phone dock and feature navigation                    |
+| `components/cards`           | Academic, discovery, community, mentorship and product presentation               |
+| `components/forms`           | Shared search and select controls                                                 |
+| `components/feedback`        | Loading, retry, empty and error states                                            |
+| `components/data-display`    | Headings, introductions and facts                                                 |
+| `features`                   | Feature-owned screens, editors, selectors and store product visuals               |
+| `data/mock`                  | Illustrative, typed records outside JSX                                           |
+| `services`                   | API contracts, replaceable adapters, search index and browser-local preview state |
+| `hooks`                      | Shared content queries, mutations and workspace paths                             |
+| `types`                      | Content, student, workspace and commerce-preview contracts                        |
+| `constants`                  | Configuration, routes and bilingual messages                                      |
+| `styles`                     | Tokens, RTL/accessibility and cumulative feature layers                           |
+| `admin` and reserved folders | Future scope; presence does not imply implementation                              |
 
-## Content flow
+## Content and service flow
 
-Pages consume hooks/providers. Those call the injected `MedClubServices` registry. Only mock adapters import fixture records; static records are never declared in page JSX. Journal, event and resource details stay honest about sample content and absent source files.
+Pages consume hooks or injected services. Only adapters import fixtures. The store uses its own local adapter because cart and order mutations are separate from general saved-item state.
 
-Academic relationships remain Batch → AcademicTerm → Course → ordered CourseSection, with resources referencing courses and declaring shared or batch-specific audience. Events declare stable slugs, registration windows, capacity and waitlist behavior. Opportunities declare stable slugs and machine-readable type, field, location, year and deadline metadata.
+`MedClubServices` can later replace the adapter with an HTTP implementation while pages retain the same typed contracts. Production services must return user-authorized data; route visibility and client-side IDs do not provide access control.
 
-Community content adds Article, CommunityActivity, MediaStory, ExecutiveBody, TeamMember, Recognition and ClubValue records. Public titles are display data and do not grant application permissions.
+## Store domain
 
-## Community and journal
+Products own bilingual content, category, materials, visual treatment and one or more variants. Each variant owns a stable SKU, option label, price in integer JOD fils and preview stock. Cart lines reference product and variant IDs. Orders snapshot names, selected options, SKUs and unit prices so historical totals do not silently change when the catalog changes.
 
-The community gateway is a route-level composition layer, not a second copy of its source records. Activities, media, public team history and recognitions are fetched through typed service contracts. Journal articles use stable slugs and join the same search/save/library flow as earlier content.
+The local adapter:
 
-Article presentation exposes authorship, publication date, tags and scientific reviewer. The current fixtures model the metadata boundary but do not implement approval. A production adapter must enforce contributor, references, rights and scientific review server-side before returning published records.
+- isolates state per student;
+- normalizes stored cart and order records;
+- prevents invalid variants and quantities above preview stock;
+- treats product/variant identity as one cart line;
+- reserves a non-empty cart into an order snapshot;
+- clears the cart after reservation;
+- permits cancellation only while the preview order remains reserved.
 
-## Events and opportunities
+These checks create coherent demo behavior but are not transaction-safe. A real backend must own prices, stock, reservation expiry, identity, order states and financial permissions atomically.
 
-Public index/detail pages consume the same event and opportunity records used by homepage cards, search, library, calendar and notifications. `MedClubServices.events` owns registration mutations; page components do not edit capacity or browser storage. The current local adapter is intentionally a preview. A real API must enforce all reservation rules atomically.
+## Checkout boundary
 
-Saving remains workspace state. Registration is a separate domain state. Calendar and reminders compose both without treating a bookmark as attendance.
+The modeled V0.7 flow stops at `Cart → Reserve for collection → My Orders`. It does not model a successful payment. No card, bank or wallet fields exist, and the UI explicitly states that payment/delivery/refund rules are not finalized.
 
-## Workspace state
+Later services may add checkout, coupons, fulfillment and refunds only after the club defines the operational process. Administrator and treasurer actions must be capability-based and audited on the server.
 
-`WorkspaceProvider` resolves the profile ID, loads `workspace.get(id)` with TanStack Query, and serializes `dispatch(id, action)` calls. The mock adapter reads the latest persisted state, applies a pure reducer and returns an isolated snapshot. Failed writes are surfaced; unavailable storage uses an in-memory session fallback. Components do not write workspace JSON directly.
+## Cross-feature integration
 
-`SavedItemsProvider` and `useSavedItems` remain compatibility entry points for earlier card code, backed by the workspace service. Legacy saves migrate only for `demo-student`. Memberships are removed on unsave; deleting a collection does not unsave items. State normalization handles damaged persisted records. Same-browser tabs refresh through storage events; simultaneous cross-tab changes are last-write-wins.
+- Products join the bilingual global search index using names, descriptions, materials, option labels and SKUs.
+- Public Store navigation retains the established collapsible desktop rail and mobile destination model.
+- Cart quantity and personal order count appear in animated store tabs.
+- Confirmed/ready order fixtures can generate personal notifications.
+- My Orders stays inside the visually separate My MedClub workspace.
+- Store routes use the existing medical transition system.
+- Logical CSS, bilingual messages and reduced-motion fallbacks apply to all store screens.
 
-An API adapter must provide real identity, ownership checks, validation and concurrency handling. Student IDs and route branches in React are not security boundaries.
+## Existing platform contracts
 
-## Search
+V0.1–V0.6 architecture remains unchanged: API-ready academic relationships, one shared search panel, normalized workspace persistence, event registration, save-to-library behavior, native-dialog overlays, collapsible public/personal navigation, RTL, reduced motion, mentorship workflows and scientific-review safeguards.
 
-One index and one `SearchPanel` serve the command modal and full page. Search normalizes English/Arabic text, expands a small configurable alias set, filters before returning matches, and ranks direct title matches. Articles add authors and tags to the metadata index. Personal scope uses profile course IDs. It is not PDF indexing or authorization.
-
-## Navigation and motion
-
-The personal navigation hides native scrollbars while retaining keyboard, wheel and touch scrolling. Measured scroll position controls non-interactive edge shadows, including horizontal and RTL layouts; the cues disappear when no more content exists in that direction.
-
-`MedicalTransition` adds a short scan-line route reveal to V0.5 community pages. Community tabs use pulse/signal icon responses for hover and active states. All decorative motion is disabled or shortened by `prefers-reduced-motion`; it never delays access to content.
-
-## Modal and routing lifecycle
-
-`Modal` uses native dialog `showModal()`/`close()`. It does not manually aria-hide the application shell. Escape is handled through `cancel`; the browser controls focus and background inertness. All active application modals, the mobile menu and appearance switcher use this wrapper.
-
-`RouteEffects` moves focus after navigation only if the user has not already moved it or opened a modal. `SpaceTransition` continues to separate `/my` from the public community without remounting the personal shell between subpages.
-
-## Dates
-
-Demo content uses ISO timestamps with explicit offsets. Date presentation uses `APP_TIMEZONE` (`Asia/Amman`). Calendar fixtures use a stable September 2026 anchor, while user preview/saved timestamps reflect the actual action time. Study-entry input is interpreted as Amman wall time in the mock adapter.
-
-Before integrating real scheduling across regions or daylight-saving changes, let the API own timezone conversion and schedule delivery.
+Demo content uses ISO timestamps with explicit offsets. Date presentation uses `APP_TIMEZONE` (`Asia/Amman`). A production order service should own timezone conversion, reservation expiry and notification delivery.

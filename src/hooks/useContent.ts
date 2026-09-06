@@ -133,6 +133,227 @@ export function useClubValues() {
   });
 }
 
+export function useMentors() {
+  const s = useServices();
+  return useQuery({
+    queryKey: ["mentorship", "mentors"],
+    queryFn: s.mentorship.listMentors,
+  });
+}
+export function useMentorshipSessions() {
+  const s = useServices();
+  return useQuery({
+    queryKey: ["mentorship", "sessions"],
+    queryFn: s.mentorship.listSessions,
+  });
+}
+export function useMentorshipQuestions() {
+  const s = useServices();
+  return useQuery({
+    queryKey: ["mentorship", "questions"],
+    queryFn: s.mentorship.listQuestions,
+  });
+}
+export function useMentorshipWorkspace() {
+  const s = useServices();
+  const profile = useStudentProfile();
+  const client = useQueryClient();
+  const studentId = profile.data?.id;
+  const requestKey = ["mentorship", "requests", studentId];
+  const registrationKey = ["mentorship", "registrations", studentId];
+  const requests = useQuery({
+    queryKey: requestKey,
+    queryFn: () => s.mentorship.listRequests(studentId!),
+    enabled: !!studentId,
+  });
+  const registrations = useQuery({
+    queryKey: registrationKey,
+    queryFn: () => s.mentorship.listSessionRegistrations(studentId!),
+    enabled: !!studentId,
+  });
+  const request = useMutation({
+    mutationFn: (input: import("../types/content").MentorshipRequestInput) =>
+      s.mentorship.request(studentId!, input),
+    onSuccess: () => client.invalidateQueries({ queryKey: requestKey }),
+  });
+  const cancelRequest = useMutation({
+    mutationFn: (requestId: string) =>
+      s.mentorship.cancelRequest(studentId!, requestId),
+    onSuccess: () => client.invalidateQueries({ queryKey: requestKey }),
+  });
+  const registerSession = useMutation({
+    mutationFn: (sessionId: string) =>
+      s.mentorship.registerSession(studentId!, sessionId),
+    onSuccess: () => client.invalidateQueries({ queryKey: registrationKey }),
+  });
+  const cancelSession = useMutation({
+    mutationFn: (sessionId: string) =>
+      s.mentorship.cancelSessionRegistration(studentId!, sessionId),
+    onSuccess: () => client.invalidateQueries({ queryKey: registrationKey }),
+  });
+  return {
+    requests: requests.data || [],
+    registrations: registrations.data || [],
+    isPending:
+      profile.isPending || requests.isPending || registrations.isPending,
+    isError: profile.isError || requests.isError || registrations.isError,
+    isMutating:
+      request.isPending ||
+      cancelRequest.isPending ||
+      registerSession.isPending ||
+      cancelSession.isPending,
+    request: request.mutateAsync,
+    cancelRequest: cancelRequest.mutateAsync,
+    registerSession: registerSession.mutateAsync,
+    cancelSession: cancelSession.mutateAsync,
+    retry: () => {
+      void profile.refetch();
+      void requests.refetch();
+      void registrations.refetch();
+    },
+  };
+}
+export function useContributions() {
+  const s = useServices();
+  const profile = useStudentProfile();
+  const client = useQueryClient();
+  const studentId = profile.data?.id;
+  const key = ["contributions", studentId];
+  const query = useQuery({
+    queryKey: key,
+    queryFn: () => s.contributions.list(studentId!),
+    enabled: !!studentId,
+  });
+  const save = useMutation({
+    mutationFn: (input: import("../types/content").ContributionInput) =>
+      s.contributions.saveDraft(studentId!, input),
+    onSuccess: () => client.invalidateQueries({ queryKey: key }),
+  });
+  const submit = useMutation({
+    mutationFn: (id: string) => s.contributions.submit(studentId!, id),
+    onSuccess: () => client.invalidateQueries({ queryKey: key }),
+  });
+  const remove = useMutation({
+    mutationFn: (id: string) => s.contributions.deleteDraft(studentId!, id),
+    onSuccess: () => client.invalidateQueries({ queryKey: key }),
+  });
+  return {
+    items: query.data || [],
+    isPending: profile.isPending || query.isPending,
+    isError: profile.isError || query.isError,
+    isMutating: save.isPending || submit.isPending || remove.isPending,
+    saveDraft: save.mutateAsync,
+    submit: submit.mutateAsync,
+    deleteDraft: remove.mutateAsync,
+    retry: () => {
+      void profile.refetch();
+      void query.refetch();
+    },
+  };
+}
+
+export function useStoreProducts() {
+  const s = useServices();
+  return useQuery({
+    queryKey: ["store", "products"],
+    queryFn: s.store.listProducts,
+  });
+}
+export function useStoreProduct(slug?: string) {
+  const s = useServices();
+  return useQuery({
+    queryKey: ["store", "product", slug],
+    queryFn: () => s.store.getProduct(slug!),
+    enabled: !!slug,
+  });
+}
+export function useStoreWorkspace() {
+  const s = useServices();
+  const profile = useStudentProfile();
+  const client = useQueryClient();
+  const studentId = profile.data?.id;
+  const cartKey = ["store", "cart", studentId];
+  const orderKey = ["store", "orders", studentId];
+  const cart = useQuery({
+    queryKey: cartKey,
+    queryFn: () => s.store.getCart(studentId!),
+    enabled: !!studentId,
+  });
+  const orders = useQuery({
+    queryKey: orderKey,
+    queryFn: () => s.store.listOrders(studentId!),
+    enabled: !!studentId,
+  });
+  const refreshCart = () => client.invalidateQueries({ queryKey: cartKey });
+  const refreshOrders = () => client.invalidateQueries({ queryKey: orderKey });
+  const add = useMutation({
+    mutationFn: ({
+      productId,
+      variantId,
+      quantity,
+    }: {
+      productId: string;
+      variantId: string;
+      quantity: number;
+    }) => s.store.addCartLine(studentId!, productId, variantId, quantity),
+    onSuccess: refreshCart,
+  });
+  const setQuantity = useMutation({
+    mutationFn: ({
+      productId,
+      variantId,
+      quantity,
+    }: {
+      productId: string;
+      variantId: string;
+      quantity: number;
+    }) => s.store.setCartLine(studentId!, productId, variantId, quantity),
+    onSuccess: refreshCart,
+  });
+  const remove = useMutation({
+    mutationFn: ({
+      productId,
+      variantId,
+    }: {
+      productId: string;
+      variantId: string;
+    }) => s.store.removeCartLine(studentId!, productId, variantId),
+    onSuccess: refreshCart,
+  });
+  const reserve = useMutation({
+    mutationFn: () => s.store.reserveCart(studentId!),
+    onSuccess: async () => {
+      await Promise.all([refreshCart(), refreshOrders()]);
+    },
+  });
+  const cancelOrder = useMutation({
+    mutationFn: (orderId: string) => s.store.cancelOrder(studentId!, orderId),
+    onSuccess: refreshOrders,
+  });
+  return {
+    cart: cart.data || { studentId: studentId || "", lines: [], updatedAt: "" },
+    orders: orders.data || [],
+    isPending: profile.isPending || cart.isPending || orders.isPending,
+    isError: profile.isError || cart.isError || orders.isError,
+    isMutating:
+      add.isPending ||
+      setQuantity.isPending ||
+      remove.isPending ||
+      reserve.isPending ||
+      cancelOrder.isPending,
+    add: add.mutateAsync,
+    setQuantity: setQuantity.mutateAsync,
+    remove: remove.mutateAsync,
+    reserve: reserve.mutateAsync,
+    cancelOrder: cancelOrder.mutateAsync,
+    retry: () => {
+      void profile.refetch();
+      void cart.refetch();
+      void orders.refetch();
+    },
+  };
+}
+
 export function useStudentProfile() {
   const services = useServices();
   return useQuery({

@@ -4,6 +4,9 @@ import type {
   ClubEvent,
   Opportunity,
   Article,
+  Mentor,
+  MentorshipSession,
+  StoreProduct,
   SearchResult,
   SearchFilters,
 } from "../types/content";
@@ -26,6 +29,7 @@ const aliases = [
   ["summary", "summaries", "ملخص"],
   ["research", "بحث"],
   ["questions", "اسئلة"],
+  ["store", "shop", "merch", "product", "متجر", "منتج"],
 ];
 export function searchRecords(
   data: {
@@ -34,6 +38,9 @@ export function searchRecords(
     events: ClubEvent[];
     opportunities: Opportunity[];
     journal?: Article[];
+    mentors?: Mentor[];
+    mentorshipSessions?: MentorshipSession[];
+    storeProducts?: StoreProduct[];
   },
   query: string,
   filters: SearchFilters = {},
@@ -117,6 +124,55 @@ export function searchRecords(
         item.author.en,
         item.author.ar,
         ...item.tags.flatMap((tag) => [tag.en, tag.ar]),
+      ],
+    })),
+    ...(data.mentors || []).map((item) => ({
+      id: item.id,
+      title: item.name,
+      subtitle: item.specialty,
+      record: { kind: "mentor" as const, item },
+      course: undefined,
+      keywords: [
+        item.title.en,
+        item.title.ar,
+        item.bio.en,
+        item.bio.ar,
+        item.format,
+        ...item.areas.flatMap((area) => [area.en, area.ar]),
+      ],
+    })),
+    ...(data.mentorshipSessions || []).map((item) => ({
+      id: item.id,
+      title: item.title,
+      subtitle: item.topic,
+      record: { kind: "mentorship-session" as const, item },
+      course: undefined,
+      keywords: [
+        item.summary.en,
+        item.summary.ar,
+        item.location.en,
+        item.location.ar,
+        item.audience.en,
+        item.audience.ar,
+        item.format,
+      ],
+    })),
+    ...(data.storeProducts || []).map((item) => ({
+      id: item.id,
+      title: item.name,
+      subtitle: item.shortDescription,
+      record: { kind: "product" as const, item },
+      course: undefined,
+      keywords: [
+        item.category,
+        item.description.en,
+        item.description.ar,
+        ...item.materials.flatMap((material) => [material.en, material.ar]),
+        ...item.variants.flatMap((variant) => [
+          variant.label.en,
+          variant.label.ar,
+          variant.sku,
+        ]),
       ],
     })),
   ];

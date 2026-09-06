@@ -216,6 +216,162 @@ export interface ClubValue {
   title: Text;
   description: Text;
 }
+export type MentorshipFormat = "onsite" | "online" | "hybrid";
+export interface Mentor {
+  id: string;
+  slug: string;
+  name: Text;
+  initials: Text;
+  title: Text;
+  specialty: Text;
+  graduationYear: number;
+  bio: Text;
+  areas: Text[];
+  languages: Text[];
+  format: MentorshipFormat;
+  capacity: number;
+  activeMentees: number;
+  availability: Text;
+  featured?: boolean;
+}
+export interface MentorshipSession {
+  id: string;
+  slug: string;
+  mentorId: string;
+  title: Text;
+  topic: Text;
+  summary: Text;
+  startsAt: string;
+  endsAt: string;
+  format: MentorshipFormat;
+  location: Text;
+  capacity: number;
+  registeredCount: number;
+  audience: Text;
+}
+export interface MentorshipQuestion {
+  id: string;
+  category: "career" | "research" | "clinical-learning" | "student-life";
+  question: Text;
+  answer: Text;
+  answeredBy: Text;
+  answeredAt: string;
+  tags: Text[];
+}
+export type MentorshipRequestStatus =
+  "pending" | "accepted" | "declined" | "cancelled";
+export interface MentorshipRequest {
+  id: string;
+  studentId: string;
+  mentorId: string;
+  area: string;
+  note: string;
+  preferredFormat: MentorshipFormat;
+  status: MentorshipRequestStatus;
+  requestedAt: string;
+  scheduledAt?: string;
+  response?: Text;
+}
+export interface MentorshipRequestInput {
+  mentorId: string;
+  area: string;
+  note: string;
+  preferredFormat: MentorshipFormat;
+}
+export interface MentorshipSessionRegistration {
+  sessionId: string;
+  studentId: string;
+  registeredAt: string;
+}
+export type ContributionKind = "resource" | "article";
+export type ContributionStatus =
+  "draft" | "under-review" | "changes-requested" | "approved" | "published";
+export interface ContributionHistoryEntry {
+  id: string;
+  status: ContributionStatus;
+  at: string;
+  note: Text;
+}
+export interface ContributionInput {
+  id?: string;
+  kind: ContributionKind;
+  title: string;
+  topic: string;
+  summary: string;
+  courseId?: string;
+  sourceUrl: string;
+  assetName: string;
+  rightsConfirmed: boolean;
+  references: string[];
+}
+export interface StudentContribution extends Omit<ContributionInput, "id"> {
+  id: string;
+  studentId: string;
+  status: ContributionStatus;
+  createdAt: string;
+  updatedAt: string;
+  submittedAt?: string;
+  reviewer?: Text;
+  reviewerFeedback?: Text;
+  history: ContributionHistoryEntry[];
+}
+export type ProductCategory =
+  "apparel" | "stationery" | "accessories" | "drinkware";
+export type ProductVisual = "notebook" | "hoodie" | "cap" | "tumbler" | "badge";
+export interface ProductVariant {
+  id: string;
+  sku: string;
+  label: Text;
+  stock: number;
+}
+export interface StoreProduct {
+  id: string;
+  slug: string;
+  name: Text;
+  shortDescription: Text;
+  description: Text;
+  category: ProductCategory;
+  priceFils: number;
+  compareAtFils?: number;
+  visual: ProductVisual;
+  accent: "red" | "russet" | "ink" | "olive";
+  materials: Text[];
+  variants: ProductVariant[];
+  featured?: boolean;
+}
+export interface StoreCartLine {
+  productId: string;
+  variantId: string;
+  quantity: number;
+}
+export interface StoreCart {
+  studentId: string;
+  lines: StoreCartLine[];
+  updatedAt: string;
+}
+export type StoreOrderStatus =
+  "reserved" | "confirmed" | "ready" | "collected" | "cancelled";
+export interface StoreOrderLine {
+  productId: string;
+  variantId: string;
+  name: Text;
+  variantLabel: Text;
+  unitPriceFils: number;
+  quantity: number;
+}
+export interface StoreOrder {
+  id: string;
+  number: string;
+  studentId: string;
+  status: StoreOrderStatus;
+  lines: StoreOrderLine[];
+  subtotalFils: number;
+  discountFils: number;
+  totalFils: number;
+  reservedAt: string;
+  reservationExpiresAt?: string;
+  pickupLocation: Text;
+}
 export type SectionType =
   | "announcement"
   | "pathways"
@@ -296,7 +452,12 @@ export interface SearchResult {
   id: string;
   title: Text;
   subtitle: Text;
-  record: DetailRecord | { kind: "course"; item: Course };
+  record:
+    | DetailRecord
+    | { kind: "course"; item: Course }
+    | { kind: "mentor"; item: Mentor }
+    | { kind: "mentorship-session"; item: MentorshipSession }
+    | { kind: "product"; item: StoreProduct };
 }
 export interface SearchFilters {
   type?: SearchResult["record"]["kind"];

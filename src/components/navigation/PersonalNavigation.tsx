@@ -13,6 +13,9 @@ import {
   Menu,
   CalendarCheck,
   Telescope,
+  HeartHandshake,
+  FileCheck2,
+  PackageCheck,
 } from "lucide-react";
 import { Modal } from "../ui/Modal";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -29,6 +32,9 @@ const items = [
   { href: "/my/notifications", label: "notifications", icon: Bell },
   { href: "/my/events", label: "myEvents", icon: CalendarCheck },
   { href: "/my/opportunities", label: "myOpportunities", icon: Telescope },
+  { href: "/my/mentorship", label: "myMentorship", icon: HeartHandshake },
+  { href: "/my/contributions", label: "myContributions", icon: FileCheck2 },
+  { href: "/my/orders", label: "myOrders", icon: PackageCheck },
   { href: "/my/focus", label: "myFocus", icon: Timer },
   { href: "/my/profile", label: "myProfile", icon: UserRound },
   { href: "/my/settings", label: "personalSettings", icon: SlidersHorizontal },
