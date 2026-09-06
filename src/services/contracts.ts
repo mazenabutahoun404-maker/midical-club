@@ -1,4 +1,5 @@
 import type { StudentProfile } from "../types/student";
+import type { AuthService } from "../types/auth";
 import type {
   WorkspaceService,
   CalendarItem,
@@ -34,6 +35,7 @@ import type {
   SearchFilters,
 } from "../types/content";
 export interface MedClubServices {
+  auth: AuthService;
   workspace: WorkspaceService;
   calendar: { list: () => Promise<CalendarItem[]> };
   notifications: { list: () => Promise<StudentNotification[]> };

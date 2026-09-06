@@ -3,6 +3,7 @@ import { v04Messages } from "./v04-messages";
 import { v05Messages } from "./v05-messages";
 import { v06Messages } from "./v06-messages";
 import { v07Messages } from "./v07-messages";
+import { v08Messages } from "./v08-messages";
 export const messages = {
   en: {
     ...workspaceMessages.en,
@@ -10,6 +11,7 @@ export const messages = {
     ...v05Messages.en,
     ...v06Messages.en,
     ...v07Messages.en,
+    ...v08Messages.en,
     collapseSidebar: "Collapse sidebar",
     expandSidebar: "Expand sidebar",
     myProfile: "My profile",
@@ -93,7 +95,7 @@ export const messages = {
     libraryShort: "My library",
     studyToolsShort: "Study tools",
     findYourPeople: "Find your people",
-    previewShort: "V0.7 · Sample content",
+    previewShort: "V0.8 · Account preview",
     welcomeLine: "Your campus. Connected.",
     searchSomething: "Find something great…",
     savedShort: "Saved",
@@ -265,7 +267,7 @@ export const messages = {
     notFoundBody: "This page isn’t in the collection.",
     future: "Planned module",
     futureBody:
-      "This module belongs to a later release. It is not active in V0.7.",
+      "This module belongs to a later release. It is not active in V0.8.",
     exams: "Electronic Exams",
     store: "Store",
     back: "Back to homepage",
@@ -294,6 +296,7 @@ export const messages = {
     ...v05Messages.ar,
     ...v06Messages.ar,
     ...v07Messages.ar,
+    ...v08Messages.ar,
     collapseSidebar: "طيّ القائمة الجانبية",
     expandSidebar: "توسيع القائمة الجانبية",
     myProfile: "ملفي الشخصي",
@@ -371,7 +374,7 @@ export const messages = {
     libraryShort: "مكتبتي",
     studyToolsShort: "أدوات الدراسة",
     findYourPeople: "اكتشف مجتمعك",
-    previewShort: "نسخة ٠.٧ · محتوى توضيحي",
+    previewShort: "نسخة ٠.٨ · معاينة الحساب",
     welcomeLine: "مجتمعك الجامعي، متصل.",
     searchSomething: "اكتشف شيئاً جديداً…",
     savedShort: "محفوظاتي",

@@ -213,10 +213,9 @@
 }
 .mentor-controls {
   display: grid;
-  grid-template-columns: minmax(240px, 1.5fr) repeat(
-      2,
-      minmax(150px, 0.7fr)
-    ) auto;
+  grid-template-columns:
+    minmax(240px, 1.5fr) repeat(2, minmax(150px, 0.7fr))
+    auto;
   align-items: end;
   gap: 12px;
   margin: 22px 0 16px;

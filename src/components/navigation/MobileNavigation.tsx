@@ -5,10 +5,14 @@ import { Modal } from "../ui/Modal";
 import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
+import { useAuth } from "../../app/providers/AuthProvider";
+import { signInPath } from "../../constants/routes";
 export function MobileNavigation({ site }: { site: SiteContent }) {
   const [open, setOpen] = useState(false);
   const { label, t } = useLocale();
   const location = useLocation();
+  const auth = useAuth();
+  const signedIn = auth.snapshot.status === "authenticated";
   const secondaryActive = [
     "/events",
     "/opportunities",
@@ -63,8 +67,11 @@ export function MobileNavigation({ site }: { site: SiteContent }) {
           <AppLink href="/journal" onClick={() => setOpen(false)}>
             {label("journal")}
           </AppLink>
-          <AppLink href="/my" onClick={() => setOpen(false)}>
-            {label("myProfile")}
+          <AppLink
+            href={signedIn ? "/my" : signInPath("/my")}
+            onClick={() => setOpen(false)}
+          >
+            {label(signedIn ? "myProfile" : "signIn")}
           </AppLink>
         </nav>
       </Modal>

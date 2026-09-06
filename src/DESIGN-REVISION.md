@@ -23,7 +23,7 @@ The content/services architecture is retained. The application shell and visual 
 
 `AppearanceProvider` owns typed navigation orientation and `sidebarCollapsed` values in the existing `medclub.appearance.v1` storage record. Previous orientation-only records remain valid and start expanded. Navigation components consume these preferences without managing storage. A future account-settings adapter can replace persistence and retain the UI contract.
 
-This is device-local customization with a sample profile. Authentication, editable identity and server-synced preferences remain future work.
+V0.8 adds the browser-local account preview and editable identity. Preferences and account data are still device-local; production sessions and server-synced preferences remain future work.
 
 ## Verification
 

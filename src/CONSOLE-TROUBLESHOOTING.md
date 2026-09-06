@@ -1,4 +1,4 @@
-# Console report — V0.7
+# Console report — V0.8
 
 ## What the supplied messages mean
 

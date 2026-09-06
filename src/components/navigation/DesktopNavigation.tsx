@@ -23,6 +23,10 @@ import { Brand } from "./Brand";
 import { AppLink } from "./AppLink";
 import { MegaMenu } from "./MegaMenu";
 import { AppearanceSettings } from "./AppearanceSettings";
+import { useAppearance } from "../../app/providers/AppearanceProvider";
+import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
+import { useAuth } from "../../app/providers/AuthProvider";
+import { signInPath } from "../../constants/routes";
 const icons = {
   community: Users,
   opportunities: Sparkles,
@@ -33,10 +37,16 @@ const icons = {
 };
 export function DesktopNavigation({ site }: { site: SiteContent }) {
   const { label, t } = useLocale();
+  const { navigation } = useAppearance();
+  const auth = useAuth();
+  const signedIn = auth.snapshot.status === "authenticated";
   const location = useLocation();
   const [expanded, setExpanded] = useState(false);
   const root = useRef<HTMLElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
+  const { scrollArea, scrollCues } = useNavigationScrollCues(
+    `${location.pathname}:${navigation}:${expanded}`,
+  );
   useEffect(() => setExpanded(false), [location.key]);
   useEffect(() => {
     const outside = (event: PointerEvent) => {
@@ -74,97 +84,113 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
       <div className="navigation-brand">
         <Brand brand={site.brand} />
       </div>
-      <div className="navigation-scroll" id="public-sidebar-links">
-        <p className="navigation-label">{label("exploreLabel")}</p>
-        <nav className="navigation-primary" aria-label={label("discover")}>
-          <NavigationHint label={label("home")}>
-            <AppLink
-              href="/"
-              className={`navigation-item ${active("/") ? "active" : ""}`}
-              aria-current={active("/") ? "page" : undefined}
-            >
-              <House size={20} />
-              <span>{label("home")}</span>
-            </AppLink>
-          </NavigationHint>
-          <div className="learn-disclosure">
-            <NavigationHint label={label("learn")}>
-              <button
-                ref={trigger}
-                className={`navigation-item ${active("/learn") ? "active" : ""}`}
-                aria-expanded={expanded}
-                aria-controls="learn-menu"
-                onClick={() => setExpanded((value) => !value)}
-                onKeyDown={(event) => {
-                  if (event.key === "ArrowDown") {
-                    event.preventDefault();
-                    setExpanded(true);
-                    requestAnimationFrame(() =>
-                      root.current
-                        ?.querySelector<HTMLAnchorElement>("#learn-menu a")
-                        ?.focus(),
-                    );
-                  }
-                }}
+      <div
+        className="navigation-scroll-frame"
+        data-scroll-before={scrollCues.before || undefined}
+        data-scroll-after={scrollCues.after || undefined}
+      >
+        <div
+          ref={scrollArea}
+          className="navigation-scroll"
+          id="public-sidebar-links"
+        >
+          <p className="navigation-label">{label("exploreLabel")}</p>
+          <nav className="navigation-primary" aria-label={label("discover")}>
+            <NavigationHint label={label("home")}>
+              <AppLink
+                href="/"
+                className={`navigation-item ${active("/") ? "active" : ""}`}
+                aria-current={active("/") ? "page" : undefined}
               >
-                <BookOpen size={20} />
-                <span>{label("learn")}</span>
-                <ChevronDown size={15} className="disclosure-chevron" />
-              </button>
+                <House size={20} />
+                <span>{label("home")}</span>
+              </AppLink>
             </NavigationHint>
-            {expanded && (
-              <MegaMenu
-                navigation={site.navigation}
-                onNavigate={() => setExpanded(false)}
-              />
-            )}
-          </div>
-          {site.navigation.main.map((item) => {
-            const Icon = icons[item.id as keyof typeof icons] || Sparkles;
-            return (
-              <NavigationHint label={t(item.label)} key={item.id}>
-                <AppLink
-                  href={item.href}
-                  className={`navigation-item ${active(item.href) ? "active" : ""}`}
-                  aria-current={
-                    active(item.href)
-                      ? item.href.startsWith("/#")
-                        ? "location"
-                        : "page"
-                      : undefined
-                  }
+            <div className="learn-disclosure">
+              <NavigationHint label={label("learn")}>
+                <button
+                  ref={trigger}
+                  className={`navigation-item ${active("/learn") ? "active" : ""}`}
+                  aria-expanded={expanded}
+                  aria-controls="learn-menu"
+                  onClick={() => setExpanded((value) => !value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowDown") {
+                      event.preventDefault();
+                      setExpanded(true);
+                      requestAnimationFrame(() =>
+                        root.current
+                          ?.querySelector<HTMLAnchorElement>("#learn-menu a")
+                          ?.focus(),
+                      );
+                    }
+                  }}
                 >
-                  <Icon size={20} />
-                  <span>{t(item.label)}</span>
-                </AppLink>
+                  <BookOpen size={20} />
+                  <span>{label("learn")}</span>
+                  <ChevronDown size={15} className="disclosure-chevron" />
+                </button>
               </NavigationHint>
-            );
-          })}
-        </nav>
-        <div className="navigation-workspace">
-          <p className="navigation-label">{label("workspace")}</p>
-          <NavigationHint label={label("myProfile")}>
-            <AppLink
-              className={`navigation-item ${active("/my") ? "active" : ""}`}
-              href="/my"
-              aria-current={active("/my") ? "page" : undefined}
-            >
-              <UserRound size={20} />
-              <span>{label("myProfile")}</span>
-            </AppLink>
-          </NavigationHint>
-          <NavigationHint label={label("studyToolsShort")}>
-            <AppLink
-              className={`navigation-item ${active("/utilities") ? "active" : ""}`}
-              href="/utilities"
-              aria-current={active("/utilities") ? "page" : undefined}
-            >
-              <Timer size={20} />
-              <span>{label("studyToolsShort")}</span>
-            </AppLink>
-          </NavigationHint>
+              {expanded && navigation !== "horizontal" && (
+                <MegaMenu
+                  navigation={site.navigation}
+                  onNavigate={() => setExpanded(false)}
+                />
+              )}
+            </div>
+            {site.navigation.main.map((item) => {
+              const Icon = icons[item.id as keyof typeof icons] || Sparkles;
+              return (
+                <NavigationHint label={t(item.label)} key={item.id}>
+                  <AppLink
+                    href={item.href}
+                    className={`navigation-item ${active(item.href) ? "active" : ""}`}
+                    aria-current={
+                      active(item.href)
+                        ? item.href.startsWith("/#")
+                          ? "location"
+                          : "page"
+                        : undefined
+                    }
+                  >
+                    <Icon size={20} />
+                    <span>{t(item.label)}</span>
+                  </AppLink>
+                </NavigationHint>
+              );
+            })}
+          </nav>
+          <div className="navigation-workspace">
+            <p className="navigation-label">{label("workspace")}</p>
+            <NavigationHint label={label(signedIn ? "myProfile" : "signIn")}>
+              <AppLink
+                className={`navigation-item ${active("/my") ? "active" : ""}`}
+                href={signedIn ? "/my" : signInPath("/my")}
+                aria-current={active("/my") ? "page" : undefined}
+              >
+                <UserRound size={20} />
+                <span>{label(signedIn ? "myProfile" : "signIn")}</span>
+              </AppLink>
+            </NavigationHint>
+            <NavigationHint label={label("studyToolsShort")}>
+              <AppLink
+                className={`navigation-item ${active("/utilities") ? "active" : ""}`}
+                href="/utilities"
+                aria-current={active("/utilities") ? "page" : undefined}
+              >
+                <Timer size={20} />
+                <span>{label("studyToolsShort")}</span>
+              </AppLink>
+            </NavigationHint>
+          </div>
         </div>
       </div>
+      {expanded && navigation === "horizontal" && (
+        <MegaMenu
+          navigation={site.navigation}
+          onNavigate={() => setExpanded(false)}
+        />
+      )}
       <div className="navigation-bottom">
         <div className="sidebar-note">
           <span className="sidebar-note-icon">

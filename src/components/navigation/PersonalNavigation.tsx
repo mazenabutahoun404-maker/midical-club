@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   House,
   BookOpen,
@@ -24,6 +24,8 @@ import type { MessageKey } from "../../constants/messages";
 import { AppLink } from "./AppLink";
 import { NavigationHint } from "./NavigationHint";
 import { SidebarToggle } from "./SidebarToggle";
+import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
+import { useAuth } from "../../app/providers/AuthProvider";
 const items = [
   { href: "/my", label: "mySpace", icon: House },
   { href: "/my/learning", label: "myLearning", icon: BookOpen },
@@ -43,41 +45,9 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
   const { label, t } = useLocale();
   const { pathname } = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);
-  const scrollArea = useRef<HTMLDivElement>(null);
-  const [scrollCues, setScrollCues] = useState({ before: false, after: false });
-  const updateScrollCues = useCallback(() => {
-    const node = scrollArea.current;
-    if (!node) return;
-    const horizontal = node.scrollWidth > node.clientWidth + 2;
-    const position = horizontal ? Math.abs(node.scrollLeft) : node.scrollTop;
-    const maximum = horizontal
-      ? node.scrollWidth - node.clientWidth
-      : node.scrollHeight - node.clientHeight;
-    setScrollCues({
-      before: position > 2,
-      after: maximum - position > 2,
-    });
-  }, []);
+  const auth = useAuth();
+  const { scrollArea, scrollCues } = useNavigationScrollCues(pathname);
   useEffect(() => setMoreOpen(false), [pathname]);
-  useEffect(() => {
-    const node = scrollArea.current;
-    if (!node) return;
-    const refresh = () => requestAnimationFrame(updateScrollCues);
-    refresh();
-    node.addEventListener("scroll", updateScrollCues, { passive: true });
-    window.addEventListener("resize", refresh);
-    const observer =
-      typeof ResizeObserver === "undefined"
-        ? null
-        : new ResizeObserver(refresh);
-    observer?.observe(node);
-    if (node.firstElementChild) observer?.observe(node.firstElementChild);
-    return () => {
-      node.removeEventListener("scroll", updateScrollCues);
-      window.removeEventListener("resize", refresh);
-      observer?.disconnect();
-    };
-  }, [pathname, updateScrollCues]);
   const active = (href: string) =>
     href === "/my"
       ? pathname === "/my"
@@ -134,7 +104,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
           </span>
           <div>
             <strong>{profile ? t(profile.name) : label("myProfile")}</strong>
-            <span>{label("sampleProfile")}</span>
+            <span>{auth.snapshot.user?.email || label("verifiedAccount")}</span>
           </div>
         </div>
       </aside>

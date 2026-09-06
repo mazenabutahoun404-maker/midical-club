@@ -1,5 +1,3 @@
-# Reserved for a later release
+# Mentorship feature — implemented in V0.6
 
-Mentor capacity, session requests and group sessions.
-
-This directory preserves the agreed architecture. The workflow is not implemented yet.
+Includes mentor discovery, capacity-aware individual requests, group-session registration, reviewed Q&A, personal mentorship plans, calendar integration and notifications. Mutations use a browser-local preview adapter; real capacity, identity, moderation and delivery require server enforcement.

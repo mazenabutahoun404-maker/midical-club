@@ -13,6 +13,7 @@ import { mockServices } from "../../services/mock-services";
 import { QUERY_STALE_TIME } from "../../constants/config";
 import type { MedClubServices } from "../../services/contracts";
 import type { Locale } from "../../types/content";
+import { AuthProvider } from "./AuthProvider";
 function Notifications() {
   const { dir } = useLocale();
   return (
@@ -49,18 +50,20 @@ export function AppProviders({
       <ServicesProvider services={services}>
         <LocaleProvider initialLocale={initialLocale}>
           <AppearanceProvider>
-            <MotionConfig reducedMotion="user">
-              <TooltipProvider delayDuration={350}>
-                <WorkspaceProvider>
-                  <SavedItemsProvider>
-                    <OverlayProvider>
-                      {children}
-                      <Notifications />
-                    </OverlayProvider>
-                  </SavedItemsProvider>
-                </WorkspaceProvider>
-              </TooltipProvider>
-            </MotionConfig>
+            <AuthProvider>
+              <MotionConfig reducedMotion="user">
+                <TooltipProvider delayDuration={350}>
+                  <WorkspaceProvider>
+                    <SavedItemsProvider>
+                      <OverlayProvider>
+                        {children}
+                        <Notifications />
+                      </OverlayProvider>
+                    </SavedItemsProvider>
+                  </WorkspaceProvider>
+                </TooltipProvider>
+              </MotionConfig>
+            </AuthProvider>
           </AppearanceProvider>
         </LocaleProvider>
       </ServicesProvider>

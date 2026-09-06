@@ -1,71 +1,67 @@
-# MedClub V0.7 — Store, Cart & Orders
+# MedClub V0.8 — Identity & Access Experience
 
-Source-only release for an existing React + TypeScript + Vite + Tailwind CSS 4 setup. It contains the complete V0.1–V0.6 source plus the V0.7 store experience. Project scaffolding, dependencies, build output and secrets are intentionally excluded.
+This is the complete source-only V0.8 release for an existing React + TypeScript + Vite + Tailwind CSS 4 project. It includes every V0.1–V0.7 feature plus the new account experience, protected personal workspace, profile editing, and navigation overflow repair.
 
 ## Integrate
 
 1. Back up the current `src` directory.
-2. Replace it with this complete `src` directory. Routes, contracts, navigation, messages and styles changed together; do not copy only the store pages.
-3. Keep the existing package and Vite/Tailwind configuration. V0.7 adds no dependency.
-4. Run the project's normal type-check, tests and production build.
-5. Test with existing browser storage intact. Earlier saves, registrations, collections, language, navigation and appearance preferences remain compatible.
+2. Replace it with this complete `src` directory. Routes, providers, service contracts, messages, navigation and styles changed together.
+3. Keep your current project configuration and dependencies. V0.8 adds no package dependency.
+4. Run your normal type-check, automated tests and production build.
+5. Test sign-in, registration, verification, sign-out and both navigation orientations on real devices before deployment.
 
-## V0.7 outcome
+## V0.8 outcome
 
-| Area          | Implemented behavior                                                                               |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Catalog       | Responsive product grid, category tabs, text/material search, stock filter and featured treatment  |
-| Products      | Dedicated detail routes, variant selection, live stock limits, quantity controls and product notes |
-| Cart          | Persistent per-student cart, SKU/variant identity, stock validation, updates, removal and subtotal |
-| Reservation   | Explicit collection reservation confirmation that snapshots lines/prices and clears the cart       |
-| Orders        | Dedicated My Orders screen, status path, collection details, totals and safe cancellation rules    |
-| Discovery     | Product names, descriptions, materials, variants and SKUs join bilingual global search             |
-| Personal UX   | Order destination in My MedClub plus ready-order notifications                                     |
-| Experience    | Clinical-supply-shelf composition, scan-line hover effects, animated icons, RTL and reduced motion |
-| Data boundary | Typed products/cart/orders and a replaceable service adapter prepared for a real API               |
+| Area              | Implemented behavior                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Auth world        | Dedicated, asymmetrical sign-in environment separated from the public and personal shells                           |
+| Medical visual    | Raw WebGL cellular/DNA-inspired depth field with pointer response, graceful fallback and reduced-motion mode        |
+| Account flow      | Sign in, registration, six-digit verification, non-enumerating recovery preview and sign-out                        |
+| Route boundary    | All `/my/*` routes require a preview session and return users to their original destination after sign-in           |
+| Profile           | Account-specific name, email, batch, year, focus length and bio editing                                             |
+| Navigation repair | Public and personal rails contain their own scrolling, hide native scrollbars and show directional overflow shadows |
+| Localization      | Complete English/Arabic auth copy, logical layout, RTL and accessible labels                                        |
+| API boundary      | Typed `AuthService`, provider and replaceable browser-local adapter                                                 |
 
-V0.1–V0.6 remain included: the public/personal shells, collapsible navigation, homepage, academic journeys, course atlas, search, library, calendar, notifications, events, opportunities, community, Medical Journal, mentorship and scientific contributions.
+V0.1–V0.7 remain included: public/personal shells, collapsible/orientation-aware navigation, homepage, academics, courses, search, library, calendar, notifications, events, opportunities, community, Medical Journal, mentorship, contributions and the store/cart/order preview.
 
-## New routes
+## Routes and preview account
 
-| Route                   | Screen                                             |
-| ----------------------- | -------------------------------------------------- |
-| `/store`                | Searchable and filterable product catalog          |
-| `/store/products/:slug` | Product details, variants and add-to-cart controls |
-| `/store/cart`           | Cart and collection-reservation preview            |
-| `/my/orders`            | Personal reservation and order tracking            |
+| Route            | Purpose                                                   |
+| ---------------- | --------------------------------------------------------- |
+| `/auth/sign-in`  | Sign in and return to the requested personal route        |
+| `/auth/register` | Create a browser-local preview account                    |
+| `/auth/verify`   | Verify the pending account with the preview code          |
+| `/auth/recover`  | Exercise the non-enumerating recovery response            |
+| `/my/*`          | Protected personal workspace and account-specific profile |
 
-`/store/orders` redirects to `/my/orders` so order history remains inside the private-feeling My MedClub workspace.
+Preview credentials:
 
-## API readiness
+- Email: `student@medclub.jo`
+- Password: `MedClub2026!`
+- Registration verification code: `260908`
 
-The UI follows `UI → hooks/providers → MedClubServices → adapter`.
+These values are intentionally visible because this is a local product preview, not production authentication.
 
-- `types/content.ts` defines products, variants, carts, order snapshots and status records.
-- `services/contracts.ts` exposes store query and mutation interfaces without coupling screens to fetch calls.
-- `services/local-store.service.ts` is the browser-local preview adapter.
-- `data/mock/store.ts` contains explicitly illustrative catalog and order fixtures.
-- Search and notifications consume the same store domain records instead of duplicating page data.
+## Security boundary
 
-A production API must enforce authenticated identity, atomic stock/reservations, price authority, order status permissions, cancellation rules, audit history, notification delivery and administrator/treasurer access. React, route visibility and browser storage are not security boundaries.
+The browser-local adapter demonstrates state transitions and the API contract only. A password digest in browser storage does **not** make client-side authentication secure. Do not use this adapter to protect real student data.
 
-## Payment and fulfillment boundary
+Production must replace it with server-backed identity and authorization, secure HttpOnly sessions or an approved identity platform, CSRF protection, verified email delivery with expiring tokens, throttling and lockouts, server-side validation, audited capability checks, privacy controls and account lifecycle policies. The university-email eligibility policy is still a product decision.
 
-V0.7 deliberately does **not** collect payment details, charge a customer or promise delivery. The current action reserves an illustrative cart for collection. Final payment, delivery and refund behavior must follow MedClub's future operational decision and workshop. Coupons, real inventory, financial reports, treasurer permissions and audit trails remain backend/admin work.
+## Visual and motion behavior
 
-## Console note
+The WebGL field is decorative: the form remains the primary task, the canvas is hidden from assistive technology, rendering pauses offscreen, device pixel ratio is capped, and unsupported/reduced-motion environments receive a static visual. The auth layout works without WebGL.
 
-`[vite] connecting`, `[vite] connected` and the React DevTools suggestion are normal development messages. The earlier `VM### … reportAllChanges … undefined.startTime` stack points to an anonymous injected script: `reportAllChanges` is absent from this source and the inspected runtime packages. Test the direct localhost page in a clean browser profile with extensions disabled; do not suppress global errors in the application. See `CONSOLE-TROUBLESHOOTING.md`.
+Both desktop navigation systems now use measured scroll cues. Native scrollbars are visually hidden while wheel, touch and keyboard scrolling remain available. Horizontal destinations stay clipped inside their rail instead of extending over the page.
 
-## Honest limitations
+## Verification and limitations
 
-- All products, prices, SKUs, materials, stock, collection details and supplier implications are illustrative.
-- Cart, reservation and order data are stored locally for preview; no reservation reaches MedClub staff.
-- Browser-side stock checks are not concurrency-safe. Real inventory and reservations require atomic server transactions.
-- No payment fields, payment processor, coupon engine, shipping, delivery, refund or financial report is implemented.
-- Product visuals are deliberate icon-led concepts, not photographs of verified merchandise.
-- Authentication, store administration, production notifications, treasurer permissions and audit logs remain future server-backed milestones.
-- The production build passes. Its host project should add vendor chunk groups to address the main-bundle size warning.
-- Native-dialog, motion, responsive and assistive-technology behavior still need final real-browser/device acceptance after integration.
+- TypeScript strict checking and the production build pass.
+- The automated V0.2–V0.8 regression covers data relationships, routes, workflows, RTL, persistence, accessibility states and navigation containment.
+- The host build still reports a main-chunk size warning; add deliberate vendor chunk groups in the integrating project.
+- Automated DOM tests do not replace real WebGL, browser, mobile, keyboard or assistive-technology acceptance testing.
+- No real email, server session, password recovery message, account database or administrator authorization exists yet.
+- The earlier anonymous `VM### … reportAllChanges … startTime` exception is still attributable to injected preview/extension code, not a statement in this source. See `CONSOLE-TROUBLESHOOTING.md`.
 
-Read `V0.7-CHECKLIST.md`, `V0.7-DESIGN.md`, `ARCHITECTURE.md` and `CONSOLE-TROUBLESHOOTING.md` before integration.
+Read `V0.8-CHECKLIST.md`, `V0.8-DESIGN.md`, `ARCHITECTURE.md` and `CONSOLE-TROUBLESHOOTING.md` before integration.

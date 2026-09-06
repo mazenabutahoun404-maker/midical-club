@@ -1,65 +1,50 @@
-# MedClub source architecture — V0.7
+# MedClub source architecture — V0.8
 
-| Directory                    | Responsibility                                                                    |
-| ---------------------------- | --------------------------------------------------------------------------------- |
-| `app/router`                 | Lazy public/personal routes, transitions, titles and safe route focus             |
-| `app/providers`              | Query, services, locale, appearance, workspace and overlay state                  |
-| `app/layouts`                | Public and personal application frames                                            |
-| `components/ui`              | Reusable primitives and native-dialog modal lifecycle                             |
-| `components/navigation`      | Desktop rail/top navigation, phone dock and feature navigation                    |
-| `components/cards`           | Academic, discovery, community, mentorship and product presentation               |
-| `components/forms`           | Shared search and select controls                                                 |
-| `components/feedback`        | Loading, retry, empty and error states                                            |
-| `components/data-display`    | Headings, introductions and facts                                                 |
-| `features`                   | Feature-owned screens, editors, selectors and store product visuals               |
-| `data/mock`                  | Illustrative, typed records outside JSX                                           |
-| `services`                   | API contracts, replaceable adapters, search index and browser-local preview state |
-| `hooks`                      | Shared content queries, mutations and workspace paths                             |
-| `types`                      | Content, student, workspace and commerce-preview contracts                        |
-| `constants`                  | Configuration, routes and bilingual messages                                      |
-| `styles`                     | Tokens, RTL/accessibility and cumulative feature layers                           |
-| `admin` and reserved folders | Future scope; presence does not imply implementation                              |
+| Directory                    | Responsibility                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| `app/router`                 | Lazy public/auth/personal routes, guarded return paths, titles and transitions |
+| `app/providers`              | Query, services, auth, locale, appearance, workspace and overlay state         |
+| `app/layouts`                | Distinct public, auth and personal application worlds                          |
+| `components/ui`              | Reusable controls and native-dialog modal lifecycle                            |
+| `components/navigation`      | Responsive rails, phone dock, overflow measurement and feature navigation      |
+| `components/cards`           | Academic, discovery, community, mentorship and store presentation              |
+| `features/auth`              | Sign-in, registration, verification, recovery and WebGL identity field         |
+| `features/profile`           | Authenticated account details, editing and sign-out                            |
+| `features/*`                 | Feature-owned screens, workflows and selectors                                 |
+| `data/mock`                  | Typed illustrative content outside JSX                                         |
+| `services`                   | API contracts, local preview adapters, search and persistence                  |
+| `hooks`                      | Shared queries, mutations, content paths and scroll-cue measurement            |
+| `types`                      | Auth, content, student, workspace and commerce contracts                       |
+| `constants`                  | Configuration, route builders and bilingual messages                           |
+| `styles`                     | Tokens, RTL/accessibility and cumulative release layers                        |
+| `admin` and reserved folders | Future scope; directory presence does not imply implementation                 |
 
-## Content and service flow
+## Identity flow
 
-Pages consume hooks or injected services. Only adapters import fixtures. The store uses its own local adapter because cart and order mutations are separate from general saved-item state.
+`AuthProvider` consumes the injected `AuthService`; pages never read browser storage directly. `RequireAuth` resolves three states: loading, anonymous, or authenticated. Anonymous requests are redirected to `/auth/sign-in` with a same-origin `returnTo`; unverified registrations are directed to `/auth/verify`. `safeReturnTo` accepts only internal paths.
 
-`MedClubServices` can later replace the adapter with an HTTP implementation while pages retain the same typed contracts. Production services must return user-authorized data; route visibility and client-side IDs do not provide access control.
+The local adapter owns the demo account and browser-local registrations. It normalizes corrupt storage, broadcasts cross-tab changes, avoids raw registered-password storage, updates the shared personal-profile query and falls back to tab memory if storage is blocked. These behaviors make a coherent preview, not a security system.
 
-## Store domain
+The production replacement must establish identity on the server. It must not trust student IDs, role names, route visibility, local storage or client capability checks.
 
-Products own bilingual content, category, materials, visual treatment and one or more variants. Each variant owns a stable SKU, option label, price in integer JOD fils and preview stock. Cart lines reference product and variant IDs. Orders snapshot names, selected options, SKUs and unit prices so historical totals do not silently change when the catalog changes.
+## Three application worlds
 
-The local adapter:
+- Public: discovery-focused MedClub pages and public navigation.
+- Auth: task-first form surface paired with a decorative medical WebGL field; no public or personal rail.
+- Personal: protected My MedClub shell with account-aware profile data and a clear return to the public platform.
 
-- isolates state per student;
-- normalizes stored cart and order records;
-- prevents invalid variants and quantities above preview stock;
-- treats product/variant identity as one cart line;
-- reserves a non-empty cart into an order snapshot;
-- clears the cart after reservation;
-- permits cancellation only while the preview order remains reserved.
+`SpaceTransition` distinguishes all three without hiding a focused descendant. Auth titles and route focus are managed centrally.
 
-These checks create coherent demo behavior but are not transaction-safe. A real backend must own prices, stock, reservation expiry, identity, order states and financial permissions atomically.
+## WebGL field
 
-## Checkout boundary
+`MedicalFieldCanvas` is a dependency-free WebGL renderer. It builds a double-helix-style point field plus low-density depth particles, uses restrained pointer parallax, caps rendering density, pauses when offscreen and cleans up listeners/resources. It is `aria-hidden` and has no semantic responsibility. Missing WebGL and `prefers-reduced-motion` use the static CSS composition.
 
-The modeled V0.7 flow stops at `Cart → Reserve for collection → My Orders`. It does not model a successful payment. No card, bank or wallet fields exist, and the UI explicitly states that payment/delivery/refund rules are not finalized.
+## Navigation containment
 
-Later services may add checkout, coupons, fulfillment and refunds only after the club defines the operational process. Administrator and treasurer actions must be capability-based and audited on the server.
+`useNavigationScrollCues` measures the public and personal rail in either orientation using scroll events, resize observation and route changes. Scroll regions own their overflow, native scrollbars are hidden, and logical shadow cues indicate content above/below or before/after. Horizontal mega-menu content sits outside the clipping region so it remains usable while destinations cannot leak out of the rail.
 
-## Cross-feature integration
+## Existing domain architecture
 
-- Products join the bilingual global search index using names, descriptions, materials, option labels and SKUs.
-- Public Store navigation retains the established collapsible desktop rail and mobile destination model.
-- Cart quantity and personal order count appear in animated store tabs.
-- Confirmed/ready order fixtures can generate personal notifications.
-- My Orders stays inside the visually separate My MedClub workspace.
-- Store routes use the existing medical transition system.
-- Logical CSS, bilingual messages and reduced-motion fallbacks apply to all store screens.
+V0.1–V0.7 retain the `UI → hooks/providers → MedClubServices → adapter` boundary. Academic relationships, normalized workspace persistence, search, notifications, event registration, opportunities, community, journal review, mentorship, contributions and store reservations continue to share the same typed records and account profile.
 
-## Existing platform contracts
-
-V0.1–V0.6 architecture remains unchanged: API-ready academic relationships, one shared search panel, normalized workspace persistence, event registration, save-to-library behavior, native-dialog overlays, collapsible public/personal navigation, RTL, reduced motion, mentorship workflows and scientific-review safeguards.
-
-Demo content uses ISO timestamps with explicit offsets. Date presentation uses `APP_TIMEZONE` (`Asia/Amman`). A production order service should own timezone conversion, reservation expiry and notification delivery.
+ISO timestamps retain explicit offsets and presentation uses `APP_TIMEZONE` (`Asia/Amman`). A production backend must own identity, time-sensitive authorization, data retention and notification delivery.

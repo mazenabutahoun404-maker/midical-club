@@ -42,6 +42,10 @@ export function RouteEffects() {
       "/utilities": "tools",
       "/store": "store",
       "/store/cart": "cart",
+      "/auth/sign-in": "signIn",
+      "/auth/register": "createAccount",
+      "/auth/verify": "verifyEmail",
+      "/auth/recover": "forgotPassword",
       "/learn/electronic-exams": "exams",
     } as const;
     const key = keys[location.pathname as keyof typeof keys];

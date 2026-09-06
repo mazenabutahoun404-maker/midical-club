@@ -6,9 +6,13 @@ import { Brand } from "./Brand";
 import { LanguageMenu } from "./LanguageMenu";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { AppLink } from "./AppLink";
+import { useAuth } from "../../app/providers/AuthProvider";
+import { signInPath } from "../../constants/routes";
 export function WorkspaceHeader({ site }: { site: SiteContent }) {
   const { label } = useLocale();
   const { openSearch } = useOverlays();
+  const auth = useAuth();
+  const signedIn = auth.snapshot.status === "authenticated";
   return (
     <header className="workspace-header container">
       <div className="workspace-welcome">
@@ -32,11 +36,14 @@ export function WorkspaceHeader({ site }: { site: SiteContent }) {
         </button>
         <LanguageMenu />
         <AppearanceSettings compact />
-        <AppLink href="/my" className="workspace-account">
+        <AppLink
+          href={signedIn ? "/my" : signInPath("/my")}
+          className="workspace-account"
+        >
           <span className="account-symbol">
             m<span>c</span>
           </span>
-          <span>{label("myProfile")}</span>
+          <span>{label(signedIn ? "myProfile" : "signIn")}</span>
           <ArrowUpRight size={16} className="directional" />
         </AppLink>
       </div>

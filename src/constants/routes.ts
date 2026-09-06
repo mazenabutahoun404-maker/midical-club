@@ -32,6 +32,10 @@ export const routes = {
   myContributions: "/my/contributions",
   cart: "/store/cart",
   myOrders: "/my/orders",
+  signIn: "/auth/sign-in",
+  register: "/auth/register",
+  verify: "/auth/verify",
+  recover: "/auth/recover",
 } as const;
 export const eventPath = (slug: string) =>
   `/events/${encodeURIComponent(slug)}`;
@@ -56,3 +60,5 @@ export const isPersonalPath = (path: string) =>
   path === "/my" || path.startsWith("/my/");
 export const personalCoursePath = (slug: string) =>
   `/my/learning/${encodeURIComponent(slug)}`;
+export const signInPath = (returnTo = "/my") =>
+  `${routes.signIn}?returnTo=${encodeURIComponent(returnTo)}`;

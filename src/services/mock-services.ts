@@ -27,6 +27,7 @@ import { createLocalMentorshipService } from "./local-mentorship.service";
 import { createLocalContributionService } from "./local-contribution.service";
 import { storeProducts } from "../data/mock/store";
 import { createLocalStoreService } from "./local-store.service";
+import { createLocalAuthService } from "./local-auth.service";
 // Only this adapter imports mock data. Inject a matching HTTP-backed registry into App later.
 const clone = <T>(value: T): Promise<T> =>
   Promise.resolve(structuredClone(value));
@@ -34,11 +35,13 @@ const eventActions = createLocalEventService();
 const mentorshipActions = createLocalMentorshipService();
 const contributionActions = createLocalContributionService();
 const storeActions = createLocalStoreService();
+const authActions = createLocalAuthService();
 export const mockServices: MedClubServices = {
+  auth: authActions,
   workspace: createLocalWorkspaceService(),
   calendar: { list: () => clone(academicCalendar) },
   notifications: { list: () => clone(studentNotifications) },
-  personal: { getProfile: () => clone(student) },
+  personal: { getProfile: authActions.getProfile },
   site: { get: () => clone(siteContent) },
   academics: {
     listCourses: () => clone(courses),

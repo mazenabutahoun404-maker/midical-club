@@ -5,7 +5,7 @@ export function SpaceTransition({
   space,
   children,
 }: {
-  space: "personal" | "public";
+  space: "personal" | "public" | "auth";
   children: ReactNode;
 }) {
   const previous = useRef(space);

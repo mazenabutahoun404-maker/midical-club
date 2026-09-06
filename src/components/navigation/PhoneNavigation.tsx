@@ -5,10 +5,17 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
 import { AppLink } from "./AppLink";
 import { MobileNavigation } from "./MobileNavigation";
+import { useAuth } from "../../app/providers/AuthProvider";
+import { signInPath } from "../../constants/routes";
 export function PhoneNavigation({ site }: { site: SiteContent }) {
   const { label } = useLocale();
   const { openSearch } = useOverlays();
   const { pathname, hash } = useLocation();
+  const auth = useAuth();
+  const libraryHref =
+    auth.snapshot.status === "authenticated"
+      ? "/my/library"
+      : signInPath("/my/library");
   return (
     <nav className="phone-navigation" aria-label={label("mobileNavigation")}>
       <AppLink
@@ -38,7 +45,7 @@ export function PhoneNavigation({ site }: { site: SiteContent }) {
         <span>{label("search")}</span>
       </button>
       <AppLink
-        href="/my/library"
+        href={libraryHref}
         className={pathname === "/my/library" ? "active" : ""}
         aria-current={pathname === "/my/library" ? "page" : undefined}
       >

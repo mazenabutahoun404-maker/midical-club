@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { PublicLayout } from "../layouts/PublicLayout";
 import { PersonalLayout } from "../layouts/PersonalLayout";
+import { AuthLayout } from "../layouts/AuthLayout";
 import { useOverlays } from "../providers/OverlayProvider";
 import { RouteEffects } from "./RouteEffects";
 import { SpaceTransition } from "./SpaceTransition";
@@ -11,6 +12,7 @@ import { isPersonalPath } from "../../constants/routes";
 import { PlannedFeaturePage } from "../../components/feedback/PlannedFeaturePage";
 import { useLocale } from "../providers/LocaleProvider";
 import { ActionLink } from "../../components/ui/ActionLink";
+import { RequireAuth } from "./RequireAuth";
 const Homepage = lazy(() => import("../../features/homepage/Homepage"));
 const AppOverlays = lazy(() =>
   import("../layouts/AppOverlays").then((module) => ({
@@ -103,6 +105,10 @@ const StorePage = lazy(() => import("../../features/store/StorePage"));
 const ProductPage = lazy(() => import("../../features/store/ProductPage"));
 const CartPage = lazy(() => import("../../features/store/CartPage"));
 const MyOrdersPage = lazy(() => import("../../features/store/MyOrdersPage"));
+const SignInPage = lazy(() => import("../../features/auth/SignInPage"));
+const RegisterPage = lazy(() => import("../../features/auth/RegisterPage"));
+const VerifyPage = lazy(() => import("../../features/auth/VerifyPage"));
+const RecoverPage = lazy(() => import("../../features/auth/RecoverPage"));
 function NotFound({ personal = false }: { personal?: boolean }) {
   const { label } = useLocale();
   return (
@@ -119,11 +125,23 @@ export function AppRouter() {
   const location = useLocation();
   const { searchOpen, detail } = useOverlays();
   const { label } = useLocale();
-  const space = isPersonalPath(location.pathname) ? "personal" : "public";
+  const space = location.pathname.startsWith("/auth")
+    ? "auth"
+    : isPersonalPath(location.pathname)
+      ? "personal"
+      : "public";
   return (
     <>
       <SpaceTransition space={space}>
         <Routes>
+          <Route path="auth" element={<AuthLayout />}>
+            <Route index element={<Navigate to="sign-in" replace />} />
+            <Route path="sign-in" element={<SignInPage />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="verify" element={<VerifyPage />} />
+            <Route path="recover" element={<RecoverPage />} />
+            <Route path="*" element={<Navigate to="sign-in" replace />} />
+          </Route>
           <Route element={<PublicLayout />}>
             <Route index element={<Homepage />} />
             <Route path="search" element={<SearchPage />} />
@@ -334,31 +352,33 @@ export function AppRouter() {
             <Route path="utilities" element={<StudyToolsPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="my" element={<PersonalLayout />}>
-            <Route index element={<StudentDashboard />} />
-            <Route path="dashboard" element={<Navigate to="/my" replace />} />
-            <Route path="learning" element={<MyLearningPage />} />
-            <Route
-              path="learning/:slug"
-              element={
-                <AcademicTransition>
-                  <CoursePage />
-                </AcademicTransition>
-              }
-            />
-            <Route path="library" element={<LibraryPage />} />
-            <Route path="calendar" element={<CalendarPage />} />
-            <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="events" element={<MyEventsPage />} />
-            <Route path="opportunities" element={<MyOpportunitiesPage />} />
-            <Route path="mentorship" element={<MyMentorshipPage />} />
-            <Route path="contributions" element={<MyContributionsPage />} />
-            <Route path="orders" element={<MyOrdersPage />} />
-            <Route path="search" element={<SearchPage />} />
-            <Route path="focus" element={<PersonalFocusPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="*" element={<NotFound personal />} />
+          <Route element={<RequireAuth />}>
+            <Route path="my" element={<PersonalLayout />}>
+              <Route index element={<StudentDashboard />} />
+              <Route path="dashboard" element={<Navigate to="/my" replace />} />
+              <Route path="learning" element={<MyLearningPage />} />
+              <Route
+                path="learning/:slug"
+                element={
+                  <AcademicTransition>
+                    <CoursePage />
+                  </AcademicTransition>
+                }
+              />
+              <Route path="library" element={<LibraryPage />} />
+              <Route path="calendar" element={<CalendarPage />} />
+              <Route path="notifications" element={<NotificationsPage />} />
+              <Route path="events" element={<MyEventsPage />} />
+              <Route path="opportunities" element={<MyOpportunitiesPage />} />
+              <Route path="mentorship" element={<MyMentorshipPage />} />
+              <Route path="contributions" element={<MyContributionsPage />} />
+              <Route path="orders" element={<MyOrdersPage />} />
+              <Route path="search" element={<SearchPage />} />
+              <Route path="focus" element={<PersonalFocusPage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="*" element={<NotFound personal />} />
+            </Route>
           </Route>
         </Routes>
       </SpaceTransition>
