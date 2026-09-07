@@ -1,5 +1,14 @@
 import type { StudentProfile } from "../types/student";
 import type { AuthService } from "../types/auth";
+import type { AdminService } from "../types/admin";
+import type { BuilderService } from "../types/builder";
+import type { GovernanceService } from "../types/governance";
+import type {
+  ClubMembershipProfile,
+  RecruitmentApplication,
+  RecruitmentApplicationInput,
+  RecruitmentPosition,
+} from "../types/recruitment";
 import type {
   WorkspaceService,
   CalendarItem,
@@ -36,6 +45,9 @@ import type {
 } from "../types/content";
 export interface MedClubServices {
   auth: AuthService;
+  admin: AdminService;
+  builder: BuilderService;
+  governance: GovernanceService;
   workspace: WorkspaceService;
   calendar: { list: () => Promise<CalendarItem[]> };
   notifications: { list: () => Promise<StudentNotification[]> };
@@ -102,6 +114,31 @@ export interface MedClubServices {
     ) => Promise<StudentContribution>;
     submit: (studentId: string, id: string) => Promise<StudentContribution>;
     deleteDraft: (studentId: string, id: string) => Promise<void>;
+  };
+  recruitment: {
+    listPositions: () => Promise<RecruitmentPosition[]>;
+    getPosition: (slug: string) => Promise<RecruitmentPosition | null>;
+    listApplications: (studentId: string) => Promise<RecruitmentApplication[]>;
+    saveDraft: (
+      studentId: string,
+      input: RecruitmentApplicationInput,
+    ) => Promise<RecruitmentApplication>;
+    submit: (
+      studentId: string,
+      applicationId: string,
+    ) => Promise<RecruitmentApplication>;
+    withdraw: (
+      studentId: string,
+      applicationId: string,
+    ) => Promise<RecruitmentApplication>;
+    toggleOnboardingTask: (
+      studentId: string,
+      applicationId: string,
+      taskId: string,
+    ) => Promise<RecruitmentApplication>;
+    getMemberProfile: (
+      studentId: string,
+    ) => Promise<ClubMembershipProfile | null>;
   };
   store: {
     listProducts: () => Promise<StoreProduct[]>;

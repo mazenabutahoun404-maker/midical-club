@@ -53,7 +53,7 @@
   [data-navigation="vertical"][data-sidebar="collapsed"] .brand > span,
   [data-navigation="vertical"][data-sidebar="collapsed"]
     .navigation-item
-    > span,
+    > span:last-of-type,
   [data-navigation="vertical"][data-sidebar="collapsed"]
     .navigation-preferences
     > span,

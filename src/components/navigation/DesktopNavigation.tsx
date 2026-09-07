@@ -164,7 +164,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
             <p className="navigation-label">{label("workspace")}</p>
             <NavigationHint label={label(signedIn ? "myProfile" : "signIn")}>
               <AppLink
-                className={`navigation-item ${active("/my") ? "active" : ""}`}
+                className={`navigation-item workspace-portal-item space-portal-link ${active("/my") ? "active" : ""}`}
                 href={signedIn ? "/my" : signInPath("/my")}
                 aria-current={active("/my") ? "page" : undefined}
               >

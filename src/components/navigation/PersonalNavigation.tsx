@@ -16,6 +16,10 @@ import {
   HeartHandshake,
   FileCheck2,
   PackageCheck,
+  ClipboardList,
+  ContactRound,
+  ShieldCheck,
+  ArrowUpRight,
 } from "lucide-react";
 import { Modal } from "../ui/Modal";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -26,6 +30,7 @@ import { NavigationHint } from "./NavigationHint";
 import { SidebarToggle } from "./SidebarToggle";
 import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
 import { useAuth } from "../../app/providers/AuthProvider";
+import { useAccess } from "../../admin/governance/useGovernance";
 const items = [
   { href: "/my", label: "mySpace", icon: House },
   { href: "/my/learning", label: "myLearning", icon: BookOpen },
@@ -37,6 +42,8 @@ const items = [
   { href: "/my/mentorship", label: "myMentorship", icon: HeartHandshake },
   { href: "/my/contributions", label: "myContributions", icon: FileCheck2 },
   { href: "/my/orders", label: "myOrders", icon: PackageCheck },
+  { href: "/my/applications", label: "myApplications", icon: ClipboardList },
+  { href: "/my/team", label: "teamProfile", icon: ContactRound },
   { href: "/my/focus", label: "myFocus", icon: Timer },
   { href: "/my/profile", label: "myProfile", icon: UserRound },
   { href: "/my/settings", label: "personalSettings", icon: SlidersHorizontal },
@@ -46,6 +53,8 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
   const { pathname } = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);
   const auth = useAuth();
+  const access = useAccess();
+  const canOpenAdmin = access.data?.capabilities.includes("admin.access") ?? false;
   const { scrollArea, scrollCues } = useNavigationScrollCues(pathname);
   useEffect(() => setMoreOpen(false), [pathname]);
   const active = (href: string) =>
@@ -98,6 +107,19 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             </nav>
           </div>
         </div>
+        {canOpenAdmin && <NavigationHint label={label("governancePortalTitle")}>
+          <AppLink href="/admin" className="personal-admin-portal">
+            <span className="personal-admin-portal-icon" aria-hidden="true">
+              <ShieldCheck size={19} />
+              <i />
+            </span>
+            <span>
+              <small>{label("governancePriority")}</small>
+              <strong>{label("governancePortalTitle")}</strong>
+            </span>
+            <ArrowUpRight size={16} className="directional" />
+          </AppLink>
+        </NavigationHint>}
         <div className="personal-sidebar-footer">
           <span className="personal-mini-avatar" aria-hidden="true">
             {profile ? t(profile.initials) : <UserRound size={20} />}
@@ -160,6 +182,18 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
           className="personal-more-links"
           aria-label={label("personalNavigation")}
         >
+          {canOpenAdmin && <AppLink
+            className="personal-mobile-admin-portal"
+            href="/admin"
+            onClick={() => setMoreOpen(false)}
+          >
+            <ShieldCheck size={21} />
+            <span>
+              <small>{label("governancePriority")}</small>
+              {label("governancePortalTitle")}
+            </span>
+            <ArrowUpRight size={17} className="directional" />
+          </AppLink>}
           {items.slice(4).map(({ href, label: key, icon: Icon }) => (
             <AppLink
               key={href}

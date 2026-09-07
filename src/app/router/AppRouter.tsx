@@ -3,16 +3,18 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { PublicLayout } from "../layouts/PublicLayout";
 import { PersonalLayout } from "../layouts/PersonalLayout";
 import { AuthLayout } from "../layouts/AuthLayout";
+import { AdminLayout } from "../layouts/AdminLayout";
 import { useOverlays } from "../providers/OverlayProvider";
 import { RouteEffects } from "./RouteEffects";
 import { SpaceTransition } from "./SpaceTransition";
 import { AcademicTransition } from "./AcademicTransition";
 import { MedicalTransition } from "./MedicalTransition";
-import { isPersonalPath } from "../../constants/routes";
+import { isAdminPath, isPersonalPath } from "../../constants/routes";
 import { PlannedFeaturePage } from "../../components/feedback/PlannedFeaturePage";
 import { useLocale } from "../providers/LocaleProvider";
 import { ActionLink } from "../../components/ui/ActionLink";
 import { RequireAuth } from "./RequireAuth";
+import { CapabilityGate } from "./CapabilityGate";
 const Homepage = lazy(() => import("../../features/homepage/Homepage"));
 const AppOverlays = lazy(() =>
   import("../layouts/AppOverlays").then((module) => ({
@@ -109,14 +111,62 @@ const SignInPage = lazy(() => import("../../features/auth/SignInPage"));
 const RegisterPage = lazy(() => import("../../features/auth/RegisterPage"));
 const VerifyPage = lazy(() => import("../../features/auth/VerifyPage"));
 const RecoverPage = lazy(() => import("../../features/auth/RecoverPage"));
-function NotFound({ personal = false }: { personal?: boolean }) {
+const RecruitmentPage = lazy(
+  () => import("../../features/recruitment/RecruitmentPage"),
+);
+const RecruitmentPositionPage = lazy(
+  () => import("../../features/recruitment/RecruitmentPositionPage"),
+);
+const MyApplicationsPage = lazy(
+  () => import("../../features/recruitment/MyApplicationsPage"),
+);
+const TeamProfilePage = lazy(
+  () => import("../../features/recruitment/TeamProfilePage"),
+);
+const AdminDashboardPage = lazy(
+  () => import("../../admin/dashboard/AdminDashboardPage"),
+);
+const AdminContentPage = lazy(
+  () => import("../../admin/content/AdminContentPage"),
+);
+const AdminActivityPage = lazy(
+  () => import("../../admin/activity/AdminActivityPage"),
+);
+const AdminVersionsPage = lazy(
+  () => import("../../admin/versions/AdminVersionsPage"),
+);
+const BuilderLibraryPage = lazy(
+  () => import("../../admin/builder/BuilderLibraryPage"),
+);
+const PageBuilderPage = lazy(
+  () => import("../../admin/builder/PageBuilderPage"),
+);
+const GovernancePage = lazy(
+  () => import("../../admin/governance/GovernancePage"),
+);
+const AdminUsersPage = lazy(
+  () => import("../../admin/users/AdminUsersPage"),
+);
+const AdminRolesPage = lazy(
+  () => import("../../admin/roles/AdminRolesPage"),
+);
+const AdminApprovalsPage = lazy(
+  () => import("../../admin/approvals/AdminApprovalsPage"),
+);
+function NotFound({
+  personal = false,
+  admin = false,
+}: {
+  personal?: boolean;
+  admin?: boolean;
+}) {
   const { label } = useLocale();
   return (
     <div className="container not-found">
       <h1>{label("notFound")}</h1>
       <p>{label("notFoundBody")}</p>
-      <ActionLink href={personal ? "/my" : "/"}>
-        {label(personal ? "backToMySpace" : "back")}
+      <ActionLink href={admin ? "/admin" : personal ? "/my" : "/"}>
+        {label(admin ? "adminOverview" : personal ? "backToMySpace" : "back")}
       </ActionLink>
     </div>
   );
@@ -127,9 +177,11 @@ export function AppRouter() {
   const { label } = useLocale();
   const space = location.pathname.startsWith("/auth")
     ? "auth"
-    : isPersonalPath(location.pathname)
-      ? "personal"
-      : "public";
+    : isAdminPath(location.pathname)
+      ? "admin"
+      : isPersonalPath(location.pathname)
+        ? "personal"
+        : "public";
   return (
     <>
       <SpaceTransition space={space}>
@@ -254,6 +306,22 @@ export function AppRouter() {
               }
             />
             <Route
+              path="recruitment"
+              element={
+                <MedicalTransition>
+                  <RecruitmentPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
+              path="recruitment/:slug"
+              element={
+                <MedicalTransition>
+                  <RecruitmentPositionPage />
+                </MedicalTransition>
+              }
+            />
+            <Route
               path="learn"
               element={
                 <AcademicTransition>
@@ -373,11 +441,26 @@ export function AppRouter() {
               <Route path="mentorship" element={<MyMentorshipPage />} />
               <Route path="contributions" element={<MyContributionsPage />} />
               <Route path="orders" element={<MyOrdersPage />} />
+              <Route path="applications" element={<MyApplicationsPage />} />
+              <Route path="team" element={<TeamProfilePage />} />
               <Route path="search" element={<SearchPage />} />
               <Route path="focus" element={<PersonalFocusPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="*" element={<NotFound personal />} />
+            </Route>
+            <Route path="admin" element={<AdminLayout />}>
+              <Route index element={<CapabilityGate capability="admin.access"><AdminDashboardPage /></CapabilityGate>} />
+              <Route path="content" element={<CapabilityGate capability="content.review"><AdminContentPage /></CapabilityGate>} />
+              <Route path="builder" element={<CapabilityGate capability="builder.manage"><BuilderLibraryPage /></CapabilityGate>} />
+              <Route path="builder/:pageId" element={<CapabilityGate capability="builder.manage"><PageBuilderPage /></CapabilityGate>} />
+              <Route path="activity" element={<CapabilityGate capability="activity.view"><AdminActivityPage /></CapabilityGate>} />
+              <Route path="versions" element={<CapabilityGate capability="versions.restore"><AdminVersionsPage /></CapabilityGate>} />
+              <Route path="governance" element={<CapabilityGate capability="admin.access"><GovernancePage /></CapabilityGate>} />
+              <Route path="users" element={<CapabilityGate capability="users.view"><AdminUsersPage /></CapabilityGate>} />
+              <Route path="roles" element={<CapabilityGate capability="roles.manage"><AdminRolesPage /></CapabilityGate>} />
+              <Route path="approvals" element={<CapabilityGate capability="governance.approve"><AdminApprovalsPage /></CapabilityGate>} />
+              <Route path="*" element={<NotFound admin />} />
             </Route>
           </Route>
         </Routes>

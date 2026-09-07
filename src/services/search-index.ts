@@ -10,6 +10,7 @@ import type {
   SearchResult,
   SearchFilters,
 } from "../types/content";
+import type { RecruitmentPosition } from "../types/recruitment";
 export const normalizeSearch = (value: string) =>
   value
     .normalize("NFKD")
@@ -30,6 +31,7 @@ const aliases = [
   ["research", "بحث"],
   ["questions", "اسئلة"],
   ["store", "shop", "merch", "product", "متجر", "منتج"],
+  ["join", "team", "recruitment", "volunteer", "انضم", "فريق", "تطوع"],
 ];
 export function searchRecords(
   data: {
@@ -41,6 +43,7 @@ export function searchRecords(
     mentors?: Mentor[];
     mentorshipSessions?: MentorshipSession[];
     storeProducts?: StoreProduct[];
+    recruitmentPositions?: RecruitmentPosition[];
   },
   query: string,
   filters: SearchFilters = {},
@@ -173,6 +176,22 @@ export function searchRecords(
           variant.label.ar,
           variant.sku,
         ]),
+      ],
+    })),
+    ...(data.recruitmentPositions || []).map((item) => ({
+      id: `position:${item.id}`,
+      title: item.title,
+      subtitle: item.summary,
+      record: { kind: "position" as const, item },
+      course: undefined,
+      keywords: [
+        item.team,
+        item.status,
+        item.description.en,
+        item.description.ar,
+        ...item.skills.flatMap((skill) => [skill.en, skill.ar]),
+        ...item.responsibilities.flatMap((entry) => [entry.en, entry.ar]),
+        ...item.requirements.flatMap((entry) => [entry.en, entry.ar]),
       ],
     })),
   ];

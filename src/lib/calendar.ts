@@ -9,6 +9,10 @@ import type {
   MentorshipSession,
   MentorshipSessionRegistration,
 } from "../types/content";
+import type {
+  RecruitmentApplication,
+  RecruitmentPosition,
+} from "../types/recruitment";
 export function calendarDate(value: string): string {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: APP_TIMEZONE,
@@ -47,6 +51,8 @@ export function buildCalendar(
   mentorshipRequests: MentorshipRequest[] = [],
   mentorshipRegistrations: MentorshipSessionRegistration[] = [],
   mentors: Mentor[] = [],
+  recruitmentApplications: RecruitmentApplication[] = [],
+  recruitmentPositions: RecruitmentPosition[] = [],
 ): CalendarItem[] {
   return [
     ...academic.filter(
@@ -112,6 +118,31 @@ export function buildCalendar(
           startsAt: request.scheduledAt!,
           description: request.response || text(request.note, request.note),
           sourceId: request.id,
+        };
+      }),
+    ...recruitmentApplications
+      .filter((application) => !!application.interviewAt)
+      .map((application) => {
+        const position = recruitmentPositions.find(
+          (item) => item.id === application.positionId,
+        );
+        const roleTitle =
+          position?.title || text("MedClub role", "دور في النادي الطبي");
+        return {
+          id: `recruitment-interview:${application.id}`,
+          title: {
+            en: `Interview · ${roleTitle.en}`,
+            ar: `مقابلة · ${roleTitle.ar}`,
+          },
+          kind: "recruitment" as const,
+          startsAt: application.interviewAt!,
+          description:
+            application.interviewLocation ||
+            text(
+              "Recruitment interview. Open My applications for the latest details.",
+              "مقابلة استقطاب. افتح طلباتي للاطلاع على أحدث التفاصيل.",
+            ),
+          sourceId: application.id,
         };
       }),
   ].sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt));

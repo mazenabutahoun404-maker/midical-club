@@ -26,16 +26,28 @@ export const routes = {
   mentorshipSessions: "/mentorship/sessions",
   mentorshipQuestions: "/mentorship/qa",
   contributions: "/contribute",
+  recruitment: "/recruitment",
   myEvents: "/my/events",
   myOpportunities: "/my/opportunities",
   myMentorship: "/my/mentorship",
   myContributions: "/my/contributions",
   cart: "/store/cart",
   myOrders: "/my/orders",
+  myApplications: "/my/applications",
+  myTeam: "/my/team",
   signIn: "/auth/sign-in",
   register: "/auth/register",
   verify: "/auth/verify",
   recover: "/auth/recover",
+  admin: "/admin",
+  adminContent: "/admin/content",
+  adminActivity: "/admin/activity",
+  adminVersions: "/admin/versions",
+  adminBuilder: "/admin/builder",
+  adminGovernance: "/admin/governance",
+  adminUsers: "/admin/users",
+  adminRoles: "/admin/roles",
+  adminApprovals: "/admin/approvals",
 } as const;
 export const eventPath = (slug: string) =>
   `/events/${encodeURIComponent(slug)}`;
@@ -47,6 +59,10 @@ export const mentorPath = (slug: string) =>
   `/mentorship?mentor=${encodeURIComponent(slug)}`;
 export const productPath = (slug: string) =>
   `/store/products/${encodeURIComponent(slug)}`;
+export const positionPath = (slug: string) =>
+  `/recruitment/${encodeURIComponent(slug)}`;
+export const builderPath = (pageId: string) =>
+  `/admin/builder/${encodeURIComponent(pageId)}`;
 export const batchPath = (
   slug: string,
   view: "current" | "archive" = "current",
@@ -58,6 +74,8 @@ export const coursePath = (slug: string) =>
 
 export const isPersonalPath = (path: string) =>
   path === "/my" || path.startsWith("/my/");
+export const isAdminPath = (path: string) =>
+  path === "/admin" || path.startsWith("/admin/");
 export const personalCoursePath = (slug: string) =>
   `/my/learning/${encodeURIComponent(slug)}`;
 export const signInPath = (returnTo = "/my") =>

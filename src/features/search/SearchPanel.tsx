@@ -12,6 +12,7 @@ import {
   HeartHandshake,
   UsersRound,
   ShoppingBag,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
@@ -41,6 +42,7 @@ const kinds = [
   "mentor",
   "mentorship-session",
   "product",
+  "position",
 ] as const;
 const formats = [
   "guidance",
@@ -61,6 +63,7 @@ const icons = {
   mentor: HeartHandshake,
   "mentorship-session": UsersRound,
   product: ShoppingBag,
+  position: BriefcaseBusiness,
 };
 export function SearchPanel({
   compact = false,
@@ -101,6 +104,9 @@ export function SearchPanel({
     } else if (item.record.kind === "product") {
       closeSearch();
       navigate(`/store/products/${encodeURIComponent(item.record.item.slug)}`);
+    } else if (item.record.kind === "position") {
+      closeSearch();
+      navigate(`/recruitment/${encodeURIComponent(item.record.item.slug)}`);
     } else openDetail(item.record);
   };
   const results = result.data || [];

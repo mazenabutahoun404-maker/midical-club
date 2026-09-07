@@ -20,6 +20,7 @@ export function MobileNavigation({ site }: { site: SiteContent }) {
     "/journal",
     "/mentorship",
     "/contribute",
+    "/recruitment",
     "/store",
     "/utilities",
   ].some((path) => location.pathname.startsWith(path));

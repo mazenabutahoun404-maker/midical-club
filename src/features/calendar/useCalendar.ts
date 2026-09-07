@@ -9,6 +9,8 @@ import {
   useMentors,
   useMentorshipSessions,
   useMentorshipWorkspace,
+  useRecruitmentPositions,
+  useRecruitmentWorkspace,
 } from "../../hooks/useContent";
 import { buildCalendar } from "../../lib/calendar";
 export function useCalendar() {
@@ -21,6 +23,8 @@ export function useCalendar() {
   const mentors = useMentors();
   const mentorshipSessions = useMentorshipSessions();
   const mentorship = useMentorshipWorkspace();
+  const recruitmentPositions = useRecruitmentPositions();
+  const recruitment = useRecruitmentWorkspace();
   const academic = useQuery({
     queryKey: ["personal", "calendar"],
     queryFn: calendar.list,
@@ -32,6 +36,7 @@ export function useCalendar() {
     academic,
     mentors,
     mentorshipSessions,
+    recruitmentPositions,
   ];
   return {
     items: buildCalendar(
@@ -46,21 +51,26 @@ export function useCalendar() {
       mentorship.requests,
       mentorship.registrations,
       mentors.data || [],
+      recruitment.applications,
+      recruitmentPositions.data || [],
     ),
     isPending:
       workspace.isPending ||
       registrations.isPending ||
       mentorship.isPending ||
+      recruitment.isPending ||
       queries.some((q) => q.isPending),
     isError:
       workspace.isError ||
       registrations.isError ||
       mentorship.isError ||
+      recruitment.isError ||
       queries.some((q) => q.isError),
     retry: () => {
       workspace.retry();
       registrations.retry();
       mentorship.retry();
+      recruitment.retry();
       queries.forEach((q) => void q.refetch());
     },
   };

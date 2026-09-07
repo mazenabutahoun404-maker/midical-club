@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServices } from "../app/providers/ServicesProvider";
+import { useAuth } from "../app/providers/AuthProvider";
 export function useSiteContent() {
   const s = useServices();
   return useQuery({ queryKey: ["site"], queryFn: s.site.get });
@@ -350,6 +351,106 @@ export function useStoreWorkspace() {
       void profile.refetch();
       void cart.refetch();
       void orders.refetch();
+    },
+  };
+}
+
+export function useRecruitmentPositions() {
+  const services = useServices();
+  return useQuery({
+    queryKey: ["recruitment", "positions"],
+    queryFn: services.recruitment.listPositions,
+  });
+}
+
+export function useRecruitmentPosition(slug?: string) {
+  const services = useServices();
+  return useQuery({
+    queryKey: ["recruitment", "position", slug],
+    queryFn: () => services.recruitment.getPosition(slug!),
+    enabled: !!slug,
+  });
+}
+
+export function useRecruitmentWorkspace() {
+  const services = useServices();
+  const auth = useAuth();
+  const profile = useStudentProfile();
+  const client = useQueryClient();
+  const signedIn = auth.snapshot.status === "authenticated";
+  const studentId = signedIn ? profile.data?.id : undefined;
+  const applicationKey = ["recruitment", "applications", studentId];
+  const memberKey = ["recruitment", "member", studentId];
+  const applications = useQuery({
+    queryKey: applicationKey,
+    queryFn: () => services.recruitment.listApplications(studentId!),
+    enabled: !!studentId,
+  });
+  const membership = useQuery({
+    queryKey: memberKey,
+    queryFn: () => services.recruitment.getMemberProfile(studentId!),
+    enabled: !!studentId,
+  });
+  const refreshApplications = () =>
+    client.invalidateQueries({ queryKey: applicationKey });
+  const saveDraft = useMutation({
+    mutationFn: (
+      input: import("../types/recruitment").RecruitmentApplicationInput,
+    ) => services.recruitment.saveDraft(studentId!, input),
+    onSuccess: refreshApplications,
+  });
+  const submit = useMutation({
+    mutationFn: (id: string) => services.recruitment.submit(studentId!, id),
+    onSuccess: refreshApplications,
+  });
+  const withdraw = useMutation({
+    mutationFn: (id: string) => services.recruitment.withdraw(studentId!, id),
+    onSuccess: refreshApplications,
+  });
+  const toggleOnboardingTask = useMutation({
+    mutationFn: ({
+      applicationId,
+      taskId,
+    }: {
+      applicationId: string;
+      taskId: string;
+    }) =>
+      services.recruitment.toggleOnboardingTask(
+        studentId!,
+        applicationId,
+        taskId,
+      ),
+    onSuccess: async () => {
+      await Promise.all([
+        refreshApplications(),
+        client.invalidateQueries({ queryKey: memberKey }),
+      ]);
+    },
+  });
+  return {
+    signedIn,
+    applications: applications.data || [],
+    membership: membership.data || null,
+    isPending:
+      auth.isPending ||
+      (signedIn &&
+        (profile.isPending || applications.isPending || membership.isPending)),
+    isError:
+      signedIn &&
+      (profile.isError || applications.isError || membership.isError),
+    isMutating:
+      saveDraft.isPending ||
+      submit.isPending ||
+      withdraw.isPending ||
+      toggleOnboardingTask.isPending,
+    saveDraft: saveDraft.mutateAsync,
+    submit: submit.mutateAsync,
+    withdraw: withdraw.mutateAsync,
+    toggleOnboardingTask: toggleOnboardingTask.mutateAsync,
+    retry: () => {
+      void profile.refetch();
+      void applications.refetch();
+      void membership.refetch();
     },
   };
 }

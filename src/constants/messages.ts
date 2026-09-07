@@ -4,6 +4,10 @@ import { v05Messages } from "./v05-messages";
 import { v06Messages } from "./v06-messages";
 import { v07Messages } from "./v07-messages";
 import { v08Messages } from "./v08-messages";
+import { v09Messages } from "./v09-messages";
+import { v10Messages } from "./v10-messages";
+import { v11Messages } from "./v11-messages";
+import { v12Messages } from "./v12-messages";
 export const messages = {
   en: {
     ...workspaceMessages.en,
@@ -12,6 +16,10 @@ export const messages = {
     ...v06Messages.en,
     ...v07Messages.en,
     ...v08Messages.en,
+    ...v09Messages.en,
+    ...v10Messages.en,
+    ...v11Messages.en,
+    ...v12Messages.en,
     collapseSidebar: "Collapse sidebar",
     expandSidebar: "Expand sidebar",
     myProfile: "My profile",
@@ -95,7 +103,7 @@ export const messages = {
     libraryShort: "My library",
     studyToolsShort: "Study tools",
     findYourPeople: "Find your people",
-    previewShort: "V0.8 · Account preview",
+    previewShort: "V0.12 · Governance preview",
     welcomeLine: "Your campus. Connected.",
     searchSomething: "Find something great…",
     savedShort: "Saved",
@@ -297,6 +305,10 @@ export const messages = {
     ...v06Messages.ar,
     ...v07Messages.ar,
     ...v08Messages.ar,
+    ...v09Messages.ar,
+    ...v10Messages.ar,
+    ...v11Messages.ar,
+    ...v12Messages.ar,
     collapseSidebar: "طيّ القائمة الجانبية",
     expandSidebar: "توسيع القائمة الجانبية",
     myProfile: "ملفي الشخصي",
@@ -374,7 +386,7 @@ export const messages = {
     libraryShort: "مكتبتي",
     studyToolsShort: "أدوات الدراسة",
     findYourPeople: "اكتشف مجتمعك",
-    previewShort: "نسخة ٠.٨ · معاينة الحساب",
+    previewShort: "نسخة ٠.١٢ · معاينة الحوكمة",
     welcomeLine: "مجتمعك الجامعي، متصل.",
     searchSomething: "اكتشف شيئاً جديداً…",
     savedShort: "محفوظاتي",

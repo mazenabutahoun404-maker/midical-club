@@ -48,7 +48,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           ) {
             const selector =
               navigation === "horizontal"
-                ? ".workspace-header .appearance-shortcut"
+                ? ".workspace-header .appearance-shortcut, .admin-header .appearance-shortcut"
                 : ".desktop-navigation .navigation-preferences";
             const target = document.querySelector<HTMLButtonElement>(selector);
             if (target) {

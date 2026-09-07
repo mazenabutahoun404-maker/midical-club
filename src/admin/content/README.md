@@ -1,5 +1,3 @@
-# Reserved for a later release
+# Admin content
 
-Content management and publishing.
-
-This directory preserves the agreed architecture. The workflow is not implemented yet.
+Implemented in V0.10 by `AdminContentPage.tsx`: searchable review queue, provenance facts, decision notes, explicit approval/publishing transitions and device-local preview persistence. Production publishing remains server-controlled.

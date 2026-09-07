@@ -16,7 +16,7 @@ export function PersonalHeader() {
   const notifications = useNotifications();
   return (
     <header className="personal-header container">
-      <AppLink className="back-to-medclub" href="/">
+      <AppLink className="back-to-medclub space-portal-link" href="/">
         <ArrowLeft size={17} className="directional" />
         <span>{label("backToMedClub")}</span>
       </AppLink>

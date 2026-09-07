@@ -20,10 +20,14 @@ export function PageIntro({
     <div className="page-intro">
       <nav
         className="breadcrumbs"
-        aria-label={label(paths.personal ? "mySpace" : "home")}
+        aria-label={label(
+          paths.admin ? "adminOverview" : paths.personal ? "mySpace" : "home",
+        )}
       >
         <AppLink href={paths.home}>
-          {label(paths.personal ? "mySpace" : "home")}
+          {label(
+            paths.admin ? "adminOverview" : paths.personal ? "mySpace" : "home",
+          )}
         </AppLink>
         <ChevronRight className="directional" size={14} />
         <span aria-current="page">{title}</span>

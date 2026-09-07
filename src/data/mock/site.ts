@@ -35,6 +35,11 @@ export const siteContent: SiteContent = {
         href: routes.contributions,
       },
       {
+        id: "recruitment",
+        label: t("Join the team", "انضم إلى الفريق"),
+        href: routes.recruitment,
+      },
+      {
         id: "store",
         label: t("Store", "المتجر"),
         href: routes.store,
@@ -124,6 +129,11 @@ export const siteContent: SiteContent = {
         id: "contributions",
         label: t("Contribute", "ساهم"),
         href: routes.contributions,
+      },
+      {
+        id: "recruitment",
+        label: t("Join the team", "انضم إلى الفريق"),
+        href: routes.recruitment,
       },
       {
         id: "store",

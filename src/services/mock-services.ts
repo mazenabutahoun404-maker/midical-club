@@ -28,6 +28,11 @@ import { createLocalContributionService } from "./local-contribution.service";
 import { storeProducts } from "../data/mock/store";
 import { createLocalStoreService } from "./local-store.service";
 import { createLocalAuthService } from "./local-auth.service";
+import { recruitmentPositions } from "../data/mock/recruitment";
+import { createLocalRecruitmentService } from "./local-recruitment.service";
+import { createLocalAdminService } from "./local-admin.service";
+import { createLocalBuilderService } from "./local-builder.service";
+import { createLocalGovernanceService } from "./local-governance.service";
 // Only this adapter imports mock data. Inject a matching HTTP-backed registry into App later.
 const clone = <T>(value: T): Promise<T> =>
   Promise.resolve(structuredClone(value));
@@ -36,8 +41,15 @@ const mentorshipActions = createLocalMentorshipService();
 const contributionActions = createLocalContributionService();
 const storeActions = createLocalStoreService();
 const authActions = createLocalAuthService();
+const recruitmentActions = createLocalRecruitmentService();
+const adminActions = createLocalAdminService();
+const builderActions = createLocalBuilderService();
+const governanceActions = createLocalGovernanceService();
 export const mockServices: MedClubServices = {
   auth: authActions,
+  admin: adminActions,
+  builder: builderActions,
+  governance: governanceActions,
   workspace: createLocalWorkspaceService(),
   calendar: { list: () => clone(academicCalendar) },
   notifications: { list: () => clone(studentNotifications) },
@@ -80,6 +92,14 @@ export const mockServices: MedClubServices = {
     ...mentorshipActions,
   },
   contributions: contributionActions,
+  recruitment: {
+    listPositions: () => clone(recruitmentPositions),
+    getPosition: (slug) =>
+      clone(
+        recruitmentPositions.find((position) => position.slug === slug) || null,
+      ),
+    ...recruitmentActions,
+  },
   store: {
     listProducts: () => clone(storeProducts),
     getProduct: (slug) =>
@@ -99,6 +119,7 @@ export const mockServices: MedClubServices = {
             mentors,
             mentorshipSessions,
             storeProducts,
+            recruitmentPositions,
           },
           query,
           filters,

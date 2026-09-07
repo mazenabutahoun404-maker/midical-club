@@ -1,3 +1,5 @@
+import type { RecruitmentPosition } from "./recruitment";
+
 export type Locale = "en" | "ar";
 export type Text = Record<Locale, string>;
 export type Track = "basic" | "clinical";
@@ -457,7 +459,8 @@ export interface SearchResult {
     | { kind: "course"; item: Course }
     | { kind: "mentor"; item: Mentor }
     | { kind: "mentorship-session"; item: MentorshipSession }
-    | { kind: "product"; item: StoreProduct };
+    | { kind: "product"; item: StoreProduct }
+    | { kind: "position"; item: RecruitmentPosition };
 }
 export interface SearchFilters {
   type?: SearchResult["record"]["kind"];

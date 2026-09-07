@@ -23,7 +23,7 @@ export interface CalendarItem {
   title: Text;
   startsAt: string;
   endsAt?: string;
-  kind: "exam" | "event" | "deadline" | "study" | "mentorship";
+  kind: "exam" | "event" | "deadline" | "study" | "mentorship" | "recruitment";
   courseId?: string;
   sourceId?: string;
   description: Text;

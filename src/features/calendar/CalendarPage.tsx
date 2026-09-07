@@ -32,6 +32,7 @@ export const calendarKindLabels = {
   event: "savedEvent",
   deadline: "deadlineDate",
   mentorship: "mentorship",
+  recruitment: "recruitment",
 } as const;
 export default function CalendarPage() {
   const { label, t, locale, dir } = useLocale();

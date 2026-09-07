@@ -11,6 +11,8 @@ import {
   useMentorshipWorkspace,
   useContributions,
   useStoreWorkspace,
+  useRecruitmentPositions,
+  useRecruitmentWorkspace,
 } from "../../hooks/useContent";
 import { DEMO_TODAY } from "../../constants/config";
 import { calendarDate, shiftDay } from "../../lib/calendar";
@@ -28,6 +30,8 @@ export function useNotifications() {
   const mentorship = useMentorshipWorkspace();
   const contributions = useContributions();
   const store = useStoreWorkspace();
+  const recruitmentPositions = useRecruitmentPositions();
+  const recruitment = useRecruitmentWorkspace();
   const query = useQuery({
     queryKey: ["personal", "notifications"],
     queryFn: notifications.list,
@@ -163,6 +167,49 @@ export function useNotifications() {
         href: "/my/orders",
         createdAt: order.reservedAt,
       });
+  for (const application of recruitment.applications) {
+    const position = recruitmentPositions.data?.find(
+      (item) => item.id === application.positionId,
+    );
+    if (
+      [
+        "screening",
+        "interview",
+        "accepted",
+        "onboarding",
+        "completed",
+      ].includes(application.status)
+    )
+      items.push({
+        id: `recruitment-status:${application.id}:${application.status}`,
+        kind: "community",
+        title:
+          position?.title ||
+          text("Recruitment application", "طلب الانضمام إلى الفريق"),
+        body:
+          application.reviewerNote ||
+          text(
+            "Your recruitment application has a new status update.",
+            "يوجد تحديث جديد على حالة طلب الانضمام إلى الفريق.",
+          ),
+        href: "/my/applications",
+        createdAt: application.updatedAt,
+      });
+    if (application.interviewAt && approaching(application.interviewAt))
+      items.push({
+        id: `recruitment-interview:${application.id}`,
+        kind: "reminder",
+        title:
+          position?.title ||
+          text("Recruitment interview", "مقابلة الانضمام إلى الفريق"),
+        body: text(
+          "Your recruitment interview is coming up. Check the application workspace for details.",
+          "اقترب موعد مقابلة الانضمام إلى الفريق. راجع مساحة الطلب لمعرفة التفاصيل.",
+        ),
+        href: "/my/applications",
+        createdAt: DEMO_TODAY + "T09:00:00+03:00",
+      });
+  }
   items.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const queries = [
     profile,
@@ -171,6 +218,7 @@ export function useNotifications() {
     query,
     mentors,
     mentorshipSessions,
+    recruitmentPositions,
   ];
   return {
     items,
@@ -183,6 +231,7 @@ export function useNotifications() {
       mentorship.isPending ||
       contributions.isPending ||
       store.isPending ||
+      recruitment.isPending ||
       queries.some((q) => q.isPending),
     isError:
       workspace.isError ||
@@ -190,6 +239,7 @@ export function useNotifications() {
       mentorship.isError ||
       contributions.isError ||
       store.isError ||
+      recruitment.isError ||
       queries.some((q) => q.isError),
     retry: () => {
       workspace.retry();
@@ -197,6 +247,7 @@ export function useNotifications() {
       mentorship.retry();
       contributions.retry();
       store.retry();
+      recruitment.retry();
       queries.forEach((q) => void q.refetch());
     },
   };

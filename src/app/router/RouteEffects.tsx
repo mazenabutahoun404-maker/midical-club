@@ -16,6 +16,8 @@ export function RouteEffects() {
       "/my/mentorship": "myMentorship",
       "/my/contributions": "myContributions",
       "/my/orders": "myOrders",
+      "/my/applications": "myApplications",
+      "/my/team": "teamProfile",
       "/events": "events",
       "/opportunities": "opportunities",
       "/community": "community",
@@ -30,6 +32,7 @@ export function RouteEffects() {
       "/mentorship/sessions": "groupSessions",
       "/mentorship/qa": "mentorQA",
       "/contribute": "contribute",
+      "/recruitment": "recruitment",
       "/learn": "learn",
       "/learn/basic-sciences": "basic",
       "/learn/clinical-sciences": "clinical",
@@ -46,6 +49,15 @@ export function RouteEffects() {
       "/auth/register": "createAccount",
       "/auth/verify": "verifyEmail",
       "/auth/recover": "forgotPassword",
+      "/admin": "adminOverview",
+      "/admin/content": "adminContent",
+      "/admin/builder": "builderNavigation",
+      "/admin/activity": "adminActivity",
+      "/admin/versions": "adminVersions",
+      "/admin/governance": "governanceNavigation",
+      "/admin/users": "governanceUsers",
+      "/admin/roles": "governanceRoles",
+      "/admin/approvals": "governanceApprovals",
       "/learn/electronic-exams": "exams",
     } as const;
     const key = keys[location.pathname as keyof typeof keys];
@@ -54,7 +66,7 @@ export function RouteEffects() {
       /^\/learn\/clinical-sciences\/(fourth|fifth|sixth)-year$/.test(
         location.pathname,
       );
-    document.title = `${key ? label(key) : label(location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/store/products/") ? "product" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
+    document.title = `${key ? label(key) : label(location.pathname.startsWith("/admin/builder/") ? "builderEditor" : location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/store/products/") ? "product" : location.pathname.startsWith("/recruitment/") ? "position" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
   }, [location.pathname, locale, label]);
   useEffect(() => {
     let observer: MutationObserver | undefined;

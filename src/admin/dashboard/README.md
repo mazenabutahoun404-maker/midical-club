@@ -1,5 +1,3 @@
-# Reserved for a later release
+# Admin dashboard
 
-Administrative overview.
-
-This directory preserves the agreed architecture. The workflow is not implemented yet.
+Implemented in V0.10 by `AdminDashboardPage.tsx`: operational metrics, scientific-review queue, content-health signal, activity preview and an explicit authorization boundary.
