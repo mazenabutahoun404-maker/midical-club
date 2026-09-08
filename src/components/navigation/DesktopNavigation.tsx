@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import {
   House,
@@ -14,6 +14,9 @@ import {
   Heart,
   HeartHandshake,
   FileCheck2,
+  Pin,
+  PinOff,
+  X,
 } from "lucide-react";
 import { SidebarToggle } from "./SidebarToggle";
 import { NavigationHint } from "./NavigationHint";
@@ -27,6 +30,7 @@ import { useAppearance } from "../../app/providers/AppearanceProvider";
 import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { signInPath } from "../../constants/routes";
+import { AdaptiveNavigationContext } from "./AdaptiveNavigation";
 const icons = {
   community: Users,
   opportunities: Sparkles,
@@ -39,6 +43,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
   const { label, t } = useLocale();
   const { navigation } = useAppearance();
   const auth = useAuth();
+  const adaptiveState = useContext(AdaptiveNavigationContext);
   const signedIn = auth.snapshot.status === "authenticated";
   const location = useLocation();
   const [expanded, setExpanded] = useState(false);
@@ -81,6 +86,25 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
       }}
     >
       <SidebarToggle controls="public-sidebar-links" />
+      {adaptiveState && !adaptiveState.hidden && (
+        <div className="navigation-reveal-actions desktop-reveal">
+          <button
+            type="button"
+            aria-pressed={adaptiveState.pinned}
+            aria-label={adaptiveState.pinned ? "Unpin navigation" : "Pin navigation"}
+            onClick={adaptiveState.togglePin}
+          >
+            {adaptiveState.pinned ? <PinOff size={17} /> : <Pin size={17} />}
+          </button>
+          <button
+            type="button"
+            aria-label="Collapse"
+            onClick={adaptiveState.hide}
+          >
+            <X size={17} />
+          </button>
+        </div>
+      )}
       <div className="navigation-brand">
         <Brand brand={site.brand} />
       </div>

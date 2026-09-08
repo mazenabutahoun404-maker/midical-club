@@ -6,6 +6,7 @@ export const routes = {
   personal: "/my",
   profile: "/my/profile",
   learning: "/my/learning",
+  progress: "/my/progress",
   library: "/my/library",
   focus: "/my/focus",
   settings: "/my/settings",
@@ -48,6 +49,8 @@ export const routes = {
   adminUsers: "/admin/users",
   adminRoles: "/admin/roles",
   adminApprovals: "/admin/approvals",
+  adminAnalytics: "/admin/analytics",
+  adminContentHealth: "/admin/content-health",
 } as const;
 export const eventPath = (slug: string) =>
   `/events/${encodeURIComponent(slug)}`;

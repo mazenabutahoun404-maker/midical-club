@@ -3,6 +3,7 @@ import type { AuthService } from "../types/auth";
 import type { AdminService } from "../types/admin";
 import type { BuilderService } from "../types/builder";
 import type { GovernanceService } from "../types/governance";
+import type { InsightsService } from "../types/insights";
 import type {
   ClubMembershipProfile,
   RecruitmentApplication,
@@ -48,6 +49,7 @@ export interface MedClubServices {
   admin: AdminService;
   builder: BuilderService;
   governance: GovernanceService;
+  insights: InsightsService;
   workspace: WorkspaceService;
   calendar: { list: () => Promise<CalendarItem[]> };
   notifications: { list: () => Promise<StudentNotification[]> };

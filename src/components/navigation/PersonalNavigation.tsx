@@ -20,6 +20,7 @@ import {
   ContactRound,
   ShieldCheck,
   ArrowUpRight,
+  ChartNoAxesCombined,
 } from "lucide-react";
 import { Modal } from "../ui/Modal";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -34,6 +35,7 @@ import { useAccess } from "../../admin/governance/useGovernance";
 const items = [
   { href: "/my", label: "mySpace", icon: House },
   { href: "/my/learning", label: "myLearning", icon: BookOpen },
+  { href: "/my/progress", label: "myProgress", icon: ChartNoAxesCombined },
   { href: "/my/library", label: "libraryShort", icon: Bookmark },
   { href: "/my/calendar", label: "calendar", icon: CalendarDays },
   { href: "/my/notifications", label: "notifications", icon: Bell },
@@ -48,6 +50,7 @@ const items = [
   { href: "/my/profile", label: "myProfile", icon: UserRound },
   { href: "/my/settings", label: "personalSettings", icon: SlidersHorizontal },
 ] satisfies { href: string; label: MessageKey; icon: typeof House }[];
+const phonePrimaryHrefs = new Set(["/my", "/my/learning", "/my/library", "/my/calendar"]);
 export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
   const { label, t } = useLocale();
   const { pathname } = useLocation();
@@ -55,6 +58,8 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
   const auth = useAuth();
   const access = useAccess();
   const canOpenAdmin = access.data?.capabilities.includes("admin.access") ?? false;
+  const phonePrimary = items.filter((item) => phonePrimaryHrefs.has(item.href));
+  const phoneMore = items.filter((item) => !phonePrimaryHrefs.has(item.href));
   const { scrollArea, scrollCues } = useNavigationScrollCues(pathname);
   useEffect(() => setMoreOpen(false), [pathname]);
   const active = (href: string) =>
@@ -134,7 +139,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         className="phone-navigation personal-phone-navigation"
         aria-label={label("personalMobileNavigation")}
       >
-        {items.slice(0, 4).map(({ href, label: key, icon: Icon }) => (
+        {phonePrimary.map(({ href, label: key, icon: Icon }) => (
           <AppLink
             href={href}
             key={href}
@@ -157,10 +162,10 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         ))}
         <button
           className={
-            items.slice(4).some((item) => active(item.href)) ? "active" : ""
+            phoneMore.some((item) => active(item.href)) ? "active" : ""
           }
           aria-current={
-            items.slice(4).some((item) => active(item.href))
+            phoneMore.some((item) => active(item.href))
               ? "page"
               : undefined
           }
@@ -194,7 +199,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             </span>
             <ArrowUpRight size={17} className="directional" />
           </AppLink>}
-          {items.slice(4).map(({ href, label: key, icon: Icon }) => (
+          {phoneMore.map(({ href, label: key, icon: Icon }) => (
             <AppLink
               key={href}
               href={href}

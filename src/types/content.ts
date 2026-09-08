@@ -97,6 +97,15 @@ export interface Resource {
   batchIds: string[];
   format: Text;
   durationMinutes?: number;
+  /** Optional source-supplied study data. Never inferred from a filename. */
+  preview?: {
+    excerpt?: Text;
+    thumbnailUrl?: string;
+    chapters?: { title: Text; seconds: number }[];
+  };
+  mediaType?: "video" | "audio" | "pdf" | "image" | "external";
+  reviewer?: Text;
+  references?: { title: Text; url?: string }[];
 }
 export interface ClubEvent {
   id: string;

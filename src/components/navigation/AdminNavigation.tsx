@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Activity, FileClock, Fingerprint, KeyRound, LayoutDashboard, Menu, PanelsTopLeft, ShieldCheck, Stethoscope, UsersRound } from "lucide-react";
+import { Activity, ChartNoAxesCombined, FileClock, Fingerprint, HeartPulse, KeyRound, LayoutDashboard, Menu, PanelsTopLeft, ShieldCheck, Stethoscope, UsersRound } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useAccess, useAccessRequests } from "../../admin/governance/useGovernance";
@@ -17,6 +17,10 @@ const operations: NavItem[] = [
   { href: "/admin", label: "adminOverview", icon: LayoutDashboard, capability: "admin.access" },
   { href: "/admin/content", label: "adminContent", icon: ShieldCheck, capability: "content.review" },
   { href: "/admin/builder", label: "builderNavigation", icon: PanelsTopLeft, capability: "builder.manage" },
+];
+const insights: NavItem[] = [
+  { href: "/admin/analytics", label: "adminAnalytics", icon: ChartNoAxesCombined, capability: "activity.view" },
+  { href: "/admin/content-health", label: "adminContentHealth", icon: HeartPulse, capability: "content.review" },
 ];
 const safety: NavItem[] = [
   { href: "/admin/governance", label: "governanceNavigation", icon: Fingerprint, capability: "admin.access", priority: true },
@@ -48,9 +52,10 @@ export function AdminNavigation() {
   );
   const allowed = (item: NavItem) => access.data?.capabilities.includes(item.capability) ?? false;
   const visibleOperations = operations.filter(allowed);
+  const visibleInsights = insights.filter(allowed);
   const visibleSafety = safety.filter(allowed);
-  const phonePrimary = [...visibleOperations, ...visibleSafety.filter((item) => item.priority)].slice(0, 4);
-  const phoneMore = [...visibleSafety.filter((item) => !item.priority), ...visibleOperations.slice(4)];
+  const phonePrimary = [...visibleOperations.slice(0, 3), ...visibleSafety.filter((item) => item.priority)].slice(0, 4);
+  const phoneMore = [...visibleInsights, ...visibleSafety.filter((item) => !item.priority), ...visibleOperations.slice(3)];
   return (
     <>
       <aside className="desktop-navigation admin-navigation" aria-label={label("adminNavigation")}>
@@ -61,12 +66,14 @@ export function AdminNavigation() {
             <nav className="navigation-primary" aria-label={label("adminNavigation")}>
               <p className="navigation-label">{label("governanceOperationsGroup")}</p>
               {visibleOperations.map(navItem)}
+              <p className="navigation-label admin-insights-label">{label("adminInsightsGroup")}</p>
+              {visibleInsights.map(navItem)}
               <p className="navigation-label admin-safety-label">{label("governanceSafetyGroup")}</p>
               {visibleSafety.map(navItem)}
             </nav>
           </div>
         </div>
-        <div className="admin-nav-footer"><AppearanceSettings /><div className="navigation-version"><span className="status-dot" />{label("adminPreviewShort")}</div></div>
+        <div className="admin-nav-footer"><AppearanceSettings /><div className="navigation-version"><span className="status-dot" />{label("insightsPreviewShort")}</div></div>
       </aside>
       <nav className="phone-navigation admin-phone-navigation" aria-label={label("adminMobileNavigation")}>
         {phonePrimary.map(({ href, label: key, icon: Icon }) => <AppLink href={href} key={href} className={active(href) ? "active" : ""} aria-current={active(href) ? "page" : undefined}><span className="admin-nav-icon" aria-hidden="true"><Icon size={20} /><i /></span><span>{label(key)}</span></AppLink>)}

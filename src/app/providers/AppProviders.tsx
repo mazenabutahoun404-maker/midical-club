@@ -14,6 +14,7 @@ import { QUERY_STALE_TIME } from "../../constants/config";
 import type { MedClubServices } from "../../services/contracts";
 import type { Locale } from "../../types/content";
 import { AuthProvider } from "./AuthProvider";
+import { StudyChromeProvider } from "./StudyChromeProvider";
 function Notifications() {
   const { dir } = useLocale();
   return (
@@ -56,8 +57,10 @@ export function AppProviders({
                   <WorkspaceProvider>
                     <SavedItemsProvider>
                       <OverlayProvider>
-                        {children}
-                        <Notifications />
+                        <StudyChromeProvider>
+                          {children}
+                          <Notifications />
+                        </StudyChromeProvider>
                       </OverlayProvider>
                     </SavedItemsProvider>
                   </WorkspaceProvider>

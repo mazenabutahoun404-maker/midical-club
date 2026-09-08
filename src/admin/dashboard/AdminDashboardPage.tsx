@@ -206,7 +206,7 @@ export default function AdminDashboardPage() {
           </strong>
           <h2>{label("adminContentHealth")}</h2>
           <p>{label("adminContentHealthBody")}</p>
-          <AppLink className="text-link" href="/admin/content?health=stale">
+          <AppLink className="text-link" href="/admin/content-health">
             {label("adminReviewStale")}
             <ArrowUpRight size={16} className="directional" />
           </AppLink>

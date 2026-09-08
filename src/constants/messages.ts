@@ -8,6 +8,7 @@ import { v09Messages } from "./v09-messages";
 import { v10Messages } from "./v10-messages";
 import { v11Messages } from "./v11-messages";
 import { v12Messages } from "./v12-messages";
+import { v13Messages } from "./v13-messages";
 export const messages = {
   en: {
     ...workspaceMessages.en,
@@ -20,6 +21,7 @@ export const messages = {
     ...v10Messages.en,
     ...v11Messages.en,
     ...v12Messages.en,
+    ...v13Messages.en,
     collapseSidebar: "Collapse sidebar",
     expandSidebar: "Expand sidebar",
     myProfile: "My profile",
@@ -309,6 +311,7 @@ export const messages = {
     ...v10Messages.ar,
     ...v11Messages.ar,
     ...v12Messages.ar,
+    ...v13Messages.ar,
     collapseSidebar: "طيّ القائمة الجانبية",
     expandSidebar: "توسيع القائمة الجانبية",
     myProfile: "ملفي الشخصي",

@@ -1,4 +1,4 @@
-export const APP_VERSION = "0.12.0";
+export const APP_VERSION = "0.13.0";
 /** Stable demo calendar anchor; APIs can supply a server date later. */
 export const DEMO_TODAY = "2026-09-03";
 export const DEFAULT_LOCALE = "en" as const;
@@ -17,6 +17,7 @@ export const STORAGE_KEYS = {
   admin: "medclub.admin.v10",
   builder: "medclub.builder.v11",
   governance: "medclub.governance.v12",
+  insights: "medclub.insights.v13",
   welcomeSeen: "medclub.welcome-seen.v4",
 } as const;
 export const QUERY_STALE_TIME = 60_000;

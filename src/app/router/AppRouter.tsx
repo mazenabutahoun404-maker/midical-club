@@ -50,6 +50,9 @@ const StudentDashboard = lazy(
 const MyLearningPage = lazy(
   () => import("../../features/academics/MyLearningPage"),
 );
+const AcademicProgressPage = lazy(
+  () => import("../../features/insights/AcademicProgressPage"),
+);
 const ProfilePage = lazy(() => import("../../features/profile/ProfilePage"));
 const SettingsPage = lazy(() => import("../../features/settings/SettingsPage"));
 const PersonalFocusPage = lazy(
@@ -152,6 +155,12 @@ const AdminRolesPage = lazy(
 );
 const AdminApprovalsPage = lazy(
   () => import("../../admin/approvals/AdminApprovalsPage"),
+);
+const AdminAnalyticsPage = lazy(
+  () => import("../../admin/analytics/AdminAnalyticsPage"),
+);
+const AdminContentHealthPage = lazy(
+  () => import("../../admin/health/AdminContentHealthPage"),
 );
 function NotFound({
   personal = false,
@@ -425,6 +434,7 @@ export function AppRouter() {
               <Route index element={<StudentDashboard />} />
               <Route path="dashboard" element={<Navigate to="/my" replace />} />
               <Route path="learning" element={<MyLearningPage />} />
+              <Route path="progress" element={<AcademicProgressPage />} />
               <Route
                 path="learning/:slug"
                 element={
@@ -460,6 +470,8 @@ export function AppRouter() {
               <Route path="users" element={<CapabilityGate capability="users.view"><AdminUsersPage /></CapabilityGate>} />
               <Route path="roles" element={<CapabilityGate capability="roles.manage"><AdminRolesPage /></CapabilityGate>} />
               <Route path="approvals" element={<CapabilityGate capability="governance.approve"><AdminApprovalsPage /></CapabilityGate>} />
+              <Route path="analytics" element={<CapabilityGate capability="activity.view"><AdminAnalyticsPage /></CapabilityGate>} />
+              <Route path="content-health" element={<CapabilityGate capability="content.review"><AdminContentHealthPage /></CapabilityGate>} />
               <Route path="*" element={<NotFound admin />} />
             </Route>
           </Route>

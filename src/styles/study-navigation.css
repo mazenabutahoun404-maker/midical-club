@@ -1,0 +1,293 @@
+/* V0.12.1: navigation behavior is scoped to opted-in public/course shells. */
+.adaptive-navigation-wrapper,
+.adaptive-navigation-panel {
+  display: contents;
+}
+.adaptive-navigation-controls {
+  position: fixed;
+  z-index: 44;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  inset-inline-start: 18px;
+  top: 15px;
+}
+@media (hover: hover) and (min-width: 768px) {
+  /* The Menu button hides entirely on desktop when nav is open */
+  .adaptive-navigation-controls[data-open="true"] .navigation-glance {
+    display: none;
+  }
+  
+  /* The mobile-style Pin/Close buttons hide on desktop (replaced by native desktop-reveal) */
+  .adaptive-navigation-controls .navigation-reveal-actions {
+    display: none;
+  }
+
+  /* Desktop-reveal container inside .desktop-navigation */
+  .desktop-reveal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 17px;
+    background: #fffdfb;
+    border-radius: 26px 26px 0 0;
+    justify-content: flex-end;
+    z-index: 10;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
+  }
+  
+  .adaptive-navigation-wrapper:not(:hover) .desktop-reveal {
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Make buttons fit perfectly inside the narrower bar when in icon-only collapsed mode */
+  [data-sidebar="collapsed"] .desktop-reveal {
+    justify-content: center;
+    padding-inline: 4px;
+  }
+  [data-sidebar="collapsed"] .desktop-reveal button {
+    width: 30px;
+    min-height: 30px;
+    border-radius: 10px;
+  }
+  [data-sidebar="collapsed"] .desktop-reveal button svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+.navigation-glance,
+.navigation-reveal-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  border: 1px solid #b99786;
+  background: #fffaf4;
+  color: #563d34;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+.navigation-glance {
+  position: relative;
+  padding: 9px 13px;
+  box-shadow:
+    -3px 0 0 #a14d40,
+    0 4px 20px #783b2520;
+}
+.navigation-glance::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: -4px;
+  width: 3px;
+  top: 10px;
+  bottom: 10px;
+  background: #cf8c69;
+  border-radius: 4px;
+  box-shadow: 0 0 10px #bb705a88;
+  pointer-events: none;
+}
+.navigation-reveal-actions {
+  display: flex;
+  gap: 4px;
+}
+.navigation-reveal-actions button {
+  width: 44px;
+}
+.navigation-reveal-actions button[aria-pressed="true"] {
+  background: #6a3930;
+  color: #fff7ef;
+  border-color: #6a3930;
+}
+.adaptive-navigation-controls[data-open="true"] .navigation-glance span,
+.adaptive-navigation-controls[data-open="true"]
+  .navigation-glance
+  > .directional {
+  display: none;
+}
+.adaptive-navigation-controls[data-open="true"] .navigation-glance {
+  width: 44px;
+  padding: 0;
+}
+[data-nav-adaptive] .desktop-navigation {
+  top: 69px;
+  transition:
+    transform 280ms cubic-bezier(0.22, 0.8, 0.24, 1),
+    opacity 220ms ease,
+    visibility 280ms,
+    width 220ms ease,
+    padding 220ms ease;
+}
+[data-nav-adaptive] .phone-navigation {
+  transition:
+    transform 280ms cubic-bezier(0.22, 0.8, 0.24, 1),
+    opacity 220ms ease,
+    visibility 280ms;
+}
+[data-nav-hidden="true"]
+  .adaptive-navigation-panel
+  :is(.desktop-navigation, .phone-navigation) {
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+[data-nav-hidden="true"][data-navigation="vertical"] .desktop-navigation {
+  transform: translateX(calc(-100% - 38px)) rotateY(5deg);
+}
+[dir="rtl"]
+  [data-nav-hidden="true"][data-navigation="vertical"]
+  .desktop-navigation {
+  transform: translateX(calc(100% + 38px)) rotateY(-5deg);
+}
+[data-nav-adaptive]
+  :is(
+    .community-navigation,
+    .mentorship-navigation,
+    .store-navigation,
+    .recruitment-navigation
+  ) {
+  scroll-padding-inline: 16px;
+}
+@media (min-width: 768px) {
+  [data-nav-adaptive="section"][data-navigation="vertical"]
+    .adaptive-navigation-controls[data-open="false"] {
+    top: 50%;
+    inset-inline-start: 4px;
+    transform: translateY(-50%);
+  }
+  [data-nav-adaptive="section"][data-navigation="vertical"]
+    .adaptive-navigation-controls[data-open="false"]
+    .navigation-glance {
+    writing-mode: vertical-rl;
+    padding: 14px 10px;
+    border-radius: 12px;
+    min-width: 44px;
+  }
+  [data-nav-adaptive="section"]
+    :is(
+      .community-tab-icon,
+      .mentorship-nav-icon,
+      .recruitment-nav-icon,
+      .tab-icon
+    )
+    i {
+    animation-iteration-count: 1;
+  }
+  /* Space is allocated when entering an adaptive view, never reflowed on a scroll reveal. */
+  [data-nav-adaptive][data-navigation="vertical"] > .app-content {
+    margin-left: 50px;
+    margin-right: 0;
+    transition: none;
+  }
+  [dir="rtl"]
+    [data-nav-adaptive][data-navigation="vertical"]
+    > .app-content {
+    margin-right: 50px;
+    margin-left: 0;
+  }
+  [data-nav-adaptive][data-nav-pinned="true"][data-navigation="vertical"]
+    > .app-content {
+    margin-left: calc(var(--sidebar-width) + 2 * var(--shell-gap));
+  }
+  [dir="rtl"]
+    [data-nav-adaptive][data-nav-pinned="true"][data-navigation="vertical"]
+    > .app-content {
+    margin-left: 0;
+    margin-right: calc(var(--sidebar-width) + 2 * var(--shell-gap));
+  }
+  [data-nav-adaptive][data-navigation="horizontal"]
+    .adaptive-navigation-controls {
+    top: 8px;
+    inset-inline-start: 28px;
+  }
+  [data-nav-adaptive][data-navigation="horizontal"] .desktop-navigation {
+    top: 60px;
+  }
+  [data-nav-hidden="true"][data-navigation="horizontal"] .desktop-navigation {
+    transform: translateY(calc(-100% - 80px));
+  }
+  [data-nav-adaptive="scroll"][data-navigation="horizontal"] > .app-content {
+    padding-top: 134px;
+  }
+  [data-nav-adaptive="section"][data-navigation="horizontal"] > .app-content {
+    padding-top: 50px;
+  }
+  [data-nav-adaptive="section"][data-nav-pinned="true"][data-navigation="horizontal"]
+    > .app-content {
+    padding-top: 134px;
+  }
+  [data-nav-adaptive][data-navigation="horizontal"]
+    :is(
+      .community-navigation,
+      .mentorship-navigation,
+      .store-navigation,
+      .recruitment-navigation
+    ) {
+    top: 60px;
+  }
+  [data-nav-adaptive="section"][data-nav-pinned="true"][data-navigation="horizontal"]
+    :is(
+      .community-navigation,
+      .mentorship-navigation,
+      .store-navigation,
+      .recruitment-navigation
+    ) {
+    top: 144px;
+  }
+  [data-study-focus="true"][data-navigation="vertical"] > .app-content {
+    margin-left: 50px !important;
+    margin-right: 0 !important;
+  }
+  [dir="rtl"]
+    [data-study-focus="true"][data-navigation="vertical"]
+    > .app-content {
+    margin-right: 50px !important;
+    margin-left: 0 !important;
+  }
+  [data-study-focus="true"][data-navigation="horizontal"] > .app-content {
+    padding-top: 60px !important;
+  }
+}
+@media (max-width: 767px) {
+  .adaptive-navigation-controls {
+    top: auto;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    inset-inline-start: 16px;
+  }
+  .adaptive-navigation-controls[data-open="true"] {
+    bottom: calc(91px + env(safe-area-inset-bottom));
+  }
+  [data-nav-hidden="true"] .phone-navigation {
+    transform: translateY(calc(100% + 40px));
+  }
+}
+[data-study-focus="true"]
+  .app-content
+  > :is(
+    .workspace-header,
+    .personal-header,
+    footer,
+    .footer,
+    .personal-footnote
+  ) {
+  display: none;
+}
+[data-study-focus="true"] :is(.course-atlas-orbit, .course-atlas-hero) {
+  display: none;
+}
+[data-study-focus="true"] .study-notebook :is(*, *::before, *::after) {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-nav-adaptive] :is(.desktop-navigation, .phone-navigation) {
+    transition: none;
+  }
+  [data-nav-hidden="true"][data-navigation] .desktop-navigation {
+    transform: none;
+  }
+}

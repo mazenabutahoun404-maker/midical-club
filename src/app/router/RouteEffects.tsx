@@ -38,6 +38,7 @@ export function RouteEffects() {
       "/learn/clinical-sciences": "clinical",
       "/my": "mySpace",
       "/my/learning": "myLearning",
+      "/my/progress": "myProgress",
       "/my/library": "libraryShort",
       "/my/focus": "myFocus",
       "/my/profile": "myProfile",
@@ -58,6 +59,8 @@ export function RouteEffects() {
       "/admin/users": "governanceUsers",
       "/admin/roles": "governanceRoles",
       "/admin/approvals": "governanceApprovals",
+      "/admin/analytics": "adminAnalytics",
+      "/admin/content-health": "adminContentHealth",
       "/learn/electronic-exams": "exams",
     } as const;
     const key = keys[location.pathname as keyof typeof keys];
