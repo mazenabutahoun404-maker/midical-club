@@ -11,6 +11,7 @@ import { AppLink } from "./AppLink";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { NavigationHint } from "./NavigationHint";
 import { SidebarToggle } from "./SidebarToggle";
+import { MorphIcon } from "../ui/MorphIcon";
 
 type NavItem = { href: string; label: MessageKey; icon: typeof LayoutDashboard; capability: Capability; priority?: boolean; badge?: boolean };
 const operations: NavItem[] = [
@@ -44,7 +45,7 @@ export function AdminNavigation() {
   const navItem = ({ href, label: key, icon: Icon, priority, badge }: NavItem) => (
     <NavigationHint label={label(key)} key={href}>
       <AppLink href={href} className={`navigation-item ${priority ? "admin-priority-item" : ""} ${active(href) ? "active" : ""}`} aria-current={active(href) ? "page" : undefined}>
-        <span className="admin-nav-icon" aria-hidden="true"><Icon size={20} /><i /></span>
+        <MorphIcon icon={Icon} size={20} className="admin-nav-icon" />
         <span className="navigation-item-label">{label(key)}</span>
         {badge && pending > 0 && <b className="admin-nav-badge" aria-label={`${pending} ${label("governancePending")}`}>{pending}</b>}
       </AppLink>
@@ -60,7 +61,7 @@ export function AdminNavigation() {
     <>
       <aside className="desktop-navigation admin-navigation" aria-label={label("adminNavigation")}>
         <SidebarToggle controls="admin-sidebar-links" />
-        <AppLink href="/admin" className="admin-brand"><span className="admin-brand-orbit" aria-hidden="true"><Stethoscope size={23} /><i /></span><span><strong>{label("admin")}</strong><small>{label("adminControlRoom")}</small></span></AppLink>
+        <AppLink href="/admin" className="admin-brand"><Stethoscope size={23} className="admin-brand-orbit" aria-hidden="true" /><span><strong>{label("admin")}</strong><small>{label("adminControlRoom")}</small></span></AppLink>
         <div className="navigation-scroll-frame" data-scroll-before={scrollCues.before || undefined} data-scroll-after={scrollCues.after || undefined}>
           <div ref={scrollArea} className="navigation-scroll" id="admin-sidebar-links">
             <nav className="navigation-primary" aria-label={label("adminNavigation")}>
@@ -76,12 +77,12 @@ export function AdminNavigation() {
         <div className="admin-nav-footer"><AppearanceSettings /><div className="navigation-version"><span className="status-dot" />{label("insightsPreviewShort")}</div></div>
       </aside>
       <nav className="phone-navigation admin-phone-navigation" aria-label={label("adminMobileNavigation")}>
-        {phonePrimary.map(({ href, label: key, icon: Icon }) => <AppLink href={href} key={href} className={active(href) ? "active" : ""} aria-current={active(href) ? "page" : undefined}><span className="admin-nav-icon" aria-hidden="true"><Icon size={20} /><i /></span><span>{label(key)}</span></AppLink>)}
-        <button type="button" className={phoneMore.some((item) => active(item.href)) ? "active" : ""} aria-label={label("governanceMobileMore")} onClick={() => setMoreOpen(true)}><Menu size={20} /><span>{label("more")}</span>{pending > 0 && <b>{pending}</b>}</button>
+        {phonePrimary.map(({ href, label: key, icon: Icon }) => <AppLink href={href} key={href} className={active(href) ? "active" : ""} aria-current={active(href) ? "page" : undefined}><MorphIcon icon={Icon} size={20} className="admin-nav-icon" /><span>{label(key)}</span></AppLink>)}
+        <button type="button" className={`navigation-more-button ${phoneMore.some((item) => active(item.href)) ? "active" : ""}`} aria-label={label("governanceMobileMore")} onClick={() => setMoreOpen(true)}><Menu size={20} aria-hidden="true" /><span>{label("more")}</span>{pending > 0 && <b>{pending}</b>}</button>
       </nav>
       <Modal open={moreOpen} onClose={() => setMoreOpen(false)} title={label("governanceMobileMore")} description={label("governanceMobileMoreBody")} className="admin-mobile-menu-modal">
         <nav className="admin-mobile-more-links" aria-label={label("adminNavigation")}>
-          {phoneMore.map(({ href, label: key, icon: Icon, badge }) => <AppLink key={href} href={href} onClick={() => setMoreOpen(false)} aria-current={active(href) ? "page" : undefined}><span className="admin-nav-icon"><Icon size={21} /><i /></span><span>{label(key)}</span>{badge && pending > 0 && <b>{pending}</b>}</AppLink>)}
+          {phoneMore.map(({ href, label: key, icon: Icon, badge }) => <AppLink key={href} href={href} onClick={() => setMoreOpen(false)} aria-current={active(href) ? "page" : undefined}><MorphIcon icon={Icon} size={21} className="admin-nav-icon" /><span>{label(key)}</span>{badge && pending > 0 && <b>{pending}</b>}</AppLink>)}
           <AppLink className="admin-mobile-exit" href="/my/profile" onClick={() => setMoreOpen(false)}>{label("governanceBackPersonal")}</AppLink>
           <AppLink className="admin-mobile-exit" href="/" onClick={() => setMoreOpen(false)}>{label("adminBackHome")}</AppLink>
         </nav>

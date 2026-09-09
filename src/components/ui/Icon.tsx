@@ -11,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 import type { IconName } from "../../types/content";
+import { MorphIcon } from "./MorphIcon";
 const icons = {
   book: BookOpen,
   stethoscope: Stethoscope,
@@ -26,10 +27,13 @@ const icons = {
 export function Icon({
   name,
   className,
+  motion = false,
 }: {
   name: IconName;
   className?: string;
+  motion?: boolean;
 }) {
   const Component = icons[name];
+  if (motion) return <MorphIcon icon={Component} className={className} />;
   return <Component className={className} aria-hidden="true" />;
 }

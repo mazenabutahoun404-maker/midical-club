@@ -7,6 +7,7 @@ import { AppLink } from "./AppLink";
 import { MobileNavigation } from "./MobileNavigation";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { signInPath } from "../../constants/routes";
+import { MorphIcon } from "../ui/MorphIcon";
 export function PhoneNavigation({ site }: { site: SiteContent }) {
   const { label } = useLocale();
   const { openSearch } = useOverlays();
@@ -23,7 +24,7 @@ export function PhoneNavigation({ site }: { site: SiteContent }) {
         className={pathname === "/" && !hash ? "active" : ""}
         aria-current={pathname === "/" && !hash ? "page" : undefined}
       >
-        <House size={21} />
+        <MorphIcon icon={House} size={21} />
         <span>{label("home")}</span>
       </AppLink>
       <AppLink
@@ -31,7 +32,7 @@ export function PhoneNavigation({ site }: { site: SiteContent }) {
         className={pathname.startsWith("/learn") ? "active" : ""}
         aria-current={pathname.startsWith("/learn") ? "page" : undefined}
       >
-        <BookOpen size={21} />
+        <MorphIcon icon={BookOpen} size={21} />
         <span>{label("learn")}</span>
       </AppLink>
       <button
@@ -39,17 +40,16 @@ export function PhoneNavigation({ site }: { site: SiteContent }) {
         onClick={openSearch}
         aria-label={label("searchLabel")}
       >
-        <span className="phone-search-icon">
-          <Search size={22} />
-        </span>
+        <Search size={22} className="phone-search-icon" aria-hidden="true" />
         <span>{label("search")}</span>
       </button>
       <AppLink
         href={libraryHref}
+        data-library-destination
         className={pathname === "/my/library" ? "active" : ""}
         aria-current={pathname === "/my/library" ? "page" : undefined}
       >
-        <Bookmark size={21} />
+        <MorphIcon icon={Bookmark} size={21} />
         <span>{label("savedShort")}</span>
       </AppLink>
       <MobileNavigation site={site} />

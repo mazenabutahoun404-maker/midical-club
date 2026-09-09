@@ -42,6 +42,9 @@ export default function NotificationsPage() {
       filter === "all" ||
       (filter === "read") === state.readNotificationIds.includes(n.id),
   );
+  const firstUnreadId = items.find(
+    (item) => !state.readNotificationIds.includes(item.id),
+  )?.id;
   const view = (n: StudentNotification) => {
     void send({ type: "read-notifications", ids: [n.id], read: true });
     const resource = resources.data?.find((r) => r.id === n.resourceId);
@@ -97,7 +100,13 @@ export default function NotificationsPage() {
                 ? Clock3
                 : Sparkles;
           return (
-            <article className="notification-entry" data-read={read} key={n.id}>
+            <article
+              className="notification-entry"
+              data-read={read}
+              data-motion-state={read ? "settled" : "unread"}
+              data-primary-unread={!read && n.id === firstUnreadId ? "true" : undefined}
+              key={n.id}
+            >
               <span className="notification-icon">
                 <Icon size={22} />
               </span>

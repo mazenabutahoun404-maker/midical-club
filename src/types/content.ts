@@ -106,6 +106,8 @@ export interface Resource {
   mediaType?: "video" | "audio" | "pdf" | "image" | "external";
   reviewer?: Text;
   references?: { title: Text; url?: string }[];
+  /** Present only for a PDF imported into the device-local course preview. */
+  localFile?: { name: string; sizeBytes: number };
 }
 export interface ClubEvent {
   id: string;

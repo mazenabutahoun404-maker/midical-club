@@ -17,7 +17,7 @@ export function LanguageMenu() {
           className="language-button"
           aria-label={label("language")}
         >
-          <Languages size={18} />
+          <Languages size={18} aria-hidden="true" />
           <span>{locale === "en" ? "EN" : "عربي"}</span>
         </Button>
       </DropdownMenuTrigger>

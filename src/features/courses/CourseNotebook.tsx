@@ -35,6 +35,7 @@ import { useStudyCopy } from "./study-copy";
 import { useStudyState } from "./useStudyState";
 import { StudyResourceViewer } from "./StudyResourceViewer";
 import { NotebookResourceCard } from "./NotebookResourceCard";
+import { CoursePdfImporter } from "./CoursePdfImporter";
 import { safeResourceUrl, type StudyPosition } from "./study-state";
 
 const icons = {
@@ -53,10 +54,20 @@ export function CourseNotebook({
   course,
   resources,
   storageKey,
+  canImportPdfs = false,
+  importingPdfs = false,
+  pdfImportError = false,
+  onImportPdfs,
+  onRemoveImportedPdf,
 }: {
   course: Course;
   resources: Resource[];
   storageKey: string;
+  canImportPdfs?: boolean;
+  importingPdfs?: boolean;
+  pdfImportError?: boolean;
+  onImportPdfs?: (kind: CourseSectionKind, files: File[]) => Promise<string[]>;
+  onRemoveImportedPdf?: (id: string) => Promise<void>;
 }) {
   const { t, label, locale, dir } = useLocale();
   const s = useStudyCopy();
@@ -259,7 +270,7 @@ export function CourseNotebook({
     const offset = study.current.current.sections[active.kind]?.scroll || 0;
     const switched = switching.current;
     switching.current = false;
-    const shouldRestore = offset > 0 || (visited.current && switched);
+    const shouldRestore = !visited.current && !switched && offset > 0;
     visited.current = true;
     if (!shouldRestore) return;
     restoring.current = true;
@@ -307,9 +318,14 @@ export function CourseNotebook({
       data-course-tone={course.accent}
       data-focus={focus || undefined}
       data-split={study.state.split || undefined}
+      data-reading={selected ? "resource" : "section"}
       dir={dir}
     >
       <div className="notebook-toolbar">
+        <AppLink className="notebook-back-courses" href={paths.learning}>
+          <ArrowLeft size={17} className="directional" />
+          {label("allCoursesLink")}
+        </AppLink>
         <div className="notebook-current-course">
           <BookOpen size={20} aria-hidden="true" />
           <div>
@@ -572,23 +588,46 @@ export function CourseNotebook({
                       <ArrowUpRight size={16} className="directional" />
                     </button>
                   </div>
-                ) : visible.length ? (
-                  <div className="resource-grid course-material-grid notebook-material-grid">
-                    {visible.map((resource) => (
-                      <NotebookResourceCard
-                        key={resource.id}
-                        resource={resource}
-                        course={course}
-                        seconds={study.state.resources[resource.id]?.seconds}
-                        onOpen={() => open(resource)}
-                      />
-                    ))}
-                  </div>
                 ) : (
-                  <EmptyState
-                    title={label("emptyTitle")}
-                    description={label("emptyBody")}
-                  />
+                  <>
+                    {canImportPdfs &&
+                      onImportPdfs &&
+                      !["recording", "external"].includes(active.kind) && (
+                        <CoursePdfImporter
+                          section={active.kind}
+                          pending={importingPdfs}
+                          onImport={(files) => onImportPdfs(active.kind, files)}
+                        />
+                      )}
+                    {pdfImportError && (
+                      <p className="pdf-import-service-error" role="alert">
+                        {s("importError")}
+                      </p>
+                    )}
+                    {visible.length ? (
+                      <div className="resource-grid course-material-grid notebook-material-grid">
+                        {visible.map((resource) => (
+                          <NotebookResourceCard
+                            key={resource.id}
+                            resource={resource}
+                            course={course}
+                            seconds={study.state.resources[resource.id]?.seconds}
+                            onOpen={() => open(resource)}
+                            onRemove={
+                              resource.localFile && onRemoveImportedPdf
+                                ? () => onRemoveImportedPdf(resource.id)
+                                : undefined
+                            }
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <EmptyState
+                        title={label("emptyTitle")}
+                        description={label("emptyBody")}
+                      />
+                    )}
+                  </>
                 )}
               </div>
               {study.state.split && (

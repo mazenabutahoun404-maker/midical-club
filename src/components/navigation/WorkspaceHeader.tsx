@@ -30,7 +30,7 @@ export function WorkspaceHeader({ site }: { site: SiteContent }) {
           onClick={openSearch}
           aria-label={label("searchLabel")}
         >
-          <Search size={18} />
+          <Search size={18} aria-hidden="true" />
           <span>{label("searchSomething")}</span>
           <kbd>/</kbd>
         </button>

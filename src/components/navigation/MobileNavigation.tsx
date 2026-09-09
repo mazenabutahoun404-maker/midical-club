@@ -35,7 +35,7 @@ export function MobileNavigation({ site }: { site: SiteContent }) {
         aria-expanded={open}
         onClick={() => setOpen(true)}
       >
-        <Menu size={21} />
+        <Menu size={21} aria-hidden="true" />
         <span>{label("more")}</span>
       </button>
       <Modal

@@ -11,7 +11,7 @@ export function AdminHeader() {
   return (
     <header className="admin-header container">
       <AppLink className="admin-back space-portal-link" href="/">
-        <ArrowLeft size={17} className="directional" />
+        <ArrowLeft size={17} className="directional" aria-hidden="true" />
         <span>{label("adminBackHome")}</span>
       </AppLink>
       <span className="admin-live-chip">
@@ -22,7 +22,7 @@ export function AdminHeader() {
         <LanguageMenu />
         <AppearanceSettings compact />
         <AppLink href="/my/profile" className="admin-operator space-portal-link">
-          <UserRound size={18} />
+          <UserRound size={18} aria-hidden="true" />
           <span>
             {auth.snapshot.user
               ? t(auth.snapshot.user.profile.name)

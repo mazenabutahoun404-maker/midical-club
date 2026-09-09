@@ -32,6 +32,7 @@ import { SidebarToggle } from "./SidebarToggle";
 import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useAccess } from "../../admin/governance/useGovernance";
+import { MorphIcon } from "../ui/MorphIcon";
 const items = [
   { href: "/my", label: "mySpace", icon: House },
   { href: "/my/learning", label: "myLearning", icon: BookOpen },
@@ -101,10 +102,11 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
                 <NavigationHint label={label(key)} key={href}>
                   <AppLink
                     href={href}
+                    data-library-destination={href === "/my/library" ? "" : undefined}
                     className={`navigation-item ${active(href) ? "active" : ""}`}
                     aria-current={active(href) ? "page" : undefined}
                   >
-                    <Icon size={20} />
+                    <MorphIcon icon={Icon} size={20} />
                     <span>{label(key)}</span>
                   </AppLink>
                 </NavigationHint>
@@ -114,10 +116,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         </div>
         {canOpenAdmin && <NavigationHint label={label("governancePortalTitle")}>
           <AppLink href="/admin" className="personal-admin-portal">
-            <span className="personal-admin-portal-icon" aria-hidden="true">
-              <ShieldCheck size={19} />
-              <i />
-            </span>
+            <MorphIcon icon={ShieldCheck} size={19} className="personal-admin-portal-icon" />
             <span>
               <small>{label("governancePriority")}</small>
               <strong>{label("governancePortalTitle")}</strong>
@@ -142,11 +141,12 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         {phonePrimary.map(({ href, label: key, icon: Icon }) => (
           <AppLink
             href={href}
+            data-library-destination={href === "/my/library" ? "" : undefined}
             key={href}
             className={active(href) ? "active" : ""}
             aria-current={active(href) ? "page" : undefined}
           >
-            <Icon size={21} />
+            <MorphIcon icon={Icon} size={21} />
             <span>
               {label(
                 key === "mySpace"
@@ -161,9 +161,10 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
           </AppLink>
         ))}
         <button
-          className={
+          type="button"
+          className={`navigation-more-button ${
             phoneMore.some((item) => active(item.href)) ? "active" : ""
-          }
+          }`}
           aria-current={
             phoneMore.some((item) => active(item.href))
               ? "page"
@@ -172,7 +173,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
           aria-label={label("more")}
           onClick={() => setMoreOpen(true)}
         >
-          <Menu size={21} />
+          <Menu size={21} aria-hidden="true" />
           <span>{label("more")}</span>
         </button>
       </nav>
@@ -192,7 +193,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             href="/admin"
             onClick={() => setMoreOpen(false)}
           >
-            <ShieldCheck size={21} />
+            <MorphIcon icon={ShieldCheck} size={21} />
             <span>
               <small>{label("governancePriority")}</small>
               {label("governancePortalTitle")}
@@ -206,7 +207,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
               onClick={() => setMoreOpen(false)}
               aria-current={active(href) ? "page" : undefined}
             >
-              <Icon size={21} />
+              <MorphIcon icon={Icon} size={21} />
               {label(key)}
             </AppLink>
           ))}

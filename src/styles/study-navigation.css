@@ -1,5 +1,4 @@
 /* V0.12.1: navigation behavior is scoped to opted-in public/course shells. */
-.adaptive-navigation-wrapper,
 .adaptive-navigation-panel {
   display: contents;
 }
@@ -11,52 +10,6 @@
   align-items: center;
   inset-inline-start: 18px;
   top: 15px;
-}
-@media (hover: hover) and (min-width: 768px) {
-  /* The Menu button hides entirely on desktop when nav is open */
-  .adaptive-navigation-controls[data-open="true"] .navigation-glance {
-    display: none;
-  }
-  
-  /* The mobile-style Pin/Close buttons hide on desktop (replaced by native desktop-reveal) */
-  .adaptive-navigation-controls .navigation-reveal-actions {
-    display: none;
-  }
-
-  /* Desktop-reveal container inside .desktop-navigation */
-  .desktop-reveal {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 12px 17px;
-    background: #fffdfb;
-    border-radius: 26px 26px 0 0;
-    justify-content: flex-end;
-    z-index: 10;
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
-  }
-  
-  .adaptive-navigation-wrapper:not(:hover) .desktop-reveal {
-    transform: translateY(-20px);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Make buttons fit perfectly inside the narrower bar when in icon-only collapsed mode */
-  [data-sidebar="collapsed"] .desktop-reveal {
-    justify-content: center;
-    padding-inline: 4px;
-  }
-  [data-sidebar="collapsed"] .desktop-reveal button {
-    width: 30px;
-    min-height: 30px;
-    border-radius: 10px;
-  }
-  [data-sidebar="collapsed"] .desktop-reveal button svg {
-    width: 14px;
-    height: 14px;
-  }
 }
 .navigation-glance,
 .navigation-reveal-actions button {
@@ -178,24 +131,24 @@
     i {
     animation-iteration-count: 1;
   }
-  /* Space is allocated when entering an adaptive view, never reflowed on a scroll reveal. */
-  [data-nav-adaptive][data-navigation="vertical"] > .app-content {
+  /* Space is allocated when entering a section, never reflowed on a scroll reveal. */
+  [data-nav-adaptive="section"][data-navigation="vertical"] > .app-content {
     margin-left: 50px;
     margin-right: 0;
     transition: none;
   }
   [dir="rtl"]
-    [data-nav-adaptive][data-navigation="vertical"]
+    [data-nav-adaptive="section"][data-navigation="vertical"]
     > .app-content {
     margin-right: 50px;
     margin-left: 0;
   }
-  [data-nav-adaptive][data-nav-pinned="true"][data-navigation="vertical"]
+  [data-nav-adaptive="section"][data-nav-pinned="true"][data-navigation="vertical"]
     > .app-content {
     margin-left: calc(var(--sidebar-width) + 2 * var(--shell-gap));
   }
   [dir="rtl"]
-    [data-nav-adaptive][data-nav-pinned="true"][data-navigation="vertical"]
+    [data-nav-adaptive="section"][data-nav-pinned="true"][data-navigation="vertical"]
     > .app-content {
     margin-left: 0;
     margin-right: calc(var(--sidebar-width) + 2 * var(--shell-gap));

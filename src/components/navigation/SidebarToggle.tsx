@@ -16,9 +16,9 @@ export function SidebarToggle({ controls }: { controls: string }) {
       title={title}
     >
       {sidebarCollapsed ? (
-        <PanelLeftOpen size={17} />
+        <PanelLeftOpen size={17} aria-hidden="true" />
       ) : (
-        <PanelLeftClose size={17} />
+        <PanelLeftClose size={17} aria-hidden="true" />
       )}
     </button>
   );

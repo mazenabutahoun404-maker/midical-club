@@ -13,6 +13,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { routes } from "../../constants/routes";
 import type { MessageKey } from "../../constants/messages";
 import { AppLink } from "./AppLink";
+import { MorphIcon } from "../ui/MorphIcon";
 
 const items = [
   { href: routes.community, label: "communityHub", icon: HeartPulse },
@@ -42,10 +43,7 @@ export function CommunityNavigation() {
           className={active(href) ? "active" : ""}
           aria-current={active(href) ? "page" : undefined}
         >
-          <span className="community-tab-icon" aria-hidden="true">
-            <Icon size={18} />
-            <i />
-          </span>
+          <MorphIcon icon={Icon} size={18} className="community-tab-icon" />
           <span>{label(key)}</span>
         </AppLink>
       ))}

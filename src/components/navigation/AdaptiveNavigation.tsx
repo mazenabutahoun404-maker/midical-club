@@ -4,17 +4,12 @@ import {
   useId,
   useRef,
   useState,
-  createContext,
   type ReactNode,
 } from "react";
 import { useLocation } from "react-router-dom";
 import { ChevronRight, Menu, Pin, PinOff, X } from "lucide-react";
 import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 import { useStudyCopy } from "../../features/courses/study-copy";
-
-export const AdaptiveNavigationContext = createContext<ReturnType<
-  typeof useAdaptiveNavigation
-> | null>(null);
 
 const pinKey = "medclub:navigation:pinned:v1";
 export const isCourseRoute = (path: string) =>
@@ -42,7 +37,6 @@ export function useAdaptiveNavigation(personal = false) {
   const handle = useRef<HTMLButtonElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const hovering = useRef(false);
-  const suppressScroll = useRef(false);
   const config = useRef({ enabled, pinned, focus });
   config.current = { enabled, pinned, focus };
   const cancel = useCallback(() => {
@@ -58,7 +52,6 @@ export function useAdaptiveNavigation(personal = false) {
   const reveal = useCallback(() => {
     cancel();
     setHidden(false);
-    suppressScroll.current = false;
   }, [cancel]);
   const retreat = useCallback(() => {
     const state = config.current;
@@ -85,7 +78,7 @@ export function useAdaptiveNavigation(personal = false) {
       direction = 0,
       frame = 0;
     const scroll = () => {
-      if (frame || suppressScroll.current) return;
+      if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
         const next = Math.max(0, window.scrollY),
@@ -143,7 +136,6 @@ export function useAdaptiveNavigation(personal = false) {
     hide: () => {
       cancel();
       setHidden(true);
-      suppressScroll.current = true;
       handle.current?.focus({ preventScroll: true });
     },
   };
@@ -162,7 +154,7 @@ export function AdaptiveNavigation({
   const id = useId();
   if (!state.enabled) return <>{children}</>;
   return (
-    <div className="adaptive-navigation-wrapper">
+    <>
       <div
         className="adaptive-navigation-controls"
         data-open={!state.hidden}
@@ -186,25 +178,6 @@ export function AdaptiveNavigation({
           <span>{s(personal ? "personalMenu" : "menu")}</span>
           <ChevronRight size={14} className="directional" aria-hidden="true" />
         </button>
-        {!state.hidden && (
-          <div className="navigation-reveal-actions">
-            <button
-              type="button"
-              aria-pressed={state.pinned}
-              aria-label={s(state.pinned ? "unpin" : "pin")}
-              onClick={state.togglePin}
-            >
-              {state.pinned ? <PinOff size={17} /> : <Pin size={17} />}
-            </button>
-            <button
-              type="button"
-              aria-label={s("collapse")}
-              onClick={state.hide}
-            >
-              <X size={17} />
-            </button>
-          </div>
-        )}
       </div>
       <div
         id={id}
@@ -223,10 +196,25 @@ export function AdaptiveNavigation({
           if (!event.currentTarget.contains(event.relatedTarget)) state.leave();
         }}
       >
-        <AdaptiveNavigationContext.Provider value={state}>
-          {children}
-        </AdaptiveNavigationContext.Provider>
+        {children}
+        <div className="navigation-reveal-actions">
+          <button
+            type="button"
+            aria-pressed={state.pinned}
+            aria-label={s(state.pinned ? "unpin" : "pin")}
+            onClick={state.togglePin}
+          >
+            {state.pinned ? <PinOff size={17} /> : <Pin size={17} />}
+          </button>
+          <button
+            type="button"
+            aria-label={s("collapse")}
+            onClick={state.hide}
+          >
+            <X size={17} />
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

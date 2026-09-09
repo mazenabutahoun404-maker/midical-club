@@ -1,0 +1,182 @@
+/* V0.13.3 — quieter chrome, fixed navigation and a larger PDF workspace. */
+
+/* PDF reading uses the page scroll instead of nesting a short scroller around
+   the browser's own document viewport. Other media keep the original sizing. */
+.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-scroll {
+  max-height: none;
+  overflow: visible;
+  padding: 14px clamp(12px, 2cqw, 22px) 18px;
+}
+.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-page-control {
+  margin-bottom: 6px;
+}
+.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-hint {
+  margin-bottom: 10px;
+}
+.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-pdf {
+  height: clamp(520px, 76dvh, 960px);
+  min-height: 520px;
+  border-radius: 9px;
+  box-shadow: 0 9px 24px #3f241319;
+}
+.study-notebook[data-split="true"] .study-reader[data-media="pdf"] .study-reader-scroll {
+  max-height: none;
+}
+.study-notebook[data-split="true"] .study-reader[data-media="pdf"] .study-pdf {
+  height: clamp(460px, 68dvh, 820px);
+  min-height: 460px;
+}
+
+/* The main bar remains attached to the viewport. Adaptive controls no longer
+   consume a separate strip above it. */
+[data-nav-adaptive] .desktop-navigation {
+  position: fixed;
+  top: var(--shell-gap);
+  bottom: var(--shell-gap);
+  max-height: calc(100dvh - (2 * var(--shell-gap)));
+}
+.adaptive-navigation-controls[data-open="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.adaptive-navigation-controls[data-open="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+.adaptive-navigation-panel > .navigation-reveal-actions {
+  position: fixed;
+  z-index: 47;
+  top: calc(var(--shell-gap) + 8px);
+  inset-inline-start: calc(var(--shell-gap) + 8px);
+  width: calc(var(--sidebar-width) - 16px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid #d8c2b4;
+  border-radius: 18px;
+  background: color-mix(in srgb, #fffaf4 96%, transparent);
+  box-shadow: 0 4px 16px #4f28151c;
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 180ms ease;
+}
+[dir="rtl"] .adaptive-navigation-panel > .navigation-reveal-actions {
+  transform: translateY(-8px);
+}
+.adaptive-navigation-panel > .navigation-reveal-actions button {
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #65473d;
+}
+.adaptive-navigation-panel > .navigation-reveal-actions button:hover,
+.adaptive-navigation-panel > .navigation-reveal-actions button:focus-visible {
+  background: #eadbd0;
+  color: #6f191c;
+}
+.adaptive-navigation-panel > .navigation-reveal-actions button[aria-pressed="true"] {
+  background: #6a3930;
+  color: #fff7ef;
+}
+[data-nav-adaptive]:not([data-nav-hidden="true"])
+  .adaptive-navigation-panel:is(:hover, :focus-within)
+  > .navigation-reveal-actions,
+.adaptive-navigation-panel > .navigation-reveal-actions:focus-within {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* Chrome controls stay calm. Only destination and filter tabs retain semantic
+   two-shape animation. */
+:is(
+  .sidebar-toggle,
+  .navigation-glance,
+  .navigation-reveal-actions button,
+  .navigation-preferences,
+  .workspace-search,
+  .workspace-icon,
+  .language-button,
+  .mobile-menu,
+  .navigation-more-button,
+  .admin-back,
+  .back-to-medclub,
+  .admin-operator
+) > svg {
+  animation: none !important;
+  transform: none !important;
+  transition: color 150ms ease, opacity 150ms ease !important;
+}
+.navigation-item:hover > .disclosure-chevron {
+  transform: none;
+}
+.navigation-item[aria-expanded="true"] > .disclosure-chevron,
+.navigation-item[aria-expanded="true"]:hover > .disclosure-chevron {
+  transform: rotate(180deg);
+}
+.admin-brand > .admin-brand-orbit {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (min-width: 768px) {
+  [data-nav-adaptive][data-navigation="horizontal"] .desktop-navigation {
+    top: 16px;
+    bottom: auto;
+    max-height: none;
+    padding-inline-end: 106px;
+  }
+  [data-nav-adaptive][data-navigation="horizontal"]
+    .adaptive-navigation-panel
+    > .navigation-reveal-actions {
+    top: 31px;
+    inset-inline-start: auto;
+    inset-inline-end: 42px;
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-scroll {
+    padding: 10px 8px 14px;
+  }
+  .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-pdf {
+    height: 72dvh;
+    min-height: 420px;
+    border-radius: 6px;
+  }
+  .adaptive-navigation-panel > .navigation-reveal-actions {
+    top: auto;
+    bottom: calc(89px + env(safe-area-inset-bottom));
+    inset-inline-start: auto;
+    inset-inline-end: 16px;
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  [data-nav-adaptive]:not([data-nav-hidden="true"])
+    .adaptive-navigation-panel
+    > .navigation-reveal-actions {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adaptive-navigation-panel > .navigation-reveal-actions {
+    transition: none;
+  }
+}

@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { MorphIcon } from "../ui/MorphIcon";
 
 export interface AliveTab<T extends string> {
   id: T;
@@ -27,10 +28,7 @@ export function AliveTabs<T extends string>({
           aria-pressed={value === id}
           onClick={() => onChange(id)}
         >
-          <span className="tab-icon" aria-hidden="true">
-            <Icon size={18} />
-            <i />
-          </span>
+          <MorphIcon icon={Icon} size={18} className="tab-icon" />
           <span>{tabLabel}</span>
           {count !== undefined && <b>{count}</b>}
         </button>

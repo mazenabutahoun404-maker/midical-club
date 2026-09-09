@@ -23,7 +23,12 @@ export function EventTicketCard({ event }: { event: ClubEvent }) {
     (event.registeredCount / event.capacity) * 100,
   );
   return (
-    <article className="event-ticket" data-status={status}>
+    <article className="event-ticket layered-discovery-card" data-status={status}>
+      <span className="layered-card-divider" aria-hidden="true" />
+      <span className="layered-card-sheet" aria-hidden="true">
+        <b>{t(event.type)}</b>
+        <small>{t(event.location)} · {event.format}</small>
+      </span>
       <div
         className="ticket-date"
         aria-label={formatDate(event.startDate, locale)}
@@ -34,7 +39,7 @@ export function EventTicketCard({ event }: { event: ClubEvent }) {
           {formatDate(event.startDate, locale, { weekday: "short" })}
         </small>
       </div>
-      <div className="ticket-body">
+      <div className="ticket-body layered-card-face">
         <div className="ticket-topline">
           <span className="eyebrow">{t(event.type)}</span>
           <span className="event-status" data-status={status}>

@@ -48,6 +48,11 @@ const copy = {
   resumeAt: ["Resume at", "المتابعة من"],
   previewOnly: ["Description available", "الوصف متاح"],
   fileReady: ["File available", "الملف متاح"],
+  removeLocal: ["Remove local PDF", "إزالة ملف PDF المحلي"],
+  importError: [
+    "The local PDF store could not be opened. Try importing again.",
+    "تعذّر فتح مخزن ملفات PDF المحلي. حاول الاستيراد مرة أخرى.",
+  ],
   width: ["Reading pane width", "عرض مساحة القراءة"],
   splitHint: [
     "The two materials stack on smaller screens.",

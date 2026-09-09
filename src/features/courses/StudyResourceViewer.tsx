@@ -142,6 +142,7 @@ export function StudyResourceViewer({
   return (
     <section
       className={`study-reader ${companion ? "study-reader-companion" : ""}`}
+      data-media={type}
       aria-labelledby={titleId}
     >
       <header className="study-reader-heading">

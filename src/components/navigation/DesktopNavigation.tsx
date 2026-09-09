@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   House,
@@ -14,9 +14,6 @@ import {
   Heart,
   HeartHandshake,
   FileCheck2,
-  Pin,
-  PinOff,
-  X,
 } from "lucide-react";
 import { SidebarToggle } from "./SidebarToggle";
 import { NavigationHint } from "./NavigationHint";
@@ -30,7 +27,7 @@ import { useAppearance } from "../../app/providers/AppearanceProvider";
 import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { signInPath } from "../../constants/routes";
-import { AdaptiveNavigationContext } from "./AdaptiveNavigation";
+import { MorphIcon } from "../ui/MorphIcon";
 const icons = {
   community: Users,
   opportunities: Sparkles,
@@ -43,7 +40,6 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
   const { label, t } = useLocale();
   const { navigation } = useAppearance();
   const auth = useAuth();
-  const adaptiveState = useContext(AdaptiveNavigationContext);
   const signedIn = auth.snapshot.status === "authenticated";
   const location = useLocation();
   const [expanded, setExpanded] = useState(false);
@@ -86,25 +82,6 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
       }}
     >
       <SidebarToggle controls="public-sidebar-links" />
-      {adaptiveState && !adaptiveState.hidden && (
-        <div className="navigation-reveal-actions desktop-reveal">
-          <button
-            type="button"
-            aria-pressed={adaptiveState.pinned}
-            aria-label={adaptiveState.pinned ? "Unpin navigation" : "Pin navigation"}
-            onClick={adaptiveState.togglePin}
-          >
-            {adaptiveState.pinned ? <PinOff size={17} /> : <Pin size={17} />}
-          </button>
-          <button
-            type="button"
-            aria-label="Collapse"
-            onClick={adaptiveState.hide}
-          >
-            <X size={17} />
-          </button>
-        </div>
-      )}
       <div className="navigation-brand">
         <Brand brand={site.brand} />
       </div>
@@ -126,7 +103,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                 className={`navigation-item ${active("/") ? "active" : ""}`}
                 aria-current={active("/") ? "page" : undefined}
               >
-                <House size={20} />
+                <MorphIcon icon={House} size={20} />
                 <span>{label("home")}</span>
               </AppLink>
             </NavigationHint>
@@ -150,7 +127,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                     }
                   }}
                 >
-                  <BookOpen size={20} />
+                  <MorphIcon icon={BookOpen} size={20} />
                   <span>{label("learn")}</span>
                   <ChevronDown size={15} className="disclosure-chevron" />
                 </button>
@@ -177,7 +154,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                         : undefined
                     }
                   >
-                    <Icon size={20} />
+                    <MorphIcon icon={Icon} size={20} />
                     <span>{t(item.label)}</span>
                   </AppLink>
                 </NavigationHint>
@@ -192,7 +169,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                 href={signedIn ? "/my" : signInPath("/my")}
                 aria-current={active("/my") ? "page" : undefined}
               >
-                <UserRound size={20} />
+                <MorphIcon icon={UserRound} size={20} />
                 <span>{label(signedIn ? "myProfile" : "signIn")}</span>
               </AppLink>
             </NavigationHint>
@@ -202,7 +179,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                 href="/utilities"
                 aria-current={active("/utilities") ? "page" : undefined}
               >
-                <Timer size={20} />
+                <MorphIcon icon={Timer} size={20} />
                 <span>{label("studyToolsShort")}</span>
               </AppLink>
             </NavigationHint>

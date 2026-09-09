@@ -1,4 +1,4 @@
-import { BookOpen, Clock3, FileText } from "lucide-react";
+import { BookOpen, Clock3, FileText, Trash2 } from "lucide-react";
 import type { Course, Resource } from "../../types/content";
 import { ResourceCard } from "../../components/cards/ResourceCard";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -11,11 +11,13 @@ export function NotebookResourceCard({
   course,
   onOpen,
   seconds,
+  onRemove,
 }: {
   resource: Resource;
   course: Course;
   onOpen: () => void;
   seconds?: number;
+  onRemove?: () => void | Promise<void>;
 }) {
   const { t } = useLocale();
   const s = useStudyCopy();
@@ -49,6 +51,16 @@ export function NotebookResourceCard({
           </ul>
         )}
         <ResourceProvenance item={resource} />
+        {resource.localFile && onRemove && (
+          <button
+            type="button"
+            className="notebook-button notebook-remove-local"
+            onClick={() => void onRemove()}
+          >
+            <Trash2 size={16} />
+            {s("removeLocal")}
+          </button>
+        )}
         <button
           type="button"
           className="notebook-button notebook-button-primary"

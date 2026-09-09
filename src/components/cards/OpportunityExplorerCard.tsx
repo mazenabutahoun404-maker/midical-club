@@ -16,12 +16,17 @@ export function OpportunityExplorerCard({
   const open = opportunityIsOpen(opportunity);
   const days = daysFromDemo(opportunity.deadline);
   return (
-    <article className="opportunity-explorer" data-open={open}>
+    <article className="opportunity-explorer layered-discovery-card" data-open={open}>
+      <span className="layered-card-divider" aria-hidden="true" />
+      <span className="layered-card-sheet" aria-hidden="true">
+        <b>{t(opportunity.field)}</b>
+        <small>{t(opportunity.mode)} · {t(opportunity.location)}</small>
+      </span>
       <div className="opportunity-ribbon">
         <span>{t(opportunity.type)}</span>
         <i />
       </div>
-      <div className="opportunity-card-top">
+      <div className="opportunity-card-top layered-card-face">
         <span className="opportunity-mark" aria-hidden="true">
           {String(opportunity.category).slice(0, 2).toUpperCase()}
         </span>

@@ -4,6 +4,7 @@ import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { routes, signInPath } from "../../constants/routes";
 import { AppLink } from "./AppLink";
+import { MorphIcon } from "../ui/MorphIcon";
 
 export function RecruitmentNavigation() {
   const { label } = useLocale();
@@ -44,10 +45,7 @@ export function RecruitmentNavigation() {
           className={active ? "active" : ""}
           aria-current={active ? "page" : undefined}
         >
-          <span className="recruitment-nav-icon" aria-hidden="true">
-            <Icon size={19} />
-            <i />
-          </span>
+          <MorphIcon icon={Icon} size={19} className="recruitment-nav-icon" />
           {itemLabel}
         </AppLink>
       ))}

@@ -100,7 +100,14 @@ export function safeResourceUrl(value?: string | null): string | undefined {
         ? "https://medclub.invalid"
         : window.location.origin,
     );
-    return ["https:", "http:"].includes(url.protocol) ? url.href : undefined;
+    if (["https:", "http:"].includes(url.protocol)) return url.href;
+    if (
+      url.protocol === "blob:" &&
+      typeof window !== "undefined" &&
+      url.origin === window.location.origin
+    )
+      return url.href;
+    return undefined;
   } catch {
     return undefined;
   }

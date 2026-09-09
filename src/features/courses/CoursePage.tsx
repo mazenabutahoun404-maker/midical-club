@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { useCourses, useResources } from "../../hooks/useContent";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -9,6 +9,9 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 import { EmptyState } from "../../components/feedback/EmptyState";
 import { CourseNotebook } from "./CourseNotebook";
 import { studyStorageKey } from "./study-state";
+import { useLocalCoursePdfs } from "./useLocalCoursePdfs";
+import { useAccess } from "../../admin/governance/useGovernance";
+import { AppLink } from "../../components/navigation/AppLink";
 import "../../styles/course-notebook.css";
 
 export default function CoursePage() {
@@ -18,6 +21,9 @@ export default function CoursePage() {
     resources = useResources();
   const { t, label } = useLocale();
   const { snapshot } = useAuth();
+  const course = courses.data?.find((item) => item.slug === slug);
+  const localPdfs = useLocalCoursePdfs(course?.id || "");
+  const access = useAccess();
   if (courses.isPending || resources.isPending) return <LoadingState />;
   if (courses.isError || resources.isError)
     return (
@@ -28,7 +34,6 @@ export default function CoursePage() {
         }}
       />
     );
-  const course = courses.data.find((item) => item.slug === slug);
   if (!course)
     return (
       <div className="container section">
@@ -43,10 +48,23 @@ export default function CoursePage() {
     snapshot.status === "authenticated" ? snapshot.user!.id : "guest",
     course.id,
   );
+  const canImport =
+    snapshot.status === "authenticated" &&
+    !!access.data?.capabilities.some((capability) =>
+      ["content.review", "content.publish", "builder.manage"].includes(capability),
+    );
+  const courseResources = [
+    ...resources.data.filter((item) => item.courseId === course.id),
+    ...localPdfs.resources,
+  ];
   return (
     <div
       className={`container course-atlas course-atlas-${course.accent} course-study-edition`}
     >
+      <AppLink className="course-back-link" href={paths.learning}>
+        <ArrowLeft size={17} className="directional" />
+        {label("allCoursesLink")}
+      </AppLink>
       <header className="course-atlas-hero">
         <div className="course-atlas-title">
           <span className="academic-kicker">
@@ -81,8 +99,13 @@ export default function CoursePage() {
       <CourseNotebook
         key={key}
         course={course}
-        resources={resources.data.filter((item) => item.courseId === course.id)}
+        resources={courseResources}
         storageKey={key}
+        canImportPdfs={canImport}
+        importingPdfs={localPdfs.pending}
+        pdfImportError={localPdfs.error}
+        onImportPdfs={localPdfs.importFiles}
+        onRemoveImportedPdf={localPdfs.remove}
       />
     </div>
   );

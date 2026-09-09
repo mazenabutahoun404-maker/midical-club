@@ -30,7 +30,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           aria-expanded={open}
           onClick={() => setOpen(true)}
         >
-          <SlidersHorizontal size={19} />
+          <SlidersHorizontal size={19} aria-hidden="true" />
           {!compact && <span>{label("appearance")}</span>}
         </button>
       </NavigationHint>

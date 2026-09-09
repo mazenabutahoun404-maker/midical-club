@@ -17,7 +17,7 @@ export function PersonalHeader() {
   return (
     <header className="personal-header container">
       <AppLink className="back-to-medclub space-portal-link" href="/">
-        <ArrowLeft size={17} className="directional" />
+        <ArrowLeft size={17} className="directional" aria-hidden="true" />
         <span>{label("backToMedClub")}</span>
       </AppLink>
       <div className="personal-header-mark">
@@ -30,7 +30,7 @@ export function PersonalHeader() {
           className="workspace-icon notification-bell"
           aria-label={label("notifications")}
         >
-          <Bell size={19} />
+          <Bell size={19} aria-hidden="true" />
           {!notifications.isPending && notifications.unread > 0 && (
             <span
               className="notification-badge"
@@ -45,7 +45,7 @@ export function PersonalHeader() {
           aria-label={label("personalSearch")}
           onClick={openSearch}
         >
-          <Search size={19} />
+          <Search size={19} aria-hidden="true" />
         </button>
         <LanguageMenu />
         <AppLink
@@ -53,7 +53,7 @@ export function PersonalHeader() {
           className="workspace-icon"
           aria-label={label("personalSettings")}
         >
-          <SlidersHorizontal size={19} />
+          <SlidersHorizontal size={19} aria-hidden="true" />
         </AppLink>
       </div>
     </header>
