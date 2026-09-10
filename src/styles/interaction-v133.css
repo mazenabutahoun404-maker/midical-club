@@ -47,26 +47,24 @@
 .adaptive-navigation-panel > .navigation-reveal-actions {
   position: fixed;
   z-index: 47;
-  top: calc(var(--shell-gap) + 8px);
-  inset-inline-start: calc(var(--shell-gap) + 8px);
-  width: calc(var(--sidebar-width) - 16px);
+  top: calc(var(--shell-gap) + 70px);
+  inset-inline-start: calc(var(--shell-gap) + var(--sidebar-width) - 45px);
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 8px;
-  padding: 6px;
+  flex-direction: column;
+  gap: 3px;
+  padding: 3px;
   border: 1px solid #d8c2b4;
-  border-radius: 18px;
-  background: color-mix(in srgb, #fffaf4 96%, transparent);
-  box-shadow: 0 4px 16px #4f28151c;
+  border-radius: 12px;
+  background: color-mix(in srgb, #fffaf4 94%, transparent);
+  box-shadow: 0 8px 24px #4f28151c;
   backdrop-filter: blur(12px);
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateX(-4px) scale(.96);
   pointer-events: none;
   transition: opacity 150ms ease, transform 180ms ease;
 }
 [dir="rtl"] .adaptive-navigation-panel > .navigation-reveal-actions {
-  transform: translateY(-8px);
+  transform: translateX(4px) scale(.96);
 }
 .adaptive-navigation-panel > .navigation-reveal-actions button {
   width: 34px;
@@ -138,11 +136,10 @@
   [data-nav-adaptive][data-navigation="horizontal"]
     .adaptive-navigation-panel
     > .navigation-reveal-actions {
-    top: 31px;
+    top: 29px;
     inset-inline-start: auto;
     inset-inline-end: 42px;
     flex-direction: row;
-    width: auto;
   }
 }
 
@@ -161,7 +158,6 @@
     inset-inline-start: auto;
     inset-inline-end: 16px;
     flex-direction: row;
-    width: auto;
   }
 }
 
