@@ -26,7 +26,7 @@ export function MegaMenu({
                 href={item.href}
                 onClick={onNavigate}
               >
-                {item.icon && <Icon name={item.icon} motion />}
+                {item.icon && <Icon name={item.icon} />}
                 <div>
                   <b>{t(item.label)}</b>
                   {item.description && <p>{t(item.description)}</p>}

@@ -1,0 +1,151 @@
+/* Category accents, not an all-over hue shift. Wine remains the navigation anchor. */
+:root[data-theme="dark"] {
+  --detail-teal: #89ddd0;
+  --detail-teal-fill: #193c38;
+  --detail-blue: #a6ceff;
+  --detail-blue-fill: #20384f;
+  --detail-violet: #cdb8ff;
+  --detail-violet-fill: #362849;
+  --detail-amber: #f5cd8b;
+  --detail-amber-fill: #443421;
+  --detail-rose: #f5b3c8;
+  --detail-rose-fill: #492739;
+}
+:root[data-theme="dark"] .community-v5 .community-hero {
+  background: linear-gradient(125deg, #241820, #2f1e2a 55%, #1b3032);
+}
+:root[data-theme="dark"] .community-v5 .community-overview {
+  background: #251e2b;
+}
+:root[data-theme="dark"] .community-overview-stats > div {
+  border-top: 2px solid var(--detail-color);
+  padding-top: 12px;
+}
+:root[data-theme="dark"] .community-overview-stats > [data-tone="teal"] {
+  --detail-color: var(--detail-teal);
+}
+:root[data-theme="dark"] .community-overview-stats > [data-tone="blue"] {
+  --detail-color: var(--detail-blue);
+}
+:root[data-theme="dark"] .community-overview-stats > [data-tone="violet"] {
+  --detail-color: var(--detail-violet);
+}
+:root[data-theme="dark"] .community-overview-stats :is(dd, dt svg) {
+  color: var(--detail-color);
+}
+:root[data-theme="dark"] .community-next-event {
+  background: var(--detail-amber-fill);
+  padding: 18px;
+  margin-inline: -8px;
+  border: 1px solid #8e70454d;
+  border-radius: 10px;
+}
+:root[data-theme="dark"]
+  .community-next-event
+  :is(.community-next-label, time) {
+  color: var(--detail-amber);
+}
+:root[data-theme="dark"]
+  .community-portals
+  [data-tone="red"]
+  .portal-medical-icon {
+  color: var(--detail-rose);
+  background: var(--detail-rose-fill);
+}
+:root[data-theme="dark"]
+  .community-portals
+  [data-tone="ink"]
+  .portal-medical-icon {
+  color: var(--detail-blue);
+  background: var(--detail-blue-fill);
+}
+:root[data-theme="dark"]
+  .community-portals
+  [data-tone="russet"]
+  .portal-medical-icon {
+  color: var(--detail-amber);
+  background: var(--detail-amber-fill);
+}
+:root[data-theme="dark"]
+  .community-portals
+  [data-tone="olive"]
+  .portal-medical-icon {
+  color: var(--detail-teal);
+  background: var(--detail-teal-fill);
+}
+:root[data-theme="dark"]
+  .community-activity-card
+  :is(.activity-kind-icon, .activity-impact) {
+  color: var(--detail-teal);
+  background: var(--detail-teal-fill);
+}
+:root[data-theme="dark"] .community-activity-card .activity-impact strong {
+  color: #d5eee8;
+}
+:root[data-theme="dark"] .journal-story-card {
+  border-color: #52729975;
+}
+:root[data-theme="dark"] .journal-story-card .eyebrow,
+:root[data-theme="dark"] .journal-story-card .text-link {
+  color: var(--detail-blue);
+}
+:root[data-theme="dark"] .journal-story-bottom > div > span {
+  background: var(--detail-blue-fill);
+  color: var(--detail-blue);
+}
+:root[data-theme="dark"] .event-status[data-status="open"] {
+  background: var(--detail-teal-fill);
+  color: var(--detail-teal);
+}
+:root[data-theme="dark"]
+  .event-status:is([data-status="waitlist"], [data-status="upcoming"]) {
+  background: var(--detail-amber-fill);
+  color: var(--detail-amber);
+}
+:root[data-theme="dark"] .event-ticket .ticket-date {
+  background: var(--detail-amber-fill);
+  color: var(--detail-amber);
+}
+:root[data-theme="dark"] .event-ticket .ticket-date :is(b, span, small) {
+  color: inherit;
+}
+:root[data-theme="dark"] .recruitment-position-card[data-accent="olive"] {
+  --card-accent: var(--detail-teal);
+}
+:root[data-theme="dark"] .recruitment-position-card[data-accent="purple"] {
+  --card-accent: var(--detail-violet);
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="olive"] {
+  --book-action-ink: var(--detail-teal);
+  --book-tab: var(--detail-teal-fill);
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="purple"] {
+  --book-action-ink: var(--detail-violet);
+  --book-tab: var(--detail-violet-fill);
+}
+:root[data-theme="dark"]
+  .community-v5
+  .community-navigation
+  :is(a.active, .community-honors-trigger.active) {
+  color: #fff;
+  background: #a52b4c;
+}
+:root[data-theme="dark"] .theme-trigger:hover {
+  color: var(--detail-amber);
+}
+:root[data-theme="dark"] .language-button:hover {
+  color: var(--detail-teal);
+}
+@media (forced-colors: active) {
+  :root[data-theme] .community-overview-stats :is(dd, dt svg),
+  :root[data-theme] .community-next-event :is(.community-next-label, time) {
+    color: CanvasText;
+  }
+  :root[data-theme]
+    .community-v5
+    :is(.community-hero, .community-overview, .community-next-event) {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+}

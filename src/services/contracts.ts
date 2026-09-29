@@ -45,6 +45,8 @@ import type {
   SearchFilters,
 } from "../types/content";
 export interface MedClubServices {
+  /** Public lists are visible records. A sample source declares its fixed calendar anchor. */
+  contentSnapshot?: { kind: "sample" | "live"; asOf?: string };
   auth: AuthService;
   admin: AdminService;
   builder: BuilderService;

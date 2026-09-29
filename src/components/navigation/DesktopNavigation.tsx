@@ -1,11 +1,10 @@
+import { NotebookFittings } from "./NotebookFittings";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   House,
   BookOpen,
   Users,
-  Sparkles,
-  CalendarDays,
   ShoppingBag,
   ChevronDown,
   ArrowUpRight,
@@ -15,11 +14,20 @@ import {
   HeartHandshake,
   FileCheck2,
 } from "lucide-react";
+import { publicMainItems, isInvolvementPath } from "./involvement";
+import { NavigationControls } from "./AdaptiveNavigation";
+import {
+  Route,
+  Signpost,
+  BadgePlus,
+  Ticket,
+  Telescope,
+  Compass,
+} from "lucide-react";
 import { SidebarToggle } from "./SidebarToggle";
 import { NavigationHint } from "./NavigationHint";
 import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { Brand } from "./Brand";
 import { AppLink } from "./AppLink";
 import { MegaMenu } from "./MegaMenu";
 import { AppearanceSettings } from "./AppearanceSettings";
@@ -30,8 +38,10 @@ import { signInPath } from "../../constants/routes";
 import { MorphIcon } from "../ui/MorphIcon";
 const icons = {
   community: Users,
-  opportunities: Sparkles,
-  events: CalendarDays,
+  opportunities: Telescope,
+  recruitment: BadgePlus,
+  "get-involved": Route,
+  events: Ticket,
   store: ShoppingBag,
   mentorship: HeartHandshake,
   contributions: FileCheck2,
@@ -59,9 +69,13 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
   const active = (href: string) =>
     href === "/"
       ? location.pathname === "/" && !location.hash
-      : href.startsWith("/#")
-        ? location.pathname === "/" && location.hash === href.slice(1)
-        : location.pathname.startsWith(href);
+      : href === "/community" && location.pathname.startsWith("/journal")
+        ? true
+        : href === "/get-involved"
+          ? isInvolvementPath(location.pathname)
+          : href.startsWith("/#")
+            ? location.pathname === "/" && location.hash === href.slice(1)
+            : location.pathname.startsWith(href);
   return (
     <aside
       className="desktop-navigation"
@@ -81,9 +95,13 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
           setExpanded(false);
       }}
     >
-      <SidebarToggle controls="public-sidebar-links" />
-      <div className="navigation-brand">
-        <Brand brand={site.brand} />
+      <NotebookFittings axis="rail" />
+      <div className="navigation-brand shell-brand">
+        <SidebarToggle controls="public-sidebar-links" />
+        <span className="shell-brand-caption">
+          <strong>{site.brand.name}</strong>
+          <small>{t(site.brand.caption)}</small>
+        </span>
       </div>
       <div
         className="navigation-scroll-frame"
@@ -139,8 +157,8 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                 />
               )}
             </div>
-            {site.navigation.main.map((item) => {
-              const Icon = icons[item.id as keyof typeof icons] || Sparkles;
+            {publicMainItems(site).map((item) => {
+              const Icon = icons[item.id as keyof typeof icons] || Compass;
               return (
                 <NavigationHint label={t(item.label)} key={item.id}>
                   <AppLink
@@ -154,7 +172,11 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                         : undefined
                     }
                   >
-                    <MorphIcon icon={Icon} size={20} />
+                    <MorphIcon
+                      icon={Icon}
+                      to={item.id === "get-involved" ? Signpost : undefined}
+                      size={20}
+                    />
                     <span>{t(item.label)}</span>
                   </AppLink>
                 </NavigationHint>
@@ -204,6 +226,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
           </AppLink>
         </div>
         <AppearanceSettings />
+        <NavigationControls />
         <div className="navigation-version">
           <span className="status-dot" />
           {label("previewShort")}

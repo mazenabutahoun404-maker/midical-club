@@ -2,15 +2,18 @@
 
 /* PDF reading uses the page scroll instead of nesting a short scroller around
    the browser's own document viewport. Other media keep the original sizing. */
-.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-scroll {
+.study-reader[data-media="pdf"]:not(.study-reader-companion)
+  .study-reader-scroll {
   max-height: none;
   overflow: visible;
   padding: 14px clamp(12px, 2cqw, 22px) 18px;
 }
-.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-page-control {
+.study-reader[data-media="pdf"]:not(.study-reader-companion)
+  .study-page-control {
   margin-bottom: 6px;
 }
-.study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-hint {
+.study-reader[data-media="pdf"]:not(.study-reader-companion)
+  .study-reader-hint {
   margin-bottom: 10px;
 }
 .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-pdf {
@@ -19,7 +22,9 @@
   border-radius: 9px;
   box-shadow: 0 9px 24px #3f241319;
 }
-.study-notebook[data-split="true"] .study-reader[data-media="pdf"] .study-reader-scroll {
+.study-notebook[data-split="true"]
+  .study-reader[data-media="pdf"]
+  .study-reader-scroll {
   max-height: none;
 }
 .study-notebook[data-split="true"] .study-reader[data-media="pdf"] .study-pdf {
@@ -53,18 +58,24 @@
   flex-direction: column;
   gap: 3px;
   padding: 3px;
-  border: 1px solid #d8c2b4;
+  border: 1px solid var(--tone-line-boundary, #d8c2b4);
   border-radius: 12px;
-  background: color-mix(in srgb, #fffaf4 94%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--tone-surface-raised, #fffaf4) 94%,
+    transparent
+  );
   box-shadow: 0 8px 24px #4f28151c;
   backdrop-filter: blur(12px);
   opacity: 0;
-  transform: translateX(-4px) scale(.96);
+  transform: translateX(-4px) scale(0.96);
   pointer-events: none;
-  transition: opacity 150ms ease, transform 180ms ease;
+  transition:
+    opacity 150ms ease,
+    transform 180ms ease;
 }
 [dir="rtl"] .adaptive-navigation-panel > .navigation-reveal-actions {
-  transform: translateX(4px) scale(.96);
+  transform: translateX(4px) scale(0.96);
 }
 .adaptive-navigation-panel > .navigation-reveal-actions button {
   width: 34px;
@@ -74,16 +85,18 @@
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: #65473d;
+  color: var(--tone-ink-muted, #65473d);
 }
 .adaptive-navigation-panel > .navigation-reveal-actions button:hover,
 .adaptive-navigation-panel > .navigation-reveal-actions button:focus-visible {
-  background: #eadbd0;
-  color: #6f191c;
+  background: var(--tone-surface-inset, #eadbd0);
+  color: var(--tone-ink-c99d92, #6f191c);
 }
-.adaptive-navigation-panel > .navigation-reveal-actions button[aria-pressed="true"] {
+.adaptive-navigation-panel
+  > .navigation-reveal-actions
+  button[aria-pressed="true"] {
   background: #6a3930;
-  color: #fff7ef;
+  color: var(--tone-ink-fcf2e8, #fff7ef);
 }
 [data-nav-adaptive]:not([data-nav-hidden="true"])
   .adaptive-navigation-panel:is(:hover, :focus-within)
@@ -97,22 +110,25 @@
 /* Chrome controls stay calm. Only destination and filter tabs retain semantic
    two-shape animation. */
 :is(
-  .sidebar-toggle,
-  .navigation-glance,
-  .navigation-reveal-actions button,
-  .navigation-preferences,
-  .workspace-search,
-  .workspace-icon,
-  .language-button,
-  .mobile-menu,
-  .navigation-more-button,
-  .admin-back,
-  .back-to-medclub,
-  .admin-operator
-) > svg {
+    .sidebar-toggle,
+    .navigation-glance,
+    .navigation-reveal-actions button,
+    .navigation-preferences,
+    .workspace-search,
+    .workspace-icon,
+    .language-button,
+    .mobile-menu,
+    .navigation-more-button,
+    .admin-back,
+    .back-to-medclub,
+    .admin-operator
+  )
+  > svg {
   animation: none !important;
   transform: none !important;
-  transition: color 150ms ease, opacity 150ms ease !important;
+  transition:
+    color 150ms ease,
+    opacity 150ms ease !important;
 }
 .navigation-item:hover > .disclosure-chevron {
   transform: none;
@@ -144,7 +160,8 @@
 }
 
 @media (max-width: 767px) {
-  .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-scroll {
+  .study-reader[data-media="pdf"]:not(.study-reader-companion)
+    .study-reader-scroll {
     padding: 10px 8px 14px;
   }
   .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-pdf {

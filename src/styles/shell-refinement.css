@@ -1,0 +1,259 @@
+/* V0.13.6 — stable anchors and quieter navigation; original palette. */
+/* Keep placement independent of the reveal animation. No animated translate
+   can cancel the modal's centering, including in RTL and reduced motion. */
+.medclub-native-modal.search-modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(780px, calc(100vw - 28px));
+  height: fit-content;
+  max-height: min(85dvh, 850px);
+  transform: none;
+}
+.search-modal[open] {
+  animation: search-panel-unveil 280ms ease-out both;
+}
+@keyframes search-panel-unveil {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 12% 0 round 28px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 round 27px);
+  }
+}
+/* A filter, even blur(0), establishes a containing block for fixed descendants. */
+.space-transition {
+  filter: none;
+  transform: none;
+  perspective: none;
+  will-change: auto;
+}
+.app-shell .desktop-navigation .sidebar-expanded-logo {
+  display: block;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  object-fit: contain;
+  order: 0;
+}
+.app-shell .shell-brand-caption {
+  order: 1;
+}
+.app-shell .shell-brand .sidebar-toggle {
+  order: 2;
+  margin-inline-start: auto;
+  width: 30px;
+  height: 34px;
+  border-radius: 9px;
+}
+.app-shell .shell-brand .sidebar-toggle .sidebar-brand-logo {
+  display: none;
+}
+.app-shell .shell-brand .sidebar-toggle > svg {
+  position: static;
+  width: 18px;
+  height: 18px;
+  opacity: 1;
+}
+.app-shell .shell-brand .sidebar-toggle:hover {
+  background: color-mix(in srgb, var(--shell-ink) 7%, transparent);
+}
+.app-shell .shell-brand {
+  gap: 9px;
+  padding-inline: 14px;
+}
+.app-shell .shell-brand-caption strong {
+  font-size: 17px;
+}
+.app-shell .shell-brand-caption small {
+  font-size: 7px;
+}
+.app-shell[data-sidebar="collapsed"] .sidebar-expanded-logo {
+  display: none;
+}
+.app-shell[data-sidebar="collapsed"] .shell-brand .sidebar-toggle {
+  margin: 0;
+  width: 42px;
+  height: 42px;
+}
+.app-shell[data-sidebar="collapsed"] .shell-brand .sidebar-brand-logo {
+  display: block;
+  opacity: 1;
+}
+.app-shell[data-sidebar="collapsed"] .shell-brand .sidebar-toggle > svg {
+  position: absolute;
+  inset: 11px;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+}
+.app-shell[data-sidebar="collapsed"]
+  .desktop-navigation:is(:hover, :focus-within)
+  .sidebar-brand-logo {
+  opacity: 0;
+}
+.app-shell[data-sidebar="collapsed"]
+  .desktop-navigation:is(:hover, :focus-within)
+  .sidebar-toggle
+  > svg {
+  opacity: 1;
+}
+/* Return to discrete, rounded selections with breathing room on both sides. */
+html body .app-shell[data-navigation="vertical"] .navigation-item {
+  border-radius: 13px;
+  width: 100%;
+}
+html body .app-shell[data-navigation="vertical"] .navigation-scroll-frame {
+  padding-inline: 12px;
+  padding-top: 12px;
+}
+html body .app-shell[data-navigation="vertical"] .navigation-primary {
+  gap: 5px;
+}
+html body .app-shell[data-navigation="vertical"] .navigation-workspace {
+  margin-inline: 0;
+}
+.app-shell .navigation-item.active {
+  background: var(--tone-surface-inset, #f8e8e5);
+}
+.personal-shell .navigation-item.active {
+  background: #ae675935;
+}
+.admin-shell .navigation-item.active {
+  background: #a50f15;
+}
+.navigation-bubble {
+  display: none;
+}
+.desktop-navigation .sidebar-note {
+  display: none;
+}
+.desktop-navigation .navigation-label {
+  padding-block: 7px;
+}
+.desktop-navigation .navigation-version {
+  padding-top: 5px;
+}
+/* Hidden actions consume no row. The small tray unfolds inside the rail. */
+.app-shell .desktop-navigation .navigation-reveal-actions {
+  height: 0;
+  min-height: 0;
+  max-height: 0;
+  padding: 0 8px;
+  margin: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+  transition:
+    max-height 180ms ease,
+    opacity 140ms ease,
+    transform 180ms ease,
+    visibility 180ms;
+}
+.app-shell
+  .desktop-navigation:is(:hover, :focus-within)
+  .navigation-reveal-actions {
+  height: auto;
+  max-height: 46px;
+  padding-block: 5px;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.app-shell[data-sidebar="collapsed"]
+  .desktop-navigation:is(:hover, :focus-within)
+  .navigation-reveal-actions {
+  max-height: 90px;
+}
+/* The card remains still. Only its existing decorative rings move. */
+.opportunity-explorer:hover::before {
+  transform: rotate(28deg) scale(1.08) !important;
+}
+.opportunity-explorer:focus-within::before {
+  transform: rotate(28deg) scale(1.08) !important;
+}
+@media (min-width: 768px) {
+  html body .app-shell[data-navigation="vertical"] .desktop-navigation {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+  }
+  html body .app-shell[data-navigation="vertical"] .desktop-navigation::after {
+    background: linear-gradient(
+      var(--shell-line),
+      color-mix(in srgb, var(--shell-line) 50%, transparent)
+    );
+  }
+  .app-shell[data-navigation="horizontal"] .sidebar-expanded-logo {
+    display: block;
+  }
+  .app-shell[data-navigation="horizontal"] .navigation-reveal-actions {
+    max-width: 0;
+  }
+  .app-shell[data-navigation="horizontal"]
+    .desktop-navigation:is(:hover, :focus-within)
+    .navigation-reveal-actions {
+    max-width: 80px;
+  }
+}
+@media (max-width: 1024px) and (min-width: 768px) {
+  .app-shell .shell-brand {
+    padding-inline: 10px;
+    gap: 6px;
+  }
+  .app-shell .shell-brand-caption strong {
+    font-size: 14px;
+  }
+  .app-shell .shell-brand-caption small {
+    display: none;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .app-shell .desktop-navigation .navigation-reveal-actions {
+    height: auto;
+    max-height: 46px;
+    padding-block: 5px;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  .app-shell[data-sidebar="collapsed"]
+    .desktop-navigation
+    .navigation-reveal-actions {
+    max-height: 90px;
+  }
+  .app-shell[data-sidebar="collapsed"] .desktop-navigation .sidebar-brand-logo {
+    opacity: 0;
+  }
+  .app-shell[data-sidebar="collapsed"]
+    .desktop-navigation
+    .sidebar-toggle
+    > svg {
+    opacity: 1;
+  }
+}
+@media (max-width: 767px) {
+  .medclub-native-modal.search-modal {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 32px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-modal[open] {
+    animation: none;
+    clip-path: none;
+  }
+  .app-shell .desktop-navigation .navigation-reveal-actions {
+    transition: none;
+  }
+  .opportunity-explorer:hover::before,
+  .opportunity-explorer:focus-within::before {
+    transform: none !important;
+  }
+}

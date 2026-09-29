@@ -2,7 +2,6 @@ import { Bookmark, Check } from "lucide-react";
 import { useOverlays } from "../providers/OverlayProvider";
 import { useLocale } from "../providers/LocaleProvider";
 import { useSavedItems } from "../providers/SavedItemsProvider";
-import { SearchDialog } from "../../features/search/SearchDialog";
 import { ResourceDetails } from "../../features/resources/ResourceDetails";
 import { EventDetails } from "../../features/events/EventDetails";
 import { OpportunityDetails } from "../../features/opportunities/OpportunityDetails";
@@ -15,7 +14,6 @@ export function AppOverlays() {
   const { saved, toggle, isPending } = useSavedItems();
   return (
     <>
-      <SearchDialog />
       {detail && (
         <Modal
           open

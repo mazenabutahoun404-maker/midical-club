@@ -100,7 +100,11 @@ export default function LearnLandingPage() {
           <span className="academic-kicker">{label("courseFinder")}</span>
           <h2>{label("courseFinderBody")}</h2>
         </div>
-        <button className="button button-primary" onClick={openSearch}>
+        <button
+          className="button button-primary"
+          data-search-trigger
+          onClick={openSearch}
+        >
           {label("findCourse")}
           <Search size={17} />
         </button>

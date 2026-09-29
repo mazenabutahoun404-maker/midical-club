@@ -37,6 +37,7 @@ export function PhoneNavigation({ site }: { site: SiteContent }) {
       </AppLink>
       <button
         className="phone-search"
+        data-search-trigger
         onClick={openSearch}
         aria-label={label("searchLabel")}
       >

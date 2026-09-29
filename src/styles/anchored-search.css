@@ -1,0 +1,212 @@
+/* The transparent root overrides the legacy modal surface (!important).
+   Physical input attachment: no transform on the top-layer dialog itself. */
+.medclub-native-modal.search-modal.search-tethered {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  max-width: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible;
+  transform: none;
+  animation: none;
+  color: var(--foreground);
+}
+.search-tethered .search-transparent-dismiss {
+  position: absolute;
+  inset: 0;
+}
+.search-tethered .search-panel,
+.search-tethered .search-panel [data-slot="command"] {
+  position: static;
+  height: auto;
+  overflow: visible;
+  background: transparent;
+  pointer-events: none;
+}
+.search-tethered .search-anchor-glyph {
+  position: absolute;
+  left: var(--search-icon-left);
+  top: var(--search-icon-top);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--primary-foreground);
+  background: var(--primary);
+  border-radius: 13px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent);
+  pointer-events: none;
+}
+.search-tethered .search-panel [data-slot="command-input-wrapper"] {
+  position: absolute;
+  left: var(--search-bar-left);
+  top: var(--search-bar-top);
+  width: var(--search-bar-width);
+  height: 48px;
+  padding: 0 16px;
+  margin: 0;
+  border: 1px solid var(--ring);
+  border-radius: 14px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 6px 24px #190c1920;
+  pointer-events: auto;
+}
+.search-tethered .search-panel [data-slot="command-input-wrapper"] > svg {
+  display: none;
+}
+.search-tethered .search-panel [data-slot="command-input"] {
+  width: 100%;
+  height: 46px;
+  padding: 0;
+  font-size: 16px;
+  color: inherit;
+  background: transparent;
+}
+.search-tethered .search-results-surface {
+  position: absolute;
+  top: var(--search-results-top);
+  left: 0;
+  width: 100%;
+  max-height: var(--search-results-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 14px 18px 10px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 20px 65px #190c1933;
+  pointer-events: auto;
+}
+.search-tethered.search-results-above .search-results-surface {
+  top: auto;
+  bottom: 56px;
+}
+.search-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.search-results-heading strong {
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.search-dismiss {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+  color: inherit;
+}
+.search-dismiss:is(:hover, :focus-visible) {
+  background: var(--accent);
+}
+.search-tethered .search-controls {
+  margin-block: 8px 12px;
+}
+.search-tethered .search-panel .workspace-search-results {
+  max-height: none;
+  overflow: visible;
+}
+.search-tethered .search-panel .search-footer {
+  gap: 12px;
+  padding-block: 14px 4px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .search-tethered[open] [data-slot="command-input-wrapper"] {
+    animation: search-snap-right 210ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .search-tethered.search-opens-left[open] [data-slot="command-input-wrapper"] {
+    animation-name: search-snap-left;
+  }
+  .search-tethered[open] .search-results-surface {
+    animation: search-results-land 190ms 65ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .search-tethered.search-results-above[open] .search-results-surface {
+    animation-name: search-results-rise;
+  }
+}
+@keyframes search-snap-left {
+  from {
+    clip-path: inset(0 0 0 100% round 14px);
+    opacity: 0.5;
+  }
+  to {
+    clip-path: inset(0 round 14px);
+    opacity: 1;
+  }
+}
+@keyframes search-snap-right {
+  from {
+    clip-path: inset(0 100% 0 0 round 14px);
+    opacity: 0.5;
+  }
+  to {
+    clip-path: inset(0 round 14px);
+    opacity: 1;
+  }
+}
+@keyframes search-results-land {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes search-results-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 480px) {
+  .search-tethered .search-results-surface {
+    padding-inline: 12px;
+    border-radius: 16px;
+  }
+  .search-tethered .search-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .search-tethered .search-controls .workspace-field {
+    min-width: 0;
+  }
+  .search-tethered .search-recents {
+    flex-wrap: wrap;
+  }
+}
+@media (forced-colors: active) {
+  .search-tethered .search-anchor-glyph {
+    color: HighlightText;
+    background: Highlight;
+  }
+  .search-tethered .search-panel [data-slot="command-input-wrapper"],
+  .search-tethered .search-results-surface {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell .desktop-navigation :is(.navigation-bottom, .admin-nav-footer) {
+    transition: none !important;
+  }
+}

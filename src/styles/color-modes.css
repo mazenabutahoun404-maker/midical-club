@@ -1,0 +1,379 @@
+/* Wine navigation, plum-black reading surfaces and pearl-white type. No document/image inversion. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #160f16;
+  --foreground: #f7f0f4;
+  --card: #241820;
+  --card-foreground: #f7f0f4;
+  --popover: #2d1b27;
+  --popover-foreground: #fff7fb;
+  --primary: #a52b4c;
+  --primary-foreground: #ffffff;
+  --theme-primary-ink: #f4aabd;
+  --theme-russet-ink: #edb5c5;
+  --secondary: #352330;
+  --secondary-foreground: #ebd3de;
+  --muted: #2d2029;
+  --muted-foreground: #cdbdc5;
+  --accent: #542338;
+  --accent-foreground: #ffd6e2;
+  --destructive: #ffa4b4;
+  --border: #634252;
+  --input: #765367;
+  --ring: #ef9db9;
+  --russet: #edb5c5;
+  --deep-red: #8c2142;
+  --sidebar: #4a1428;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #a52b4c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #542338;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #634252;
+  --sidebar-ring: #ef9db9;
+  --shadow-card: 0 5px 25px #09030b40;
+  --shadow-overlay: 0 12px 40px #09030b88;
+}
+:root[data-theme="dark"] .app-shell {
+  --shell-surface: #4a1428;
+  --shell-ink: #ffffff;
+  --shell-line: #754055;
+  --shell-selection: #8a2e4b;
+}
+:root[data-theme="dark"] .personal-shell {
+  --shell-surface: #4a1428;
+}
+:root[data-theme="dark"] .admin-shell {
+  --shell-surface: #4a1428;
+}
+:root[data-theme="dark"] .app-shell .navigation-item.active {
+  background: #9b2c4c;
+  color: #ffffff;
+}
+:root[data-theme="dark"] .app-shell .navigation-item:not(.active) {
+  color: #ffffff;
+}
+:root[data-theme="dark"]
+  .app-shell
+  :is(
+    .shell-location,
+    .workspace-search,
+    .workspace-account,
+    .language-button,
+    .workspace-icon
+  ) {
+  color: var(--shell-ink);
+}
+:root[data-theme="dark"] :is(input, select, textarea) {
+  color: var(--foreground);
+  accent-color: #d77093;
+}
+:root[data-theme="dark"] :is(input, textarea)::placeholder {
+  color: #c3adba;
+  opacity: 1;
+}
+:root[data-theme="dark"] .search-modal.search-anchored::backdrop {
+  background: #10081260;
+}
+:root[data-theme="dark"] .notebook-fittings {
+  opacity: 0.78;
+}
+:root[data-theme="dark"] .notebook-fittings i {
+  box-shadow:
+    inset 0 1px 1px #fff5,
+    1px 3px 4px #0008;
+}
+:root[data-theme="dark"] ::selection {
+  background: #8a2e4b;
+  color: #ffffff;
+}
+:root[data-theme="dark"] .button-primary {
+  color: #ffffff;
+}
+:root[data-theme="dark"] :is(.campus-stage, .campus-scene) {
+  --campus-ink: #f5e3ec;
+}
+:root[data-theme="dark"] .campus-stage {
+  background: radial-gradient(
+    ellipse at 75% 20%,
+    #472035,
+    #211a2c 62%,
+    #180f1d
+  );
+  border-color: #654255;
+}
+:root[data-theme="dark"] .campus-toolbar,
+:root[data-theme="dark"] .campus-destinations a {
+  background: #311829ed;
+  color: #f7e5ee;
+  border-color: #7c4a61;
+}
+:root[data-theme="dark"] .campus-toolbar button {
+  color: #ffffff;
+}
+:root[data-theme="dark"]
+  .campus-destinations
+  a:is(:hover, :focus-visible, [data-highlighted]) {
+  background: #582840;
+  color: #ffffff;
+}
+:root[data-theme="dark"] .campus-explore-hint {
+  background: #311829ed;
+  color: #f4ccdc;
+}
+:root[data-theme="dark"] .campus-poster {
+  filter: brightness(0.6) saturate(0.72);
+}
+:root[data-theme="dark"] .campus-sun {
+  opacity: 0.06;
+  animation: none;
+}
+:root[data-theme="dark"] .campus-warmth {
+  opacity: 0.22;
+}
+/* Route-scoped styles can load after this sheet. Specificity keeps paper surfaces dark. */
+:root[data-theme="dark"] .study-notebook {
+  --book-paper: #271c25;
+  --book-paper-side: #30212c;
+  --book-tab: #432a3a;
+  --book-ink: #f4eaf0;
+  --book-muted: #cdbbc8;
+  --book-action-ink: #efbad2;
+  --book-rule: #725569;
+  --book-line: #513a4a;
+  --book-edge: #8a6c80;
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="red"] {
+  --book-action-ink: #f4aec2;
+  --book-tab: #482137;
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="olive"] {
+  --book-action-ink: #c2cf9d;
+  --book-tab: #303323;
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="purple"] {
+  --book-action-ink: #d3b7da;
+  --book-tab: #362a3a;
+}
+:root[data-theme="dark"] .admin-shell {
+  --admin-ink: #f7edf3;
+  --admin-panel: #291d26;
+  --admin-line: #654658;
+}
+:root[data-theme="dark"] .community-v5 {
+  --community-ink: #f7edf3;
+  --community-paper: #291d26;
+  --community-wash: #35222e;
+}
+:root[data-theme="dark"] .store-v7 {
+  --store-ink: #f7edf3;
+}
+:root[data-theme="dark"] .builder-library-page {
+  --builder-ink: #f7edf3;
+  --builder-cream: #291d26;
+}
+:root[data-theme="dark"] .recruitment-v9 {
+  --recruitment-cream: #291d26;
+  --recruitment-line: #684657;
+}
+:root[data-theme="dark"] .personal-shell {
+  --personal-ink: #f7edf3;
+  --personal-muted: #cdbac5;
+}
+:root[data-theme="dark"] :is(.mentorship-v6, .contributions-v6) {
+  --v6-ink: #f7edf3;
+  --v6-line: #654658;
+}
+:root[data-theme="dark"]
+  :is(
+    .governance-page,
+    .governance-users-page,
+    .governance-roles-page,
+    .governance-approvals-page
+  ) {
+  --governance-ink: #f7edf3;
+  --governance-cream: #291d26;
+}
+:root[data-theme="dark"]
+  :is(.notebook-page, .notebook-paper, .notebook-reading-surface) {
+  background-color: #271c25;
+  color: #f4eaf0;
+}
+:root[data-theme="dark"] .resource-pdf {
+  background: #2b1e28;
+}
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition:
+      background-color 180ms,
+      color 180ms;
+  }
+  .campus-poster {
+    transition: filter 250ms ease;
+  }
+}
+@media (forced-colors: active) {
+  :root[data-theme] {
+    --background: Canvas;
+    --foreground: CanvasText;
+    --card: Canvas;
+    --card-foreground: CanvasText;
+    --popover: Canvas;
+    --popover-foreground: CanvasText;
+    --primary: Highlight;
+    --primary-foreground: HighlightText;
+    --border: ButtonText;
+    --ring: Highlight;
+  }
+  :root[data-theme] .app-shell {
+    --shell-surface: Canvas;
+    --shell-ink: CanvasText;
+  }
+}
+
+/* Keep category/status hues readable without changing their filled surfaces. */
+:root[data-theme="dark"] .passport-stamp > span {
+  color: color-mix(in srgb, var(--batch-color) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .passport-copy > em {
+  color: color-mix(in srgb, var(--batch-color) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .passport-term svg {
+  color: color-mix(in srgb, var(--batch-color) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .passport-action {
+  color: color-mix(in srgb, var(--batch-color) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .course-context-card > strong {
+  color: color-mix(in srgb, var(--course-accent) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .course-context-card > a {
+  color: color-mix(in srgb, var(--course-accent) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .community-navigation a:hover {
+  color: color-mix(in srgb, var(--community-red) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .mentorship-navigation a:hover {
+  color: color-mix(in srgb, var(--v6-red) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .position-card-action {
+  color: color-mix(in srgb, var(--card-accent) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .application-status {
+  color: color-mix(in srgb, var(--status-color) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .product-card footer a {
+  color: color-mix(in srgb, var(--store-red) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .product-price-row strong {
+  color: color-mix(in srgb, var(--store-red) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .order-progress > div[data-complete] {
+  color: color-mix(in srgb, var(--store-red) 28%, #f2dbe7);
+}
+:root[data-theme="dark"] .agenda-copy > small {
+  color: color-mix(in srgb, var(--entry-color) 28%, #f2dbe7);
+}
+
+:root[data-theme="dark"]
+  .app-shell
+  .desktop-navigation
+  :is(
+    .navigation-label,
+    .shell-brand-caption,
+    .shell-brand-caption small,
+    .navigation-item,
+    .sidebar-toggle,
+    .navigation-reveal-actions button,
+    .navigation-version,
+    .navigation-preferences,
+    .personal-sidebar-footer,
+    .personal-sidebar-footer strong,
+    .personal-sidebar-footer span
+  ) {
+  color: #fff;
+}
+:root[data-theme="dark"]
+  .app-shell
+  .navigation-item:is(:hover, :focus-visible):not(.active) {
+  background: #622139;
+  color: #fff;
+}
+:root[data-theme="dark"] .app-shell .navigation-item.active {
+  background: #9b2c4c;
+  color: #fff;
+  box-shadow: inset 0 0 0 1px #f6b9ce26;
+}
+:root[data-theme="dark"] .app-shell .navigation-item .motion-icon {
+  color: inherit;
+}
+:root[data-theme="dark"] .notebook-fittings i {
+  background: linear-gradient(
+    90deg,
+    #614250,
+    #c3a4b4 18%,
+    #f4e4ec 34%,
+    #947282 58%,
+    #674350 84%,
+    #c6a9b8
+  );
+  border-color: #805568;
+}
+:root[data-theme="dark"] .notebook-fittings i::before,
+:root[data-theme="dark"] .notebook-fittings i::after {
+  background: radial-gradient(
+    circle,
+    #482634 0 22%,
+    #bfa0af 27% 43%,
+    #785065 49% 66%,
+    transparent 72%
+  );
+}
+@media (forced-colors: active) {
+  :root[data-theme]
+    .app-shell
+    .desktop-navigation
+    :is(
+      .navigation-item,
+      .navigation-label,
+      .shell-brand-caption,
+      .sidebar-toggle,
+      .navigation-reveal-actions button
+    ) {
+    color: CanvasText;
+  }
+  :root[data-theme] .app-shell .navigation-item.active {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+/* Carry the same wine navigation onto the compact phone bar. */
+:root[data-theme="dark"] .app-shell .phone-navigation {
+  background: #4a1428;
+  color: #fff;
+  border-color: #754055;
+}
+:root[data-theme="dark"] .app-shell .phone-navigation > :is(a, button) {
+  color: #fff;
+}
+:root[data-theme="dark"] .app-shell .phone-navigation > .active {
+  background: #9b2c4c;
+  color: #fff;
+}
+@media (forced-colors: active) {
+  :root[data-theme] .app-shell .phone-navigation {
+    background: Canvas;
+    color: CanvasText;
+  }
+  :root[data-theme] .app-shell .phone-navigation > :is(a, button) {
+    color: CanvasText;
+  }
+  :root[data-theme] .app-shell .phone-navigation > .active {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

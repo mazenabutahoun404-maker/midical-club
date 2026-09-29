@@ -1,10 +1,9 @@
-import { BriefcaseBusiness, ClipboardList, ContactRound } from "lucide-react";
+import { BadgePlus, ClipboardList, ContactRound } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { routes, signInPath } from "../../constants/routes";
 import { AppLink } from "./AppLink";
-import { MorphIcon } from "../ui/MorphIcon";
 
 export function RecruitmentNavigation() {
   const { label } = useLocale();
@@ -15,7 +14,7 @@ export function RecruitmentNavigation() {
     {
       href: routes.recruitment,
       label: label("openPositions"),
-      icon: BriefcaseBusiness,
+      icon: BadgePlus,
       active: pathname.startsWith("/recruitment"),
     },
     {
@@ -45,7 +44,7 @@ export function RecruitmentNavigation() {
           className={active ? "active" : ""}
           aria-current={active ? "page" : undefined}
         >
-          <MorphIcon icon={Icon} size={19} className="recruitment-nav-icon" />
+          <Icon aria-hidden="true" size={19} className="recruitment-nav-icon" />
           {itemLabel}
         </AppLink>
       ))}

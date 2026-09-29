@@ -11,7 +11,7 @@
   transform: translateY(-180%);
   border-radius: 999px;
   background: var(--primary);
-  color: white;
+  color: var(--tone-ink-fcf8f4, white);
   padding: 12px 22px;
   font-size: 13px;
   font-weight: 700;
@@ -34,7 +34,7 @@
   border-radius: 4px;
 }
 .workspace-icon:hover {
-  background: #ece2d6;
+  background: var(--tone-surface-inset, #ece2d6);
 }
 .medclub-modal .button {
   min-height: 44px;
@@ -70,12 +70,12 @@
   .section-heading p,
   .navigation-label,
   .navigation-version {
-    color: #5e4937;
+    color: var(--tone-ink-strong, #5e4937);
   }
   .resource-card,
   .pathway,
   .event-card,
   .opportunity {
-    border: 1px solid #9c8570;
+    border: 1px solid var(--tone-line-boundary, #9c8570);
   }
 }

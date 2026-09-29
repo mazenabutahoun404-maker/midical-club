@@ -1,10 +1,9 @@
-import {
-  ArrowLeft,
-  Search,
-  SlidersHorizontal,
-  Sparkles,
-  Bell,
-} from "lucide-react";
+import { ScrollHeader } from "./ScrollHeader";
+import { NotebookFittings } from "./NotebookFittings";
+import { ThemeMenu } from "./ThemeMenu";
+import { LocationTitle } from "./LocationTitle";
+import { SearchGlyph } from "./SearchGlyph";
+import { ArrowLeft, SlidersHorizontal, Bell } from "lucide-react";
 import { useNotifications } from "../../features/notifications/useNotifications";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
@@ -15,15 +14,13 @@ export function PersonalHeader() {
   const { openSearch } = useOverlays();
   const notifications = useNotifications();
   return (
-    <header className="personal-header container">
+    <ScrollHeader className="personal-header container">
+      <NotebookFittings axis="header" />
       <AppLink className="back-to-medclub space-portal-link" href="/">
         <ArrowLeft size={17} className="directional" aria-hidden="true" />
         <span>{label("backToMedClub")}</span>
       </AppLink>
-      <div className="personal-header-mark">
-        <Sparkles size={14} />
-        {label("ownCorner")}
-      </div>
+      <LocationTitle />
       <div className="personal-header-actions">
         <AppLink
           href="/my/notifications"
@@ -43,11 +40,13 @@ export function PersonalHeader() {
         <button
           className="workspace-icon"
           aria-label={label("personalSearch")}
+          data-search-trigger
           onClick={openSearch}
         >
-          <Search size={19} aria-hidden="true" />
+          <SearchGlyph />
         </button>
         <LanguageMenu />
+        <ThemeMenu />
         <AppLink
           href="/my/settings"
           className="workspace-icon"
@@ -56,6 +55,6 @@ export function PersonalHeader() {
           <SlidersHorizontal size={19} aria-hidden="true" />
         </AppLink>
       </div>
-    </header>
+    </ScrollHeader>
   );
 }

@@ -3,17 +3,36 @@
   --motion-touch: 150ms;
   --motion-state: 220ms;
   --motion-page: 420ms;
-  --motion-ease-out: cubic-bezier(.22, .8, .24, 1);
-  --motion-ease-spring: cubic-bezier(.2, 1.2, .36, 1);
+  --motion-ease-out: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --motion-ease-spring: cubic-bezier(0.2, 1.2, 0.36, 1);
 }
 
 /* 1–3. Icons, physical controls and a clear clinical focus response. */
-:where(.navigation-item, .phone-navigation > a, .phone-navigation > button, .button, .workspace-icon, .quiet-button, .text-link, .save-button) svg {
+:where(
+    .navigation-item,
+    .phone-navigation > a,
+    .phone-navigation > button,
+    .button,
+    .workspace-icon,
+    .quiet-button,
+    .text-link,
+    .save-button
+  )
+  svg {
   transform-origin: center;
-  transition: transform var(--motion-state) var(--motion-ease-spring), color var(--motion-touch) ease;
+  transition:
+    transform var(--motion-state) var(--motion-ease-spring),
+    color var(--motion-touch) ease;
 }
-:where(.button, .workspace-icon, .quiet-button, .segmented-pills button, .filter-tabs button, .notebook-button):active:not(:disabled) {
-  transform: translateY(2px) scale(.985) !important;
+:where(
+    .button,
+    .workspace-icon,
+    .quiet-button,
+    .segmented-pills button,
+    .filter-tabs button,
+    .notebook-button
+  ):active:not(:disabled) {
+  transform: translateY(2px) scale(0.985) !important;
   transition-duration: 70ms !important;
 }
 :where(a, button, input, select, textarea, summary):focus-visible {
@@ -21,7 +40,7 @@
 }
 :where(input, textarea, select)[aria-invalid="true"],
 :where(input, textarea, select):user-invalid {
-  border-color: #a50f15 !important;
+  border-color: var(--tone-line-8c2925, #a50f15) !important;
   animation: clinical-field-resist 210ms ease-out both;
 }
 :where(input, textarea, select):user-valid:not(:placeholder-shown) {
@@ -33,44 +52,146 @@
 
 /* Navigation uses one controlled gesture, with destination-specific accents. */
 @media (hover: hover) and (pointer: fine) {
-  :where(.navigation-item, .phone-navigation > a, .phone-navigation > button):hover > svg,
-  :where(.navigation-item, .phone-navigation > a, .phone-navigation > button):hover .admin-nav-icon > svg {
+  :where(
+      .navigation-item,
+      .phone-navigation > a,
+      .phone-navigation > button
+    ):hover
+    > svg,
+  :where(
+      .navigation-item,
+      .phone-navigation > a,
+      .phone-navigation > button
+    ):hover
+    .admin-nav-icon
+    > svg {
     transform: translateY(-2px) rotate(-5deg) scale(1.08);
   }
-  :where(a[href*="calendar"], button[aria-label*="calendar" i]):hover > svg { transform: perspective(80px) rotateX(-18deg) translateY(-2px); }
-  :where(a[href*="library"], [data-library-destination]):hover > svg { transform: translateY(-3px) scaleY(1.08); }
-  :where(a[href*="notifications"]):hover > svg { animation: clinical-bell-ring 360ms ease-out both; }
-  :where(a[href*="admin"], .personal-admin-portal):hover svg { transform: scale(.94) rotate(5deg); }
+  :where(a[href*="calendar"], button[aria-label*="calendar" i]):hover > svg {
+    transform: perspective(80px) rotateX(-18deg) translateY(-2px);
+  }
+  :where(a[href*="library"], [data-library-destination]):hover > svg {
+    transform: translateY(-3px) scaleY(1.08);
+  }
+  :where(a[href*="notifications"]):hover > svg {
+    animation: clinical-bell-ring 360ms ease-out both;
+  }
+  :where(a[href*="admin"], .personal-admin-portal):hover svg {
+    transform: scale(0.94) rotate(5deg);
+  }
 }
-:where(.navigation-item.active, .navigation-item[aria-current], .phone-navigation .active, .phone-navigation [aria-current]) > svg,
-:where(.navigation-item.active, .navigation-item[aria-current], .phone-navigation .active, .phone-navigation [aria-current]) .admin-nav-icon > svg {
+:where(
+    .navigation-item.active,
+    .navigation-item[aria-current],
+    .phone-navigation .active,
+    .phone-navigation [aria-current]
+  )
+  > svg,
+:where(
+    .navigation-item.active,
+    .navigation-item[aria-current],
+    .phone-navigation .active,
+    .phone-navigation [aria-current]
+  )
+  .admin-nav-icon
+  > svg {
   animation: clinical-active-pulse 430ms var(--motion-ease-out) both;
 }
 
 /* 4 and 10. Layered card feedback and stable filtered entrances. */
 :where(
-  .resource-card, .course-card, .event-card, .opportunity, .article-card,
-  .activity-card, .mentor-card, .store-product-card, .recruitment-role-card,
-  .builder-page-card, .admin-metric-card, .course-signal-card, .health-record
+  .resource-card,
+  .course-card,
+  .event-card,
+  .opportunity,
+  .article-card,
+  .activity-card,
+  .mentor-card,
+  .store-product-card,
+  .recruitment-role-card,
+  .builder-page-card,
+  .admin-metric-card,
+  .course-signal-card,
+  .health-record
 ) {
   background-position: 0 0;
-  transition: transform var(--motion-state) var(--motion-ease-out), box-shadow var(--motion-state) ease, border-color var(--motion-touch) ease, background-position 420ms ease;
+  transition:
+    transform var(--motion-state) var(--motion-ease-out),
+    box-shadow var(--motion-state) ease,
+    border-color var(--motion-touch) ease,
+    background-position 420ms ease;
   animation: clinical-card-arrive 340ms var(--motion-ease-out) both;
 }
-:where(.resource-grid, .course-grid, .event-grid, .opportunity-grid, .journal-grid, .activities-grid, .mentor-grid, .store-grid, .recruitment-grid) > :nth-child(2) { animation-delay: 35ms; }
-:where(.resource-grid, .course-grid, .event-grid, .opportunity-grid, .journal-grid, .activities-grid, .mentor-grid, .store-grid, .recruitment-grid) > :nth-child(3) { animation-delay: 70ms; }
-:where(.resource-grid, .course-grid, .event-grid, .opportunity-grid, .journal-grid, .activities-grid, .mentor-grid, .store-grid, .recruitment-grid) > :nth-child(n+4) { animation-delay: 95ms; }
+:where(
+    .resource-grid,
+    .course-grid,
+    .event-grid,
+    .opportunity-grid,
+    .journal-grid,
+    .activities-grid,
+    .mentor-grid,
+    .store-grid,
+    .recruitment-grid
+  )
+  > :nth-child(2) {
+  animation-delay: 35ms;
+}
+:where(
+    .resource-grid,
+    .course-grid,
+    .event-grid,
+    .opportunity-grid,
+    .journal-grid,
+    .activities-grid,
+    .mentor-grid,
+    .store-grid,
+    .recruitment-grid
+  )
+  > :nth-child(3) {
+  animation-delay: 70ms;
+}
+:where(
+    .resource-grid,
+    .course-grid,
+    .event-grid,
+    .opportunity-grid,
+    .journal-grid,
+    .activities-grid,
+    .mentor-grid,
+    .store-grid,
+    .recruitment-grid
+  )
+  > :nth-child(n + 4) {
+  animation-delay: 95ms;
+}
 @media (hover: hover) and (pointer: fine) {
   :where(
-    .resource-card, .course-card, .event-card, .opportunity, .article-card,
-    .activity-card, .mentor-card, .store-product-card, .recruitment-role-card,
-    .builder-page-card, .admin-metric-card, .course-signal-card, .health-record
+    .resource-card,
+    .course-card,
+    .event-card,
+    .opportunity,
+    .article-card,
+    .activity-card,
+    .mentor-card,
+    .store-product-card,
+    .recruitment-role-card,
+    .builder-page-card,
+    .admin-metric-card,
+    .course-signal-card,
+    .health-record
   ):hover {
     transform: translateY(-4px) scale(1.006);
     box-shadow: 0 17px 38px #4d211714;
-    border-color: #cfae9f;
+    border-color: var(--tone-line-boundary, #cfae9f);
   }
-  :where(.resource-card, .course-card, .event-card, .opportunity, .article-card):hover :is(.resource-art, .course-top, .event-date, svg) {
+  :where(
+      .resource-card,
+      .course-card,
+      .event-card,
+      .opportunity,
+      .article-card
+    ):hover
+    :is(.resource-art, .course-top, .event-date, svg) {
     transform: translateY(-2px);
   }
 }
@@ -80,22 +201,48 @@
 .notebook-page-stack,
 .notebook-spread,
 .notebook-reading-page {
-  transition: transform var(--motion-page) var(--motion-ease-out), box-shadow var(--motion-page) ease;
+  transition:
+    transform var(--motion-page) var(--motion-ease-out),
+    box-shadow var(--motion-page) ease;
 }
 @media (hover: hover) and (pointer: fine) {
-  .notebook-object:hover .notebook-back-cover { transform: rotateX(2.4deg) translateY(2px) translateZ(-13px); }
-  .notebook-object:hover .notebook-page-stack { transform: translateX(3px) translateY(-2px) translateZ(-5px); box-shadow: 4px 8px 2px #00000012; }
-  [dir="rtl"] .notebook-object:hover .notebook-page-stack { transform: translateX(-3px) translateY(-2px) translateZ(-5px); }
-  .notebook-bookmark:hover { transform: perspective(650px) translateX(7px) rotateY(-7deg); }
-  [dir="rtl"] .notebook-bookmark:hover { transform: perspective(650px) translateX(-7px) rotateY(7deg); }
+  .notebook-object:hover .notebook-back-cover {
+    transform: rotateX(2.4deg) translateY(2px) translateZ(-13px);
+  }
+  .notebook-object:hover .notebook-page-stack {
+    transform: translateX(3px) translateY(-2px) translateZ(-5px);
+    box-shadow: 4px 8px 2px #00000012;
+  }
+  [dir="rtl"] .notebook-object:hover .notebook-page-stack {
+    transform: translateX(-3px) translateY(-2px) translateZ(-5px);
+  }
+  .notebook-bookmark:hover {
+    transform: perspective(650px) translateX(7px) rotateY(-7deg);
+  }
+  [dir="rtl"] .notebook-bookmark:hover {
+    transform: perspective(650px) translateX(-7px) rotateY(7deg);
+  }
 }
-.study-notebook[data-reading="resource"] .notebook-spread { box-shadow: inset 1px 0 #fff9, 0 14px 24px #00000018; }
-.study-notebook[data-reading="resource"] .notebook-reading-page { animation: notebook-settle-flat 360ms var(--motion-ease-out) both; }
-.notebook-bookmark[aria-current="page"] { animation: notebook-tab-seat 300ms var(--motion-ease-spring) both; }
-[dir="rtl"] .notebook-bookmark[aria-current="page"] { animation-name: notebook-tab-seat-rtl; }
+.study-notebook[data-reading="resource"] .notebook-spread {
+  box-shadow:
+    inset 1px 0 #fff9,
+    0 14px 24px #00000018;
+}
+.study-notebook[data-reading="resource"] .notebook-reading-page {
+  animation: notebook-settle-flat 360ms var(--motion-ease-out) both;
+}
+.notebook-bookmark[aria-current="page"] {
+  animation: notebook-tab-seat 300ms var(--motion-ease-spring) both;
+}
+[dir="rtl"] .notebook-bookmark[aria-current="page"] {
+  animation-name: notebook-tab-seat-rtl;
+}
 
 /* 6. Save feedback explains where a newly saved item goes. */
-.save-button { position: relative; overflow: visible; }
+.save-button {
+  position: relative;
+  overflow: visible;
+}
 .save-button[data-motion-state="saved"]::after {
   content: "";
   position: absolute;
@@ -105,8 +252,12 @@
   animation: clinical-success-ring 520ms ease-out both;
   pointer-events: none;
 }
-.save-button[data-motion-state="saved"] > svg { animation: bookmark-seat 470ms var(--motion-ease-spring) both; }
-.save-button[data-motion-state="removed"] > svg { animation: bookmark-release 300ms ease-out both; }
+.save-button[data-motion-state="saved"] > svg {
+  animation: bookmark-seat 470ms var(--motion-ease-spring) both;
+}
+.save-button[data-motion-state="removed"] > svg {
+  animation: bookmark-release 300ms ease-out both;
+}
 .save-destination-flight {
   --flight-x: 0px;
   --flight-y: -40px;
@@ -117,14 +268,20 @@
   height: 34px;
   place-items: center;
   border-radius: 50%;
-  color: #fff;
+  color: var(--tone-ink-fcf8f4, #fff);
   background: #a50f15;
   box-shadow: 0 8px 20px #70101545;
   pointer-events: none;
-  animation: bookmark-flight 560ms cubic-bezier(.35, .02, .25, 1) both;
+  animation: bookmark-flight 560ms cubic-bezier(0.35, 0.02, 0.25, 1) both;
 }
-.save-destination-flight svg { width: 17px; height: 17px; fill: currentColor; }
-[data-library-destination] { position: relative; }
+.save-destination-flight svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+[data-library-destination] {
+  position: relative;
+}
 [data-library-destination][aria-current="page"]::after,
 [data-library-destination].active::after {
   content: "";
@@ -132,7 +289,7 @@
   inset: 5px;
   border: 1px solid currentColor;
   border-radius: inherit;
-  opacity: .22;
+  opacity: 0.22;
 }
 
 /* 7. Process stages read as a clinical signal, then settle. */
@@ -142,49 +299,115 @@
   transform-origin: left center;
   animation: clinical-signal-fill 540ms var(--motion-ease-out) both;
 }
-[dir="rtl"] .recruitment-pipeline li[data-state="complete"]:not(:last-child)::after,
-[dir="rtl"] .recruitment-pipeline-compact li[data-state="complete"]:not(:last-child)::after { transform-origin: right center; }
+[dir="rtl"]
+  .recruitment-pipeline
+  li[data-state="complete"]:not(:last-child)::after,
+[dir="rtl"]
+  .recruitment-pipeline-compact
+  li[data-state="complete"]:not(:last-child)::after {
+  transform-origin: right center;
+}
 
 /* 8. The navigation glance responds before the rail opens. */
-.navigation-glance::after { transition: transform var(--motion-state) ease, opacity var(--motion-touch) ease, box-shadow var(--motion-state) ease; }
+.navigation-glance::after {
+  transition:
+    transform var(--motion-state) ease,
+    opacity var(--motion-touch) ease,
+    box-shadow var(--motion-state) ease;
+}
 @media (hover: hover) and (pointer: fine) {
-  .adaptive-navigation-controls[data-open="false"]:hover .navigation-glance { transform: translateX(3px); box-shadow: -5px 0 0 #a14d40, 0 8px 25px #783b2530; }
-  [dir="rtl"] .adaptive-navigation-controls[data-open="false"]:hover .navigation-glance { transform: translateX(-3px); box-shadow: 5px 0 0 #a14d40, 0 8px 25px #783b2530; }
-  .adaptive-navigation-controls[data-open="false"]:hover .navigation-glance::after { transform: scaleY(1.45); box-shadow: 0 0 18px #bb705acc; }
+  .adaptive-navigation-controls[data-open="false"]:hover .navigation-glance {
+    transform: translateX(3px);
+    box-shadow:
+      -5px 0 0 #a14d40,
+      0 8px 25px #783b2530;
+  }
+  [dir="rtl"]
+    .adaptive-navigation-controls[data-open="false"]:hover
+    .navigation-glance {
+    transform: translateX(-3px);
+    box-shadow:
+      5px 0 0 #a14d40,
+      0 8px 25px #783b2530;
+  }
+  .adaptive-navigation-controls[data-open="false"]:hover
+    .navigation-glance::after {
+    transform: scaleY(1.45);
+    box-shadow: 0 0 18px #bb705acc;
+  }
 }
 
 /* 9. Routes retain their identity: paper for learning, scan for medical worlds. */
-.academic-route-transition { transform-origin: center top; }
-.academic-route-transition > :not(.academic-route-thread) { animation: academic-paper-arrive var(--motion-page) var(--motion-ease-out) both; }
-.medical-route-transition > :not(.medical-scan) { animation: medical-surface-arrive 360ms var(--motion-ease-out) both; }
-.admin-page > :first-child { animation: admin-diagnostic-arrive 390ms var(--motion-ease-out) both; }
+.academic-route-transition {
+  transform-origin: center top;
+}
+.academic-route-transition > :not(.academic-route-thread) {
+  animation: academic-paper-arrive var(--motion-page) var(--motion-ease-out)
+    both;
+}
+.medical-route-transition > :not(.medical-scan) {
+  animation: medical-surface-arrive 360ms var(--motion-ease-out) both;
+}
+.admin-page > :first-child {
+  animation: admin-diagnostic-arrive 390ms var(--motion-ease-out) both;
+}
 
 /* 11. Form state is quiet, legible and never decorative noise. */
 :where(form) :where(input, textarea, select) {
-  transition: border-color var(--motion-touch) ease, box-shadow var(--motion-state) ease, transform var(--motion-touch) ease;
+  transition:
+    border-color var(--motion-touch) ease,
+    box-shadow var(--motion-state) ease,
+    transform var(--motion-touch) ease;
 }
-:where(form) :where(input, textarea, select):focus { transform: translateY(-1px); }
-:where(form) [role="alert"] { animation: clinical-alert-arrive 240ms ease-out both; }
+:where(form) :where(input, textarea, select):focus {
+  transform: translateY(-1px);
+}
+:where(form) [role="alert"] {
+  animation: clinical-alert-arrive 240ms ease-out both;
+}
 
 /* 12. Only the first unread item breathes, avoiding a wall of motion. */
-.notification-entry { transition: transform var(--motion-state) var(--motion-ease-out), background var(--motion-state) ease, border-color var(--motion-state) ease, opacity var(--motion-state) ease; }
-.notification-entry[data-motion-state="settled"] { transform: scale(.997); }
-.notification-entry[data-primary-unread="true"] .unread-dot { animation: notification-breathe 2.8s ease-in-out infinite; }
-.notification-entry[data-motion-state="settled"] .unread-dot { animation: none; transform: scale(0); opacity: 0; }
+.notification-entry {
+  transition:
+    transform var(--motion-state) var(--motion-ease-out),
+    background var(--motion-state) ease,
+    border-color var(--motion-state) ease,
+    opacity var(--motion-state) ease;
+}
+.notification-entry[data-motion-state="settled"] {
+  transform: scale(0.997);
+}
+.notification-entry[data-primary-unread="true"] .unread-dot {
+  animation: notification-breathe 2.8s ease-in-out infinite;
+}
+.notification-entry[data-motion-state="settled"] .unread-dot {
+  animation: none;
+  transform: scale(0);
+  opacity: 0;
+}
 
 /* 13. Calendar selections land like notes; the selected date gets one ink ring. */
-.agenda-entry { animation: calendar-note-place 300ms var(--motion-ease-spring) both; transform-origin: top center; }
-.month-grid button { position: relative; }
+.agenda-entry {
+  animation: calendar-note-place 300ms var(--motion-ease-spring) both;
+  transform-origin: top center;
+}
+.month-grid button {
+  position: relative;
+}
 .month-grid button[aria-pressed="true"]::after {
   content: "";
   position: absolute;
   inset: 5px;
-  border: 1px solid #fff7;
+  border: 1px solid var(--tone-line-5b4a3f77, #fff7);
   border-radius: 13px;
   animation: calendar-ink-ring 360ms ease-out both;
   pointer-events: none;
 }
-.calendar-month-controls h2 { transition: opacity var(--motion-touch) ease, transform var(--motion-state) var(--motion-ease-out); }
+.calendar-month-controls h2 {
+  transition:
+    opacity var(--motion-touch) ease,
+    transform var(--motion-state) var(--motion-ease-out);
+}
 
 /* 14. Empty states respond once, then remain calm and readable. */
 .empty-state,
@@ -204,47 +427,255 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 35%, #ffffff6b 49%, transparent 63%);
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    var(--tone-surface-25201d6b, #ffffff6b) 49%,
+    transparent 63%
+  );
   transform: translateX(-120%);
   animation: empty-state-scan 780ms 120ms ease-out both;
   pointer-events: none;
 }
 .empty-state > svg,
 .notifications-empty > svg,
-.agenda-empty > svg { animation: empty-icon-wake 440ms 160ms var(--motion-ease-spring) both; }
+.agenda-empty > svg {
+  animation: empty-icon-wake 440ms 160ms var(--motion-ease-spring) both;
+}
 
-@keyframes clinical-focus-arrive { from { outline-offset: 1px; } to { outline-offset: 4px; } }
-@keyframes clinical-field-resist { 33% { transform: translateX(-2px); } 66% { transform: translateX(2px); } }
-@keyframes clinical-bell-ring { 25% { transform: rotate(8deg); } 55% { transform: rotate(-7deg); } 80% { transform: rotate(3deg); } }
-@keyframes clinical-active-pulse { 0% { transform: scale(.82); } 55% { transform: scale(1.12); } 100% { transform: scale(1); } }
-@keyframes clinical-card-arrive { from { opacity: 0; transform: translateY(8px); } }
-@keyframes notebook-settle-flat { from { opacity: .86; transform: perspective(900px) rotateY(-1.8deg); } }
-@keyframes notebook-tab-seat { 0% { transform: translateX(0) scale(.97); } 65% { transform: translateX(9px) scale(1.01); } 100% { transform: translateX(7px); } }
-@keyframes notebook-tab-seat-rtl { 0% { transform: translateX(0) scale(.97); } 65% { transform: translateX(-9px) scale(1.01); } 100% { transform: translateX(-7px); } }
-@keyframes clinical-success-ring { from { opacity: .8; transform: scale(.55); } to { opacity: 0; transform: scale(1.35); } }
-@keyframes bookmark-seat { 0% { transform: translateY(-4px) scale(.8); } 60% { transform: translateY(2px) scale(1.16); } }
-@keyframes bookmark-release { 45% { transform: translateY(-4px) scale(.9); } }
-@keyframes bookmark-flight { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.65) rotate(-8deg); } 15% { opacity: 1; } 72% { opacity: 1; transform: translate3d(calc(var(--flight-x) * .78), calc(var(--flight-y) * .78 - 18px), 0) scale(.82) rotate(7deg); } 100% { opacity: 0; transform: translate3d(var(--flight-x), var(--flight-y), 0) scale(.35); } }
-@keyframes clinical-signal-fill { from { transform: scaleX(0); } }
-@keyframes academic-paper-arrive { from { opacity: 0; transform: perspective(900px) rotateX(1.2deg) translateY(7px); } }
-@keyframes medical-surface-arrive { from { opacity: 0; transform: translateY(7px) scale(.998); } }
-@keyframes admin-diagnostic-arrive { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } to { filter: blur(0); } }
-@keyframes clinical-alert-arrive { from { opacity: 0; transform: translateY(-4px); } }
-@keyframes notification-breathe { 50% { transform: scale(1.55); box-shadow: 0 0 0 6px #a3324b18, 0 0 12px #a3324b99; } }
-@keyframes calendar-note-place { from { opacity: 0; transform: translateY(-5px) rotateX(5deg); } }
-@keyframes calendar-ink-ring { from { opacity: 0; transform: scale(1.18); } }
-@keyframes empty-state-arrive { from { opacity: 0; transform: translateY(7px); } }
-@keyframes empty-state-scan { to { transform: translateX(120%); } }
-@keyframes empty-icon-wake { from { opacity: 0; transform: translateY(5px) scale(.8); } 70% { transform: translateY(-2px) scale(1.06); } }
+@keyframes clinical-focus-arrive {
+  from {
+    outline-offset: 1px;
+  }
+  to {
+    outline-offset: 4px;
+  }
+}
+@keyframes clinical-field-resist {
+  33% {
+    transform: translateX(-2px);
+  }
+  66% {
+    transform: translateX(2px);
+  }
+}
+@keyframes clinical-bell-ring {
+  25% {
+    transform: rotate(8deg);
+  }
+  55% {
+    transform: rotate(-7deg);
+  }
+  80% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes clinical-active-pulse {
+  0% {
+    transform: scale(0.82);
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes clinical-card-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes notebook-settle-flat {
+  from {
+    opacity: 0.86;
+    transform: perspective(900px) rotateY(-1.8deg);
+  }
+}
+@keyframes notebook-tab-seat {
+  0% {
+    transform: translateX(0) scale(0.97);
+  }
+  65% {
+    transform: translateX(9px) scale(1.01);
+  }
+  100% {
+    transform: translateX(7px);
+  }
+}
+@keyframes notebook-tab-seat-rtl {
+  0% {
+    transform: translateX(0) scale(0.97);
+  }
+  65% {
+    transform: translateX(-9px) scale(1.01);
+  }
+  100% {
+    transform: translateX(-7px);
+  }
+}
+@keyframes clinical-success-ring {
+  from {
+    opacity: 0.8;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+@keyframes bookmark-seat {
+  0% {
+    transform: translateY(-4px) scale(0.8);
+  }
+  60% {
+    transform: translateY(2px) scale(1.16);
+  }
+}
+@keyframes bookmark-release {
+  45% {
+    transform: translateY(-4px) scale(0.9);
+  }
+}
+@keyframes bookmark-flight {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.65) rotate(-8deg);
+  }
+  15% {
+    opacity: 1;
+  }
+  72% {
+    opacity: 1;
+    transform: translate3d(
+        calc(var(--flight-x) * 0.78),
+        calc(var(--flight-y) * 0.78 - 18px),
+        0
+      )
+      scale(0.82) rotate(7deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--flight-x), var(--flight-y), 0) scale(0.35);
+  }
+}
+@keyframes clinical-signal-fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes academic-paper-arrive {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(1.2deg) translateY(7px);
+  }
+}
+@keyframes medical-surface-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px) scale(0.998);
+  }
+}
+@keyframes admin-diagnostic-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(3px);
+  }
+  to {
+    filter: blur(0);
+  }
+}
+@keyframes clinical-alert-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@keyframes notification-breathe {
+  50% {
+    transform: scale(1.55);
+    box-shadow:
+      0 0 0 6px #a3324b18,
+      0 0 12px #a3324b99;
+  }
+}
+@keyframes calendar-note-place {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) rotateX(5deg);
+  }
+}
+@keyframes calendar-ink-ring {
+  from {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+@keyframes empty-state-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+}
+@keyframes empty-state-scan {
+  to {
+    transform: translateX(120%);
+  }
+}
+@keyframes empty-icon-wake {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.8);
+  }
+  70% {
+    transform: translateY(-2px) scale(1.06);
+  }
+}
 
 @media (max-width: 767px), (hover: none), (pointer: coarse) {
-  :where(.resource-card, .course-card, .event-card, .opportunity, .article-card):hover { transform: none; }
-  .save-destination-flight { animation-duration: 400ms; }
+  :where(
+    .resource-card,
+    .course-card,
+    .event-card,
+    .opportunity,
+    .article-card
+  ):hover {
+    transform: none;
+  }
+  .save-destination-flight {
+    animation-duration: 400ms;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :where(.navigation-item, .phone-navigation > a, .phone-navigation > button, .button, .workspace-icon, .quiet-button, .text-link, .save-button) svg,
-  :where(.resource-card, .course-card, .event-card, .opportunity, .article-card, .activity-card, .mentor-card, .store-product-card, .recruitment-role-card, .builder-page-card, .admin-metric-card, .course-signal-card, .health-record),
+  :where(
+      .navigation-item,
+      .phone-navigation > a,
+      .phone-navigation > button,
+      .button,
+      .workspace-icon,
+      .quiet-button,
+      .text-link,
+      .save-button
+    )
+    svg,
+  :where(
+    .resource-card,
+    .course-card,
+    .event-card,
+    .opportunity,
+    .article-card,
+    .activity-card,
+    .mentor-card,
+    .store-product-card,
+    .recruitment-role-card,
+    .builder-page-card,
+    .admin-metric-card,
+    .course-signal-card,
+    .health-record
+  ),
   .academic-route-transition > :not(.academic-route-thread),
   .medical-route-transition > :not(.medical-scan),
   .admin-page > :first-child,
@@ -267,16 +698,27 @@
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
-  .save-destination-flight { display: none !important; }
+  .save-destination-flight {
+    display: none !important;
+  }
   .notebook-back-cover,
   .notebook-page-stack,
   .notebook-spread,
   .notebook-reading-page,
-  .notebook-bookmark { animation: none !important; transition: none !important; transform: none !important; }
+  .notebook-bookmark {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
 }
 
 @media (forced-colors: active) {
   .save-button[data-motion-state="saved"]::after,
-  .month-grid button[aria-pressed="true"]::after { border-color: Highlight; }
-  .save-destination-flight { background: Highlight; color: HighlightText; }
+  .month-grid button[aria-pressed="true"]::after {
+    border-color: Highlight;
+  }
+  .save-destination-flight {
+    background: Highlight;
+    color: HighlightText;
+  }
 }

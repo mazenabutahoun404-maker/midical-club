@@ -1,4 +1,5 @@
 import {
+  ShieldCheck,
   BadgeCheck,
   BadgeInfo,
   BellRing,
@@ -34,7 +35,6 @@ import {
   ScanFace,
   ScanSearch,
   ScanLine,
-  ShieldCheck,
   SlidersVertical,
   SquareActivity,
   Stethoscope,

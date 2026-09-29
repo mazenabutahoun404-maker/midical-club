@@ -1,4 +1,6 @@
 import {
+  createContext,
+  useContext,
   useCallback,
   useEffect,
   useId,
@@ -16,14 +18,15 @@ export const isCourseRoute = (path: string) =>
   /^\/(?:learn\/courses|my\/learning)\/[^/]+\/?$/.test(path);
 export const hasSectionNavigation = (path: string) =>
   isCourseRoute(path) ||
-  /^\/(?:community|journal|mentorship|contribute|store|recruitment)(?:\/|$)/.test(
+  /^\/(?:community|journal|mentorship|contribute|store|recruitment|events|opportunities|get-involved)(?:\/|$)/.test(
     path,
   );
 
 export function useAdaptiveNavigation(personal = false) {
   const { pathname } = useLocation();
   const { focus } = useStudyChrome();
-  const enabled = personal ? isCourseRoute(pathname) : true;
+  const enabled = true;
+  const automatic = !personal || isCourseRoute(pathname);
   const secondary = hasSectionNavigation(pathname);
   const [pinned, setPinned] = useState(() => {
     try {
@@ -33,6 +36,9 @@ export function useAdaptiveNavigation(personal = false) {
     }
   });
   const [hidden, setHidden] = useState(false);
+  const [manualHidden, setManualHidden] = useState(false);
+  const manual = useRef(false);
+  const suppressHandleFocus = useRef(false);
   const root = useRef<HTMLDivElement>(null);
   const handle = useRef<HTMLButtonElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -55,24 +61,28 @@ export function useAdaptiveNavigation(personal = false) {
   }, [cancel]);
   const retreat = useCallback(() => {
     const state = config.current;
-    if (state.enabled && (!state.pinned || state.focus) && !locked())
+    if (
+      state.enabled &&
+      (manual.current || !state.pinned || state.focus) &&
+      !locked()
+    )
       setHidden(true);
   }, [locked]);
   const leave = useCallback(() => {
     hovering.current = false;
     cancel();
-    if (secondary || focus || window.scrollY > 80)
+    if (manual.current || secondary || focus || window.scrollY > 80)
       timer.current = setTimeout(retreat, 650);
   }, [cancel, focus, retreat, secondary]);
   useEffect(() => {
-    reveal();
+    if (!manual.current) reveal();
     hovering.current = false;
-    if (enabled && (secondary || focus) && (!pinned || focus))
+    if (automatic && (secondary || focus) && (!pinned || focus))
       timer.current = setTimeout(retreat, focus ? 120 : 1100);
     return cancel;
-  }, [pathname, enabled, secondary, pinned, focus, reveal, retreat, cancel]);
+  }, [pathname, automatic, secondary, pinned, focus, reveal, retreat, cancel]);
   useEffect(() => {
-    if (!enabled) return;
+    if (!automatic) return;
     let previous = window.scrollY,
       total = 0,
       direction = 0,
@@ -84,7 +94,7 @@ export function useAdaptiveNavigation(personal = false) {
         const next = Math.max(0, window.scrollY),
           delta = next - previous;
         previous = next;
-        if (Math.abs(delta) < 2) return;
+        if (manual.current || Math.abs(delta) < 2) return;
         const sign = Math.sign(delta);
         total = direction === sign ? total + Math.abs(delta) : Math.abs(delta);
         direction = sign;
@@ -105,7 +115,7 @@ export function useAdaptiveNavigation(personal = false) {
       window.removeEventListener("scroll", scroll);
       cancelAnimationFrame(frame);
     };
-  }, [enabled, reveal, retreat]);
+  }, [automatic, reveal, retreat]);
   useEffect(() => {
     const storage = (event: StorageEvent) => {
       if (event.key === pinKey) setPinned(event.newValue === "true");
@@ -119,11 +129,17 @@ export function useAdaptiveNavigation(personal = false) {
     try {
       localStorage.setItem(pinKey, String(value));
     } catch {}
-    if (value) reveal();
+    if (value) {
+      manual.current = false;
+      setManualHidden(false);
+      reveal();
+    }
   };
   return {
     enabled,
     secondary,
+    manualHidden,
+    suppressHandleFocus,
     focus,
     hidden: enabled && hidden,
     pinned,
@@ -135,10 +151,54 @@ export function useAdaptiveNavigation(personal = false) {
     togglePin,
     hide: () => {
       cancel();
+      setPinned(false);
+      try {
+        localStorage.setItem(pinKey, "false");
+      } catch {
+        /* Session-only preference. */
+      }
+      manual.current = true;
+      setManualHidden(true);
+      hovering.current = false;
       setHidden(true);
-      handle.current?.focus({ preventScroll: true });
+      requestAnimationFrame(() => {
+        suppressHandleFocus.current = true;
+        handle.current?.focus({ preventScroll: true });
+        suppressHandleFocus.current = false;
+      });
     },
   };
+}
+
+const NavigationContext = createContext<ReturnType<
+  typeof useAdaptiveNavigation
+> | null>(null);
+
+export function NavigationControls() {
+  const state = useContext(NavigationContext);
+  const s = useStudyCopy();
+  if (!state) return null;
+  return (
+    <div className="navigation-reveal-actions">
+      <button
+        type="button"
+        aria-pressed={state.pinned}
+        aria-label={s(state.pinned ? "unpin" : "pin")}
+        title={s(state.pinned ? "unpin" : "pin")}
+        onClick={state.togglePin}
+      >
+        {state.pinned ? <PinOff size={17} /> : <Pin size={17} />}
+      </button>
+      <button
+        type="button"
+        aria-label={s("collapse")}
+        title={s("collapse")}
+        onClick={state.hide}
+      >
+        <X size={17} />
+      </button>
+    </div>
+  );
 }
 
 export function AdaptiveNavigation({
@@ -154,7 +214,7 @@ export function AdaptiveNavigation({
   const id = useId();
   if (!state.enabled) return <>{children}</>;
   return (
-    <>
+    <NavigationContext.Provider value={state}>
       <div
         className="adaptive-navigation-controls"
         data-open={!state.hidden}
@@ -171,7 +231,8 @@ export function AdaptiveNavigation({
           aria-controls={id}
           onClick={state.reveal}
           onFocus={() => {
-            if (state.hidden) state.reveal();
+            if (state.hidden && !state.suppressHandleFocus.current)
+              state.reveal();
           }}
         >
           <Menu size={17} aria-hidden="true" />
@@ -197,24 +258,7 @@ export function AdaptiveNavigation({
         }}
       >
         {children}
-        <div className="navigation-reveal-actions">
-          <button
-            type="button"
-            aria-pressed={state.pinned}
-            aria-label={s(state.pinned ? "unpin" : "pin")}
-            onClick={state.togglePin}
-          >
-            {state.pinned ? <PinOff size={17} /> : <Pin size={17} />}
-          </button>
-          <button
-            type="button"
-            aria-label={s("collapse")}
-            onClick={state.hide}
-          >
-            <X size={17} />
-          </button>
-        </div>
       </div>
-    </>
+    </NavigationContext.Provider>
   );
 }

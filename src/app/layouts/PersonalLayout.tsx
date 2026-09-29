@@ -1,13 +1,15 @@
-import { Suspense } from "react";
+import { RouteViewport } from "../router/RouteJourney";
 import { Outlet } from "react-router-dom";
 import { useAppearance } from "../providers/AppearanceProvider";
 import { useLocale } from "../providers/LocaleProvider";
 import { useStudentProfile } from "../../hooks/useContent";
 import { PersonalNavigation } from "../../components/navigation/PersonalNavigation";
 import { PersonalHeader } from "../../components/navigation/PersonalHeader";
-import { LoadingState } from "../../components/feedback/LoadingState";
 import { useWorkspace } from "../providers/WorkspaceProvider";
-import { AdaptiveNavigation, useAdaptiveNavigation } from "../../components/navigation/AdaptiveNavigation";
+import {
+  AdaptiveNavigation,
+  useAdaptiveNavigation,
+} from "../../components/navigation/AdaptiveNavigation";
 export function PersonalLayout() {
   const { navigation, sidebarCollapsed } = useAppearance();
   const { label } = useLocale();
@@ -20,7 +22,8 @@ export function PersonalLayout() {
       data-navigation={navigation}
       data-sidebar={sidebarCollapsed ? "collapsed" : "expanded"}
       data-space="personal"
-      data-nav-adaptive={adaptive.enabled ? "section" : undefined}
+      data-nav-adaptive={adaptive.secondary ? "section" : "manual"}
+      data-nav-manual-hidden={adaptive.manualHidden || undefined}
       data-nav-hidden={adaptive.hidden || undefined}
       data-nav-pinned={adaptive.pinned || undefined}
       data-study-focus={adaptive.focus || undefined}
@@ -28,7 +31,9 @@ export function PersonalLayout() {
       <a className="skip-link" href="#main">
         {label("skip")}
       </a>
-      <AdaptiveNavigation state={adaptive} personal><PersonalNavigation profile={profile.data} /></AdaptiveNavigation>
+      <AdaptiveNavigation state={adaptive} personal>
+        <PersonalNavigation profile={profile.data} />
+      </AdaptiveNavigation>
       <div className="app-content">
         <PersonalHeader />
         <main id="main" tabIndex={-1}>
@@ -37,9 +42,9 @@ export function PersonalLayout() {
               {label("sessionNotice")}
             </p>
           )}
-          <Suspense fallback={<LoadingState />}>
+          <RouteViewport>
             <Outlet />
-          </Suspense>
+          </RouteViewport>
         </main>
         <p className="personal-footnote container">
           {label("personalFootnote")}

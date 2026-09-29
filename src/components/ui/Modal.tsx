@@ -1,4 +1,10 @@
-import { useId, useLayoutEffect, useRef, type ReactNode } from "react";
+import {
+  useId,
+  useLayoutEffect,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -10,7 +16,10 @@ export function Modal({
   children,
   className = "",
   hideHeading = false,
+  hideClose = false,
   onAfterClose,
+  initialFocus,
+  style,
 }: {
   open: boolean;
   onClose: () => void;
@@ -19,7 +28,10 @@ export function Modal({
   children: ReactNode;
   className?: string;
   hideHeading?: boolean;
+  hideClose?: boolean;
   onAfterClose?: () => void;
+  initialFocus?: string;
+  style?: CSSProperties;
 }) {
   const { dir, label } = useLocale();
   const dialog = useRef<HTMLDialogElement>(null);
@@ -33,6 +45,11 @@ export function Modal({
     const node = dialog.current;
     if (!open || !node) return;
     node.showModal();
+    // Run after native modality, synchronously in the opening gesture, before any animation.
+    if (initialFocus)
+      node
+        .querySelector<HTMLElement>(initialFocus)
+        ?.focus({ preventScroll: true });
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -40,10 +57,11 @@ export function Modal({
       document.body.style.overflow = overflow;
       afterClose.current?.();
     };
-  }, [open]);
+  }, [open, initialFocus]);
   return createPortal(
     <dialog
       ref={dialog}
+      style={style}
       dir={dir}
       className={`medclub-modal medclub-native-modal ${className}`}
       aria-labelledby={titleId}
@@ -73,14 +91,16 @@ export function Modal({
         </p>
       </div>
       {open && children}
-      <button
-        type="button"
-        className="modal-close"
-        aria-label={label("close")}
-        onClick={onClose}
-      >
-        <X size={19} />
-      </button>
+      {!hideClose && (
+        <button
+          type="button"
+          className="modal-close"
+          aria-label={label("close")}
+          onClick={onClose}
+        >
+          <X size={19} />
+        </button>
+      )}
     </dialog>,
     document.body,
   );

@@ -1,4 +1,9 @@
-import { Search, ArrowUpRight, Sparkles } from "lucide-react";
+import { ScrollHeader } from "./ScrollHeader";
+import { NotebookFittings } from "./NotebookFittings";
+import { ThemeMenu } from "./ThemeMenu";
+import { SearchGlyph } from "./SearchGlyph";
+import { LocationTitle } from "./LocationTitle";
+import { ArrowUpRight } from "lucide-react";
 import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
@@ -14,27 +19,23 @@ export function WorkspaceHeader({ site }: { site: SiteContent }) {
   const auth = useAuth();
   const signedIn = auth.snapshot.status === "authenticated";
   return (
-    <header className="workspace-header container">
-      <div className="workspace-welcome">
-        <span className="welcome-spark">
-          <Sparkles size={17} />
-        </span>
-        <span>{label("welcomeLine")}</span>
-      </div>
+    <ScrollHeader className="workspace-header container">
+      <NotebookFittings axis="header" />
+      <LocationTitle />
       <div className="phone-brand">
         <Brand brand={site.brand} />
       </div>
       <div className="workspace-actions">
         <button
           className="workspace-search"
+          data-search-trigger
           onClick={openSearch}
           aria-label={label("searchLabel")}
         >
-          <Search size={18} aria-hidden="true" />
-          <span>{label("searchSomething")}</span>
-          <kbd>/</kbd>
+          <SearchGlyph />
         </button>
         <LanguageMenu />
+        <ThemeMenu />
         <AppearanceSettings compact />
         <AppLink
           href={signedIn ? "/my" : signInPath("/my")}
@@ -47,6 +48,6 @@ export function WorkspaceHeader({ site }: { site: SiteContent }) {
           <ArrowUpRight size={16} className="directional" />
         </AppLink>
       </div>
-    </header>
+    </ScrollHeader>
   );
 }

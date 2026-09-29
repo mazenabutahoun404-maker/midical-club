@@ -18,9 +18,9 @@
   justify-content: center;
   gap: 7px;
   min-height: 44px;
-  border: 1px solid #b99786;
-  background: #fffaf4;
-  color: #563d34;
+  border: 1px solid var(--tone-line-boundary, #b99786);
+  background: var(--tone-surface-raised, #fffaf4);
+  color: var(--tone-ink-strong, #563d34);
   border-radius: 14px;
   cursor: pointer;
   font-size: 0.875rem;
@@ -54,8 +54,8 @@
 }
 .navigation-reveal-actions button[aria-pressed="true"] {
   background: #6a3930;
-  color: #fff7ef;
-  border-color: #6a3930;
+  color: var(--tone-ink-fcf2e8, #fff7ef);
+  border-color: var(--tone-line-694236, #6a3930);
 }
 .adaptive-navigation-controls[data-open="true"] .navigation-glance span,
 .adaptive-navigation-controls[data-open="true"]

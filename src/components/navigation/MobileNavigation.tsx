@@ -1,3 +1,4 @@
+import { publicMainItems } from "./involvement";
 import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -54,7 +55,7 @@ export function MobileNavigation({ site }: { site: SiteContent }) {
           </AppLink>
           {[
             ...site.navigation.academic,
-            ...site.navigation.main,
+            ...publicMainItems(site),
             ...site.navigation.tools,
           ].map((item) => (
             <AppLink

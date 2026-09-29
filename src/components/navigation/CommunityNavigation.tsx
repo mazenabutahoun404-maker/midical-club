@@ -1,3 +1,10 @@
+import { useEffect, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
 import { useLocation } from "react-router-dom";
 import {
   Activity,
@@ -8,12 +15,13 @@ import {
   Newspaper,
   ShieldCheck,
   Info,
+  ChevronDown,
+  Medal,
 } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { routes } from "../../constants/routes";
 import type { MessageKey } from "../../constants/messages";
 import { AppLink } from "./AppLink";
-import { MorphIcon } from "../ui/MorphIcon";
 
 const items = [
   { href: routes.community, label: "communityHub", icon: HeartPulse },
@@ -26,9 +34,22 @@ const items = [
   { href: routes.about, label: "aboutMedClub", icon: Info },
 ] satisfies { href: string; label: MessageKey; icon: typeof Activity }[];
 
+const isHonor = (href: string) =>
+  href === routes.honorPlate || href === routes.hallOfHonor;
+
 export function CommunityNavigation() {
   const { pathname } = useLocation();
-  const { label } = useLocale();
+  const { label, t, dir } = useLocale();
+  const [honorsOpen, setHonorsOpen] = useState(false);
+  useEffect(() => setHonorsOpen(false), [pathname]);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 1150px)");
+    const change = () => {
+      if (!query.matches) setHonorsOpen(false);
+    };
+    query.addEventListener?.("change", change);
+    return () => query.removeEventListener?.("change", change);
+  }, []);
   const active = (href: string) =>
     href === routes.community ? pathname === href : pathname.startsWith(href);
   return (
@@ -40,13 +61,46 @@ export function CommunityNavigation() {
         <AppLink
           key={href}
           href={href}
-          className={active(href) ? "active" : ""}
+          className={`${active(href) ? "active" : ""} ${isHonor(href) ? "community-honor-standalone" : ""}`}
           aria-current={active(href) ? "page" : undefined}
         >
-          <MorphIcon icon={Icon} size={18} className="community-tab-icon" />
+          <Icon aria-hidden="true" size={18} className="community-tab-icon" />
           <span>{label(key)}</span>
         </AppLink>
       ))}
+      <div className="community-honors-menu">
+        <DropdownMenu dir={dir} open={honorsOpen} onOpenChange={setHonorsOpen}>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className={`community-honors-trigger ${active(routes.honorPlate) || active(routes.hallOfHonor) ? "active" : ""}`}
+              aria-label={t({ en: "Honors", ar: "التكريم" })}
+            >
+              <Medal size={18} aria-hidden="true" />
+              <span>{t({ en: "Honors", ar: "التكريم" })}</span>
+              <ChevronDown size={13} aria-hidden="true" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="community-honors-dropdown"
+          >
+            {items
+              .filter((item) => isHonor(item.href))
+              .map(({ href, label: key, icon: Icon }) => (
+                <DropdownMenuItem key={href} asChild>
+                  <AppLink
+                    href={href}
+                    aria-current={active(href) ? "page" : undefined}
+                  >
+                    <Icon size={17} aria-hidden="true" />
+                    <span>{label(key)}</span>
+                  </AppLink>
+                </DropdownMenuItem>
+              ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </nav>
   );
 }

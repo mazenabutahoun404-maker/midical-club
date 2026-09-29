@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowUpRight,
@@ -13,6 +13,7 @@ import {
   UsersRound,
   ShoppingBag,
   BriefcaseBusiness,
+  X,
 } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
@@ -65,11 +66,18 @@ const icons = {
   product: ShoppingBag,
   position: BriefcaseBusiness,
 };
+// Buttons, links and selects retain their own Enter/arrow behavior inside CMDK.
+// Escape still reaches the native dialog; input/list navigation is unchanged.
+function keepControlKeys(event: KeyboardEvent<HTMLElement>) {
+  if (event.key !== "Escape") event.stopPropagation();
+}
 export function SearchPanel({
   compact = false,
+  anchored = false,
   initialQuery = "",
 }: {
   compact?: boolean;
+  anchored?: boolean;
   initialQuery?: string;
 }) {
   const { label, t } = useLocale();
@@ -121,191 +129,212 @@ export function SearchPanel({
         <CommandInput
           value={query}
           onValueChange={setQuery}
-          placeholder={label("searchPlaceholder")}
+          placeholder={label(anchored ? "search" : "searchPlaceholder")}
           aria-label={label("search")}
         />
-        <div className="search-controls">
-          <SelectField
-            label={label("searchScope")}
-            value={scope}
-            onChange={(e) => setScope(e.target.value as "all" | "my")}
-          >
-            <option value="all">{label("everywhereScope")}</option>
-            <option value="my">{label("myLearningScope")}</option>
-          </SelectField>
-          <SelectField
-            label={label("searchType")}
-            value={filters.type || ""}
-            onChange={(e) => updateFilter("type", e.target.value)}
-          >
-            <option value="">{label("allContent")}</option>
-            {kinds.map((k) => (
-              <option key={k} value={k}>
-                {label(k === "mentorship-session" ? "mentorshipSession" : k)}
-              </option>
-            ))}
-          </SelectField>
-          {!compact && (
-            <>
-              <SelectField
-                label={label("searchTrack")}
-                value={filters.track || ""}
-                onChange={(e) => updateFilter("track", e.target.value)}
-              >
-                <option value="">{label("allTracks")}</option>
-                <option value="basic">{label("basic")}</option>
-                <option value="clinical">{label("clinical")}</option>
-              </SelectField>
-              <SelectField
-                label={label("searchResourceKind")}
-                value={filters.resourceKind || ""}
-                onChange={(e) => updateFilter("resourceKind", e.target.value)}
-              >
-                <option value="">{label("allFormats")}</option>
-                {formats.map((k) => (
-                  <option key={k} value={k}>
-                    {label(k)}
-                  </option>
-                ))}
-              </SelectField>
-              <SelectField
-                label={label("course")}
-                value={filters.courseId || ""}
-                onChange={(e) => updateFilter("courseId", e.target.value)}
-              >
-                <option value="">{label("allCourses")}</option>
-                {courses.data?.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {t(c.title)}
-                  </option>
-                ))}
-              </SelectField>
-            </>
-          )}
-          <button
-            className="quiet-button"
-            onClick={() => {
-              setFilters({});
-              setQuery("");
-            }}
-          >
-            {label("clearFilters")}
-          </button>
-        </div>
-        {!query && (
-          <div className="search-recents">
-            <span>
-              <History size={14} />
-              {label(
-                state.recentSearches.length
-                  ? "recentSearches"
-                  : "suggestedSearches",
-              )}
-            </span>
-            <div>
-              {suggestions.map((q) => (
-                <button key={q} onClick={() => setQuery(q)}>
-                  {q}
-                </button>
-              ))}
-            </div>
-            {!!state.recentSearches.length && (
+        <div
+          className={
+            anchored ? "search-results-surface" : "search-results-content"
+          }
+        >
+          {anchored && (
+            <div className="search-results-heading" onKeyDown={keepControlKeys}>
+              <strong>
+                {label(paths.personal ? "personalSearch" : "searchLabel")}
+              </strong>
               <button
-                className="quiet-button"
-                onClick={() => void send({ type: "clear-searches" })}
+                type="button"
+                className="search-dismiss"
+                onClick={closeSearch}
+                aria-label={label("close")}
               >
-                {label("clearHistory")}
+                <X size={18} />
               </button>
+            </div>
+          )}
+          <div className="search-controls" onKeyDown={keepControlKeys}>
+            <SelectField
+              label={label("searchScope")}
+              value={scope}
+              onChange={(e) => setScope(e.target.value as "all" | "my")}
+            >
+              <option value="all">{label("everywhereScope")}</option>
+              <option value="my">{label("myLearningScope")}</option>
+            </SelectField>
+            <SelectField
+              label={label("searchType")}
+              value={filters.type || ""}
+              onChange={(e) => updateFilter("type", e.target.value)}
+            >
+              <option value="">{label("allContent")}</option>
+              {kinds.map((k) => (
+                <option key={k} value={k}>
+                  {label(k === "mentorship-session" ? "mentorshipSession" : k)}
+                </option>
+              ))}
+            </SelectField>
+            {!compact && (
+              <>
+                <SelectField
+                  label={label("searchTrack")}
+                  value={filters.track || ""}
+                  onChange={(e) => updateFilter("track", e.target.value)}
+                >
+                  <option value="">{label("allTracks")}</option>
+                  <option value="basic">{label("basic")}</option>
+                  <option value="clinical">{label("clinical")}</option>
+                </SelectField>
+                <SelectField
+                  label={label("searchResourceKind")}
+                  value={filters.resourceKind || ""}
+                  onChange={(e) => updateFilter("resourceKind", e.target.value)}
+                >
+                  <option value="">{label("allFormats")}</option>
+                  {formats.map((k) => (
+                    <option key={k} value={k}>
+                      {label(k)}
+                    </option>
+                  ))}
+                </SelectField>
+                <SelectField
+                  label={label("course")}
+                  value={filters.courseId || ""}
+                  onChange={(e) => updateFilter("courseId", e.target.value)}
+                >
+                  <option value="">{label("allCourses")}</option>
+                  {courses.data?.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {t(c.title)}
+                    </option>
+                  ))}
+                </SelectField>
+              </>
+            )}
+            <button
+              className="quiet-button"
+              onClick={() => {
+                setFilters({});
+                setQuery("");
+              }}
+            >
+              {label("clearFilters")}
+            </button>
+          </div>
+          {!query && (
+            <div className="search-recents" onKeyDown={keepControlKeys}>
+              <span>
+                <History size={14} />
+                {label(
+                  state.recentSearches.length
+                    ? "recentSearches"
+                    : "suggestedSearches",
+                )}
+              </span>
+              <div>
+                {suggestions.map((q) => (
+                  <button key={q} onClick={() => setQuery(q)}>
+                    {q}
+                  </button>
+                ))}
+              </div>
+              {!!state.recentSearches.length && (
+                <button
+                  className="quiet-button"
+                  onClick={() => void send({ type: "clear-searches" })}
+                >
+                  {label("clearHistory")}
+                </button>
+              )}
+            </div>
+          )}
+          <p className="search-count" role="status" aria-live="polite">
+            {pending
+              ? label("loading")
+              : result.isError
+                ? label("searchFailed")
+                : `${results.length} ${label("resultsFound")}`}
+          </p>
+          <CommandList
+            aria-label={label("searchResults")}
+            className="workspace-search-results"
+          >
+            {pending ? (
+              <div className="search-loading">
+                <LoaderCircle className="animate-spin" />
+              </div>
+            ) : result.isError ? (
+              <div className="search-loading" role="alert">
+                <p>{label("searchFailed")}</p>
+                <Button variant="outline" onClick={result.retry}>
+                  {label("retry")}
+                </Button>
+              </div>
+            ) : (
+              <>
+                <CommandEmpty>
+                  <strong>{label("nothingFound")}</strong>
+                  <p>{label("searchReset")}</p>
+                </CommandEmpty>
+                {kinds.map((kind) => {
+                  const rows = results.filter((r) => r.record.kind === kind);
+                  const Icon = icons[kind];
+                  return (
+                    rows.length > 0 && (
+                      <CommandGroup
+                        key={kind}
+                        heading={label(
+                          kind === "mentorship-session"
+                            ? "mentorshipSession"
+                            : kind,
+                        )}
+                      >
+                        {rows.map((row) => (
+                          <CommandItem
+                            key={row.id}
+                            value={row.id}
+                            onSelect={() => choose(row)}
+                          >
+                            <span className="search-kind-icon">
+                              <Icon size={19} />
+                            </span>
+                            <div className="search-result-copy">
+                              <strong>{t(row.title)}</strong>
+                              <small>{t(row.subtitle)}</small>
+                              {query && (
+                                <span className="search-reason">
+                                  {label(
+                                    row.matchReason === "title"
+                                      ? "matchTitle"
+                                      : row.matchReason === "course"
+                                        ? "matchCourse"
+                                        : "matchKeyword",
+                                  )}
+                                </span>
+                              )}
+                            </div>
+                            <ArrowUpRight size={17} className="directional" />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    )
+                  );
+                })}
+              </>
+            )}
+          </CommandList>
+          <div className="search-footer" onKeyDown={keepControlKeys}>
+            <span>{label("searchHelp")}</span>
+            {compact && (
+              <AppLink
+                href={`${paths.personal ? "/my/search" : "/search"}?q=${encodeURIComponent(query)}`}
+                onClick={closeSearch}
+              >
+                {label("seeAllResults")} <ArrowUpRight size={14} />
+              </AppLink>
             )}
           </div>
-        )}
-        <p className="search-count" role="status" aria-live="polite">
-          {pending
-            ? label("loading")
-            : result.isError
-              ? label("searchFailed")
-              : `${results.length} ${label("resultsFound")}`}
-        </p>
-        <CommandList
-          aria-label={label("searchResults")}
-          className="workspace-search-results"
-        >
-          {pending ? (
-            <div className="search-loading">
-              <LoaderCircle className="animate-spin" />
-            </div>
-          ) : result.isError ? (
-            <div className="search-loading" role="alert">
-              <p>{label("searchFailed")}</p>
-              <Button variant="outline" onClick={result.retry}>
-                {label("retry")}
-              </Button>
-            </div>
-          ) : (
-            <>
-              <CommandEmpty>
-                <strong>{label("nothingFound")}</strong>
-                <p>{label("searchReset")}</p>
-              </CommandEmpty>
-              {kinds.map((kind) => {
-                const rows = results.filter((r) => r.record.kind === kind);
-                const Icon = icons[kind];
-                return (
-                  rows.length > 0 && (
-                    <CommandGroup
-                      key={kind}
-                      heading={label(
-                        kind === "mentorship-session"
-                          ? "mentorshipSession"
-                          : kind,
-                      )}
-                    >
-                      {rows.map((row) => (
-                        <CommandItem
-                          key={row.id}
-                          value={row.id}
-                          onSelect={() => choose(row)}
-                        >
-                          <span className="search-kind-icon">
-                            <Icon size={19} />
-                          </span>
-                          <div className="search-result-copy">
-                            <strong>{t(row.title)}</strong>
-                            <small>{t(row.subtitle)}</small>
-                            {query && (
-                              <span className="search-reason">
-                                {label(
-                                  row.matchReason === "title"
-                                    ? "matchTitle"
-                                    : row.matchReason === "course"
-                                      ? "matchCourse"
-                                      : "matchKeyword",
-                                )}
-                              </span>
-                            )}
-                          </div>
-                          <ArrowUpRight size={17} className="directional" />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  )
-                );
-              })}
-            </>
-          )}
-        </CommandList>
+        </div>
       </Command>
-      <div className="search-footer">
-        <span>{label("searchHelp")}</span>
-        {compact && (
-          <AppLink
-            href={`${paths.personal ? "/my/search" : "/search"}?q=${encodeURIComponent(query)}`}
-            onClick={closeSearch}
-          >
-            {label("seeAllResults")} <ArrowUpRight size={14} />
-          </AppLink>
-        )}
-      </div>
       {!compact && (
         <p className="workspace-note">{label("searchMetadataNote")}</p>
       )}

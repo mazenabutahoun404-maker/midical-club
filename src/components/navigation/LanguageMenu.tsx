@@ -1,4 +1,5 @@
-import { Languages, Check } from "lucide-react";
+import { UtilityGlyph } from "./UtilityGlyph";
+import { Check } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -17,7 +18,7 @@ export function LanguageMenu() {
           className="language-button"
           aria-label={label("language")}
         >
-          <Languages size={18} aria-hidden="true" />
+          <UtilityGlyph kind="language" />
           <span>{locale === "en" ? "EN" : "عربي"}</span>
         </Button>
       </DropdownMenuTrigger>

@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AppearanceProvider } from "./AppearanceProvider";
+import { AppearanceProvider, useAppearance } from "./AppearanceProvider";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "../../components/ui/tooltip";
@@ -17,11 +17,12 @@ import { AuthProvider } from "./AuthProvider";
 import { StudyChromeProvider } from "./StudyChromeProvider";
 function Notifications() {
   const { dir } = useLocale();
+  const { resolvedTheme } = useAppearance();
   return (
     <Toaster
       position={dir === "rtl" ? "bottom-left" : "bottom-right"}
       dir={dir}
-      theme="light"
+      theme={resolvedTheme}
     />
   );
 }

@@ -1,3 +1,4 @@
+import { UtilityGlyph } from "./UtilityGlyph";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { NavigationHint } from "./NavigationHint";
 import { Check, SlidersHorizontal } from "lucide-react";
@@ -30,7 +31,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           aria-expanded={open}
           onClick={() => setOpen(true)}
         >
-          <SlidersHorizontal size={19} aria-hidden="true" />
+          <UtilityGlyph kind="appearance" />
           {!compact && <span>{label("appearance")}</span>}
         </button>
       </NavigationHint>

@@ -5,13 +5,15 @@ import {
   useEffect,
   useState,
   type ReactNode,
+  type MouseEvent,
 } from "react";
 import type { DetailRecord } from "../../types/content";
 import { useWorkspace } from "./WorkspaceProvider";
 interface OverlayContextValue {
   searchOpen: boolean;
   detail: DetailRecord | null;
-  openSearch: () => void;
+  openSearch: (event?: MouseEvent<HTMLElement>) => void;
+  searchTrigger: HTMLElement | null;
   closeSearch: () => void;
   openDetail: (record: DetailRecord) => void;
   closeDetail: () => void;
@@ -25,9 +27,16 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     setDetail(null);
   }, [location.pathname]);
   const [searchOpen, setSearch] = useState(false);
+  const [searchTrigger, setSearchTrigger] = useState<HTMLElement | null>(null);
   const [detail, setDetail] = useState<DetailRecord | null>(null);
-  function openSearch() {
+  function openSearch(event?: MouseEvent<HTMLElement>) {
     if (detail) return;
+    const trigger =
+      event?.currentTarget ??
+      Array.from(
+        document.querySelectorAll<HTMLElement>("[data-search-trigger]"),
+      ).find((node) => node.getBoundingClientRect().width > 0);
+    setSearchTrigger(trigger ?? null);
     setSearch(true);
   }
   function closeSearch() {
@@ -65,6 +74,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     <Context.Provider
       value={{
         searchOpen,
+        searchTrigger,
         detail,
         openSearch,
         closeSearch,

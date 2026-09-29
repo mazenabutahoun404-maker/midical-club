@@ -1,9 +1,9 @@
+import { CommunityOverview } from "./CommunityOverview";
 import {
   Activity,
   ArrowUpRight,
   Award,
   Camera,
-  HeartPulse,
   Newspaper,
   ShieldCheck,
   UsersRound,
@@ -17,12 +17,7 @@ import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { Notice } from "../../components/feedback/Notice";
 import { routes } from "../../constants/routes";
-import {
-  useCommunityActivities,
-  useCommunityMedia,
-  useExecutiveBodies,
-  useJournal,
-} from "../../hooks/useContent";
+import { useCommunityActivities, useJournal } from "../../hooks/useContent";
 
 const portals = [
   { href: routes.activities, label: "activities", icon: Activity, tone: "red" },
@@ -38,12 +33,10 @@ const portals = [
 ] as const;
 
 export default function CommunityPage() {
-  const { label } = useLocale();
+  const { label, locale } = useLocale();
   const activities = useCommunityActivities();
   const journal = useJournal();
-  const media = useCommunityMedia();
-  const bodies = useExecutiveBodies();
-  const queries = [activities, journal, media, bodies];
+  const queries = [activities, journal];
   if (queries.some((query) => query.isPending)) return <LoadingState />;
   if (queries.some((query) => query.isError))
     return (
@@ -53,8 +46,6 @@ export default function CommunityPage() {
     );
   const featuredActivity = activities.data?.find((item) => item.featured);
   const featuredArticle = journal.data?.find((item) => item.featured);
-  const memberCount =
-    bodies.data?.find((body) => body.current)?.members.length || 0;
   return (
     <div className="community-v5 container">
       <CommunityNavigation />
@@ -62,7 +53,16 @@ export default function CommunityPage() {
         <div className="community-hero-copy">
           <span className="eyebrow">{label("communityEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
-            {label("communityTitle")}
+            {locale === "en" ? (
+              <>
+                <span className="community-title-line">Medicine</span>{" "}
+                <span className="community-title-line">
+                  is learned together.
+                </span>
+              </>
+            ) : (
+              label("communityTitle")
+            )}
           </h1>
           <p>{label("communityBody")}</p>
           <AppLink className="button button-primary" href={routes.activities}>
@@ -70,37 +70,7 @@ export default function CommunityPage() {
             <ArrowUpRight className="directional" size={18} />
           </AppLink>
         </div>
-        <div
-          className="community-monitor"
-          aria-label={label("communitySignal")}
-        >
-          <div className="monitor-head">
-            <span>
-              <HeartPulse size={17} />
-              {label("communitySignal")}
-            </span>
-            <i />
-          </div>
-          <div className="monitor-trace" aria-hidden="true">
-            <span />
-            <b />
-          </div>
-          <p>{label("communitySignalBody")}</p>
-          <div className="monitor-stats">
-            <span>
-              <b>{activities.data?.length || 0}</b>
-              {label("activities")}
-            </span>
-            <span>
-              <b>{journal.data?.length || 0}</b>
-              {label("journal")}
-            </span>
-            <span>
-              <b>{memberCount}</b>
-              {label("leadership")}
-            </span>
-          </div>
-        </div>
+        <CommunityOverview />
       </section>
       <section
         className="community-portals"
@@ -110,7 +80,6 @@ export default function CommunityPage() {
           <AppLink href={href} key={href} data-tone={tone}>
             <span className="portal-medical-icon" aria-hidden="true">
               <Icon size={22} />
-              <i />
             </span>
             <strong>{label(key)}</strong>
             <ArrowUpRight className="directional" size={18} />

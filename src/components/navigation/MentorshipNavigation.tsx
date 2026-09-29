@@ -9,7 +9,6 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { routes } from "../../constants/routes";
 import type { MessageKey } from "../../constants/messages";
 import { AppLink } from "./AppLink";
-import { MorphIcon } from "../ui/MorphIcon";
 
 const items = [
   { href: routes.mentorship, label: "findMentor", icon: HeartHandshake },
@@ -39,7 +38,7 @@ export function MentorshipNavigation() {
           className={active(href) ? "active" : ""}
           aria-current={active(href) ? "page" : undefined}
         >
-          <MorphIcon icon={Icon} size={19} className="mentorship-nav-icon" />
+          <Icon aria-hidden="true" size={19} className="mentorship-nav-icon" />
           <span>{label(key)}</span>
         </AppLink>
       ))}

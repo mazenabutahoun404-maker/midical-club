@@ -1,3 +1,5 @@
+import { NotebookFittings } from "./NotebookFittings";
+import { NavigationControls } from "./AdaptiveNavigation";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -51,14 +53,20 @@ const items = [
   { href: "/my/profile", label: "myProfile", icon: UserRound },
   { href: "/my/settings", label: "personalSettings", icon: SlidersHorizontal },
 ] satisfies { href: string; label: MessageKey; icon: typeof House }[];
-const phonePrimaryHrefs = new Set(["/my", "/my/learning", "/my/library", "/my/calendar"]);
+const phonePrimaryHrefs = new Set([
+  "/my",
+  "/my/learning",
+  "/my/library",
+  "/my/calendar",
+]);
 export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
   const { label, t } = useLocale();
   const { pathname } = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);
   const auth = useAuth();
   const access = useAccess();
-  const canOpenAdmin = access.data?.capabilities.includes("admin.access") ?? false;
+  const canOpenAdmin =
+    access.data?.capabilities.includes("admin.access") ?? false;
   const phonePrimary = items.filter((item) => phonePrimaryHrefs.has(item.href));
   const phoneMore = items.filter((item) => !phonePrimaryHrefs.has(item.href));
   const { scrollArea, scrollCues } = useNavigationScrollCues(pathname);
@@ -73,16 +81,14 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         className="desktop-navigation personal-navigation"
         aria-label={label("personalNavigation")}
       >
-        <SidebarToggle controls="personal-sidebar-links" />
-        <AppLink href="/my" className="personal-brand" aria-label={label("my")}>
-          <span className="personal-brand-mark">
-            <Sparkles size={23} />
-          </span>
-          <span>
+        <NotebookFittings axis="rail" />
+        <div className="shell-brand">
+          <SidebarToggle controls="personal-sidebar-links" />
+          <span className="shell-brand-caption">
             <strong>{label("my")}</strong>
             <small>{label("ownCorner")}</small>
           </span>
-        </AppLink>
+        </div>
         <div
           className="navigation-scroll-frame"
           data-scroll-before={scrollCues.before || undefined}
@@ -102,7 +108,9 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
                 <NavigationHint label={label(key)} key={href}>
                   <AppLink
                     href={href}
-                    data-library-destination={href === "/my/library" ? "" : undefined}
+                    data-library-destination={
+                      href === "/my/library" ? "" : undefined
+                    }
                     className={`navigation-item ${active(href) ? "active" : ""}`}
                     aria-current={active(href) ? "page" : undefined}
                   >
@@ -114,16 +122,23 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             </nav>
           </div>
         </div>
-        {canOpenAdmin && <NavigationHint label={label("governancePortalTitle")}>
-          <AppLink href="/admin" className="personal-admin-portal">
-            <MorphIcon icon={ShieldCheck} size={19} className="personal-admin-portal-icon" />
-            <span>
-              <small>{label("governancePriority")}</small>
-              <strong>{label("governancePortalTitle")}</strong>
-            </span>
-            <ArrowUpRight size={16} className="directional" />
-          </AppLink>
-        </NavigationHint>}
+        {canOpenAdmin && (
+          <NavigationHint label={label("governancePortalTitle")}>
+            <AppLink href="/admin" className="personal-admin-portal">
+              <MorphIcon
+                icon={ShieldCheck}
+                size={19}
+                className="personal-admin-portal-icon"
+              />
+              <span>
+                <small>{label("governancePriority")}</small>
+                <strong>{label("governancePortalTitle")}</strong>
+              </span>
+              <ArrowUpRight size={16} className="directional" />
+            </AppLink>
+          </NavigationHint>
+        )}
+        <NavigationControls />
         <div className="personal-sidebar-footer">
           <span className="personal-mini-avatar" aria-hidden="true">
             {profile ? t(profile.initials) : <UserRound size={20} />}
@@ -166,9 +181,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             phoneMore.some((item) => active(item.href)) ? "active" : ""
           }`}
           aria-current={
-            phoneMore.some((item) => active(item.href))
-              ? "page"
-              : undefined
+            phoneMore.some((item) => active(item.href)) ? "page" : undefined
           }
           aria-label={label("more")}
           onClick={() => setMoreOpen(true)}
@@ -188,18 +201,20 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
           className="personal-more-links"
           aria-label={label("personalNavigation")}
         >
-          {canOpenAdmin && <AppLink
-            className="personal-mobile-admin-portal"
-            href="/admin"
-            onClick={() => setMoreOpen(false)}
-          >
-            <MorphIcon icon={ShieldCheck} size={21} />
-            <span>
-              <small>{label("governancePriority")}</small>
-              {label("governancePortalTitle")}
-            </span>
-            <ArrowUpRight size={17} className="directional" />
-          </AppLink>}
+          {canOpenAdmin && (
+            <AppLink
+              className="personal-mobile-admin-portal"
+              href="/admin"
+              onClick={() => setMoreOpen(false)}
+            >
+              <MorphIcon icon={ShieldCheck} size={21} />
+              <span>
+                <small>{label("governancePriority")}</small>
+                {label("governancePortalTitle")}
+              </span>
+              <ArrowUpRight size={17} className="directional" />
+            </AppLink>
+          )}
           {phoneMore.map(({ href, label: key, icon: Icon }) => (
             <AppLink
               key={href}

@@ -1,3 +1,10 @@
+# Current release: MedClub V0.13.9
+
+Read [README-V0.13.9.md](./README-V0.13.9.md) for this release, integration instructions,
+verification and remaining limits. The V0.11 document below is retained as historical context.
+
+---
+
 # MedClub V0.11 — CMS and Page Builder
 
 This is the complete source-only V0.11 release for an existing React + TypeScript + Vite + Tailwind CSS 4 project. It contains every V0.1–V0.10 feature plus a structured page library and visual page builder inside MedClub Admin.

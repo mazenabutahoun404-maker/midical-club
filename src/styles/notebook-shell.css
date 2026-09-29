@@ -1,0 +1,433 @@
+/* V0.13.7. An inset L-shaped notebook frame. All attachment points are decorative. */
+.notebook-fittings {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+.notebook-fittings i {
+  position: absolute;
+  display: block;
+  border-radius: 7px;
+  background: linear-gradient(
+    90deg,
+    #654d3e 0%,
+    #cdb49a 18%,
+    #f5e4cb 34%,
+    #aa8867 58%,
+    #6f503e 84%,
+    #c8a889
+  );
+  border: 1px solid #735643;
+  box-shadow:
+    inset 0 1px 1px #fff9,
+    1px 3px 3px #3c251c30;
+}
+.notebook-fittings i::before,
+.notebook-fittings i::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  width: 11px;
+  height: 11px;
+  background: radial-gradient(
+    circle,
+    #513c30 0 22%,
+    #b59475 27% 43%,
+    #73533e 49% 66%,
+    transparent 72%
+  );
+  z-index: -1;
+  box-shadow: 0 1px 2px #34221835;
+}
+.fittings-rail {
+  inset-block: 0;
+  inset-inline-start: -7px;
+  width: 20px;
+}
+.fittings-rail i {
+  inset-inline-start: 0;
+  top: 30%;
+  width: 20px;
+  height: 8px;
+}
+.fittings-rail i + i {
+  top: 72%;
+}
+.fittings-rail i::before {
+  left: -3px;
+  top: -2px;
+}
+.fittings-rail i::after {
+  right: -3px;
+  top: -2px;
+}
+.fittings-header {
+  inset-inline: 0;
+  top: -7px;
+  height: 20px;
+}
+.fittings-header i {
+  left: 28%;
+  top: 0;
+  width: 8px;
+  height: 20px;
+  background: linear-gradient(#654d3e, #eddbc1 34%, #a98769 62%, #735240);
+}
+.fittings-header i + i {
+  left: 69%;
+}
+.fittings-header i::before {
+  left: -2px;
+  top: -3px;
+}
+.fittings-header i::after {
+  left: -2px;
+  bottom: -3px;
+}
+.theme-trigger {
+  color: inherit;
+  border-radius: 12px;
+}
+.theme-trigger:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.theme-menu {
+  min-width: 180px;
+  border-radius: 16px;
+  padding: 7px;
+}
+.theme-menu [role="menuitemradio"] {
+  min-height: 40px;
+  border-radius: 10px;
+  gap: 10px;
+}
+.theme-session-note {
+  padding: 8px;
+  max-width: 220px;
+  font-size: 11px;
+}
+[data-study-focus="true"] .route-footer {
+  display: none;
+}
+.route-viewport,
+.route-footer {
+  opacity: 1;
+  transition: opacity 240ms ease;
+}
+.route-viewport[data-route-phase="leaving"],
+.route-footer[data-route-phase="leaving"] {
+  opacity: 0;
+  transition-duration: 140ms;
+  pointer-events: none;
+}
+.route-viewport[data-route-phase="waiting"] {
+  opacity: 1;
+  transition: none;
+  pointer-events: none;
+}
+.route-page-content {
+  opacity: 1;
+  transition: opacity 240ms ease;
+}
+.route-viewport[data-route-phase="waiting"] .route-page-content {
+  opacity: 0;
+  transition: none;
+}
+.route-viewport[data-route-phase="waiting"]
+  .route-page-content:has([data-route-loading]) {
+  opacity: 1;
+}
+.route-viewport:is([data-route-phase="leaving"], [data-route-phase="waiting"]) {
+  min-height: var(--route-hold-height, 0);
+}
+/* Outer transition now owns navigation. Avoid nested entrance translations. */
+.route-viewport .academic-route-transition,
+.route-viewport .medical-route-transition {
+  transform: none !important;
+}
+
+/* The search input and results now have separate anchored surfaces. */
+.search-modal.search-anchored::backdrop {
+  background: #30231d26;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+@media (min-width: 768px) {
+  .app-shell[data-navigation="vertical"] {
+    --shell-gap: clamp(12px, 1.3vw, 20px);
+    --shell-reserved: calc(var(--sidebar-width) + var(--shell-gap));
+  }
+  .app-shell[data-navigation="vertical"][data-nav-adaptive="section"]:not(
+      [data-nav-pinned="true"]
+    ),
+  .app-shell[data-navigation="vertical"][data-nav-manual-hidden="true"],
+  .app-shell[data-navigation="vertical"][data-study-focus="true"] {
+    --shell-reserved: calc(var(--shell-gap) + 12px);
+  }
+  /* Opaque desk mat masks scrolling content above and around the inset header. */
+  .app-shell[data-navigation="vertical"]::before {
+    display: block;
+    height: calc(var(--shell-top) + var(--shell-gap));
+    background: var(--background);
+  }
+  .app-shell[data-navigation="vertical"][data-study-focus="true"]::before {
+    display: none;
+  }
+  html body .app-shell[data-navigation="vertical"] > .app-content {
+    padding-top: calc(var(--shell-top) + var(--shell-gap) + 8px);
+  }
+  html body .app-shell[data-navigation="vertical"] .desktop-navigation {
+    position: fixed;
+    top: var(--shell-gap);
+    bottom: auto;
+    height: auto;
+    inset-inline-start: var(--shell-gap);
+    max-height: calc(100dvh - 2 * var(--shell-gap));
+    border-radius: 26px 0 26px 26px;
+    border-start-start-radius: 26px;
+    border-start-end-radius: 0;
+    border-end-start-radius: 26px;
+    border-end-end-radius: 26px;
+    box-shadow: -5px 12px 28px #3520150a;
+    overflow: visible;
+  }
+  html
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    > .navigation-scroll-frame {
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  html
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    .navigation-scroll {
+    flex: 0 1 auto;
+    min-height: 0;
+    height: auto;
+    overflow-y: auto;
+    padding-block: 2px 6px;
+  }
+  .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    :is(.navigation-bottom, .admin-nav-footer, .personal-sidebar-footer) {
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+  html body .app-shell[data-navigation="vertical"] .desktop-navigation::after {
+    display: none;
+  }
+  html
+    body
+    .app-shell[data-navigation="vertical"]
+    :is(.workspace-header, .personal-header, .admin-header) {
+    top: var(--shell-gap);
+    inset-inline-start: var(--shell-reserved);
+    inset-inline-end: var(--shell-gap);
+    border: 0;
+    border-radius: 0;
+    border-start-end-radius: 26px;
+    border-end-end-radius: 26px;
+    background: var(--shell-surface);
+    color: var(--shell-ink);
+    box-shadow: 7px 9px 24px #35201507;
+    padding-inline: clamp(18px, 2.3vw, 34px);
+    gap: 12px;
+  }
+  html
+    body
+    .app-shell[data-navigation="vertical"]
+    :is(.workspace-header, .personal-header, .admin-header)::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 100%;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at bottom right,
+      transparent 23px,
+      var(--shell-surface) 23.5px
+    );
+  }
+  [dir="rtl"]
+    .app-shell[data-navigation="vertical"]
+    :is(.workspace-header, .personal-header, .admin-header)::before {
+    transform: scaleX(-1);
+  }
+  html
+    body
+    .app-shell[data-navigation="vertical"][data-nav-adaptive="section"]:not(
+      [data-nav-pinned="true"]
+    )
+    :is(.workspace-header, .personal-header, .admin-header),
+  html
+    body
+    .app-shell[data-navigation="vertical"][data-nav-manual-hidden="true"]
+    :is(.workspace-header, .personal-header, .admin-header) {
+    border-start-start-radius: 26px;
+    border-end-start-radius: 26px;
+  }
+  .app-shell[data-nav-adaptive="section"]:not([data-nav-pinned="true"])
+    :is(.workspace-header, .personal-header, .admin-header)::before,
+  .app-shell[data-nav-manual-hidden="true"]
+    :is(.workspace-header, .personal-header, .admin-header)::before {
+    display: none;
+  }
+  html
+    body
+    .app-shell[data-navigation="vertical"]
+    .adaptive-navigation-controls {
+    top: calc(var(--shell-top) + var(--shell-gap));
+    bottom: var(--shell-gap);
+    inset-inline-start: 0;
+  }
+  .app-shell[data-navigation="vertical"] .navigation-glance {
+    border-radius: 0 10px 10px 0;
+  }
+  .app-shell[data-navigation="horizontal"] .fittings-rail {
+    display: none;
+  }
+  .app-shell[data-navigation="horizontal"] .fittings-header {
+    display: none;
+  }
+  html
+    body
+    .app-shell[data-study-focus="true"][data-navigation="vertical"]
+    > .app-content {
+    padding-top: 12px;
+  }
+  html {
+    scroll-padding-top: 120px;
+    /* Opening a modal must not move the fixed header when its scrollbar vanishes. */
+    scrollbar-gutter: stable;
+  }
+}
+@media (max-width: 1050px) and (min-width: 768px) {
+  .app-shell .workspace-account > span:not(.account-symbol) {
+    display: none;
+  }
+  .app-shell .workspace-account {
+    padding: 0;
+    width: 38px;
+    min-width: 38px;
+  }
+  .app-shell .workspace-actions,
+  .personal-header-actions,
+  .admin-header-actions {
+    gap: 4px;
+  }
+  .app-shell .shell-location {
+    flex: 1;
+  }
+}
+@media (max-width: 767px) {
+  .app-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: 10px;
+    background: var(--background);
+    pointer-events: none;
+    z-index: 33;
+  }
+  .notebook-fittings {
+    display: none;
+  }
+  .fittings-header {
+    display: block;
+  }
+  .fittings-header i {
+    height: 12px;
+    width: 5px;
+    border-radius: 4px;
+  }
+  .fittings-header i::before,
+  .fittings-header i::after {
+    width: 7px;
+    height: 7px;
+  }
+  .app-shell :is(.workspace-header, .personal-header, .admin-header) {
+    width: calc(100% - 20px);
+    top: 10px;
+    margin-inline: 10px;
+    padding-inline: 12px;
+    border: 0;
+    border-radius: 20px;
+    background: var(--shell-surface);
+    color: var(--shell-ink);
+    box-shadow: 0 6px 22px #3520150b;
+  }
+  .app-shell .shell-location {
+    color: inherit;
+    flex: 1;
+  }
+  .app-shell .workspace-account {
+    padding: 0;
+    width: 34px;
+    min-width: 34px;
+  }
+  .app-shell .workspace-account > span:not(.account-symbol) {
+    display: none;
+  }
+  .app-shell .workspace-icon,
+  .app-shell .language-button {
+    width: 34px;
+    min-width: 34px;
+    padding-inline: 6px;
+  }
+  .app-shell .language-button > span {
+    display: none;
+  }
+  .personal-header .back-to-medclub,
+  .admin-header .admin-back {
+    width: 30px;
+    padding: 5px;
+    flex: none;
+  }
+  .auth-top-actions {
+    gap: 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-viewport,
+  .route-footer,
+  .route-page-content {
+    transition: none;
+  }
+  .search-modal.search-anchored[open],
+  .search-modal.search-anchored::backdrop {
+    animation: none !important;
+    transform: none;
+    clip-path: none;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .search-modal.search-anchored::backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #30231d88;
+  }
+}
+@media (forced-colors: active) {
+  .notebook-fittings {
+    display: none;
+  }
+  .desktop-navigation,
+  .workspace-header,
+  .personal-header,
+  .admin-header {
+    outline: 1px solid CanvasText;
+  }
+  .search-modal.search-anchored::backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
