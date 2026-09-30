@@ -71,7 +71,7 @@
   place-items: center;
   overflow: hidden;
   border-radius: 50%;
-  color: var(--tone-ink-d1a798, #87372f);
+  color: var(--tone-ink-coral, #87372f);
   background: var(--tone-surface-raised, #fff9f5);
 }
 .mentorship-nav-icon i {
@@ -303,7 +303,7 @@
 }
 .available-toggle input:checked + span {
   border-color: var(--tone-line-863836, #9b2830);
-  color: var(--tone-ink-d39c93, #8d1720);
+  color: var(--tone-ink-coral, #8d1720);
   background: var(--tone-surface-inset, #f8e9e7);
   box-shadow: inset 0 0 0 1px #9b2830;
 }
@@ -378,7 +378,7 @@
   font-size: 1.45rem;
 }
 .mentor-card-head strong {
-  color: var(--tone-ink-d3a497, #8f2f2c);
+  color: var(--tone-ink-coral, #8f2f2c);
   font-size: 0.9rem;
 }
 .mentor-card > p {
@@ -437,7 +437,7 @@
   height: 31px;
   place-items: center;
   border-radius: 50%;
-  color: var(--tone-ink-d3a598, #8e302d);
+  color: var(--tone-ink-coral, #8e302d);
   background: var(--tone-surface-inset, #f4e5df);
 }
 .mentor-capacity > div {
@@ -531,7 +531,7 @@
   place-items: center;
   border: 1px solid var(--tone-line-5b4a3f42, #b36d6242);
   border-radius: 42% 58% 63% 37%;
-  color: var(--tone-ink-d39f95, #8f2025);
+  color: var(--tone-ink-coral, #8f2025);
   background: var(--tone-surface-raised, #fffaf4);
 }
 .v6-intro-icon i {
@@ -637,7 +637,7 @@
   height: 48px;
   place-items: center;
   border-radius: 50%;
-  color: var(--tone-ink-d39f95, #8f2025);
+  color: var(--tone-ink-coral, #8f2025);
   background: var(--tone-surface-inset, #f3e4de);
   font-weight: 820;
 }
@@ -894,7 +894,7 @@
   );
 }
 .share-types > article svg {
-  color: var(--tone-ink-d7a499, #9a2d30);
+  color: var(--tone-ink-coral, #9a2d30);
 }
 .share-types h2 {
   margin: 18px 0 8px;
@@ -976,7 +976,7 @@
 .contribution-status {
   padding: 6px 10px;
   border-radius: 999px;
-  color: var(--tone-ink-d3a296, #8f2829);
+  color: var(--tone-ink-coral, #8f2829);
   background: var(--tone-surface-inset, #f4e4df);
 }
 .contribution-records h2 {
@@ -1015,7 +1015,7 @@
   background: var(--tone-surface-inset, #fbebe7);
 }
 .reviewer-feedback strong {
-  color: var(--tone-ink-d2a196, #8c2528);
+  color: var(--tone-ink-coral, #8c2528);
 }
 .reviewer-feedback p {
   margin: 6px 0;

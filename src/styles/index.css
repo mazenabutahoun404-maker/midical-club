@@ -37,3 +37,6 @@
 @import "./community-refinement.css";
 @import "./shell-motion.css";
 @import "./dark-accents.css";
+
+@import "./dark-palette.css";
+@import "./compact-header.css";

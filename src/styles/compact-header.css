@@ -1,0 +1,19 @@
+/* 12px less desktop chrome; retain the existing controls and scroll behavior. */
+.app-shell {
+  --shell-top: 64px;
+}
+html body .app-shell .scroll-header {
+  min-height: var(--shell-top);
+  height: var(--shell-top);
+  padding-block: 0;
+}
+@media (max-width: 767px) {
+  .app-shell {
+    --shell-top: 60px;
+  }
+  html body .app-shell .scroll-header {
+    min-height: var(--shell-top);
+    height: auto;
+    padding-block: 8px;
+  }
+}

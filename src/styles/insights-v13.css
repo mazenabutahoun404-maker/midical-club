@@ -1,6 +1,6 @@
 /* V0.13 — evidence-aware learning analytics and academic reflection */
 .admin-insights-label {
-  color: var(--tone-ink-f0c8b5, #e79b86) !important;
+  color: var(--tone-ink-coral, #e79b86) !important;
 }
 .insights-admin-page,
 .health-page {
@@ -45,7 +45,7 @@
 }
 .insights-hero .eyebrow,
 .health-hero .eyebrow {
-  color: var(--tone-ink-f3cab8, #f0a18e);
+  color: var(--tone-ink-coral, #f0a18e);
 }
 .insights-hero h1,
 .health-hero h1 {
@@ -88,7 +88,7 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--tone-surface-3d2f29, #f8b29f);
+  background: var(--tone-surface-coral, #f8b29f);
   box-shadow: 0 0 17px #f8b29f;
   transform-origin: -66px 0;
   animation: insight-orbit 8s linear infinite;
@@ -164,7 +164,7 @@
   box-shadow: 0 10px 35px #4c241807;
 }
 .insights-metrics svg {
-  color: var(--tone-ink-d9a096, #a02228);
+  color: var(--tone-ink-coral, #a02228);
 }
 .insights-metrics strong {
   display: block;
@@ -253,7 +253,7 @@
 }
 .insight-trend svg > path {
   fill: none;
-  stroke: var(--tone-ink-dba197, #a6252b);
+  stroke: var(--tone-ink-coral, #a6252b);
   stroke-width: 2.25;
   filter: drop-shadow(0 4px 5px #8e18202b);
 }
@@ -361,7 +361,7 @@
   background: var(--tone-surface-raised, #f8f1ed);
 }
 .insight-demand-panel section > span {
-  color: var(--tone-ink-dca399, #a82a30);
+  color: var(--tone-ink-coral, #a82a30);
   font-family: ui-monospace, monospace;
   font-size: 11px;
 }
@@ -452,13 +452,13 @@
   text-transform: uppercase;
 }
 .health-summary [data-severity="critical"] span {
-  color: var(--tone-ink-da9d93, #a41920);
+  color: var(--tone-ink-coral, #a41920);
 }
 .health-summary [data-severity="attention"] span {
-  color: var(--tone-ink-d7b58e, #9a630f);
+  color: var(--tone-ink-amber, #9a630f);
 }
 .health-summary [data-severity="healthy"] span {
-  color: var(--tone-ink-b1beae, #287c70);
+  color: var(--tone-ink-teal, #287c70);
 }
 .health-toolbar {
   display: grid;
@@ -559,13 +559,13 @@
 .health-tags span {
   padding: 4px 7px;
   border-radius: 999px;
-  color: var(--tone-ink-cf9f95, #822026);
+  color: var(--tone-ink-coral, #822026);
   background: var(--tone-surface-inset, #f9e6e3);
   font-size: 9px;
   font-weight: 750;
 }
 .health-tags span.healthy {
-  color: var(--tone-ink-afb9a9, #216d63);
+  color: var(--tone-ink-teal, #216d63);
   background: var(--tone-surface-inset, #e2f3ee);
 }
 .health-open {
@@ -638,7 +638,7 @@
   inset: 18px 16px auto;
   padding-bottom: 9px;
   border-bottom: 1px solid var(--tone-line-5b4a3f2b, #ffffff2b);
-  color: var(--tone-ink-ebbeb1, #e9b2a5);
+  color: var(--tone-ink-coral, #e9b2a5);
   font-size: 9px;
   font-weight: 850;
   letter-spacing: 0.16em;
@@ -681,7 +681,7 @@
   height: 36px;
   place-items: center;
   border-radius: 12px;
-  color: var(--tone-ink-d29d93, #8c1920);
+  color: var(--tone-ink-coral, #8c1920);
   background: var(--tone-surface-inset, #f6e6e2);
 }
 .progress-metrics strong {
@@ -714,7 +714,7 @@
   box-shadow: 0 20px 45px #3b1d1730;
 }
 .progress-next-step small {
-  color: var(--tone-ink-f0c6b4, #e59582);
+  color: var(--tone-ink-coral, #e59582);
   font-size: 9px;
   font-weight: 850;
   letter-spacing: 0.08em;
@@ -855,7 +855,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--tone-ink-d39d93, #8d1820);
+  color: var(--tone-ink-coral, #8d1820);
   font-size: 11px;
   font-weight: 850;
 }
@@ -960,7 +960,7 @@
   font-size: 9px;
 }
 .practice-history > article > b {
-  color: var(--tone-ink-caa095, #722126);
+  color: var(--tone-ink-coral, #722126);
   font-size: 11px;
 }
 .practice-history button {
@@ -970,7 +970,7 @@
   place-items: center;
   border: 0;
   border-radius: 10px;
-  color: var(--tone-ink-d29e94, #8c1c22);
+  color: var(--tone-ink-coral, #8c1c22);
   background: var(--tone-surface-inset, #f4e4e1);
   cursor: pointer;
 }

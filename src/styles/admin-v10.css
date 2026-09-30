@@ -159,7 +159,7 @@
 }
 .admin-nav-footer .status-dot,
 .admin-live-chip::before {
-  color: var(--tone-ink-f8bbab, #ff7568);
+  color: var(--tone-ink-coral, #ff7568);
   box-shadow: 0 0 0 5px #ff756816;
 }
 .admin-header {
@@ -188,7 +188,7 @@
 }
 .admin-live-chip {
   padding: 9px 15px;
-  color: var(--tone-ink-cc9c91, #79151a);
+  color: var(--tone-ink-coral, #79151a);
   background: var(--tone-surface-inset, #f5deda);
 }
 .admin-live-chip svg {
@@ -277,7 +277,7 @@
   z-index: 2;
 }
 .admin-command-copy .eyebrow {
-  color: var(--tone-ink-f1cab8, #e8a28f);
+  color: var(--tone-ink-coral, #e8a28f);
 }
 .admin-command-copy h1 {
   max-width: 690px;
@@ -356,7 +356,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--tone-surface-3c2c26, #ef8d7a);
+  background: var(--tone-surface-coral, #ef8d7a);
   box-shadow: 0 0 16px #ef8d7a;
 }
 .admin-orbit.orbit-a {
@@ -376,7 +376,7 @@
   width: 100%;
   overflow: visible;
   fill: none;
-  stroke: var(--tone-ink-f8c3b1, #ff8b7b);
+  stroke: var(--tone-ink-coral, #ff8b7b);
   stroke-width: 2;
   stroke-linecap: round;
   filter: drop-shadow(0 0 7px #c23737);
@@ -403,7 +403,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--tone-surface-3e2b25, #ff766a);
+  background: var(--tone-surface-coral, #ff766a);
   box-shadow: 0 0 0 5px #ff766a19;
 }
 .admin-metric-grid {
@@ -442,7 +442,7 @@
   height: 39px;
   place-items: center;
   border-radius: 14px;
-  color: var(--metric-color, var(--tone-ink-d39f95, #8e2024));
+  color: var(--metric-color, var(--tone-ink-coral, #8e2024));
   background: color-mix(
     in srgb,
     var(--metric-color, #8e2024) 11%,
@@ -603,20 +603,20 @@
   line-height: 1.25;
 }
 .admin-status[data-status="under-review"] {
-  color: var(--tone-ink-d3af8f, #8d4f14);
+  color: var(--tone-ink-amber, #8d4f14);
   background: var(--tone-surface-inset, #f8ead6);
 }
 .admin-status[data-status="changes-requested"] {
-  color: var(--tone-ink-d4a297, #91292c);
+  color: var(--tone-ink-coral, #91292c);
   background: var(--tone-surface-inset, #f7dedc);
 }
 .admin-status[data-status="approved"] {
-  color: var(--tone-ink-strong, #52612f);
-  background: var(--tone-surface-inset, #e8eedb);
+  color: var(--tone-ink-olive, #52612f);
+  background: var(--tone-surface-olive, #e8eedb);
 }
 .admin-status[data-status="published"] {
-  color: var(--tone-ink-strong, #256254);
-  background: var(--tone-surface-inset, #dceee8);
+  color: var(--tone-ink-teal, #256254);
+  background: var(--tone-surface-green, #dceee8);
 }
 .admin-status[data-status="draft"] {
   color: var(--tone-ink-muted, #615b58);
@@ -744,7 +744,7 @@
 }
 .admin-boundary-panel svg {
   flex: none;
-  color: var(--tone-ink-d89f95, #9c2024);
+  color: var(--tone-ink-coral, #9c2024);
 }
 .admin-boundary-panel strong {
   font-size: 12px;
@@ -874,7 +874,7 @@
   height: 39px;
   place-items: center;
   border-radius: 14px 14px 14px 5px;
-  color: var(--tone-ink-d3a498, #8d2d2e);
+  color: var(--tone-ink-coral, #8d2d2e);
   background: var(--tone-surface-inset, #f1dfda);
 }
 .admin-content-row:hover .admin-content-row-mark svg {
@@ -1119,7 +1119,7 @@
 }
 .admin-audit-rule svg {
   flex: none;
-  color: var(--tone-ink-d5a096, #932329);
+  color: var(--tone-ink-coral, #932329);
 }
 .admin-audit-rule p {
   font-size: 10px;
@@ -1156,7 +1156,7 @@
   background: var(--tone-surface-inset, #e3eee6);
 }
 .admin-log-result[data-result="blocked"] {
-  color: var(--tone-ink-d9a297, #a0272c);
+  color: var(--tone-ink-coral, #a0272c);
   background: var(--tone-surface-inset, #f4dddd);
 }
 .admin-log-copy {
@@ -1188,11 +1188,11 @@
   background: var(--tone-surface-inset, #e5eee4);
 }
 .admin-risk-chip[data-risk="attention"] {
-  color: var(--tone-ink-d3b291, #8d5a18);
+  color: var(--tone-ink-amber, #8d5a18);
   background: var(--tone-surface-inset, #f4e8d5);
 }
 .admin-risk-chip[data-risk="high"] {
-  color: var(--tone-ink-d6a197, #98262a);
+  color: var(--tone-ink-coral, #98262a);
   background: var(--tone-surface-inset, #f4dddd);
 }
 .admin-activity-detail {
@@ -1373,7 +1373,7 @@
   padding: 4px 7px;
   border-radius: 999px;
   color: var(--tone-ink-muted, #5e693c);
-  background: var(--tone-surface-inset, #e5edd8);
+  background: var(--tone-surface-olive, #e5edd8);
   font-size: 7px;
 }
 .admin-version-compare {
@@ -1437,7 +1437,7 @@
 .admin-compare-pulse {
   display: grid;
   place-items: center;
-  color: var(--tone-ink-d9a99b, #a13d38);
+  color: var(--tone-ink-coral, #a13d38);
 }
 .admin-compare-pulse svg {
   animation: admin-compare 1.8s ease-in-out infinite;

@@ -11,7 +11,7 @@ import {
   Raycaster,
   SRGBColorSpace,
   NeutralToneMapping,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   type Object3D,
   type Material,
 } from "three";
@@ -54,7 +54,7 @@ export async function mountCampus(
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = options.mode === "active" ? 1.18 : 0.83;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
   renderer.shadowMap.autoUpdate = false;
   const scene = new Scene();
   const camera = new OrthographicCamera(-22, 22, 12.375, -12.375, 0.1, 150);

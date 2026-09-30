@@ -161,7 +161,7 @@
   background: var(--tone-surface-inset, #f6e7dc);
 }
 .space-transition-personal .space-arrival-wash {
-  background: var(--tone-surface-3a2f2a, #d2b5aa);
+  background: var(--tone-surface-coral, #d2b5aa);
 }
 .personal-shell {
   --personal-ink: #54392f;
@@ -444,7 +444,7 @@
   border-radius: 39%;
   background: linear-gradient(
     135deg,
-    var(--tone-surface-3b302a, #dec1b1),
+    var(--tone-surface-coral, #dec1b1),
     #bd8878 70%
   );
   border: 8px solid var(--tone-line-boundary, #f9f0e6);
@@ -642,7 +642,7 @@
   place-items: center;
   border: 1px solid var(--tone-line-5b4a3f44, #d4a78044);
   background: #d4a78016;
-  color: var(--tone-ink-eecfb0, #edc9a4);
+  color: var(--tone-ink-amber, #edc9a4);
   border-radius: 18px;
   width: 54px;
   height: 54px;
@@ -664,7 +664,7 @@
 .personal-focus-card p {
   font-size: 11px;
   line-height: 1.8;
-  color: var(--tone-ink-soft, #ddbea2);
+  color: var(--tone-ink-amber, #ddbea2);
   max-width: 240px;
 }
 .personal-focus-card > a {
@@ -913,7 +913,7 @@
   height: 27px;
   border: 1px solid var(--tone-line-boundary, #cdb191);
   border-radius: 999px;
-  background: var(--tone-surface-3c312b, #e2ceb6);
+  background: var(--tone-surface-amber, #e2ceb6);
   display: flex;
   align-items: center;
   padding: 3px;

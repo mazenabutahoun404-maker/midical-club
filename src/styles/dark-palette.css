@@ -1,0 +1,544 @@
+/* V0.13.10. One dark palette, with separate readable ink and quiet colored fills.
+   Light-mode values remain in the original declarations' var() fallbacks.
+   No image/PDF inversion, animated gradients, or global text recoloring. */
+:root[data-theme="dark"] {
+  --background: #16151a;
+  --foreground: #f5f1f3;
+  --card: #242127;
+  --card-foreground: #f5f1f3;
+  --popover: #2b252c;
+  --popover-foreground: #fff8f8;
+  --primary: #9e3448;
+  --primary-foreground: #ffffff;
+  --deep-red: #822b3b;
+  --secondary: #332b32;
+  --secondary-foreground: #f0e5ea;
+  --muted: #302b33;
+  --muted-foreground: #c9bec9;
+  --accent: #482b33;
+  --accent-foreground: #ffd5ca;
+  --destructive: #ffb3b6;
+  --border: #5e4f5d;
+  --input: #897887;
+  --ring: #f4b29d;
+  --theme-primary-ink: #ffb0a0;
+  --theme-russet-ink: #eeb99a;
+  --russet: #eeb99a;
+  --sidebar: #311b20;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #9e3448;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #522c34;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #765057;
+  --sidebar-ring: #f4b29d;
+  --tone-ink-strong: #f3edf1;
+  --tone-ink-muted: #c6b9c4;
+  --tone-ink-soft: #b8a7b6;
+  --tone-surface-raised: #242127;
+  --tone-surface-inset: #302831;
+  --tone-line-boundary: #5e4f5d;
+  --tone-ink-coral: #ffb0a0;
+  --tone-surface-coral: #45252a;
+  --tone-ink-amber: #f4cc8e;
+  --tone-surface-amber: #403122;
+  --tone-ink-olive: #cddba1;
+  --tone-surface-olive: #303820;
+  --tone-ink-green: #9fdfb7;
+  --tone-surface-green: #21392b;
+  --tone-ink-teal: #90ded2;
+  --tone-surface-teal: #1c3937;
+  --tone-ink-blue: #a8cbfa;
+  --tone-surface-blue: #22344b;
+  --tone-ink-violet: #d0baff;
+  --tone-surface-violet: #342a47;
+  --tone-ink-rose: #f3b6d0;
+  --tone-surface-rose: #432a38;
+  --detail-teal: var(--tone-ink-teal);
+  --detail-teal-fill: var(--tone-surface-teal);
+  --detail-blue: var(--tone-ink-blue);
+  --detail-blue-fill: var(--tone-surface-blue);
+  --detail-violet: var(--tone-ink-violet);
+  --detail-violet-fill: var(--tone-surface-violet);
+  --detail-amber: var(--tone-ink-amber);
+  --detail-amber-fill: var(--tone-surface-amber);
+  --detail-rose: var(--tone-ink-rose);
+  --detail-rose-fill: var(--tone-surface-rose);
+  --shadow-card: 0 8px 28px #05050935;
+  --shadow-overlay: 0 16px 48px #05050980;
+}
+:root[data-theme="dark"] .app-shell {
+  --shell-surface: #311b20;
+  --shell-ink: #fff7f5;
+  --shell-line: #765057;
+  --shell-selection: #583139;
+  --shell-gradient: linear-gradient(140deg, #482521, #311b20 55%, #231a1e);
+}
+html:root[data-theme="dark"]
+  body
+  .app-shell[data-navigation]
+  :is(.desktop-navigation, .scroll-header, .phone-navigation) {
+  background: var(--shell-gradient);
+  color: var(--shell-ink);
+  border-color: var(--shell-line);
+  box-shadow:
+    inset 0 1px 0 #ffffff08,
+    0 8px 24px #00000025;
+}
+:root[data-theme="dark"]
+  .app-shell
+  .navigation-item:is(:hover, :focus-visible):not(.active) {
+  background: #4c2d35;
+}
+:root[data-theme="dark"] .app-shell .phone-navigation > .active {
+  background: #64313f;
+}
+:root[data-theme="dark"] .app-shell .navigation-preferences:hover {
+  background: #4c2d35;
+}
+/* Clear form surfaces and native options. Explicit fills prevent light-on-light fields. */
+:root[data-theme="dark"]
+  :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(
+        [type="color"]
+      ):not([type="file"]),
+    textarea,
+    select
+  ) {
+  color: var(--foreground);
+  caret-color: var(--tone-ink-coral);
+  background-color: #28232b;
+  border-color: var(--input);
+}
+:root[data-theme="dark"] :is(input, textarea)::placeholder {
+  color: #bfb1bf;
+  opacity: 1;
+}
+:root[data-theme="dark"] :is(select option, select optgroup) {
+  color: var(--foreground);
+  background: #28232b;
+}
+:root[data-theme="dark"] :is(input, textarea, select)[aria-invalid="true"] {
+  border-color: #ffb3b6;
+}
+:root[data-theme="dark"] .search-tethered [cmdk-input] {
+  background: transparent;
+}
+:root[data-theme="dark"] input:-webkit-autofill {
+  -webkit-text-fill-color: var(--foreground);
+  caret-color: var(--tone-ink-coral);
+  box-shadow: inset 0 0 0 1000px #28232b;
+}
+/* Scoped inks must remain inks; do not reuse them for selected fills. */
+:root[data-theme="dark"] .community-v5 {
+  --community-ink: var(--foreground);
+  --community-paper: var(--card);
+  --community-wash: var(--secondary);
+  --community-red: var(--tone-ink-coral);
+  --community-russet: var(--tone-ink-amber);
+}
+:root[data-theme="dark"] :is(.mentorship-v6, .contributions-v6) {
+  --v6-ink: var(--foreground);
+  --v6-red: var(--tone-ink-coral);
+  --v6-russet: var(--tone-ink-amber);
+  --v6-line: var(--border);
+}
+:root[data-theme="dark"] .store-v7 {
+  --store-ink: var(--foreground);
+}
+:root[data-theme="dark"]
+  :is(.store-v7, .my-orders-page)
+  > .alive-tabs
+  button[aria-pressed="true"] {
+  color: #ffffff;
+  background: #743444;
+}
+:root[data-theme="dark"]
+  :is(
+    .product-card footer a,
+    .product-price-row strong,
+    .order-progress > div[data-complete]
+  ) {
+  color: var(--tone-ink-coral);
+}
+:root[data-theme="dark"] .stock-toggle i {
+  background: #f5e8ef;
+}
+:root[data-theme="dark"] :is(.admin-shell, .builder-library-page) {
+  --admin-ink: var(--foreground);
+  --admin-panel: var(--card);
+  --admin-line: var(--border);
+  --builder-ink: var(--foreground);
+  --builder-cream: var(--card);
+}
+:root[data-theme="dark"] .recruitment-v9 {
+  --recruitment-cream: var(--card);
+  --recruitment-line: var(--border);
+}
+:root[data-theme="dark"]
+  :is(
+    .governance-page,
+    .governance-users-page,
+    .governance-roles-page,
+    .governance-approvals-page
+  ) {
+  --governance-ink: var(--foreground);
+  --governance-cream: var(--card);
+}
+/* Color families are assigned by the existing content category, not DOM position. */
+:root[data-theme="dark"]
+  :is(.tone-red, [data-accent="red"], [data-tone="red"]) {
+  --category-ink: var(--tone-ink-coral);
+  --category-fill: var(--tone-surface-coral);
+}
+:root[data-theme="dark"]
+  :is(
+    .tone-russet,
+    [data-accent="russet"],
+    [data-tone="russet"],
+    [data-tone="amber"]
+  ) {
+  --category-ink: var(--tone-ink-amber);
+  --category-fill: var(--tone-surface-amber);
+}
+:root[data-theme="dark"]
+  :is(.tone-olive, [data-accent="olive"], [data-tone="olive"]) {
+  --category-ink: var(--tone-ink-olive);
+  --category-fill: var(--tone-surface-olive);
+}
+:root[data-theme="dark"]
+  :is(
+    .tone-purple,
+    [data-accent="purple"],
+    [data-tone="purple"],
+    [data-tone="plum"]
+  ) {
+  --category-ink: var(--tone-ink-violet);
+  --category-fill: var(--tone-surface-violet);
+}
+:root[data-theme="dark"] :is([data-accent="ink"], [data-tone="ink"]) {
+  --category-ink: var(--tone-ink-blue);
+  --category-fill: var(--tone-surface-blue);
+}
+:root[data-theme="dark"]
+  :is(.resource-art, .tone-russet, .tone-red, .tone-olive, .tone-purple):not(
+    .course-volume
+  ) {
+  color: var(--category-ink, var(--foreground));
+  background: linear-gradient(
+    145deg,
+    var(--category-fill, var(--card)),
+    var(--card)
+  );
+}
+:root[data-theme="dark"]
+  :is(.product-card, .product-detail-layout)
+  .product-visual {
+  color: var(--category-ink, var(--tone-ink-coral));
+  background: linear-gradient(
+    140deg,
+    var(--category-fill, var(--tone-surface-coral)),
+    #242127
+  );
+}
+:root[data-theme="dark"] .media-story .media-placeholder {
+  color: var(--category-ink, var(--tone-ink-coral));
+  background: linear-gradient(
+    140deg,
+    var(--category-fill, var(--tone-surface-coral)),
+    #211c25
+  );
+}
+:root[data-theme="dark"]
+  :is(.recruitment-position-card, .position-detail-hero) {
+  --card-accent: var(--category-ink, var(--tone-ink-coral));
+  --detail-accent: var(--category-ink, var(--tone-ink-coral));
+}
+:root[data-theme="dark"] .recruitment-position-card[data-accent] {
+  --card-accent: var(--category-ink, var(--tone-ink-coral));
+}
+:root[data-theme="dark"] .position-card-action {
+  color: var(--card-accent);
+}
+:root[data-theme="dark"] .admin-metric-card {
+  --metric-color: var(--category-ink, var(--tone-ink-coral));
+}
+:root[data-theme="dark"] .governance-metrics article {
+  --metric: var(--category-ink, var(--tone-ink-coral));
+}
+:root[data-theme="dark"] .governance-role-glyph {
+  color: var(--category-ink, var(--tone-ink-violet));
+  background: var(--category-fill, var(--tone-surface-violet));
+}
+/* Quiet hero gradients retain colored atmosphere behind readable, flat text. */
+:root[data-theme="dark"] .community-v5 .community-hero {
+  background: linear-gradient(125deg, #30232c, #26232e 52%, #203a38);
+}
+:root[data-theme="dark"] .community-v5 .community-overview {
+  background: linear-gradient(150deg, #2e2633, #242127);
+}
+:root[data-theme="dark"] .mentorship-hero {
+  background: linear-gradient(125deg, #2a2632, #293447 70%, #1e3838);
+}
+:root[data-theme="dark"] .contribution-hero {
+  background: linear-gradient(125deg, #31222b, #363047 60%, #293147);
+}
+:root[data-theme="dark"] .basic-page-hero {
+  background: linear-gradient(130deg, #28212a, #332832 60%, #453127);
+}
+:root[data-theme="dark"] .clinical-page-hero {
+  background: linear-gradient(135deg, #293c36, #242e34 60%, #211e29);
+}
+:root[data-theme="dark"] .portal-clinical {
+  background: linear-gradient(145deg, #344637, #263b37 65%, #22252c);
+}
+:root[data-theme="dark"] .academic-portal .portal-orbit i {
+  background: var(--tone-ink-amber);
+}
+:root[data-theme="dark"] .batch-passport {
+  --batch-color: var(--tone-ink-coral);
+}
+:root[data-theme="dark"] .batch-passport.batch-olive {
+  --batch-color: var(--tone-ink-olive);
+}
+:root[data-theme="dark"] .batch-passport.batch-russet {
+  --batch-color: var(--tone-ink-amber);
+}
+:root[data-theme="dark"]
+  :is(
+    .passport-stamp > span,
+    .passport-copy > em,
+    .passport-term svg,
+    .passport-action
+  ) {
+  color: var(--batch-color);
+}
+/* Notebook covers retain their subject hues; reading paper remains neutral. */
+:root[data-theme="dark"] .study-notebook {
+  --book-paper: #27232b;
+  --book-paper-side: #302a33;
+  --book-ink: var(--foreground);
+  --book-muted: var(--muted-foreground);
+  --book-action-ink: var(--tone-ink-amber);
+  --book-tab: var(--tone-surface-amber);
+  --book-rule: #786777;
+  --book-line: #554754;
+  --book-edge: #9f8796;
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="red"] {
+  --book-action-ink: var(--tone-ink-coral);
+  --book-tab: var(--tone-surface-coral);
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="olive"] {
+  --book-action-ink: var(--tone-ink-olive);
+  --book-tab: var(--tone-surface-olive);
+}
+:root[data-theme="dark"] .study-notebook[data-course-tone="purple"] {
+  --book-action-ink: var(--tone-ink-violet);
+  --book-tab: var(--tone-surface-violet);
+}
+:root[data-theme="dark"]
+  :is(.course-back-link, .notebook-back-courses, .pdf-import-paper) {
+  color: var(--book-action-ink, var(--tone-ink-amber));
+}
+:root[data-theme="dark"] .course-volume-copy :is(p, small),
+:root[data-theme="dark"] .course-volume-spine small {
+  color: #fff4ed;
+  opacity: 1;
+}
+/* Useful statuses and calendar categories keep different colors in both modes. */
+:root[data-theme="dark"] [data-kind="exam"] {
+  --entry-color: var(--tone-ink-rose);
+}
+:root[data-theme="dark"] [data-kind="study"] {
+  --entry-color: var(--tone-ink-green);
+}
+:root[data-theme="dark"] [data-kind="event"] {
+  --entry-color: var(--tone-ink-amber);
+}
+:root[data-theme="dark"] [data-kind="deadline"] {
+  --entry-color: var(--tone-ink-violet);
+}
+:root[data-theme="dark"] [data-kind="mentorship"] {
+  --entry-color: var(--tone-ink-teal);
+}
+:root[data-theme="dark"] .agenda-copy > small {
+  color: var(--entry-color);
+}
+:root[data-theme="dark"]
+  :is(
+    .admin-status,
+    .builder-page-status,
+    .governance-account-state,
+    .event-status,
+    .application-status
+  ) {
+  color: var(--tone-ink-blue);
+  background: var(--tone-surface-blue);
+}
+:root[data-theme="dark"]
+  :is(
+    .admin-status,
+    .builder-page-status,
+    .governance-account-state,
+    .event-status,
+    .application-status
+  ):is(
+    [data-status="published"],
+    [data-status="approved"],
+    [data-status="active"],
+    [data-status="accepted"],
+    [data-status="open"],
+    [data-status="completed"]
+  ) {
+  color: var(--tone-ink-green);
+  background: var(--tone-surface-green);
+}
+:root[data-theme="dark"]
+  :is(
+    .admin-status,
+    .builder-page-status,
+    .governance-account-state,
+    .event-status,
+    .application-status
+  ):is(
+    [data-status="pending"],
+    [data-status="under-review"],
+    [data-status="waitlist"],
+    [data-status="closing-soon"],
+    [data-status="upcoming"],
+    [data-status="scheduled"]
+  ) {
+  color: var(--tone-ink-amber);
+  background: var(--tone-surface-amber);
+}
+:root[data-theme="dark"]
+  :is(
+    .admin-status,
+    .builder-page-status,
+    .governance-account-state,
+    .event-status,
+    .application-status
+  ):is(
+    [data-status="rejected"],
+    [data-status="suspended"],
+    [data-status="changes-requested"]
+  ) {
+  color: var(--tone-ink-rose);
+  background: var(--tone-surface-rose);
+}
+:root[data-theme="dark"]
+  :is(
+    .admin-status,
+    .builder-page-status,
+    .governance-account-state,
+    .event-status,
+    .application-status
+  ):is(
+    [data-status="closed"],
+    [data-status="ended"],
+    [data-status="archived"],
+    [data-status="withdrawn"]
+  ) {
+  color: var(--muted-foreground);
+  background: var(--muted);
+}
+:root[data-theme="dark"] .event-ticket .ticket-date {
+  color: var(--tone-ink-amber);
+  background: linear-gradient(160deg, #453623, #31292a);
+}
+:root[data-theme="dark"] .opportunity-mark {
+  color: var(--tone-ink-teal);
+  background: var(--tone-surface-teal);
+}
+:root[data-theme="dark"] .opportunity-explorer {
+  background: linear-gradient(140deg, #242127 45%, #243236);
+}
+:root[data-theme="dark"] .opportunity-deadline[data-soon="true"] {
+  color: var(--tone-ink-amber);
+  background: var(--tone-surface-amber);
+}
+:root[data-theme="dark"]
+  .notification-entry[data-read="false"]
+  .notification-icon {
+  color: var(--tone-ink-blue);
+  background: var(--tone-surface-blue);
+}
+:root[data-theme="dark"] .health-summary [data-severity="critical"] span {
+  color: var(--tone-ink-rose);
+}
+:root[data-theme="dark"] .health-summary [data-severity="attention"] span {
+  color: var(--tone-ink-amber);
+}
+:root[data-theme="dark"] .health-summary [data-severity="healthy"] span {
+  color: var(--tone-ink-green);
+}
+/* Source media stays intact; the existing evening renderer owns 3D lighting. */
+:root[data-theme="dark"] .campus-poster {
+  filter: brightness(0.68) saturate(1.06);
+}
+@media (forced-colors: active) {
+  :root[data-theme="dark"] {
+    --background: Canvas;
+    --foreground: CanvasText;
+    --card: Canvas;
+    --card-foreground: CanvasText;
+    --popover: Canvas;
+    --popover-foreground: CanvasText;
+    --primary: Highlight;
+    --primary-foreground: HighlightText;
+    --muted: Canvas;
+    --muted-foreground: CanvasText;
+    --accent: Canvas;
+    --accent-foreground: CanvasText;
+    --border: ButtonText;
+    --input: ButtonText;
+    --ring: Highlight;
+    --tone-ink-strong: CanvasText;
+    --tone-ink-muted: CanvasText;
+    --tone-ink-soft: CanvasText;
+    --tone-surface-raised: Canvas;
+    --tone-surface-inset: Canvas;
+    --tone-line-boundary: ButtonText;
+    --tone-ink-coral: LinkText;
+    --tone-ink-amber: LinkText;
+    --tone-ink-olive: LinkText;
+    --tone-ink-green: LinkText;
+    --tone-ink-teal: LinkText;
+    --tone-ink-blue: LinkText;
+    --tone-ink-violet: LinkText;
+    --tone-ink-rose: LinkText;
+    --tone-surface-coral: Canvas;
+    --tone-surface-amber: Canvas;
+    --tone-surface-olive: Canvas;
+    --tone-surface-green: Canvas;
+    --tone-surface-teal: Canvas;
+    --tone-surface-blue: Canvas;
+    --tone-surface-violet: Canvas;
+    --tone-surface-rose: Canvas;
+  }
+  :root[data-theme="dark"] .app-shell {
+    --shell-surface: Canvas;
+    --shell-gradient: Canvas;
+    --shell-ink: CanvasText;
+    --shell-line: ButtonText;
+  }
+  html:root[data-theme="dark"]
+    body
+    .app-shell[data-navigation]
+    :is(.desktop-navigation, .scroll-header, .phone-navigation) {
+    box-shadow: none;
+  }
+  :root[data-theme="dark"] :is(input, textarea, select, select option) {
+    color: FieldText;
+    background: Field;
+    border-color: ButtonText;
+  }
+  :root[data-theme="dark"]
+    :is(.store-v7, .my-orders-page)
+    > .alive-tabs
+    button[aria-pressed="true"] {
+    color: HighlightText;
+    background: Highlight;
+  }
+}

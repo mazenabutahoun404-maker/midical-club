@@ -25,7 +25,7 @@ export function ThemeMenu() {
   const current = choices.find((choice) => choice.value === colorMode)!;
   const title = locale === "ar" ? "مظهر الموقع" : "Color mode";
   return (
-    <DropdownMenu dir={dir}>
+    <DropdownMenu modal={false} dir={dir}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"

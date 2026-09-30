@@ -70,7 +70,7 @@
 }
 
 .recruitment-navigation > a:hover {
-  color: var(--tone-ink-d3a19a, #8d2433);
+  color: var(--tone-ink-coral, #8d2433);
   background: var(--tone-surface-inset, #f4e6df);
   transform: translateY(-1px);
 }
@@ -90,7 +90,7 @@
   place-items: center;
   overflow: hidden;
   border-radius: 50%;
-  color: var(--tone-ink-d2a29a, #8c2934);
+  color: var(--tone-ink-coral, #8c2934);
   background: var(--tone-surface-inset, #efe0d8);
 }
 
@@ -114,7 +114,7 @@
 }
 
 .recruitment-navigation > a.active .recruitment-nav-icon {
-  color: var(--tone-ink-d3a29a, #8d2734);
+  color: var(--tone-ink-coral, #8d2734);
   background: var(--tone-surface-raised, #fff7ee);
 }
 
@@ -163,7 +163,7 @@
   background: repeating-linear-gradient(
     0deg,
     transparent 0 39px,
-    var(--tone-surface-inset, #ffe4d8) 40px 41px
+    var(--tone-surface-coral, #ffe4d8) 40px 41px
   );
   mask-image: linear-gradient(to top, #000, transparent);
 }
@@ -176,7 +176,7 @@
 }
 
 .recruitment-hero-copy .eyebrow {
-  color: var(--tone-ink-f3cdb8, #f0a990);
+  color: var(--tone-ink-coral, #f0a990);
 }
 
 .recruitment-hero-copy h1 {
@@ -251,7 +251,7 @@
   inset-inline-start: 10%;
   border: 3px solid var(--tone-line-56332c, #4b2020);
   border-radius: 50%;
-  background: var(--tone-surface-3c2d26, #ee9c79);
+  background: var(--tone-surface-coral, #ee9c79);
   box-shadow: 0 0 24px #ffae8c;
   content: "";
 }
@@ -281,7 +281,7 @@
   inset-block-start: 50%;
   inset-inline-start: 50%;
   border-radius: 50%;
-  background: var(--tone-surface-inset, #ffc1a9);
+  background: var(--tone-surface-coral, #ffc1a9);
   box-shadow: 0 0 0 5px #ffb89c19;
 }
 
@@ -319,7 +319,7 @@
 
 .recruitment-signal-board > span {
   inset-block-end: 25%;
-  color: var(--tone-ink-f2ccb8, #eca88e);
+  color: var(--tone-ink-coral, #eca88e);
   font-size: 0.58rem;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -532,7 +532,7 @@
 }
 
 .position-team {
-  color: var(--card-accent, var(--tone-ink-d0a29a, #852735));
+  color: var(--card-accent, var(--tone-ink-coral, #852735));
   background: color-mix(
     in srgb,
     var(--card-accent, #852735) 10%,
@@ -546,7 +546,7 @@
 }
 
 [data-status="closing-soon"] .position-status {
-  color: var(--tone-ink-d2ac97, #8a452c);
+  color: var(--tone-ink-coral, #8a452c);
   background: var(--tone-surface-inset, #f5e6d7);
 }
 
@@ -771,7 +771,7 @@
 
 .recruitment-boundary > svg,
 .membership-permission-boundary > svg {
-  color: var(--tone-ink-d3a39b, #8f2b38);
+  color: var(--tone-ink-coral, #8f2b38);
 }
 
 .recruitment-boundary strong,
@@ -1244,7 +1244,7 @@
   grid-template-columns: auto 1fr;
   gap: 11px;
   padding: 14px;
-  color: var(--tone-ink-d0a59c, #85303b);
+  color: var(--tone-ink-coral, #85303b);
   background: var(--tone-surface-inset, #f3dfdc);
 }
 
@@ -1443,7 +1443,7 @@
 
 .application-record > footer > a:not(.button) {
   margin-inline-end: auto;
-  color: var(--tone-ink-d2a49b, #8c2d39);
+  color: var(--tone-ink-coral, #8c2d39);
   font-size: 0.68rem;
   font-weight: 760;
 }
@@ -1491,7 +1491,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--tone-surface-3d2e27, #f0a285);
+  background: var(--tone-surface-coral, #f0a285);
   box-shadow: 0 0 18px #ffac8c;
 }
 .member-orbit i:first-child {
@@ -1506,7 +1506,7 @@
 
 .active-member-badge {
   color: var(--tone-ink-strong, #43211f);
-  background: var(--tone-surface-3d2f28, #f1b292);
+  background: var(--tone-surface-coral, #f1b292);
 }
 
 .member-identity-copy h2 {
@@ -1702,7 +1702,7 @@
 }
 
 .hour-record-list article[data-status="pending"] .hour-status {
-  color: var(--tone-ink-muted, #86532f);
+  color: var(--tone-ink-amber, #86532f);
   background: var(--tone-surface-inset, #f2e6d6);
 }
 

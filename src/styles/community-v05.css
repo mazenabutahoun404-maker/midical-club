@@ -113,7 +113,7 @@
   opacity: 0;
 }
 .community-navigation a.active .community-tab-icon {
-  color: var(--tone-ink-d39c93, #8f1620);
+  color: var(--tone-ink-coral, #8f1620);
 }
 .community-navigation a:hover .community-tab-icon svg {
   animation: communityIconCheck 520ms ease both;
@@ -165,7 +165,7 @@
 .journal-hero .eyebrow {
   display: block;
   margin-bottom: 18px;
-  color: var(--tone-ink-d3a598, #8e302d);
+  color: var(--tone-ink-coral, #8e302d);
 }
 .community-hero h1,
 .community-page-intro h1,
@@ -321,7 +321,7 @@
   height: 46px;
   overflow: hidden;
   border-radius: 16px 16px 24px 16px;
-  color: var(--tone-ink-d3a297, #8e272b);
+  color: var(--tone-ink-coral, #8e272b);
   background: var(--tone-surface-inset, #f4dfda);
 }
 .portal-medical-icon i {
@@ -381,7 +381,7 @@
   margin-top: 4px;
 }
 .community-callout .eyebrow {
-  color: var(--tone-ink-soft, #e5a49c);
+  color: var(--tone-ink-coral, #e5a49c);
 }
 .community-callout h2 {
   font-size: 1.65rem;
@@ -477,7 +477,7 @@
   font-size: 0.82rem !important;
 }
 .community-results strong {
-  color: var(--tone-ink-ce9f95, #7f2026);
+  color: var(--tone-ink-coral, #7f2026);
 }
 .community-activity-grid {
   display: grid;
@@ -533,7 +533,7 @@
   width: 42px;
   height: 44px;
   border-radius: 15px 15px 24px 15px;
-  color: var(--tone-ink-d8a197, #9d252b);
+  color: var(--tone-ink-coral, #9d252b);
   background: var(--tone-surface-inset, #f2dfdc);
 }
 .activity-kind-icon i {
@@ -576,7 +576,7 @@
 }
 .activity-impact span {
   flex: none;
-  color: var(--tone-ink-d7a598, #9b302e);
+  color: var(--tone-ink-coral, #9b302e);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -604,7 +604,7 @@
   border-color: var(--tone-line-5d443a, #563c37);
 }
 .journal-hero .eyebrow {
-  color: var(--tone-ink-eec4b4, #df8f84);
+  color: var(--tone-ink-coral, #df8f84);
 }
 .journal-hero p {
   color: var(--tone-ink-soft, #cbb2aa);
@@ -890,7 +890,7 @@
   width: 68px;
   height: 72px;
   border-radius: 23px 23px 36px 23px;
-  color: var(--tone-ink-d59f96, #952028);
+  color: var(--tone-ink-coral, #952028);
   background: var(--tone-surface-inset, #f1deda);
 }
 .executive-seal i {
@@ -964,7 +964,7 @@
 }
 .executive-member p b {
   display: block;
-  color: var(--tone-ink-d7a89b, #9b3b36);
+  color: var(--tone-ink-coral, #9b3b36);
   font-size: 0.67rem;
 }
 .member-signal {
@@ -1033,7 +1033,7 @@
   height: 140px;
   border: 1px solid var(--tone-line-5b4a3f3e, #b55d553e);
   border-radius: 45px 45px 70px 45px;
-  color: var(--tone-ink-d89f96, #9d1f27);
+  color: var(--tone-ink-coral, #9d1f27);
   background: var(--tone-surface-inset, #f6e4df);
 }
 .recognition-emblem i,
@@ -1109,7 +1109,7 @@
 .recognition-card p b {
   display: block;
   margin-bottom: 4px;
-  color: var(--tone-ink-d7a598, #9b302f);
+  color: var(--tone-ink-coral, #9b302f);
   font-size: 0.65rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -1179,7 +1179,7 @@
 }
 .about-story .eyebrow {
   grid-row: 1 / 3;
-  color: var(--tone-ink-edc3b3, #dc8b80);
+  color: var(--tone-ink-coral, #dc8b80);
 }
 .about-story h2 {
   font-size: 2rem;
@@ -1223,7 +1223,7 @@
   height: 47px;
   margin-bottom: 20px;
   border-radius: 16px 16px 24px 16px;
-  color: var(--tone-ink-d5a197, #95262b);
+  color: var(--tone-ink-coral, #95262b);
   background: var(--tone-surface-raised, #fff8f3);
 }
 .club-values article > span i {
@@ -1252,7 +1252,7 @@
   align-items: center;
   gap: 9px;
   margin: 8px 0 24px;
-  color: var(--tone-ink-cfa096, #822129);
+  color: var(--tone-ink-coral, #822129);
   font-size: 0.82rem;
   font-weight: 750;
 }
@@ -1305,10 +1305,10 @@
 }
 .journal-byline svg {
   grid-row: 1 / 3;
-  color: var(--tone-ink-d7a499, #9b2d30);
+  color: var(--tone-ink-coral, #9b2d30);
 }
 .journal-byline b {
-  color: var(--tone-ink-d7a598, #9a322f);
+  color: var(--tone-ink-coral, #9a322f);
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1370,7 +1370,7 @@
 .journal-article-body p:first-child::first-letter {
   float: inline-start;
   margin: 8px 10px 0 0;
-  color: var(--tone-ink-d4a197, #92242a);
+  color: var(--tone-ink-coral, #92242a);
   font-size: 4rem;
   line-height: 0.72;
   font-weight: 800;
@@ -1385,7 +1385,7 @@
   padding: 23px;
   border: 1px solid var(--tone-line-boundary, #e0cec5);
   border-radius: 22px 22px 42px 22px;
-  color: var(--tone-ink-d3a398, #8d2c2d);
+  color: var(--tone-ink-coral, #8d2c2d);
   background: var(--tone-surface-inset, #f5e7e2);
 }
 .editorial-note p {
@@ -1420,7 +1420,7 @@
   background: var(--tone-surface-inset, #eadbd4);
 }
 .more-journal a span {
-  color: var(--tone-ink-d7a89b, #9b3936);
+  color: var(--tone-ink-coral, #9b3936);
   font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;

@@ -15,7 +15,7 @@
     90deg,
     transparent,
     #a74d42 35%,
-    var(--tone-surface-3b2e27, #d6a08b) 70%,
+    var(--tone-surface-coral, #d6a08b) 70%,
     transparent
   );
   transform-origin: left;
@@ -246,7 +246,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--tone-surface-3d302a, #f5c4ad);
+  background: var(--tone-surface-coral, #f5c4ad);
   box-shadow: 0 0 0 5px #ffffff12;
 }
 .portal-orbit i:nth-of-type(1) {
@@ -262,7 +262,7 @@
   left: 24px;
 }
 .portal-clinical .portal-orbit i {
-  background: var(--tone-surface-3a2e28, #cba992);
+  background: var(--tone-surface-amber, #cba992);
 }
 .academic-finder {
   display: grid;
@@ -364,7 +364,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--tone-surface-3c2e28, #e2aa97);
+  background: var(--tone-surface-coral, #e2aa97);
   animation: academic-pulse 2.8s ease-in-out infinite;
 }
 .clinical-pulse-line i:nth-child(1) {
@@ -966,7 +966,7 @@
   position: absolute;
   right: 20px;
   bottom: 20px;
-  color: var(--tone-ink-soft, #e3ad97);
+  color: var(--tone-ink-coral, #e3ad97);
 }
 .clinical-focus-strip {
   display: grid;

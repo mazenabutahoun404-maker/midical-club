@@ -192,7 +192,7 @@
   background: repeating-linear-gradient(
     0deg,
     var(--tone-surface-inset, #f7f0df) 0 3px,
-    var(--tone-surface-3b302a, #d8c8ad) 3px 4px
+    var(--tone-surface-amber, #d8c8ad) 3px 4px
   );
   box-shadow:
     7px 5px 0 #c6ad88,
@@ -700,7 +700,7 @@
   color: var(--tone-ink-muted, #4d7f68);
 }
 .pdf-import-error {
-  color: var(--tone-ink-db9a90, #a50f15);
+  color: var(--tone-ink-coral, #a50f15);
 }
 .course-pdf-importer[data-state="dragging"] .pdf-import-paper {
   animation: pdf-paper-hover 780ms ease-in-out infinite alternate;
@@ -746,14 +746,14 @@
 .pdf-import-service-error {
   margin: 0 0 18px;
   padding: 10px 12px;
-  color: var(--tone-ink-cd9b92, #7c121c);
+  color: var(--tone-ink-coral, #7c121c);
   border-inline-start: 3px solid var(--tone-line-8c2925, #a50f15);
   background: var(--tone-surface-raised, #fff0ef);
 }
 .notebook-remove-local {
   width: 100%;
   margin-bottom: 8px;
-  color: var(--tone-ink-d3a299, #8e2731);
+  color: var(--tone-ink-coral, #8e2731);
 }
 @keyframes pdf-paper-hover {
   to {
@@ -798,7 +798,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  color: var(--book-action, var(--tone-ink-cda798, #7d362d));
+  color: var(--book-action, var(--tone-ink-coral, #7d362d));
   font-weight: 750;
   text-decoration: none;
 }

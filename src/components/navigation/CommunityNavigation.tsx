@@ -69,7 +69,12 @@ export function CommunityNavigation() {
         </AppLink>
       ))}
       <div className="community-honors-menu">
-        <DropdownMenu dir={dir} open={honorsOpen} onOpenChange={setHonorsOpen}>
+        <DropdownMenu
+          modal={false}
+          dir={dir}
+          open={honorsOpen}
+          onOpenChange={setHonorsOpen}
+        >
           <DropdownMenuTrigger asChild>
             <button
               type="button"

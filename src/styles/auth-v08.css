@@ -216,7 +216,7 @@
   letter-spacing: -0.03em;
 }
 .auth-brand small {
-  color: var(--tone-ink-f3c2ac, #f4b89f);
+  color: var(--tone-ink-coral, #f4b89f);
   font-size: 0.7rem;
   font-weight: 780;
   letter-spacing: 0.12em;
@@ -293,7 +293,7 @@
 }
 .auth-kicker,
 .auth-eyebrow {
-  color: var(--tone-ink-f8c8b0, #ff9a78);
+  color: var(--tone-ink-coral, #ff9a78);
   font-size: 0.72rem;
   font-weight: 820;
   letter-spacing: 0.17em;
@@ -334,7 +334,7 @@
 }
 .auth-signals svg {
   width: 16px;
-  color: var(--tone-ink-f8c1ab, #ff8768);
+  color: var(--tone-ink-coral, #ff8768);
 }
 .auth-main {
   min-width: 0;
@@ -383,7 +383,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: var(--tone-ink-d8a396, #9e2c28);
+  color: var(--tone-ink-coral, #9e2c28);
 }
 .auth-eyebrow svg {
   width: 17px;
@@ -452,7 +452,7 @@
   line-height: 1.5;
 }
 .auth-field small[data-ready="true"] {
-  color: var(--tone-ink-b6bda9, #377a62);
+  color: var(--tone-ink-green, #377a62);
 }
 .auth-password-field {
   position: relative;
@@ -476,7 +476,7 @@
 }
 .auth-password-field button:hover {
   background: var(--tone-surface-inset, #f4e7e1);
-  color: var(--tone-ink-d5a496, #942d29);
+  color: var(--tone-ink-coral, #942d29);
 }
 .auth-password-field svg {
   width: 18px;
@@ -490,7 +490,7 @@
 }
 .auth-form-between > a,
 .auth-switch a {
-  color: var(--tone-ink-d6a396, #972c29);
+  color: var(--tone-ink-coral, #972c29);
   font-weight: 790;
 }
 .auth-demo-fill {
@@ -523,7 +523,7 @@
   border: 1px solid var(--tone-line-5b4a3f30, #c13d3530);
   border-radius: 14px;
   background: var(--tone-surface-raised, #fff0ed);
-  color: var(--tone-ink-d3a194, #8f2422);
+  color: var(--tone-ink-coral, #8f2422);
   font-size: 0.8rem;
   line-height: 1.5;
 }
@@ -550,7 +550,7 @@
   background: var(--tone-surface-2d25208c, #f3e5de8c);
 }
 .auth-boundary-note strong {
-  color: var(--tone-ink-d3a396, #8e2c28);
+  color: var(--tone-ink-coral, #8e2c28);
   font-size: 0.69rem;
   letter-spacing: 0.09em;
 }

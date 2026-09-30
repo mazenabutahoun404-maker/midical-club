@@ -11,7 +11,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 export function LanguageMenu() {
   const { locale, setLocale, label, dir } = useLocale();
   return (
-    <DropdownMenu dir={dir}>
+    <DropdownMenu modal={false} dir={dir}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
