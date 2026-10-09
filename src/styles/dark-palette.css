@@ -1,59 +1,59 @@
-/* V0.13.10. One dark palette, with separate readable ink and quiet colored fills.
+/* V0.13.17. One calm dark palette, with separate readable ink and quiet colored fills.
    Light-mode values remain in the original declarations' var() fallbacks.
    No image/PDF inversion, animated gradients, or global text recoloring. */
 :root[data-theme="dark"] {
-  --background: #16151a;
-  --foreground: #f5f1f3;
-  --card: #242127;
-  --card-foreground: #f5f1f3;
-  --popover: #2b252c;
-  --popover-foreground: #fff8f8;
-  --primary: #9e3448;
+  --background: #2b2933;
+  --foreground: #f4f0eb;
+  --card: #35313d;
+  --card-foreground: #f4f0eb;
+  --popover: #403946;
+  --popover-foreground: #f8f4ef;
+  --primary: #96475e;
   --primary-foreground: #ffffff;
-  --deep-red: #822b3b;
-  --secondary: #332b32;
-  --secondary-foreground: #f0e5ea;
-  --muted: #302b33;
-  --muted-foreground: #c9bec9;
-  --accent: #482b33;
-  --accent-foreground: #ffd5ca;
+  --deep-red: #7b4058;
+  --secondary: #443c4b;
+  --secondary-foreground: #f2ebef;
+  --muted: #403a47;
+  --muted-foreground: #d5cbd6;
+  --accent: #4c3d4b;
+  --accent-foreground: #f0c8d7;
   --destructive: #ffb3b6;
-  --border: #5e4f5d;
-  --input: #897887;
-  --ring: #f4b29d;
-  --theme-primary-ink: #ffb0a0;
-  --theme-russet-ink: #eeb99a;
-  --russet: #eeb99a;
-  --sidebar: #311b20;
+  --border: #88788d;
+  --input: #b6a7ba;
+  --ring: #e2b3c4;
+  --theme-primary-ink: #f0b5c6;
+  --theme-russet-ink: #e3c0a4;
+  --russet: #e3c0a4;
+  --sidebar: #403440;
   --sidebar-foreground: #ffffff;
-  --sidebar-primary: #9e3448;
+  --sidebar-primary: #96475e;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #522c34;
+  --sidebar-accent: #554557;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #765057;
-  --sidebar-ring: #f4b29d;
-  --tone-ink-strong: #f3edf1;
-  --tone-ink-muted: #c6b9c4;
-  --tone-ink-soft: #b8a7b6;
-  --tone-surface-raised: #242127;
-  --tone-surface-inset: #302831;
-  --tone-line-boundary: #5e4f5d;
-  --tone-ink-coral: #ffb0a0;
-  --tone-surface-coral: #45252a;
-  --tone-ink-amber: #f4cc8e;
-  --tone-surface-amber: #403122;
-  --tone-ink-olive: #cddba1;
-  --tone-surface-olive: #303820;
-  --tone-ink-green: #9fdfb7;
-  --tone-surface-green: #21392b;
-  --tone-ink-teal: #90ded2;
-  --tone-surface-teal: #1c3937;
-  --tone-ink-blue: #a8cbfa;
-  --tone-surface-blue: #22344b;
-  --tone-ink-violet: #d0baff;
-  --tone-surface-violet: #342a47;
-  --tone-ink-rose: #f3b6d0;
-  --tone-surface-rose: #432a38;
+  --sidebar-border: #897689;
+  --sidebar-ring: #e2b3c4;
+  --tone-ink-strong: #f4f0eb;
+  --tone-ink-muted: #d5cbd6;
+  --tone-ink-soft: #c5b9c9;
+  --tone-surface-raised: #35313d;
+  --tone-surface-inset: #393541;
+  --tone-line-boundary: #88788d;
+  --tone-ink-coral: #f0b5c6;
+  --tone-surface-coral: #51404e;
+  --tone-ink-amber: #e9cc98;
+  --tone-surface-amber: #4e453d;
+  --tone-ink-olive: #ccdaad;
+  --tone-surface-olive: #424a3c;
+  --tone-ink-green: #a8d7bc;
+  --tone-surface-green: #374b43;
+  --tone-ink-teal: #a0d6cd;
+  --tone-surface-teal: #354b4d;
+  --tone-ink-blue: #b2cee9;
+  --tone-surface-blue: #3a465b;
+  --tone-ink-violet: #d2bfe7;
+  --tone-surface-violet: #4a4059;
+  --tone-ink-rose: #edbdd5;
+  --tone-surface-rose: #514254;
   --detail-teal: var(--tone-ink-teal);
   --detail-teal-fill: var(--tone-surface-teal);
   --detail-blue: var(--tone-ink-blue);
@@ -68,11 +68,11 @@
   --shadow-overlay: 0 16px 48px #05050980;
 }
 :root[data-theme="dark"] .app-shell {
-  --shell-surface: #311b20;
-  --shell-ink: #fff7f5;
-  --shell-line: #765057;
-  --shell-selection: #583139;
-  --shell-gradient: linear-gradient(140deg, #482521, #311b20 55%, #231a1e);
+  --shell-surface: #403440;
+  --shell-ink: #f8f4ef;
+  --shell-line: #897689;
+  --shell-selection: #584657;
+  --shell-gradient: linear-gradient(140deg, #504050, #403440 55%, #37323f);
 }
 html:root[data-theme="dark"]
   body
@@ -88,13 +88,24 @@ html:root[data-theme="dark"]
 :root[data-theme="dark"]
   .app-shell
   .navigation-item:is(:hover, :focus-visible):not(.active) {
-  background: #4c2d35;
+  background: #504354;
 }
 :root[data-theme="dark"] .app-shell .phone-navigation > .active {
-  background: #64313f;
+  background: #615066;
 }
 :root[data-theme="dark"] .app-shell .navigation-preferences:hover {
-  background: #4c2d35;
+  background: #504354;
+}
+:root[data-theme="dark"] .gpa-results output {
+  color: var(--theme-primary-ink);
+}
+html:root[data-theme="dark"]
+  body
+  .container
+  .artwork-scene
+  > div:not(.community-hero-side)
+  > .eyebrow {
+  color: var(--theme-primary-ink);
 }
 /* Clear form surfaces and native options. Explicit fills prevent light-on-light fields. */
 :root[data-theme="dark"]
@@ -107,16 +118,16 @@ html:root[data-theme="dark"]
   ) {
   color: var(--foreground);
   caret-color: var(--tone-ink-coral);
-  background-color: #28232b;
+  background-color: #302d38;
   border-color: var(--input);
 }
 :root[data-theme="dark"] :is(input, textarea)::placeholder {
-  color: #bfb1bf;
+  color: #cbbfce;
   opacity: 1;
 }
 :root[data-theme="dark"] :is(select option, select optgroup) {
   color: var(--foreground);
-  background: #28232b;
+  background: #302d38;
 }
 :root[data-theme="dark"] :is(input, textarea, select)[aria-invalid="true"] {
   border-color: #ffb3b6;
@@ -127,7 +138,7 @@ html:root[data-theme="dark"]
 :root[data-theme="dark"] input:-webkit-autofill {
   -webkit-text-fill-color: var(--foreground);
   caret-color: var(--tone-ink-coral);
-  box-shadow: inset 0 0 0 1000px #28232b;
+  box-shadow: inset 0 0 0 1000px #302d38;
 }
 /* Scoped inks must remain inks; do not reuse them for selected fills. */
 :root[data-theme="dark"] .community-v5 {
@@ -238,7 +249,7 @@ html:root[data-theme="dark"]
   background: linear-gradient(
     140deg,
     var(--category-fill, var(--tone-surface-coral)),
-    #242127
+    var(--card)
   );
 }
 :root[data-theme="dark"] .media-story .media-placeholder {
@@ -246,7 +257,7 @@ html:root[data-theme="dark"]
   background: linear-gradient(
     140deg,
     var(--category-fill, var(--tone-surface-coral)),
-    #211c25
+    var(--card)
   );
 }
 :root[data-theme="dark"]
@@ -272,25 +283,25 @@ html:root[data-theme="dark"]
 }
 /* Quiet hero gradients retain colored atmosphere behind readable, flat text. */
 :root[data-theme="dark"] .community-v5 .community-hero {
-  background: linear-gradient(125deg, #30232c, #26232e 52%, #203a38);
+  background: linear-gradient(125deg, #49303d, #353348 52%, #2c4745);
 }
 :root[data-theme="dark"] .community-v5 .community-overview {
-  background: linear-gradient(150deg, #2e2633, #242127);
+  background: linear-gradient(150deg, #43364e, var(--card));
 }
 :root[data-theme="dark"] .mentorship-hero {
-  background: linear-gradient(125deg, #2a2632, #293447 70%, #1e3838);
+  background: linear-gradient(125deg, #3e354b, #33435d 70%, #2c4948);
 }
 :root[data-theme="dark"] .contribution-hero {
-  background: linear-gradient(125deg, #31222b, #363047 60%, #293147);
+  background: linear-gradient(125deg, #50303f, #443857 60%, #35435a);
 }
 :root[data-theme="dark"] .basic-page-hero {
-  background: linear-gradient(130deg, #28212a, #332832 60%, #453127);
+  background: linear-gradient(130deg, #3b303e, #473447 60%, #503b2d);
 }
 :root[data-theme="dark"] .clinical-page-hero {
-  background: linear-gradient(135deg, #293c36, #242e34 60%, #211e29);
+  background: linear-gradient(135deg, #354c42, #313d4e 60%, #383144);
 }
 :root[data-theme="dark"] .portal-clinical {
-  background: linear-gradient(145deg, #344637, #263b37 65%, #22252c);
+  background: linear-gradient(145deg, #405337, #344a43 65%, #323746);
 }
 :root[data-theme="dark"] .academic-portal .portal-orbit i {
   background: var(--tone-ink-amber);
@@ -313,17 +324,17 @@ html:root[data-theme="dark"]
   ) {
   color: var(--batch-color);
 }
-/* Notebook covers retain their subject hues; reading paper remains neutral. */
+/* Subject covers keep their colors; the reading paper uses a neutral warm plum. */
 :root[data-theme="dark"] .study-notebook {
-  --book-paper: #27232b;
-  --book-paper-side: #302a33;
+  --book-paper: #3b3743;
+  --book-paper-side: #403a47;
   --book-ink: var(--foreground);
   --book-muted: var(--muted-foreground);
   --book-action-ink: var(--tone-ink-amber);
   --book-tab: var(--tone-surface-amber);
-  --book-rule: #786777;
-  --book-line: #554754;
-  --book-edge: #9f8796;
+  --book-rule: #8a7c90;
+  --book-line: #595062;
+  --book-edge: #b0a0b6;
 }
 :root[data-theme="dark"] .study-notebook[data-course-tone="red"] {
   --book-action-ink: var(--tone-ink-coral);
@@ -452,7 +463,7 @@ html:root[data-theme="dark"]
   background: var(--tone-surface-teal);
 }
 :root[data-theme="dark"] .opportunity-explorer {
-  background: linear-gradient(140deg, #242127 45%, #243236);
+  background: linear-gradient(140deg, var(--card) 45%, #243236);
 }
 :root[data-theme="dark"] .opportunity-deadline[data-soon="true"] {
   color: var(--tone-ink-amber);

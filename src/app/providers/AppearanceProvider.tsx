@@ -7,6 +7,11 @@ import {
   useMemo,
   type ReactNode,
 } from "react";
+import {
+  getAppearancePalette,
+  isAppearancePalette,
+  type AppearancePalette,
+} from "./appearance-palettes";
 import { STORAGE_KEYS } from "../../constants/config";
 export type ColorMode = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
@@ -15,11 +20,13 @@ interface AppearancePreferences {
   navigation: NavigationLayout;
   sidebarCollapsed: boolean;
   colorMode: ColorMode;
+  palette: AppearancePalette;
 }
 const DEFAULTS: AppearancePreferences = {
   navigation: "vertical",
   sidebarCollapsed: false,
   colorMode: "system",
+  palette: "medclub",
 };
 const isColorMode = (value: unknown): value is ColorMode =>
   value === "light" || value === "dark" || value === "system";
@@ -38,6 +45,10 @@ function readPreferences(): AppearancePreferences {
     )
       return {
         navigation: value.navigation,
+        palette:
+          "palette" in value && isAppearancePalette(value.palette)
+            ? value.palette
+            : "medclub",
         colorMode:
           "colorMode" in value && isColorMode(value.colorMode)
             ? value.colorMode
@@ -56,6 +67,7 @@ interface AppearanceContext extends AppearancePreferences {
   persisted: boolean;
   resolvedTheme: ResolvedTheme;
   setColorMode: (mode: ColorMode) => void;
+  setPalette: (palette: AppearancePalette) => void;
 }
 const Context = createContext<AppearanceContext | null>(null);
 export function AppearanceProvider({ children }: { children: ReactNode }) {
@@ -72,9 +84,10 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
       : preferences.colorMode;
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = resolvedTheme;
+    document.documentElement.dataset.palette = preferences.palette;
     document.documentElement.style.colorScheme = resolvedTheme;
     document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
-  }, [resolvedTheme]);
+  }, [resolvedTheme, preferences.palette]);
   useEffect(() => {
     const query = window.matchMedia("(prefers-color-scheme: dark)");
     const sync = () => setSystemDark(query.matches);
@@ -105,6 +118,12 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
       ...preferences,
       persisted,
       resolvedTheme,
+      setPalette: (palette: AppearancePalette) => {
+        if (isAppearancePalette(palette)) {
+          const preferred = getAppearancePalette(palette).preferred;
+          update({ palette, ...(preferred ? { colorMode: preferred } : {}) });
+        }
+      },
       setColorMode: (colorMode: ColorMode) => {
         if (isColorMode(colorMode)) update({ colorMode });
       },

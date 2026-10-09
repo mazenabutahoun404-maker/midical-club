@@ -560,13 +560,13 @@
   padding: 4px 7px;
   border-radius: 999px;
   color: var(--tone-ink-coral, #822026);
-  background: var(--tone-surface-inset, #f9e6e3);
+  background: var(--tone-surface-coral, #f9e6e3);
   font-size: 9px;
   font-weight: 750;
 }
 .health-tags span.healthy {
   color: var(--tone-ink-teal, #216d63);
-  background: var(--tone-surface-inset, #e2f3ee);
+  background: var(--tone-surface-teal, #e2f3ee);
 }
 .health-open {
   display: grid;
@@ -682,7 +682,7 @@
   place-items: center;
   border-radius: 12px;
   color: var(--tone-ink-coral, #8c1920);
-  background: var(--tone-surface-inset, #f6e6e2);
+  background: var(--tone-surface-coral, #f6e6e2);
 }
 .progress-metrics strong {
   display: block;
@@ -876,7 +876,7 @@
   margin-bottom: 24px;
   padding: 16px;
   border-radius: 18px;
-  background: var(--tone-surface-inset, #f5eee9);
+  background: var(--tone-surface-coral, #f5eee9);
 }
 .practice-form label span {
   display: block;
@@ -971,7 +971,7 @@
   border: 0;
   border-radius: 10px;
   color: var(--tone-ink-coral, #8c1c22);
-  background: var(--tone-surface-inset, #f4e4e1);
+  background: var(--tone-surface-coral, #f4e4e1);
   cursor: pointer;
 }
 .progress-empty {

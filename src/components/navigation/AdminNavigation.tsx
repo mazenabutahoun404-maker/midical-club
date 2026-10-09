@@ -1,3 +1,4 @@
+import { NavigationSelection } from "./NavigationSelection";
 import { NotebookFittings } from "./NotebookFittings";
 import { FileSearch, FileCheck, BadgeCheck, ShieldPlus } from "lucide-react";
 import { NavigationControls } from "./AdaptiveNavigation";
@@ -205,6 +206,7 @@ export function AdminNavigation() {
             className="navigation-scroll"
             id="admin-sidebar-links"
           >
+          <NavigationSelection />
             <nav
               className="navigation-primary"
               aria-label={label("adminNavigation")}
@@ -237,6 +239,7 @@ export function AdminNavigation() {
         className="phone-navigation admin-phone-navigation"
         aria-label={label("adminMobileNavigation")}
       >
+        <NavigationSelection />
         {phonePrimary.map(({ href, label: key, icon: Icon }) => (
           <AppLink
             href={href}

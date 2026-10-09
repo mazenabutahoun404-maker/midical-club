@@ -1,0 +1,1021 @@
+/* One bounded desk. Campus pages retain their normal document scrolling. */
+html:root
+  body
+  .app-shell[data-study-environment="true"]
+  :is(.app-content, main, .route-viewport, .route-page-content) {
+  min-height: 0;
+}
+html:root body .app-shell[data-study-environment="true"] main {
+  height: 100dvh;
+  overflow: hidden;
+}
+.app-shell[data-study-environment="true"]
+  :is(.route-viewport, .route-page-content) {
+  height: 100%;
+}
+.course-study-edition.container {
+  height: 100dvh;
+  min-height: 0;
+  padding: 8px 14px calc(66px + env(safe-area-inset-bottom));
+  max-width: 1800px;
+}
+.course-study-edition .study-environment {
+  height: 100%;
+  min-height: 0;
+}
+.course-study-edition .study-environment .study-notebook {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+}
+.course-study-edition .study-environment .study-notebook .notebook-toolbar {
+  position: relative;
+  top: auto;
+  margin: 0;
+  padding: 4px 10px;
+  min-height: 52px;
+  border-radius: 8px;
+  box-shadow: none;
+  z-index: 24;
+  flex-shrink: 0;
+}
+.course-study-edition .study-environment .notebook-current-course h1 {
+  font-size: 1rem;
+}
+.course-study-edition .study-environment .notebook-current-course span {
+  font-size: 0.65rem;
+}
+.course-study-edition .study-environment .notebook-object,
+.course-study-edition
+  .study-environment
+  .study-notebook[data-focus="true"]
+  .notebook-object {
+  margin: 0 0 0 58px;
+  margin-inline-start: 58px;
+  margin-inline-end: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 6px;
+  isolation: isolate;
+  perspective: 1400px;
+}
+.course-study-edition .study-environment .notebook-spread {
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+  transform-style: flat;
+}
+.course-study-edition .study-environment .study-notebook .notebook-reading-page,
+.course-study-edition
+  .study-environment
+  .study-notebook[data-reading="resource"]
+  .notebook-reading-page {
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  padding: 12px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  position: relative;
+  transform-style: flat;
+}
+.course-study-edition
+  .study-environment
+  .study-notebook[data-reading="resource"]
+  .notebook-reading-page {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 8px 6px;
+  overflow: hidden;
+}
+.course-study-edition .study-environment .notebook-section-heading {
+  flex-shrink: 0;
+}
+.course-study-edition .study-environment .notebook-study-layout {
+  min-height: 0;
+  flex: 1;
+  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  align-items: stretch;
+}
+.course-study-edition .study-environment .notebook-primary-pane {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.course-study-edition .study-environment .study-reader {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.course-study-edition .study-environment .study-reader-heading {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 4px 3px;
+}
+.course-study-edition .study-environment .study-reader-scroll {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.course-study-edition
+  .study-environment
+  .study-reader[data-media="pdf"]
+  .study-reader-scroll {
+  display: flex;
+  overflow: hidden;
+}
+.course-study-edition .study-environment .study-reader-actions {
+  flex: 0 0 auto;
+  min-height: 42px;
+  max-height: 35%;
+  overflow: auto;
+  padding: 3px 4px;
+  gap: 6px;
+}
+.course-study-edition .study-environment .study-reader-actions details[open] {
+  max-height: 220px;
+  overflow: auto;
+}
+.course-study-edition .study-environment .notebook-companion {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.course-study-edition .study-environment .notebook-companion .study-reader {
+  height: calc(100% - 90px);
+}
+.course-study-edition .study-environment .notebook-split-hint {
+  display: none;
+}
+.course-study-edition .study-environment .pdf-book {
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.course-study-edition .study-environment .pdf-book-toolbar {
+  flex: 0 0 auto;
+  padding: 0 2px 3px;
+  gap: 2px;
+  min-height: 44px;
+}
+.course-study-edition .study-environment .pdf-book-viewport {
+  min-height: 0;
+  max-height: none;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  isolation: isolate;
+  padding: 1px;
+}
+.course-study-edition .study-environment .pdf-book-pages {
+  overflow: clip;
+  max-width: none;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  isolation: isolate;
+}
+.course-study-edition .study-environment .pdf-spread-gutter {
+  position: relative;
+  top: auto;
+  min-height: 0;
+  height: 100%;
+}
+.course-study-edition
+  .study-environment
+  :is(.pdf-load-status, .pdf-load-error, .pdf-password) {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+}
+.course-study-edition .study-environment .pdf-file-search {
+  flex: 0 0 auto;
+  max-height: 35%;
+  overflow: auto;
+}
+.course-study-edition .study-environment .pdf-bookmark-list {
+  flex: 0 1 auto;
+}
+.course-study-edition .study-environment .pdf-bookmark-list > div {
+  z-index: 20;
+}
+.course-study-edition .study-environment .pdf-paper-page {
+  flex-shrink: 0;
+}
+.course-study-edition .study-environment .notebook-page-stack {
+  inset-block-end: 0;
+}
+
+/* A compact section rail expands on proximity or keyboard focus. Its preview belongs to it. */
+.course-study-edition .study-environment .notebook-index,
+.course-study-edition
+  .study-environment
+  .study-notebook[data-focus="true"]
+  .notebook-index {
+  position: absolute;
+  inset-inline-start: -62px;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  padding: 6px 2px;
+  background: var(--book-paper);
+  border: 1px solid var(--book-rule);
+  border-radius: 8px;
+  z-index: 22;
+  box-shadow: var(--shadow-card);
+  transition:
+    width 180ms ease,
+    padding 180ms ease;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+.course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index[data-expanded="true"] {
+  width: 170px;
+  padding: 8px 6px;
+}
+.course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index[data-closed="true"] {
+  width: 10px;
+  padding: 0;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  background: var(--book-cover-light);
+}
+.course-study-edition
+  .study-environment
+  .notebook-index[data-closed="true"]
+  :is(.notebook-bookmarks, .notebook-index-heading, .notebook-section-close) {
+  visibility: hidden;
+  pointer-events: none;
+}
+.course-study-edition .study-environment .notebook-index-heading {
+  display: none;
+  padding: 4px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index[data-expanded="true"]
+  .notebook-index-heading {
+  display: flex;
+  justify-content: space-between;
+  padding-inline-end: 26px;
+  min-height: 34px;
+  align-items: center;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index
+  .notebook-section-close {
+  position: absolute;
+  inset-inline-end: 5px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 5px;
+  visibility: hidden;
+  pointer-events: none;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index[data-expanded="true"]
+  .notebook-section-close {
+  visibility: visible;
+  pointer-events: auto;
+}
+.course-study-edition .study-environment .notebook-index .notebook-bookmarks,
+.course-study-edition
+  .study-environment
+  .study-notebook[data-focus="true"]
+  .notebook-bookmarks {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: auto;
+  min-height: 0;
+  max-height: none;
+  gap: 4px;
+  padding: 0;
+  scrollbar-width: none;
+  flex: 1;
+}
+.course-study-edition .study-environment .notebook-index .notebook-bookmark {
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  flex: 0 0 44px;
+  margin: 0;
+  padding: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  transform: none !important;
+  box-shadow: none;
+}
+.course-study-edition .study-environment .notebook-bookmark-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  height: 26px;
+  gap: 9px;
+}
+.course-study-edition .study-environment .notebook-bookmark-top svg {
+  flex: 0 0 18px;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index:not([data-expanded="true"])
+  .notebook-bookmark-top
+  :is(b, small) {
+  visibility: hidden;
+}
+.course-study-edition .study-environment .notebook-bookmark-glimpse {
+  display: none !important;
+}
+.course-study-edition .study-environment .notebook-peek {
+  inset-inline-start: calc(100% + 5px);
+  width: min(292px, calc(100vw - 215px));
+  max-height: min(300px, calc(100dvh - 140px));
+  overflow: auto;
+  padding: 12px;
+  border-radius: 4px 10px 14px 4px;
+  transform: none;
+  transform-origin: 0 50%;
+  z-index: 25;
+  box-shadow: var(--shadow-overlay);
+  animation: section-preview-arrive 150ms ease-out;
+}
+.course-study-edition .study-environment .notebook-peek::after {
+  width: 7px;
+  height: 14px;
+  top: var(--peek-anchor, 14px);
+  bottom: auto;
+  inset-inline-start: -6px;
+  background: var(--book-paper);
+  border-inline-start: 1px solid var(--book-edge);
+  border-radius: 2px;
+  transform: rotate(45deg);
+  box-shadow: none;
+}
+.course-study-edition .study-environment .notebook-peek h3 {
+  font-size: 0.86rem;
+}
+.course-study-edition .study-environment .notebook-peek p {
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+.course-study-edition .study-environment .notebook-peek li {
+  font-size: 0.7rem;
+}
+.course-study-edition .study-environment .notebook-peek .notebook-button {
+  font-size: 0.7rem;
+  min-height: 40px;
+}
+@keyframes section-preview-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Paper turns remain clipped to the actual reading frame. */
+.course-study-edition .study-environment .hand-turn-leaf {
+  bottom: 2px;
+  top: 2px;
+  filter: drop-shadow(0 3px 8px #27181730);
+}
+.course-study-edition .study-environment .hand-turn-front,
+.course-study-edition .study-environment .hand-turn-back {
+  border-radius: 2px 4px 7px 2px;
+}
+.hand-turn-body {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  clip-path: inset(0 23% 0 0);
+}
+.hand-turn-leaf[data-side="left"] .hand-turn-body {
+  clip-path: inset(0 0 0 23%);
+}
+.hand-turn-curl {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  width: 24%;
+  transform-style: preserve-3d;
+  transform-origin: 0 50%;
+  transform: rotateY(calc(var(--turn-bend) * -24deg));
+  pointer-events: none;
+}
+.hand-turn-leaf[data-side="left"] .hand-turn-curl {
+  left: 0;
+  right: auto;
+  transform-origin: 100% 50%;
+  transform: rotateY(calc(var(--turn-bend) * 24deg));
+}
+.hand-turn-curl-front,
+.hand-turn-curl-back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  background: var(--book-paper);
+  border-radius: 0 4px 7px 0;
+}
+.hand-turn-curl-back {
+  transform: rotateY(180deg);
+}
+.hand-turn-curl-content {
+  position: absolute;
+  inset-block: 0;
+  left: -316.66667%;
+  width: 416.66667%;
+  overflow: hidden;
+}
+.hand-turn-leaf[data-side="left"] .hand-turn-curl-content {
+  left: 0;
+}
+.hand-turn-curl-front::after,
+.hand-turn-curl-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #26190c22, #fff9e880 40%, #39271955);
+  opacity: calc(var(--turn-bend) * 0.9);
+}
+.hand-turn-curl-content > .pdf-paper-page,
+.hand-turn-body .pdf-paper-page {
+  width: 100% !important;
+  max-width: 100%;
+  height: 100%;
+}
+.course-study-edition .study-environment .hand-turn-front::after,
+.course-study-edition .study-environment .hand-turn-back::after {
+  background: linear-gradient(
+    90deg,
+    #27181748,
+    transparent 15%,
+    transparent 70%,
+    #fff7e070 83%,
+    #39261c40 100%
+  );
+  opacity: calc(var(--turn-bend) * 0.9);
+}
+.hand-turn-curled-edge {
+  position: absolute;
+  inset-block: 1%;
+  right: 0;
+  width: 18%;
+  border-radius: 0 20% 20% 0;
+  backface-visibility: hidden;
+  transform-origin: 0 50%;
+  transform: rotateY(calc(var(--turn-bend) * -26deg));
+  background: linear-gradient(90deg, transparent, #fff8e3a6 40%, #543b2466 92%);
+  opacity: calc(var(--turn-bend) * 0.85);
+  pointer-events: none;
+}
+.hand-turn-leaf[data-side="left"] .hand-turn-curled-edge {
+  left: 0;
+  right: auto;
+  transform-origin: 100% 50%;
+  transform: rotateY(calc(var(--turn-bend) * 26deg));
+}
+.course-study-edition .study-environment .notebook-turn-sheet {
+  inset: 12px;
+  max-width: calc(100% - 24px);
+  max-height: calc(100% - 24px);
+  transform-origin: 0 50%;
+  overflow: hidden;
+  animation: bounded-section-turn 460ms ease-in-out both;
+}
+.course-study-edition
+  .study-environment
+  .notebook-turn-sheet[data-backwards="true"] {
+  transform-origin: 100% 50%;
+  animation-name: bounded-section-return;
+}
+.course-study-edition .study-environment .section-turn-front,
+.course-study-edition .study-environment .section-turn-back {
+  overflow: hidden;
+}
+.section-turn-underlay {
+  position: absolute;
+  inset: 12px;
+  z-index: 3;
+  overflow: hidden;
+  background: var(--book-paper);
+  pointer-events: none;
+}
+.section-next-content {
+  height: 100%;
+  min-height: 0;
+  padding: 18px;
+  overflow: hidden;
+  background: var(--book-paper);
+  color: var(--book-ink);
+  font-size: 0.8rem;
+}
+.section-next-content:has(.section-pdf-preview) {
+  padding: 0;
+  background: #fff;
+}
+.section-next-content header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--book-rule);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.section-next-content h3 {
+  font-size: 1rem;
+}
+.section-next-content ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 15px;
+}
+.section-next-content li {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+}
+.section-next-content ol li {
+  display: list-item;
+  margin: 10px 0;
+}
+.section-next-content p {
+  line-height: 1.65;
+}
+.section-pdf-preview {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.section-pdf-preview canvas {
+  height: 100%;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+.section-pdf-preview span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  color: #554137;
+  background: #fffaf4;
+}
+@keyframes bounded-section-turn {
+  0% {
+    transform: perspective(1800px) rotateY(0);
+  }
+  48% {
+    transform: perspective(1800px) rotateY(-87deg) scaleY(0.965);
+  }
+  100% {
+    transform: perspective(1800px) rotateY(-180deg);
+    opacity: 0;
+  }
+}
+@keyframes bounded-section-return {
+  0% {
+    transform: perspective(1800px) rotateY(0);
+  }
+  48% {
+    transform: perspective(1800px) rotateY(87deg) scaleY(0.965);
+  }
+  100% {
+    transform: perspective(1800px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+/* A movable tool strip, with its drawer attached to the same physical position. */
+.study-tool-dock {
+  position: fixed;
+  z-index: 48;
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  touch-action: auto;
+}
+.study-tool-strip {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid var(--book-rule);
+  border-radius: 10px;
+  background: var(--book-paper);
+  color: var(--book-ink);
+  box-shadow: 0 5px 20px #28171c25;
+}
+.study-tool-strip button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 44px;
+  height: 44px;
+  min-width: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.study-tool-strip button[aria-pressed="true"] {
+  background: var(--book-tab);
+  color: var(--book-action-ink, var(--book-action));
+}
+.study-tool-strip .study-tool-grip {
+  width: 28px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.study-tool-dock[data-dragging="true"] .study-tool-grip {
+  cursor: grabbing;
+}
+.study-tool-dock .study-tools-panel {
+  position: absolute;
+  width: 380px;
+  padding: 16px;
+  inset: auto;
+  overflow: auto;
+  background: var(--book-paper);
+  color: var(--book-ink);
+  border: 1px solid var(--book-rule);
+  border-radius: 10px;
+  box-shadow: var(--shadow-overlay);
+}
+.study-tool-dock .study-tools-panel header {
+  margin-bottom: 14px;
+}
+.study-tool-dock .study-tools-panel :is(.student-notes, .gpa-calculator) {
+  --background: var(--book-paper);
+  --foreground: var(--book-ink);
+  --border: var(--book-rule);
+  --muted-foreground: var(--book-muted);
+}
+.study-tool-dock .study-tools-panel header strong {
+  font-size: 0.88rem;
+}
+.study-tool-dock .study-private-notes textarea {
+  min-height: 140px;
+}
+.study-tool-dock .study-tool-strip button:focus-visible,
+.course-study-edition .study-environment .notebook-index:focus-visible {
+  outline: 2px solid var(--book-action-ink, var(--book-action));
+  outline-offset: 2px;
+}
+html[dir="rtl"] .course-study-edition .study-environment .notebook-object {
+  margin-left: 0;
+  margin-right: 58px;
+}
+html[dir="rtl"] .course-study-edition .study-environment .notebook-peek {
+  inset-inline-start: calc(100% + 5px);
+  inset-inline-end: auto;
+  transform: none;
+}
+@media (max-width: 767px) {
+  .course-study-edition.container {
+    padding: 5px 5px calc(62px + env(safe-area-inset-bottom));
+  }
+  .course-study-edition .study-environment .study-notebook {
+    gap: 6px;
+  }
+  .course-study-edition .study-environment .study-notebook .notebook-toolbar {
+    gap: 2px 5px;
+    padding: 3px 6px;
+    min-height: 0;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .course-study-edition .study-environment .notebook-tools {
+    gap: 2px;
+  }
+  .course-study-edition
+    .study-environment
+    .notebook-tools
+    .study-tools-trigger {
+    display: none;
+  }
+  .course-study-edition .study-environment .notebook-current-course h1 {
+    font-size: 0.83rem;
+  }
+  .course-study-edition .study-environment .notebook-current-course svg {
+    display: none;
+  }
+  .course-study-edition .study-environment .notebook-back-courses {
+    font-size: 0.65rem;
+    gap: 4px;
+  }
+  .course-study-edition .study-environment .notebook-object,
+  .course-study-edition
+    .study-environment
+    .study-notebook[data-focus="true"]
+    .notebook-object {
+    margin-inline-start: 47px;
+    min-height: 0;
+    padding: 3px;
+  }
+  html[dir="rtl"] .course-study-edition .study-environment .notebook-object {
+    margin-right: 47px;
+    margin-left: 0;
+  }
+  .course-study-edition .study-environment .notebook-index,
+  .course-study-edition
+    .study-environment
+    .study-notebook[data-focus="true"]
+    .notebook-index {
+    inset-inline-start: -50px;
+    width: 42px;
+  }
+  .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index[data-expanded="true"] {
+    width: 140px;
+  }
+  .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index[data-closed="true"] {
+    width: 8px;
+  }
+  .course-study-edition .study-environment .notebook-index .notebook-bookmark {
+    padding: 8px 6px;
+  }
+  .course-study-edition .study-environment .notebook-peek {
+    width: min(250px, calc(100vw - 160px));
+    padding: 10px;
+    max-height: 260px;
+  }
+  .course-study-edition .study-environment .notebook-peek p,
+  .course-study-edition .study-environment .notebook-peek img {
+    display: none;
+  }
+  .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-reading-page,
+  .course-study-edition
+    .study-environment
+    .study-notebook[data-reading="resource"]
+    .notebook-reading-page {
+    min-height: 0;
+    padding: 4px;
+  }
+  .course-study-edition .study-environment .pdf-book-toolbar {
+    gap: 0;
+  }
+  .course-study-edition
+    .study-environment
+    .pdf-book-toolbar
+    .notebook-icon-button {
+    width: 34px;
+    min-width: 34px;
+  }
+  .course-study-edition .study-environment .pdf-toolbar-divider {
+    display: none;
+  }
+  .course-study-edition
+    .study-environment
+    .pdf-book-toolbar
+    .pdf-bookmark-list {
+    font-size: 0.63rem;
+  }
+  .course-study-edition .study-environment .study-reader-actions {
+    font-size: 0.65rem;
+    gap: 4px;
+  }
+  .course-study-edition .study-environment .study-review-button {
+    font-size: 0.63rem;
+    padding: 5px;
+  }
+  .course-study-edition .study-environment .study-reader-heading h3 {
+    font-size: 0.72rem;
+  }
+  .course-study-edition
+    .study-environment
+    .study-reader-heading
+    .notebook-icon-button {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+  }
+  .course-study-edition .study-environment .page-hand-edge {
+    width: 28px;
+    min-width: 28px;
+    min-height: 80px;
+    opacity: 0.28;
+  }
+  .study-tool-dock .study-tools-panel {
+    padding: 12px;
+  }
+  .course-study-edition .study-environment .section-next-content {
+    padding: 10px;
+  }
+  .course-study-edition .study-environment .notebook-study-layout {
+    display: block;
+  }
+  .course-study-edition
+    .study-environment
+    .study-notebook[data-split="true"]
+    .notebook-primary-pane {
+    height: 52%;
+  }
+  .course-study-edition
+    .study-environment
+    .study-notebook[data-split="true"]
+    .notebook-companion {
+    height: 48%;
+    border-top: 1px solid var(--book-rule);
+    padding: 4px;
+  }
+  .course-study-edition .study-environment .notebook-companion .study-reader {
+    height: calc(100% - 42px);
+  }
+  .course-study-edition .study-environment .notebook-companion-picker {
+    font-size: 0.65rem;
+  }
+  .course-study-edition .study-environment .notebook-width-control {
+    display: none;
+  }
+}
+@media (max-height: 520px) {
+  .course-study-edition .study-environment .notebook-current-course span {
+    display: none;
+  }
+  .course-study-edition .study-environment .notebook-toolbar {
+    min-height: 44px;
+  }
+  .course-study-edition
+    .study-environment
+    .notebook-tools
+    .notebook-button
+    span {
+    display: none;
+  }
+  .course-study-edition .study-environment .pdf-book-toolbar {
+    padding: 0;
+  }
+  .course-study-edition.container {
+    padding-bottom: 55px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .course-study-edition
+    .study-environment
+    :is(.notebook-index, .notebook-peek) {
+    transition: none;
+    animation: none;
+  }
+  .course-study-edition
+    .study-environment
+    :is(.notebook-turn-sheet, .hand-turn-leaf) {
+    display: none;
+    animation: none;
+  }
+  .study-tool-strip button {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .study-tool-strip,
+  .study-tool-dock .study-tools-panel,
+  .course-study-edition .study-environment .notebook-index {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+  .course-study-edition
+    .study-environment
+    .notebook-bookmark[aria-current="page"] {
+    outline: 2px solid Highlight;
+  }
+  .hand-turn-curled-edge {
+    display: none;
+  }
+}
+
+.course-study-edition .study-environment .notebook-index .notebook-bookmark {
+  display: block;
+  text-align: start;
+}
+.course-study-edition .study-environment .notebook-bookmark::after {
+  display: none;
+}
+.course-study-edition .study-environment .notebook-bookmark svg {
+  animation: none !important;
+  transform: none !important;
+}
+.course-study-edition .study-environment .notebook-bookmark-top {
+  min-width: 0;
+  overflow: hidden;
+}
+.course-study-edition .study-environment .notebook-index-heading {
+  white-space: nowrap;
+  overflow: hidden;
+  gap: 8px;
+}
+.course-study-edition .study-environment .notebook-index-heading > span {
+  min-width: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.course-study-edition
+  .study-environment
+  .notebook-peek
+  .notebook-button-primary {
+  position: sticky;
+  bottom: 0;
+  min-height: 44px;
+  width: 100%;
+  box-shadow: 0 -6px 9px var(--book-paper);
+}
+
+/* Expansion changes width only; bookmarks keep the same click position. */
+.course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index[data-expanded="true"] {
+  padding-block: 6px;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index
+  .notebook-index-heading,
+.course-study-edition
+  .study-environment
+  .notebook-index[data-expanded="true"]
+  .notebook-index-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 34px;
+  min-height: 34px;
+  max-height: 34px;
+  margin: 0;
+  padding: 4px;
+  gap: 6px;
+}
+.course-study-edition .study-environment .notebook-index-heading bdi {
+  display: none;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index:not([data-expanded="true"])
+  .notebook-index-heading
+  > span {
+  display: none;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index[data-expanded="true"]
+  .notebook-rail-mark {
+  display: none;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index:not([data-expanded="true"])
+  .notebook-index-heading {
+  justify-content: center;
+}
+.course-study-edition
+  .study-environment
+  .notebook-index[data-expanded="true"]
+  .notebook-index-heading {
+  padding-inline-end: 24px;
+  font-size: 0.75rem;
+}

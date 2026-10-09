@@ -1,6 +1,6 @@
-# Current release: MedClub V0.13.10
+# Current release: MedClub V0.13.23
 
-Read [README-V0.13.10.md](./README-V0.13.10.md) for this release, integration instructions,
+Read [V0.13.23-READING.md](./V0.13.23-READING.md) for this release, integration instructions,
 verification and remaining limits. The V0.11 document below is retained as historical context.
 
 ---

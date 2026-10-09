@@ -191,7 +191,7 @@
   border-radius: 3px 14px 14px 4px;
   background: repeating-linear-gradient(
     0deg,
-    var(--tone-surface-inset, #f7f0df) 0 3px,
+    var(--tone-surface-amber, #f7f0df) 0 3px,
     var(--tone-surface-amber, #d8c8ad) 3px 4px
   );
   box-shadow:
@@ -366,7 +366,7 @@
   padding: 20px 18px;
   color: var(--tone-ink-strong, #463426);
   border-radius: 2px 12px 12px 2px;
-  background: var(--tone-surface-inset, #fbf3df);
+  background: var(--tone-surface-amber, #fbf3df);
   box-shadow: inset 0 0 0 1px #b69e7952;
   transform: translateZ(-2px);
 }
@@ -697,7 +697,7 @@
   transform: scale(0.5);
 }
 .pdf-import-check {
-  color: var(--tone-ink-muted, #4d7f68);
+  color: var(--tone-ink-green, #4d7f68);
 }
 .pdf-import-error {
   color: var(--tone-ink-coral, #a50f15);
@@ -837,7 +837,7 @@
       var(--book-paper-side),
       var(--book-paper) 28%,
       var(--tone-surface-raised, #fffdf8) 82%,
-      var(--tone-surface-inset, #eadfce)
+      var(--tone-surface-amber, #eadfce)
     );
   box-shadow: 14px 4px 30px #3d281f3d;
   transform-origin: left center;

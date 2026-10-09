@@ -1,0 +1,172 @@
+/* Bounded file rows: titles yield space to controls; no button hangs off the paper. */
+html:root body .course-study-edition .study-notebook .notebook-file-row {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 8px 0;
+}
+.notebook-file-row-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+html:root body .course-study-edition .study-notebook .notebook-file-open {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.notebook-file-open > span {
+  min-width: 0;
+}
+.notebook-file-open strong {
+  overflow-wrap: anywhere;
+}
+.notebook-file-open small {
+  flex-wrap: wrap;
+}
+html:root body .course-study-edition .study-notebook .notebook-file-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 4px;
+  margin: 0;
+  width: auto;
+  min-width: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-notebook
+  .notebook-file-actions
+  > button {
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  min-height: 44px;
+  height: 44px;
+  padding: 0;
+  box-sizing: border-box;
+}
+html:root body .course-study-edition .study-notebook .notebook-remove-local {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-notebook
+  .notebook-file-row:is(:hover, :focus-within)
+  .notebook-remove-local {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.notebook-file-disclosure svg {
+  transition: transform 160ms ease;
+}
+.notebook-file-disclosure[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+.notebook-file-details {
+  min-width: 0;
+  padding: 12px;
+  background: var(--book-paper-side);
+  border: 1px solid var(--book-rule);
+  border-radius: 4px;
+  margin-top: 6px;
+  color: var(--book-ink);
+  overflow-wrap: anywhere;
+}
+.resource-facts dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+.resource-facts dl > div {
+  min-width: 0;
+}
+.resource-facts dt {
+  color: var(--book-muted);
+  font-size: 0.75rem;
+}
+.resource-facts dd {
+  margin: 3px 0 0;
+  font-size: 0.85rem;
+}
+.resource-facts ul {
+  padding-inline-start: 20px;
+}
+.resource-facts a {
+  overflow-wrap: anywhere;
+}
+.study-review-button {
+  position: relative;
+}
+.study-review-button .action-receipt-mark {
+  position: absolute;
+  inset-inline-start: 8px;
+  top: calc(50% - 9px);
+  background: var(--book-paper-side);
+}
+.study-review-button:has(.action-receipt-mark) > svg {
+  opacity: 0;
+}
+/* PDF colors remain intact; soften brightness without inversion or hue shifts. */
+.pdf-book[data-paper-comfort="soft"] .pdf-paper-page {
+  background: #dedbd4;
+}
+.pdf-book[data-paper-comfort="soft"] .pdf-paper-page > canvas {
+  filter: brightness(0.88) contrast(0.96);
+}
+.pdf-book[data-paper-comfort="original"] .pdf-paper-page > canvas {
+  filter: none;
+}
+.pdf-paper-comfort[aria-pressed="true"] {
+  color: var(--book-action-ink);
+  background: var(--book-paper-side);
+}
+@media (max-width: 480px) {
+  .notebook-file-row-main {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  html:root body .course-study-edition .study-notebook .notebook-file-actions {
+    justify-self: end;
+  }
+  .notebook-file-details {
+    padding: 10px;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  html:root body .course-study-edition .study-notebook .notebook-remove-local {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .notebook-file-row[data-removing="true"] {
+    animation: notebook-file-erase 180ms ease-in both;
+  }
+  @keyframes notebook-file-erase {
+    to {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.985);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notebook-file-disclosure svg,
+  .notebook-remove-local {
+    transition: none;
+  }
+}

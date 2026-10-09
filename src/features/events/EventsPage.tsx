@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState } from "react";
 import {
   CalendarDays,
@@ -80,7 +81,7 @@ export default function EventsPage() {
   ] as const;
   return (
     <div className="discovery-page event-hub container">
-      <section className="discovery-hero event-discovery-hero">
+      <section className="discovery-hero event-discovery-hero artwork-scene">
         <div className="discovery-hero-copy">
           <span className="eyebrow">{label("eventsHubEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
@@ -88,16 +89,7 @@ export default function EventsPage() {
           </h1>
           <p>{label("eventsHubBody")}</p>
         </div>
-        <div className="event-constellation" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <span>
-            <CalendarDays size={28} />
-          </span>
-          <b>{events.length}</b>
-          <small>{label("events")}</small>
-        </div>
+        <HeroArtwork section="involved" />
       </section>
       <section
         className="discovery-controls"

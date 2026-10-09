@@ -1,18 +1,23 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
-  ArrowUpRight,
-  BookOpen,
-  CheckCircle2,
-  FileText,
-  X,
-} from "lucide-react";
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { ArrowUpRight, BookOpen, FileText, X } from "lucide-react";
 import type { Resource } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { useWorkspace } from "../../app/providers/WorkspaceProvider";
+import { ResourceReviewButton } from "./ResourceReviewButton";
 import { SaveButton } from "../../components/cards/SaveButton";
 import { formatDate } from "../../lib/dates";
 import { useStudyCopy } from "./study-copy";
 import { safeResourceUrl, timeLabel, type StudyPosition } from "./study-state";
+import { PdfBook } from "./PdfBook";
+import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
+import { useStudyTools } from "./StudyTools";
+import type { TurnDirection } from "./page-turn";
 
 export function resourceMediaType(item: Resource) {
   if (item.mediaType) return item.mediaType;
@@ -25,13 +30,29 @@ export function resourceMediaType(item: Resource) {
   return "external";
 }
 
-export function ResourceProvenance({ item }: { item: Resource }) {
-  const { t, label, locale } = useLocale();
-  const s = useStudyCopy();
+export function ResourceFacts({ item }: { item: Resource }) {
+  const { t, label, locale } = useLocale(),
+    s = useStudyCopy();
   return (
-    <details className="study-provenance">
-      <summary>{s("provenance")}</summary>
+    <div className="resource-facts">
       <dl>
+        <div>
+          <dt>{label("materials")}</dt>
+          <dd>
+            {label(item.kind)} ·{" "}
+            {item.localFile
+              ? `${(item.localFile.sizeBytes / 1024 / 1024).toFixed(1)} MB`
+              : `${item.pages} ${label("pages")}`}
+          </dd>
+        </div>
+        <div>
+          <dt>{label("batch")}</dt>
+          <dd>
+            {label(
+              item.audience === "shared" ? "sharedResource" : "batchResource",
+            )}
+          </dd>
+        </div>
         <div>
           <dt>{label("contributor")}</dt>
           <dd>{t(item.contributor)}</dd>
@@ -67,6 +88,15 @@ export function ResourceProvenance({ item }: { item: Resource }) {
       ) : (
         <p>{s("noReferences")}</p>
       )}
+    </div>
+  );
+}
+export function ResourceProvenance({ item }: { item: Resource }) {
+  const s = useStudyCopy();
+  return (
+    <details className="study-provenance">
+      <summary>{s("provenance")}</summary>
+      <ResourceFacts item={item} />
     </details>
   );
 }
@@ -77,19 +107,25 @@ export function StudyResourceViewer({
   onPosition,
   onClose,
   companion = false,
+  onBoundary,
+  canBoundary,
+  boundaryPreview,
 }: {
   item: Resource;
   position?: StudyPosition;
   onPosition: (position: Partial<StudyPosition>) => void;
   onClose?: () => void;
   companion?: boolean;
+  onBoundary?: (direction: TurnDirection) => void;
+  canBoundary?: (direction: TurnDirection) => boolean;
+  boundaryPreview?: (direction: TurnDirection) => ReactNode;
 }) {
-  const { t, label } = useLocale();
+  const { t } = useLocale();
   const s = useStudyCopy();
-  const { state, send, isPending } = useWorkspace();
+  const tools = useStudyTools();
+  const { focus } = useStudyChrome();
   const pane = useRef<HTMLDivElement>(null);
   const media = useRef<HTMLMediaElement | null>(null);
-  const pageInput = useId();
   const titleId = useId();
   const initial = useRef(position);
   const save = useRef(onPosition);
@@ -98,7 +134,6 @@ export function StudyResourceViewer({
   const [error, setError] = useState(false);
   const url = safeResourceUrl(item.fileUrl);
   const type = resourceMediaType(item);
-  const maxPage = Math.max(1, item.pages);
   const thumbnail = safeResourceUrl(item.preview?.thumbnailUrl);
   useLayoutEffect(() => {
     if (pane.current) pane.current.scrollTop = initial.current?.scroll || 0;
@@ -110,6 +145,12 @@ export function StudyResourceViewer({
         save.current({ seconds: player.currentTime });
     },
     [],
+  );
+  useEffect(
+    () => () => {
+      if (!companion) tools?.setReader(null);
+    },
+    [item.id, companion, tools?.setReader],
   );
   function rememberMedia() {
     const player = media.current;
@@ -145,22 +186,40 @@ export function StudyResourceViewer({
       data-media={type}
       aria-labelledby={titleId}
     >
-      <header className="study-reader-heading">
-        <div>
-          <span>{label(item.kind)}</span>
-          <h3 id={titleId}>{t(item.title)}</h3>
-        </div>
-        {onClose && (
-          <button
-            type="button"
-            className="notebook-icon-button"
-            onClick={onClose}
-            aria-label={s("close")}
-          >
-            <X size={18} />
-          </button>
-        )}
-      </header>
+      {focus && (
+        <h3 id={titleId} className="sr-only">
+          {t(item.title)}
+        </h3>
+      )}
+      {!focus && (
+        <header className="study-reader-heading">
+          <div>
+            <h3 id={titleId}>{t(item.title)}</h3>
+          </div>
+          {url && (
+            <a
+              className="notebook-icon-button study-original-file"
+              href={type === "pdf" ? url.split("#")[0] + "#page=" + page : url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s("openFile")}
+              title={s("openFile")}
+            >
+              <ArrowUpRight size={18} />
+            </a>
+          )}
+          {onClose && (
+            <button
+              type="button"
+              className="notebook-icon-button"
+              onClick={onClose}
+              aria-label={s("close")}
+            >
+              <X size={18} />
+            </button>
+          )}
+        </header>
+      )}
       <div
         ref={pane}
         className="study-reader-scroll"
@@ -209,40 +268,21 @@ export function StudyResourceViewer({
               />
             )}
             {type === "pdf" && (
-              <>
-                <label className="study-page-control" htmlFor={pageInput}>
-                  <span>{s("page")}</span>
-                  <input
-                    id={pageInput}
-                    type="number"
-                    inputMode="numeric"
-                    min={1}
-                    max={maxPage}
-                    value={page}
-                    onChange={(event) => {
-                      const value = Math.min(
-                        maxPage,
-                        Math.max(
-                          1,
-                          Math.floor(Number(event.target.value) || 1),
-                        ),
-                      );
-                      setPage(value);
-                      onPosition({ page: value });
-                    }}
-                  />
-                  <span>/ {maxPage}</span>
-                </label>
-                <p className="study-reader-hint">{s("pageHelp")}</p>
-                <object
-                  className="study-pdf"
-                  data={`${url.split("#")[0]}#page=${page}`}
-                  type="application/pdf"
-                  aria-label={t(item.title)}
-                >
-                  <p>{s("unpreviewable")}</p>
-                </object>
-              </>
+              <PdfBook
+                item={item}
+                url={url}
+                initialPage={page}
+                initialScroll={initial.current?.scroll || 0}
+                onScroll={(scroll) => onPosition({ scroll })}
+                companion={companion}
+                onPage={(value) => {
+                  setPage(value);
+                  onPosition({ page: value });
+                }}
+                onBoundary={onBoundary}
+                canBoundary={canBoundary}
+                boundaryPreview={boundaryPreview}
+              />
             )}
             {type === "external" && (
               <p className="study-file-notice">
@@ -250,15 +290,6 @@ export function StudyResourceViewer({
                 {s("unpreviewable")}
               </p>
             )}
-            <a
-              className="study-source-link"
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {s("openFile")}
-              <ArrowUpRight size={16} className="directional" />
-            </a>
           </>
         ) : (
           <div className="study-file-notice">
@@ -301,29 +332,21 @@ export function StudyResourceViewer({
               ))}
           </ol>
         )}
-        <div className="study-resource-text">
-          <h4>{s(item.preview?.excerpt ? "excerpt" : "description")}</h4>
-          <p>{t(item.preview?.excerpt || item.description)}</p>
-        </div>
-        <ResourceProvenance item={item} />
       </div>
-      <footer className="study-reader-actions">
-        <SaveButton id={item.id} title={t(item.title)} />
-        <button
-          type="button"
-          className="notebook-button notebook-button-quiet"
-          disabled={isPending}
-          aria-pressed={state.reviewedResourceIds.includes(item.id)}
-          onClick={() => void send({ type: "toggle-reviewed", id: item.id })}
-        >
-          <CheckCircle2 size={17} />
-          {label(
-            state.reviewedResourceIds.includes(item.id)
-              ? "unmarkReviewed"
-              : "markReviewed",
-          )}
-        </button>
-      </footer>
+      {!focus && type !== "pdf" && (
+        <footer className="study-reader-actions">
+          <details className="study-reader-details">
+            <summary>{s("details")}</summary>
+            <div className="study-resource-text">
+              <h4>{s(item.preview?.excerpt ? "excerpt" : "description")}</h4>
+              <p>{t(item.preview?.excerpt || item.description)}</p>
+            </div>
+            <ResourceProvenance item={item} />
+          </details>
+          <SaveButton id={item.id} title={t(item.title)} />
+          <ResourceReviewButton id={item.id} />
+        </footer>
+      )}
     </section>
   );
 }

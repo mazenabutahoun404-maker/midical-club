@@ -1,6 +1,9 @@
+import { NavigationSelection } from "../../components/navigation/NavigationSelection";
+import "../../styles/batch-experience.css";
 import type { CSSProperties } from "react";
 import {
   ArrowUpRight,
+  ArrowLeft,
   Archive,
   BookOpen,
   CalendarDays,
@@ -44,7 +47,17 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
   if (view === "current" && !current)
     return <Navigate to={batchPath(batch.slug, "archive")} replace />;
   return (
-    <div className={`container batch-page batch-page-${batch.accent}`}>
+    <div
+      className={`container batch-page batch-page-${batch.accent} batch-studio`}
+    >
+      <AppLink href={routes.basic} className="batch-back">
+        <ArrowLeft size={17} className="directional" />
+        {t({ en: "All batches", ar: "كل الدفعات" })}
+      </AppLink>
+      <div className="batch-arrival" aria-hidden="true">
+        <i />
+        <i />
+      </div>
       <header className="batch-identity-card">
         <div className="batch-identity-copy">
           <span className="academic-kicker">{t(batch.classLabel)}</span>
@@ -90,6 +103,7 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
         </dl>
       </header>
       <nav className="batch-view-switch" aria-label={label("choosePath")}>
+        <NavigationSelection />
         <AppLink
           href={batchPath(batch.slug)}
           aria-current={view === "current" ? "page" : undefined}

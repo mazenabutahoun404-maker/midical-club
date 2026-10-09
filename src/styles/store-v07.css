@@ -233,7 +233,7 @@
   color: var(--tone-ink-strong, #4e3a35);
   font-size: 0.9rem;
   font-weight: 700;
-  background: var(--tone-surface-inset, #f1e7e1);
+  background: var(--tone-surface-coral, #f1e7e1);
   cursor: pointer;
 }
 
@@ -483,7 +483,7 @@
   padding: 0.35rem 0.6rem;
   border-radius: 999px;
   color: var(--tone-ink-coral, #8b1117);
-  background: var(--tone-surface-inset, #f9e2de);
+  background: var(--tone-surface-coral, #f9e2de);
 }
 
 .product-card h2 {
@@ -510,7 +510,7 @@
   gap: 0.45rem;
   align-items: center;
   width: fit-content;
-  color: var(--tone-ink-muted, #46603c);
+  color: var(--tone-ink-olive, #46603c);
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -554,7 +554,7 @@
   border-inline-start: 3px solid var(--store-russet);
   border-radius: 0.75rem;
   color: var(--tone-ink-muted, #6b5550);
-  background: var(--tone-surface-inset, #eee1da);
+  background: var(--tone-surface-coral, #eee1da);
   line-height: 1.6;
 }
 
@@ -697,7 +697,7 @@
 
 .variant-picker button.active {
   border-color: var(--store-red);
-  background: var(--tone-surface-inset, #f9e8e4);
+  background: var(--tone-surface-coral, #f9e8e4);
   box-shadow: 0 0 0 2px #a50f1514;
 }
 
@@ -1009,7 +1009,7 @@
   place-items: center;
   border-radius: 0.75rem;
   color: var(--tone-ink-coral, #8f1518);
-  background: var(--tone-surface-inset, #f4ded9);
+  background: var(--tone-surface-coral, #f4ded9);
 }
 
 .order-lines p,

@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState } from "react";
 import {
   Boxes,
@@ -92,7 +93,7 @@ export default function StorePage() {
   return (
     <div className="container store-v7 store-page">
       <StoreNavigation />
-      <section className="store-hero">
+      <section className="store-hero artwork-scene">
         <div>
           <span className="eyebrow">{label("storeEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
@@ -100,15 +101,7 @@ export default function StorePage() {
           </h1>
           <p>{label("storeBody")}</p>
         </div>
-        <div className="store-shelf-signal" aria-hidden="true">
-          <span>
-            <ShoppingBag />
-          </span>
-          <i />
-          <i />
-          <i />
-          <b>07</b>
-        </div>
+        <HeroArtwork section="store" />
       </section>
       <section className="store-controls" aria-label={label("productFilters")}>
         <AliveTabs

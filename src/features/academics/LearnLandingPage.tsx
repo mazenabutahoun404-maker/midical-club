@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { BookOpen, Search, Sparkles, Stethoscope } from "lucide-react";
 import {
   useBatches,
@@ -31,7 +32,7 @@ export default function LearnLandingPage() {
     return null;
   return (
     <div className="container academic-gateway">
-      <section className="academic-gateway-hero">
+      <section className="academic-gateway-hero artwork-academic-hero artwork-scene"><div className="artwork-hero-copy">
         <span className="academic-kicker">
           <Sparkles size={14} />
           {label("choosePath")}
@@ -56,7 +57,7 @@ export default function LearnLandingPage() {
             {label("batchesCount")}
           </span>
         </div>
-      </section>
+      </div><HeroArtwork section="learn" /></section>
       <div className="academic-portals">
         <AcademicPortalCard
           href={routes.basic}

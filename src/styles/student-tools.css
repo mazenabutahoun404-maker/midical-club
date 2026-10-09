@@ -1,0 +1,207 @@
+.student-notes,
+.gpa-calculator {
+  display: grid;
+  gap: 14px;
+  color: var(--foreground);
+  min-width: 0;
+}
+.student-notes label,
+.gpa-calculator label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  min-width: 0;
+}
+.student-notes :is(input, select, textarea),
+.gpa-calculator :is(input, select) {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+}
+.student-notes textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.7;
+  background: linear-gradient(var(--background) 95%, var(--border) 95%);
+  background-size: 100% 1.7em;
+  background-attachment: local;
+}
+.student-notes-list,
+.student-note-editor {
+  display: grid;
+  gap: 12px;
+}
+.student-note-association {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.student-note-actions,
+.student-note-delete {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.student-notes button,
+.gpa-calculator button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--secondary);
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    transform 160ms,
+    background 160ms;
+}
+.student-notes button:active,
+.gpa-calculator button:active {
+  transform: translateY(1px);
+}
+.student-notes .student-tool-primary,
+.gpa-calculator .student-tool-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+.student-notes small,
+.gpa-calculator small,
+.student-tool-empty {
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.student-tool-sign-in {
+  text-align: center;
+  padding: 20px 8px;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  color: var(--foreground);
+}
+.student-tool-sign-in p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-width: 35ch;
+}
+.gpa-calculator header {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.gpa-calculator h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+.gpa-calculator p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.gpa-rows {
+  display: grid;
+  gap: 12px;
+}
+.gpa-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 0;
+}
+.gpa-row legend {
+  font-size: 0.72rem;
+  padding: 0 4px;
+}
+.gpa-row > label:first-of-type {
+  grid-column: 1/-1;
+}
+.gpa-row > button {
+  grid-column: 3;
+  grid-row: 3;
+}
+.gpa-row .gpa-exclude {
+  display: flex;
+  align-items: center;
+  grid-column: 1/3;
+  font-size: 0.67rem;
+}
+.gpa-exclude input {
+  width: 18px;
+  min-height: 18px;
+}
+.gpa-prior {
+  font-size: 0.8rem;
+  display: grid;
+  gap: 10px;
+}
+.gpa-prior[open] > label {
+  margin-top: 10px;
+}
+.gpa-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.gpa-results span {
+  display: grid;
+  gap: 6px;
+  font-size: 0.75rem;
+  background: var(--secondary);
+  padding: 12px;
+  border-radius: 8px;
+}
+.gpa-results output {
+  font-size: 1.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--primary);
+}
+.student-tools-extra {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 20px;
+}
+.student-tools-extra > section {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--foreground);
+}
+@media (max-width: 767px) {
+  .student-tools-extra {
+    grid-template-columns: 1fr;
+  }
+  .student-tools-extra > section {
+    padding: 16px;
+  }
+  .student-note-association {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .student-notes button,
+  .gpa-calculator button {
+    transition: none;
+    transform: none;
+  }
+}

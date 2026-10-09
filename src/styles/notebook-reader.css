@@ -1,0 +1,82 @@
+/* The study spread devotes its area to files; supporting material is disclosed on demand. */
+.course-study-edition { padding-top: 18px; }
+.study-notebook .notebook-toolbar { top: var(--section-nav-top, 12px); margin-bottom: 12px; padding: 8px 12px; border-radius: 12px; gap: 12px; }
+.notebook-current-course h1 { font-size: clamp(.95rem, 1.25vw, 1.2rem); line-height: 1.3; margin: 0; letter-spacing: -.02em; }
+.notebook-current-course span { font-size: .66rem; }
+.notebook-current-course > svg { display: none; }
+.study-notebook .notebook-back-courses { min-height: 44px; flex-shrink: 0; }
+.study-notebook .notebook-index { padding: 20px 12px; }
+.study-notebook .notebook-index-heading { padding-inline: 6px; margin-bottom: 14px; }
+.study-notebook .notebook-bookmark { padding-block: 13px; min-height: 48px; }
+.study-notebook .notebook-bookmark-glimpse { display: none; }
+.study-notebook .notebook-reading-page { padding: 18px 24px 28px; min-height: 72dvh; }
+.study-notebook .notebook-section-heading { margin-bottom: 16px; padding-bottom: 10px; }
+.study-notebook .notebook-section-heading h2 { font-size: 1.35rem; margin: 0; }
+.study-notebook .notebook-section-heading.sr-only { position: absolute; padding: 0; margin: -1px; }
+.study-notebook[data-reading="resource"] .notebook-reading-page { padding: 10px 12px 16px; }
+.study-notebook .study-reader { border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+.study-notebook .study-reader-heading { gap: 8px; padding: 4px 0 8px; margin: 0; border: 0; }
+.study-reader-heading > div { flex: 1; }
+.study-notebook .study-reader-heading h3 { font-size: .9rem; line-height: 1.4; }
+.study-notebook .study-original-file { display: inline-flex; flex-shrink: 0; }
+.study-notebook .study-reader[data-media="pdf"] .study-reader-scroll { padding: 0; max-height: none; overflow: visible; }
+.study-notebook .study-page-control { margin: 0; padding: 0 0 8px; font-size: .75rem; }
+.study-notebook .study-page-control input { min-height: 40px; }
+.study-notebook .study-pdf { display: block; width: 100%; height: max(760px, 86dvh); border: 0; border-radius: 2px; background: #fff; }
+.study-notebook .study-reader-actions { padding: 10px 0 0; border: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.study-reader-details { flex: 1 0 100%; font-size: .8rem; }
+.study-reader-details summary { cursor: pointer; min-height: 44px; display: list-item; align-content: center; color: var(--book-action-ink, var(--book-action)); width: fit-content; }
+.study-reader-details[open] { border-bottom: 1px solid var(--book-line); padding-bottom: 14px; }
+.study-notebook .study-reader-details .study-resource-text { margin-top: 10px; }
+.study-notebook .notebook-material-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+.study-notebook .notebook-file-row { display: flex; gap: 8px; align-items: center; border: 0; border-bottom: 1px solid var(--book-line); background: transparent; box-shadow: none; border-radius: 0; padding: 6px 0; }
+.notebook-file-open { display: flex; gap: 14px; align-items: center; flex: 1; min-width: 0; text-align: start; padding: 14px 8px; background: none; border: 0; color: var(--book-ink); border-radius: 8px; cursor: pointer; }
+.notebook-file-open > svg { flex-shrink: 0; color: var(--book-action-ink, var(--book-action)); }
+.notebook-file-open > svg:last-child { margin-inline-start: auto; }
+.notebook-file-open strong { display: block; font-size: .95rem; font-weight: 650; }
+.notebook-file-open small { display: flex; gap: 6px; align-items: center; color: var(--book-muted); font-size: .75rem; }
+.notebook-file-open:hover, .notebook-file-open:focus-visible { background: var(--book-tab); }
+.notebook-file-actions { display: flex; align-items: center; gap: 4px; }
+.notebook-file-actions .save-button { min-height: 44px; min-width: 44px; }
+.notebook-course-details { border-top: 1px solid var(--book-line); margin-top: 24px; padding-block: 16px; }
+.notebook-course-details summary { cursor: pointer; min-height: 44px; align-content: center; font-weight: 700; }
+.study-notebook .notebook-split-hint { font-size: .75rem; }
+@media (max-width: 767px) {
+  .course-study-edition.container { width: 100%; padding-inline: 10px; }
+  .study-notebook .notebook-toolbar { flex-wrap: wrap; padding: 6px 8px; gap: 6px; }
+  .notebook-current-course { flex: 1; min-width: 100px; }
+  .study-notebook .notebook-back-courses { font-size: .72rem; gap: 4px; }
+  .study-notebook .notebook-tools { gap: 4px; }
+  .notebook-tools .notebook-button { width: 44px; height: 44px; padding: 8px; }
+  .notebook-tools .notebook-button > span { display: none; }
+  .study-notebook .notebook-object { margin-inline: 0; padding: 5px; }
+  .study-notebook .notebook-index { padding: 8px; }
+  .study-notebook .notebook-bookmarks { max-height: min(42dvh, 320px); overflow-y: auto; overscroll-behavior: contain; }
+  .study-notebook .notebook-reading-page { padding: 14px 10px; }
+  .study-notebook[data-reading="resource"] .notebook-reading-page { padding: 8px 4px 12px; }
+  .study-notebook .study-pdf { height: max(640px, 82dvh); }
+  .study-notebook .study-reader-heading { padding-inline: 4px; }
+  .notebook-file-row { flex-wrap: wrap; }
+  .notebook-file-open { padding-inline: 4px; gap: 8px; }
+  .notebook-file-open strong { font-size: .86rem; }
+  .notebook-file-open > svg:last-child { display: none; }
+  .notebook-file-actions { margin-inline-start: auto; }
+  .study-notebook .notebook-binding { pointer-events: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .study-review-button[aria-pressed="true"] svg path { stroke-dasharray: 28; animation: review-ink 300ms ease-out both; }
+  @keyframes review-ink { from { stroke-dashoffset: 28; } to { stroke-dashoffset: 0; } }
+}
+@media (forced-colors: active) { .notebook-file-open:hover { background: Highlight; color: HighlightText; } }
+.study-notebook .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-reader-scroll { padding: 0; }
+.study-notebook .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-pdf { height: max(760px, 86dvh); border-radius: 2px; box-shadow: none; }
+@media (max-width: 767px) {
+  .study-notebook .study-reader[data-media="pdf"]:not(.study-reader-companion) .study-pdf { height: max(640px, 82dvh); }
+}
+@media (max-width: 767px) {
+  .study-notebook .notebook-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; }
+  .study-notebook .notebook-current-course { width: auto; min-width: 0; }
+  .study-notebook .notebook-current-course h1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .study-notebook .notebook-tools { flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; }
+  .study-notebook .notebook-tools .notebook-button { flex: none; }
+}

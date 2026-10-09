@@ -1,0 +1,294 @@
+.batch-atrium {
+  position: relative;
+  padding-top: 34px;
+}
+.batch-atrium .basic-page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 5vw, 60px);
+  border: 1px solid var(--border);
+  border-radius: 22px 22px 8px 8px;
+  background:
+    radial-gradient(
+      ellipse at 90% 10%,
+      color-mix(in srgb, var(--tone-surface-amber, #f8ecd3) 70%, transparent),
+      transparent 60%
+    ),
+    var(--card);
+  min-height: 260px;
+}
+.batch-atrium .basic-page-hero :is(h1, p) {
+  max-width: 660px;
+  position: relative;
+  z-index: 1;
+}
+.batch-atrium .basic-page-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  max-width: 14ch;
+}
+.batch-atrium .basic-page-hero p {
+  max-width: 52ch;
+}
+.batch-atrium-mark {
+  position: absolute;
+  inset-inline-end: 5%;
+  bottom: -20px;
+  width: 170px;
+  height: 220px;
+  opacity: 0.55;
+  display: grid;
+  place-items: center;
+}
+.batch-atrium-mark i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--theme-russet-ink, var(--russet));
+  border-radius: 90px 90px 0 0;
+}
+.batch-atrium-mark i:nth-child(2) {
+  inset: 12px;
+}
+.batch-atrium-mark i:nth-child(3) {
+  inset: 24px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--tone-surface-amber, #f1dfc9) 65%, transparent),
+    transparent
+  );
+}
+.batch-atrium-mark b {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.3em;
+  font-size: 12px;
+  color: var(--theme-russet-ink, var(--russet));
+  z-index: 1;
+}
+.batch-atrium-stats {
+  display: flex;
+  gap: 26px;
+  padding-top: 26px;
+  position: relative;
+  z-index: 1;
+}
+.batch-atrium-stats > span {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+}
+.batch-atrium-stats b {
+  color: var(--foreground);
+  font-size: 1.35rem;
+}
+.batch-atrium .academic-section-heading {
+  margin-block: 30px 20px;
+}
+.batch-atrium .batch-passport-grid {
+  align-items: stretch;
+  gap: clamp(14px, 2.4vw, 28px);
+}
+.batch-atrium .batch-gate {
+  border-radius: 110px 110px 16px 16px;
+  padding: 110px 26px 26px;
+  min-height: 510px;
+}
+.batch-atrium .batch-gate-architecture {
+  top: 41px;
+  width: 76px;
+  height: 76px;
+}
+.batch-atrium .passport-copy {
+  padding-top: 35px;
+}
+.passport-route-meta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-block: 16px;
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+  border-top: 1px solid
+    color-mix(in srgb, var(--batch-color) 18%, var(--border));
+  margin-top: 18px;
+}
+.passport-route-meta span {
+  display: flex;
+  gap: 6px;
+}
+.passport-route-meta b {
+  color: var(--foreground);
+}
+.batch-atrium .passport-action {
+  margin-top: auto;
+  min-height: 44px;
+  align-items: center;
+}
+.batch-atrium .batch-gate {
+  animation: batch-gate-arrive 440ms both;
+  animation-delay: calc(var(--batch-index) * 65ms);
+}
+@keyframes batch-gate-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.batch-studio {
+  position: relative;
+  padding-top: 26px;
+}
+.batch-studio.batch-page-red {
+  --batch-color: var(--tone-ink-coral, #a6423a);
+}
+.batch-studio.batch-page-olive {
+  --batch-color: var(--tone-ink-olive, #78805c);
+}
+.batch-studio.batch-page-russet {
+  --batch-color: var(--theme-russet-ink, #9a6248);
+}
+.batch-back {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.82rem;
+  color: var(--muted-foreground);
+  margin-bottom: 12px;
+}
+.batch-studio .batch-identity-card {
+  border-radius: 22px 22px 8px 8px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--batch-color, var(--primary)) 8%, var(--card)),
+    var(--card)
+  );
+}
+.batch-arrival {
+  position: absolute;
+  inset: 70px 0 auto;
+  height: 260px;
+  pointer-events: none;
+  perspective: 1000px;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 22px;
+}
+.batch-arrival i {
+  position: absolute;
+  width: 50%;
+  inset-block: 0;
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--batch-color, var(--primary)) 12%, var(--card)),
+    var(--card)
+  );
+  border: 1px solid var(--border);
+  transform-origin: 0 50%;
+  animation: batch-door-left 520ms cubic-bezier(0.22, 0.72, 0.22, 1) both;
+}
+.batch-arrival i + i {
+  inset-inline-start: 50%;
+  transform-origin: 100% 50%;
+  animation-name: batch-door-right;
+}
+@keyframes batch-door-left {
+  from {
+    transform: rotateY(0);
+    opacity: 0.7;
+  }
+  to {
+    transform: rotateY(-100deg);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes batch-door-right {
+  from {
+    transform: rotateY(0);
+    opacity: 0.7;
+  }
+  to {
+    transform: rotateY(100deg);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.batch-view-switch.navigation-selection-host {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+  border-radius: 13px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+.batch-view-switch .navigation-travelling-selection {
+  background: var(--tone-surface-coral, #f8e8e5);
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+.batch-studio .term-section {
+  animation: batch-content-arrive 300ms ease-out both;
+}
+@keyframes batch-content-arrive {
+  from {
+    opacity: 0.4;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  .batch-atrium,
+  .batch-studio {
+    padding-top: 14px;
+  }
+  .batch-atrium .basic-page-hero {
+    padding: 24px;
+  }
+  .batch-atrium-mark {
+    opacity: 0.16;
+    inset-inline-end: -40px;
+  }
+  .batch-atrium .batch-passport-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 460px;
+    margin-inline: auto;
+  }
+  .batch-atrium .batch-gate {
+    min-height: 450px;
+    padding-inline: 24px;
+  }
+  .batch-arrival {
+    height: 320px;
+  }
+  .batch-studio .batch-identity-card {
+    padding: 24px;
+    gap: 24px;
+  }
+  .batch-view-switch > a {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .batch-atrium .batch-gate,
+  .batch-studio .term-section {
+    animation: none;
+  }
+  .batch-arrival {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .batch-atrium-mark,
+  .batch-arrival {
+    display: none;
+  }
+}

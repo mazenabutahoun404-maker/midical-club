@@ -15,18 +15,19 @@ export function PersonalLayout() {
   const { label } = useLocale();
   const profile = useStudentProfile();
   const workspace = useWorkspace();
-  const adaptive = useAdaptiveNavigation(true);
+  const adaptive = useAdaptiveNavigation();
   return (
     <div
       className="app-shell personal-shell"
       data-navigation={navigation}
       data-sidebar={sidebarCollapsed ? "collapsed" : "expanded"}
       data-space="personal"
-      data-nav-adaptive={adaptive.secondary ? "section" : "manual"}
+      data-nav-adaptive={adaptive.secondary ? "section" : "scroll"}
       data-nav-manual-hidden={adaptive.manualHidden || undefined}
       data-nav-hidden={adaptive.hidden || undefined}
       data-nav-pinned={adaptive.pinned || undefined}
       data-study-focus={adaptive.focus || undefined}
+      data-study-environment={adaptive.studying || undefined}
     >
       <a className="skip-link" href="#main">
         {label("skip")}
@@ -35,7 +36,7 @@ export function PersonalLayout() {
         <PersonalNavigation profile={profile.data} />
       </AdaptiveNavigation>
       <div className="app-content">
-        <PersonalHeader />
+        {!adaptive.studying && <PersonalHeader />}
         <main id="main" tabIndex={-1}>
           {!workspace.persistent && (
             <p className="container workspace-warning" role="status">

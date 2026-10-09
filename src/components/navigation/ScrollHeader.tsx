@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useOverlays } from "../../app/providers/OverlayProvider";
 import { RouteJourneyContext } from "../../app/router/RouteJourney";
 import { advanceHeaderScroll, initialHeaderScroll } from "./header-scroll";
+import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 
 /** Only the header leaf transforms. The sidebar and page remain fixed to their own geometry. */
 export function ScrollHeader({
@@ -15,6 +16,7 @@ export function ScrollHeader({
   const root = useRef<HTMLElement>(null),
     hover = useRef(false);
   const { pathname } = useLocation();
+  const { studying } = useStudyChrome();
   const { phase } = useContext(RouteJourneyContext);
   const { searchOpen, detail } = useOverlays();
   const [otherOverlay, setOtherOverlay] = useState(false);
@@ -84,7 +86,7 @@ export function ScrollHeader({
       cancelAnimationFrame(frame);
     };
   }, []);
-  const hidden = requestedHidden && !held && phase === "idle";
+  const hidden = studying || (requestedHidden && !held && phase === "idle");
   return (
     <header
       ref={root}

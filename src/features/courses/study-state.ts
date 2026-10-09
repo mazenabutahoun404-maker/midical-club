@@ -16,6 +16,18 @@ export interface StudyPosition {
   page: number;
   seconds: number;
 }
+export type SectionLayout = "auto" | "horizontal" | "vertical";
+export function resolveSectionLayout(
+  layout: SectionLayout,
+  focus: boolean,
+  navigationVisible = !focus,
+) {
+  return layout === "auto"
+    ? focus || !navigationVisible
+      ? "vertical"
+      : "horizontal"
+    : layout;
+}
 export interface StudyState {
   active: CourseSectionKind;
   sections: Partial<
@@ -26,6 +38,7 @@ export interface StudyState {
   companionId?: string;
   split: boolean;
   width: number;
+  sectionLayout: SectionLayout;
 }
 export const emptyStudyState = (): StudyState => ({
   active: "overview",
@@ -33,6 +46,7 @@ export const emptyStudyState = (): StudyState => ({
   resources: {},
   split: false,
   width: 55,
+  sectionLayout: "auto",
 });
 const object = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === "object" && !Array.isArray(value);
@@ -72,6 +86,11 @@ export function normalizeStudyState(value: unknown): StudyState {
   if (id(value.companionId)) result.companionId = value.companionId;
   result.split = value.split === true;
   result.width = Math.max(35, number(value.width, 55, 65));
+  if (
+    value.sectionLayout === "horizontal" ||
+    value.sectionLayout === "vertical"
+  )
+    result.sectionLayout = value.sectionLayout;
   return result;
 }
 export const studyStorageKey = (owner: string, course: string) =>

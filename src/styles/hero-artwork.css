@@ -1,0 +1,271 @@
+.hero-artwork {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  align-self: stretch;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--tone-surface-amber, var(--secondary));
+  min-height: 200px;
+}
+.hero-artwork picture {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.hero-artwork img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  object-fit: cover;
+  aspect-ratio: 3/2;
+}
+.hero-artwork::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px #33192018;
+  background: linear-gradient(0deg, #311c1912, transparent 45%);
+}
+.hero-artwork-edit {
+  position: absolute;
+  z-index: 4;
+  inset-inline-end: 12px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 7px 10px;
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--foreground);
+  cursor: pointer;
+  box-shadow: 0 2px 9px #26101b18;
+}
+.sky-home > .hero-artwork-edit {
+  top: 24px;
+  inset-inline-end: 20px;
+}
+.artwork-academic-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+.academic-gateway .artwork-academic-hero .hero-artwork {
+  min-height: 300px;
+  align-self: center;
+  max-height: 420px;
+}
+.community-hero-side {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.community-hero-side > .hero-artwork {
+  min-height: 180px;
+  max-height: 250px;
+}
+.community-hero-side > .hero-artwork img {
+  aspect-ratio: 2/1;
+  min-height: 180px;
+}
+.community-hero-side .community-overview {
+  min-height: 0;
+}
+:is(
+    .mentorship-hero,
+    .recruitment-hero,
+    .store-hero,
+    .contribution-hero,
+    .discovery-hero
+  )
+  > .hero-artwork {
+  min-height: 220px;
+  max-height: 340px;
+}
+.hero-artwork-modal form {
+  display: grid;
+  gap: 16px;
+}
+.hero-artwork-modal form > label {
+  display: grid;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.hero-artwork-modal form > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hero-artwork-modal input:not([type="file"]) {
+  padding: 10px;
+  min-height: 44px;
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+.hero-artwork-upload {
+  padding: 24px;
+  border: 1px dashed var(--primary);
+  border-radius: 8px;
+  background: var(--secondary);
+  color: var(--foreground);
+  transition:
+    background 180ms,
+    transform 180ms;
+  cursor: pointer;
+  justify-items: center;
+  text-align: center;
+}
+.hero-artwork-upload:hover {
+  background: color-mix(in srgb, var(--primary) 9%, var(--secondary));
+  transform: translateY(-2px);
+}
+.hero-artwork-upload input {
+  font-size: 0.75rem;
+  max-width: 100%;
+  min-height: 44px;
+}
+.hero-artwork-preview {
+  width: 100%;
+  max-height: 230px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.hero-artwork-modal p[role="alert"] {
+  color: var(--destructive);
+  font-size: 0.8rem;
+}
+.batch-atrium .batch-passport.batch-gate {
+  padding: 210px 24px 24px;
+  border-radius: 92px 92px 14px 14px;
+  overflow: hidden;
+  min-height: 540px;
+  position: relative;
+}
+.batch-gate-image {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 230px;
+  display: block;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.batch-gate-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.batch-gate-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 58%, var(--card) 100%);
+}
+.batch-atrium .batch-passport.batch-gate .batch-gate-architecture {
+  display: none;
+}
+.batch-atrium .batch-passport.batch-gate .passport-copy {
+  padding-top: 12px;
+  position: relative;
+}
+.batch-atrium .batch-passport.batch-gate .passport-index {
+  top: 155px;
+  left: 18px;
+  inset-inline-start: 18px;
+  background: var(--card);
+  color: var(--foreground);
+  padding: 4px 9px;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  z-index: 2;
+}
+.batch-atrium .batch-passport.batch-gate .passport-stamp {
+  top: 148px;
+  inset-inline-end: 18px;
+  background: var(--card);
+  z-index: 2;
+}
+@media (hover: hover) and (pointer: fine) {
+  .batch-gate:hover .batch-gate-image img {
+    transform: scale(1.035);
+  }
+}
+html.dark .hero-artwork img {
+  filter: brightness(0.86) saturate(0.98);
+}
+html.dark .batch-gate-image img {
+  filter: brightness(0.8) saturate(1.05);
+}
+@media (max-width: 767px) {
+  .artwork-academic-hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .academic-gateway .artwork-academic-hero .hero-artwork {
+    min-height: 160px;
+    max-height: 210px;
+  }
+  .hero-artwork img {
+    min-height: 160px;
+    aspect-ratio: 2/1;
+  }
+  .hero-artwork {
+    min-height: 160px;
+    max-height: 230px;
+  }
+  :is(
+      .mentorship-hero,
+      .recruitment-hero,
+      .store-hero,
+      .contribution-hero,
+      .discovery-hero
+    )
+    > .hero-artwork {
+    min-height: 160px;
+    max-height: 220px;
+    width: 100%;
+  }
+  .community-hero-side > .hero-artwork {
+    max-height: 210px;
+  }
+  .hero-artwork-edit {
+    font-size: 0.65rem;
+    min-height: 38px;
+    padding: 7px;
+  }
+  .batch-atrium .batch-passport.batch-gate {
+    padding: 195px 20px 22px;
+    min-height: 500px;
+  }
+  .batch-gate-image {
+    height: 210px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .batch-gate-image img,
+  .hero-artwork-upload {
+    transition: none;
+    transform: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .hero-artwork-edit {
+    border: 1px solid ButtonText;
+  }
+  .hero-artwork::after,
+  .batch-gate-image::after {
+    display: none;
+  }
+}

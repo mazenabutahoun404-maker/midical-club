@@ -1,0 +1,622 @@
+/* A quiet desk: one scroll owner for each reading surface; tools never move. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-focus="true"] {
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-reading-page {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-primary-pane {
+  overflow: auto;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-primary-pane:has(.study-reader) {
+  overflow: hidden;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .pdf-book-viewport {
+  touch-action: pan-x pan-y;
+  scrollbar-width: thin;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .page-hand-edge {
+  top: 48%;
+  bottom: auto;
+  height: 44px;
+  min-height: 44px;
+  width: 32px;
+  min-width: 32px;
+  border-radius: 4px;
+  opacity: 0.32;
+  cursor: pointer;
+  touch-action: manipulation !important;
+  background: color-mix(in srgb, var(--book-paper) 85%, transparent);
+  transition:
+    opacity 160ms ease,
+    background 160ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .page-hand-edge:is(:hover, :focus-visible) {
+  opacity: 1;
+  background: var(--book-tab);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-turn-sheet {
+  animation-duration: 360ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Paper flags emerge from the binding. No full-height navigation card. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-object {
+  margin-left: 0;
+  margin-right: 0;
+  margin-inline-start: 40px;
+  margin-inline-end: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index,
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index[data-expanded="true"] {
+  inset-inline-start: -43px;
+  width: 40px;
+  padding: 8px 0 38px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index
+  .notebook-index-heading {
+  display: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index
+  .notebook-bookmarks {
+  gap: 6px;
+  overflow-x: visible;
+  overflow-y: clip;
+  padding-inline-end: 4px;
+  flex: 0 1 auto;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index
+  .notebook-bookmark {
+  flex: 0 0 40px;
+  min-height: 40px;
+  height: 40px;
+  width: 40px;
+  padding: 7px 9px;
+  border: 1px solid var(--book-rule);
+  border-inline-end: 0;
+  border-radius: 3px 0 0 5px;
+  background: linear-gradient(100deg, var(--book-paper), var(--book-tab));
+  color: var(--book-ink);
+  box-shadow: -2px 2px 4px #25141812;
+  transition:
+    width 180ms ease,
+    background 160ms ease;
+  overflow: hidden;
+  position: relative;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index
+  .notebook-bookmark:is(:hover, :focus-visible) {
+  width: 104px;
+  z-index: 2;
+  box-shadow: -2px 3px 6px #25141818;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-bookmark[aria-current="page"] {
+  background: linear-gradient(100deg, var(--book-tab), var(--book-highlight));
+  border-inline-start: 3px solid var(--book-action-ink, var(--book-action));
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-bookmark-top {
+  gap: 8px;
+  height: 24px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-bookmark-top
+  b {
+  font-size: 0.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index
+  .notebook-bookmark-top
+  :is(b, small) {
+  visibility: visible;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-bookmark-top
+  small,
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-bookmark-number {
+  display: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-section-close {
+  top: auto;
+  bottom: 1px;
+  inset-inline-start: 2px;
+  inset-inline-end: auto;
+  background: transparent;
+  opacity: 0.7;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index[data-closed="true"] {
+  width: 7px;
+  padding: 0;
+  background: var(--book-cover-light);
+  border-radius: 3px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek {
+  inset-inline-start: 112px;
+  width: min(216px, calc(100vw - 82px));
+  max-height: min(260px, calc(100dvh - 110px));
+  padding: 10px;
+  border-radius: 3px 5px 10px 3px;
+  background: var(--book-paper);
+  color: var(--book-ink);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek
+  :is(p, img),
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek-head
+  > span {
+  display: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek-head {
+  position: absolute;
+  inset-inline-end: 5px;
+  top: 4px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek
+  h3 {
+  padding-inline-end: 28px;
+  margin: 0 0 10px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek
+  li {
+  gap: 4px;
+  margin: 6px 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek::after {
+  width: 12px;
+  inset-inline-start: -10px;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid var(--book-rule);
+  transform: none;
+}
+/* Stable labelled tools, attached to a single shallow drawer. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock {
+  inset: auto;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100vw - 12px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-strip {
+  gap: 2px;
+  padding: 4px;
+  background: color-mix(in srgb, var(--book-paper) 95%, var(--book-highlight));
+  box-shadow: 0 4px 16px #28171c1c;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-strip
+  button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  width: 56px;
+  height: 46px;
+  font-size: 0.63rem;
+  line-height: 1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-strip
+  .study-exit-focus {
+  border-inline-start: 1px solid var(--book-rule);
+  border-radius: 0 6px 6px 0;
+  margin-inline-start: 3px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tools-panel {
+  inset: auto;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(380px, calc(100vw - 20px));
+  max-height: calc(100dvh - 100px);
+  overscroll-behavior: contain;
+  animation: tools-drawer-arrive 140ms ease-out;
+}
+.study-pdf-tools {
+  display: grid;
+  gap: 10px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.study-pdf-tools p {
+  margin: 0;
+}
+.study-pdf-tools small {
+  color: var(--book-muted);
+}
+.study-open-pdf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px;
+  border: 1px solid var(--book-rule);
+  border-radius: 6px;
+  background: var(--book-tab);
+  color: var(--book-action-ink, var(--book-action));
+  cursor: pointer;
+}
+.study-open-pdf:hover {
+  background: var(--book-highlight);
+}
+.study-pdf-tools [role="alert"] {
+  color: var(--destructive);
+}
+.study-editor-import {
+  margin-top: 12px;
+  border-top: 1px solid var(--book-rule);
+  padding-top: 10px;
+}
+.study-editor-import summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 0;
+}
+@keyframes tools-drawer-arrive {
+  from {
+    opacity: 0;
+    translate: 0 5px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-object {
+  margin-left: 0;
+  margin-right: 40px;
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-index
+  .notebook-bookmark {
+  border-radius: 0 3px 5px 0;
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-peek {
+  inset-inline-start: 112px;
+}
+@media (max-width: 767px) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-object {
+    margin-inline-start: 34px;
+  }
+  html:root[dir="rtl"]
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-object {
+    margin-right: 34px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index[data-expanded="true"] {
+    inset-inline-start: -37px;
+    width: 34px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index
+    .notebook-bookmark {
+    width: 34px;
+    padding-inline: 6px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index
+    .notebook-bookmark:is(:hover, :focus-visible) {
+    width: 84px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-peek {
+    inset-inline-start: 90px;
+    width: min(196px, calc(100vw - 140px));
+  }
+}
+@media (max-height: 520px) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index
+    .notebook-bookmarks {
+    gap: 3px;
+    overflow-y: auto;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-index
+    .notebook-bookmark {
+    flex-basis: 30px;
+    height: 30px;
+    min-height: 30px;
+    padding-block: 3px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-tools-panel {
+    padding: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    :is(.page-hand-edge, .notebook-bookmark, .study-tools-panel) {
+    transition: none;
+    animation: none;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-turn-sheet {
+    animation: none;
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    :is(
+      .notebook-bookmark,
+      .study-tool-strip,
+      .study-tools-panel,
+      .study-open-pdf
+    ) {
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+  }
+}
+
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-bookmark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 6px;
+  height: 6px;
+  border: 0;
+  background: linear-gradient(
+    135deg,
+    var(--book-paper) 49%,
+    var(--book-rule) 50%,
+    transparent 65%
+  );
+  pointer-events: none;
+}

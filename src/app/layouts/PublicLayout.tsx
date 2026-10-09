@@ -42,6 +42,7 @@ export function PublicLayout() {
       data-nav-hidden={adaptive.hidden || undefined}
       data-nav-pinned={adaptive.pinned || undefined}
       data-study-focus={adaptive.focus || undefined}
+      data-study-environment={adaptive.studying || undefined}
     >
       <WelcomeSequence />
       <a className="skip-link" href="#main">
@@ -51,7 +52,7 @@ export function PublicLayout() {
         <Navbar site={site.data} />
       </AdaptiveNavigation>
       <div className="app-content">
-        <WorkspaceHeader site={site.data} />
+        {!adaptive.studying && <WorkspaceHeader site={site.data} />}
         <main id="main" tabIndex={-1}>
           <InvolvementNavigation />
           <RouteViewport>

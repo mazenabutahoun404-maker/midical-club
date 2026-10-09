@@ -16,26 +16,28 @@ export function StoreNavigation() {
       ? "/my/orders"
       : "/store";
   return (
-    <AliveTabs
-      label={label("storeNavigation")}
-      items={[
-        { id: "/store", label: label("shopAll"), icon: ShoppingBag },
-        {
-          id: "/store/cart",
-          label: label("cart"),
-          icon: ShoppingCart,
-          count: cartQuantity(store.cart),
-        },
-        {
-          id: "/my/orders",
-          label: label("myOrders"),
-          icon: PackageCheck,
-          count: store.orders.filter((order) => order.status !== "cancelled")
-            .length,
-        },
-      ]}
-      value={value}
-      onChange={navigate}
-    />
+    <nav className="store-navigation" aria-label={label("storeNavigation")}>
+      <AliveTabs
+        label={label("storeNavigation")}
+        items={[
+          { id: "/store", label: label("shopAll"), icon: ShoppingBag },
+          {
+            id: "/store/cart",
+            label: label("cart"),
+            icon: ShoppingCart,
+            count: cartQuantity(store.cart),
+          },
+          {
+            id: "/my/orders",
+            label: label("myOrders"),
+            icon: PackageCheck,
+            count: store.orders.filter((order) => order.status !== "cancelled")
+              .length,
+          },
+        ]}
+        value={value}
+        onChange={navigate}
+      />
+    </nav>
   );
 }

@@ -1,3 +1,5 @@
+import { StudentNotes } from "./StudentNotes";
+import { GpaCalculator } from "./GpaCalculator";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { useEffect, useState, useRef } from "react";
@@ -111,6 +113,7 @@ export default function StudyToolsPage({
           </div>
         </section>
       </div>
+      <div className="student-tools-extra"><section><h2>{t({ en: "Your notes", ar: "ملاحظاتك" })}</h2><StudentNotes /></section><section><GpaCalculator /></section></div>
     </div>
   );
 }

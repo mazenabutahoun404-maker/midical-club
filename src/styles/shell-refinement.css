@@ -116,7 +116,7 @@ html body .app-shell[data-navigation="vertical"] .navigation-workspace {
   margin-inline: 0;
 }
 .app-shell .navigation-item.active {
-  background: var(--tone-surface-inset, #f8e8e5);
+  background: var(--tone-surface-coral, #f8e8e5);
 }
 .personal-shell .navigation-item.active {
   background: #ae675935;

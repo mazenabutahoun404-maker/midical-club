@@ -1,3 +1,4 @@
+import { createLocalArtworkService } from "./local-artwork.service";
 import { DEMO_TODAY } from "../constants/config";
 import { student } from "../data/mock/student";
 import { academicCalendar, studentNotifications } from "../data/mock/personal";
@@ -53,6 +54,7 @@ const insightsActions = createLocalInsightsService({
   listAdminContent: adminActions.listContent,
 });
 export const mockServices: MedClubServices = {
+  artwork: createLocalArtworkService(authActions, governanceActions),
   contentSnapshot: { kind: "sample", asOf: `${DEMO_TODAY}T12:00:00+03:00` },
   auth: authActions,
   admin: adminActions,

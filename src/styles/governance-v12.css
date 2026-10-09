@@ -50,7 +50,7 @@
 .governance-hero .breadcrumbs a,
 .governance-hero .breadcrumbs span,
 .governance-hero .breadcrumbs svg {
-  color: var(--tone-ink-soft, #d9b8ae);
+  color: var(--tone-ink-coral, #d9b8ae);
 }
 .governance-hero .eyebrow {
   color: var(--tone-ink-coral, #f2a08e);
@@ -338,7 +338,7 @@
   color: var(--tone-ink-coral, #9c2227);
   border: 3px solid var(--tone-line-boundary, #fffaf4);
   border-radius: 50%;
-  background: var(--tone-surface-inset, #f3dfd8);
+  background: var(--tone-surface-coral, #f3dfd8);
 }
 .governance-founder-stack span:first-child {
   margin-inline-start: 0;
@@ -360,7 +360,7 @@
   margin-top: 13px;
   padding: 19px;
   border-radius: 21px 21px 21px 7px;
-  background: var(--tone-surface-inset, #f7eee8);
+  background: var(--tone-surface-coral, #f7eee8);
 }
 .governance-model-card > div > svg {
   color: var(--tone-ink-coral, #a03432);
@@ -450,7 +450,7 @@
   place-items: center;
   border-radius: 10px;
   color: var(--tone-ink-coral, #8d2529);
-  background: var(--tone-surface-inset, #f3dfd7);
+  background: var(--tone-surface-coral, #f3dfd7);
   font-weight: 800;
 }
 .governance-user-list .catalog-search {
@@ -486,7 +486,7 @@
     transform 0.2s ease;
 }
 .governance-user-scroll > button:hover {
-  background: var(--tone-surface-inset, #f4e7e0);
+  background: var(--tone-surface-coral, #f4e7e0);
   transform: translateX(3px);
 }
 .governance-user-scroll > button.active {
@@ -564,7 +564,7 @@
 .governance-account-state[data-status="active"],
 .governance-account-state[data-status="approved"] {
   color: var(--tone-ink-strong, #355740);
-  background: var(--tone-surface-inset, #dcebdd);
+  background: var(--tone-surface-green, #dcebdd);
 }
 .governance-account-state[data-status="invited"],
 .governance-account-state[data-status="pending"] {
@@ -574,7 +574,7 @@
 .governance-account-state[data-status="suspended"],
 .governance-account-state[data-status="rejected"] {
   color: var(--tone-ink-coral, #8c2428);
-  background: var(--tone-surface-inset, #f3dada);
+  background: var(--tone-surface-coral, #f3dada);
 }
 .governance-last-active {
   display: flex;
@@ -617,11 +617,11 @@
 }
 .governance-chip-list > span[data-kind="role"] {
   color: var(--tone-ink-coral, #831d25);
-  background: var(--tone-surface-inset, #f1ddd7);
+  background: var(--tone-surface-coral, #f1ddd7);
 }
 .governance-chip-list > span[data-kind="title"] {
   color: var(--tone-ink-strong, #5c3455);
-  background: var(--tone-surface-inset, #ebdfe9);
+  background: var(--tone-surface-rose, #ebdfe9);
 }
 .governance-membership {
   display: grid;
@@ -648,7 +648,7 @@
   color: var(--tone-ink-coral, #7d2529);
   border: 1px solid var(--tone-line-boundary, #e5c2ba);
   border-radius: 16px 16px 16px 6px;
-  background: var(--tone-surface-inset, #f8e8e1);
+  background: var(--tone-surface-coral, #f8e8e1);
   font-size: 0.76rem;
   font-weight: 700;
 }
@@ -725,7 +725,7 @@
   cursor: pointer;
 }
 .governance-role-list > button:hover {
-  background: var(--tone-surface-inset, #f5e9e3);
+  background: var(--tone-surface-coral, #f5e9e3);
 }
 .governance-role-list > button.active {
   color: var(--tone-ink-fcf8f4, white);
@@ -780,7 +780,7 @@
   padding: 7px 10px;
   color: var(--tone-ink-coral, #8e2429);
   border-radius: 999px;
-  background: var(--tone-surface-inset, #f3ddda);
+  background: var(--tone-surface-coral, #f3ddda);
   font-size: 0.68rem;
   font-weight: 800;
 }
@@ -822,10 +822,10 @@
   cursor: pointer;
 }
 .governance-capability-groups button:not(:disabled):hover {
-  background: var(--tone-surface-inset, #f2e4de);
+  background: var(--tone-surface-coral, #f2e4de);
 }
 .governance-capability-groups button.selected {
-  background: var(--tone-surface-inset, #f1e0da);
+  background: var(--tone-surface-coral, #f1e0da);
 }
 .governance-capability-groups button:disabled {
   cursor: not-allowed;
@@ -917,7 +917,7 @@
   place-items: center;
   color: var(--tone-ink-coral, #99252b);
   border-radius: 16px 16px 16px 6px;
-  background: var(--tone-surface-inset, #f3ded8);
+  background: var(--tone-surface-coral, #f3ded8);
 }
 .governance-approval-card h2 {
   margin: 2px 0 0;
@@ -974,7 +974,7 @@
 }
 .governance-role-delta .delta-add {
   inset-inline-start: 0;
-  color: var(--tone-ink-muted, #45724f);
+  color: var(--tone-ink-green, #45724f);
 }
 .governance-role-delta .delta-remove {
   inset-inline-end: 0;
@@ -1017,16 +1017,16 @@
   place-items: center;
 }
 .governance-approval-chain > span.approved {
-  color: var(--tone-ink-muted, #3f714c);
+  color: var(--tone-ink-green, #3f714c);
   border-style: solid;
   border-color: var(--tone-line-boundary, #bfd2c1);
-  background: var(--tone-surface-inset, #e8f0e7);
+  background: var(--tone-surface-green, #e8f0e7);
 }
 .governance-approval-chain > span.rejected {
   color: var(--tone-ink-coral, #942d32);
   border-style: solid;
   border-color: var(--tone-line-boundary, #dfbfc0);
-  background: var(--tone-surface-inset, #f5e1df);
+  background: var(--tone-surface-coral, #f5e1df);
 }
 .governance-approval-chain small {
   overflow: hidden;
@@ -1175,7 +1175,7 @@
   padding: 13px;
   color: var(--tone-ink-strong, #3f2728);
   border-radius: 16px 16px 16px 6px;
-  background: var(--tone-surface-inset, #f7eee8);
+  background: var(--tone-surface-coral, #f7eee8);
 }
 .admin-mobile-more-links a[aria-current="page"] {
   color: var(--tone-ink-fcf8f4, white);

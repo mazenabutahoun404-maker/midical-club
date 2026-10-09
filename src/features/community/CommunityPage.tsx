@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { CommunityOverview } from "./CommunityOverview";
 import {
   Activity,
@@ -49,7 +50,7 @@ export default function CommunityPage() {
   return (
     <div className="community-v5 container">
       <CommunityNavigation />
-      <section className="community-hero">
+      <section className="community-hero artwork-scene">
         <div className="community-hero-copy">
           <span className="eyebrow">{label("communityEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
@@ -70,7 +71,10 @@ export default function CommunityPage() {
             <ArrowUpRight className="directional" size={18} />
           </AppLink>
         </div>
-        <CommunityOverview />
+        <HeroArtwork section="community" />
+        <div className="community-hero-side">
+          <CommunityOverview />
+        </div>
       </section>
       <section
         className="community-portals"

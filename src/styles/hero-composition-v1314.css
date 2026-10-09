@@ -1,0 +1,176 @@
+/* The artwork belongs to the scene, not to a separate illustration card. */
+html body .container .artwork-scene {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: var(--background);
+  min-height: 360px;
+  padding: clamp(24px, 4vw, 52px) clamp(16px, 3vw, 38px) 44px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 28px;
+  align-items: center;
+}
+html body .container .artwork-scene > .hero-artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  z-index: -1;
+  pointer-events: none;
+}
+html body .container .artwork-scene .hero-artwork img {
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: center 42%;
+}
+html body .container .artwork-scene .hero-artwork::after {
+  box-shadow: none;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--background) 22%, transparent),
+      transparent 75%
+    ),
+    linear-gradient(
+      0deg,
+      var(--background),
+      transparent 20%,
+      transparent 90%,
+      color-mix(in srgb, var(--background) 18%, transparent)
+    );
+}
+html body .container .artwork-scene > div:not(.community-hero-side) {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+html body .container .artwork-scene > div:not(.community-hero-side)::before {
+  content: "";
+  position: absolute;
+  inset: -12px -10px;
+  z-index: -1;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--background) 34%, transparent);
+  backdrop-filter: blur(2px);
+  mask-image: radial-gradient(ellipse at center, #000 22%, transparent 66%);
+}
+html body .container .artwork-scene .hero-artwork-edit {
+  pointer-events: auto;
+  top: 14px;
+  z-index: 3;
+}
+html body .container .artwork-scene .community-hero-side {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+}
+html body .container .artwork-scene .community-overview {
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  backdrop-filter: blur(6px);
+}
+html[dir="rtl"] body .container .artwork-scene .hero-artwork::after {
+  background:
+    linear-gradient(
+      -90deg,
+      color-mix(in srgb, var(--background) 22%, transparent),
+      transparent 75%
+    ),
+    linear-gradient(0deg, var(--background), transparent 20%);
+}
+html.dark
+  body
+  .container
+  .artwork-scene
+  > div:not(.community-hero-side)::before {
+  background: color-mix(in srgb, var(--background) 54%, transparent);
+}
+@media (max-width: 767px) {
+  html body .container .artwork-scene {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 32px 12px 32px;
+    min-height: 340px;
+  }
+  html body .container .artwork-scene .hero-artwork img {
+    object-position: 65% center;
+  }
+  html body .container .artwork-scene .hero-artwork::after {
+    background: linear-gradient(
+      0deg,
+      var(--background),
+      color-mix(in srgb, var(--background) 20%, transparent) 45%,
+      color-mix(in srgb, var(--background) 25%, transparent)
+    );
+  }
+  html body .container .artwork-scene > div:not(.community-hero-side)::before {
+    inset: -14px -12px;
+    mask-image: radial-gradient(ellipse, #000 24%, transparent 68%);
+  }
+}
+@media (forced-colors: active) {
+  html body .container .artwork-scene .hero-artwork {
+    display: none;
+  }
+  html body .container .artwork-scene > div:not(.community-hero-side)::before {
+    display: none;
+  }
+}
+
+html:root body .container .artwork-scene {
+  max-width: none;
+}
+html:root body .container .artwork-scene > div:not(.community-hero-side) {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+html:root body .container .artwork-scene > div:not(.community-hero-side) h1 {
+  color: var(--foreground);
+}
+html:root body .container .artwork-scene > div:not(.community-hero-side) > p {
+  color: var(--foreground);
+}
+html:root
+  body
+  .container
+  .artwork-scene
+  > div:not(.community-hero-side)
+  > .eyebrow {
+  color: var(--primary);
+}
+html:root body .container .artwork-scene .hero-artwork picture {
+  mask-image: linear-gradient(
+    180deg,
+    transparent,
+    #000 20px,
+    #000 88%,
+    transparent
+  );
+}
+html:root body .container .artwork-scene .recruitment-hero-facts {
+  color: var(--foreground);
+}
+/* Recruitment facts previously sat on a solid dark hero. Give them readable
+   ink when the same information floats over the new scene in either theme. */
+html:root body .container .artwork-scene .recruitment-hero-facts > span {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border-color: var(--border);
+}
+html:root body .container .artwork-scene .recruitment-hero-facts strong {
+  color: var(--foreground);
+}

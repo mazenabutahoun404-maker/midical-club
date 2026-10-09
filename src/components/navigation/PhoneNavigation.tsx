@@ -1,3 +1,4 @@
+import { NavigationSelection } from "./NavigationSelection";
 import { House, BookOpen, Search, Bookmark } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import type { SiteContent } from "../../types/content";
@@ -19,6 +20,7 @@ export function PhoneNavigation({ site }: { site: SiteContent }) {
       : signInPath("/my/library");
   return (
     <nav className="phone-navigation" aria-label={label("mobileNavigation")}>
+      <NavigationSelection />
       <AppLink
         href="/"
         className={pathname === "/" && !hash ? "active" : ""}

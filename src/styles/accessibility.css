@@ -34,7 +34,7 @@
   border-radius: 4px;
 }
 .workspace-icon:hover {
-  background: var(--tone-surface-inset, #ece2d6);
+  background: var(--tone-surface-amber, #ece2d6);
 }
 .medclub-modal .button {
   min-height: 44px;

@@ -1,3 +1,5 @@
+import { NavigationSelection } from "./NavigationSelection";
+import { AppearanceSettings } from "./AppearanceSettings";
 import { NotebookFittings } from "./NotebookFittings";
 import { NavigationControls } from "./AdaptiveNavigation";
 import { useLocation } from "react-router-dom";
@@ -99,6 +101,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             className="navigation-scroll"
             id="personal-sidebar-links"
           >
+          <NavigationSelection />
             <p className="navigation-label">{label("workspace")}</p>
             <nav
               className="navigation-primary"
@@ -138,7 +141,10 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             </AppLink>
           </NavigationHint>
         )}
-        <NavigationControls />
+        <div className="personal-nav-footer">
+          <AppearanceSettings />
+          <NavigationControls />
+        </div>
         <div className="personal-sidebar-footer">
           <span className="personal-mini-avatar" aria-hidden="true">
             {profile ? t(profile.initials) : <UserRound size={20} />}
@@ -153,6 +159,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         className="phone-navigation personal-phone-navigation"
         aria-label={label("personalMobileNavigation")}
       >
+        <NavigationSelection />
         {phonePrimary.map(({ href, label: key, icon: Icon }) => (
           <AppLink
             href={href}

@@ -282,7 +282,7 @@
   place-items: center;
   border-radius: 15px;
   color: var(--tone-ink-d7ad9d, #9a4a3d);
-  background: var(--tone-surface-inset, #f3dfd6);
+  background: var(--tone-surface-coral, #f3dfd6);
 }
 .academic-finder h2 {
   margin-top: 5px;
@@ -322,7 +322,7 @@
   color: var(--tone-ink-dfcdc1, #d9c6bb);
 }
 .clinical-page-hero .academic-kicker {
-  color: var(--tone-ink-soft, #d8aa99);
+  color: var(--tone-ink-coral, #d8aa99);
 }
 .academic-page-hero h1 {
   max-width: 780px;
@@ -648,7 +648,7 @@
   position: absolute;
   inset: 9px;
   border-radius: 50%;
-  background: var(--tone-surface-inset, #eee3da);
+  background: var(--tone-surface-coral, #eee3da);
 }
 .batch-progress-seal > span {
   z-index: 1;
@@ -659,7 +659,7 @@
   font-size: 8px;
 }
 .batch-progress-seal b {
-  color: var(--tone-ink-muted, #854438);
+  color: var(--tone-ink-coral, #854438);
   font-size: 26px;
   letter-spacing: -0.05em;
 }
@@ -760,7 +760,7 @@
   font-size: 17px;
 }
 .archive-term[open] summary {
-  background: var(--tone-surface-inset, #efe2da);
+  background: var(--tone-surface-coral, #efe2da);
 }
 .archive-term[open] summary svg {
   transform: rotate(90deg);
@@ -831,7 +831,7 @@
   place-items: center;
   border-radius: 16px;
   color: var(--tone-ink-d8af9f, #9d5145);
-  background: var(--tone-surface-inset, #f1ded5);
+  background: var(--tone-surface-coral, #f1ded5);
 }
 .clinical-year-copy {
   display: flex;
@@ -939,7 +939,7 @@
   line-height: 1.9;
 }
 .clinical-year-hero .academic-kicker {
-  color: var(--tone-ink-soft, #d7aa99);
+  color: var(--tone-ink-coral, #d7aa99);
 }
 .clinical-year-hero aside {
   position: relative;
@@ -1180,7 +1180,7 @@
   font-size: 7px;
 }
 .course-section-rail button:hover {
-  background: var(--tone-surface-inset, #f0e2d9);
+  background: var(--tone-surface-coral, #f0e2d9);
   transform: translateX(3px);
 }
 .course-section-rail button[aria-current="page"] {
@@ -1189,7 +1189,7 @@
   box-shadow: 0 7px 18px #69372e18;
 }
 .course-section-rail button[aria-current="page"] small {
-  color: var(--tone-ink-soft, #dbb8a9);
+  color: var(--tone-ink-coral, #dbb8a9);
 }
 .course-section-stage {
   min-width: 0;
@@ -1230,12 +1230,12 @@
   justify-content: center;
   border-radius: 50%;
   color: var(--tone-ink-muted, #9a7564);
-  background: var(--tone-surface-inset, #f2e3da);
+  background: var(--tone-surface-coral, #f2e3da);
   font-size: 7px;
   text-align: center;
 }
 .section-count b {
-  color: var(--tone-ink-muted, #84463c);
+  color: var(--tone-ink-coral, #84463c);
   font-size: 23px;
 }
 .course-overview-panel {
@@ -1246,7 +1246,7 @@
   gap: 14px;
   padding: 19px;
   border-radius: 18px;
-  background: var(--tone-surface-inset, #f4e6dd);
+  background: var(--tone-surface-coral, #f4e6dd);
   color: var(--tone-ink-muted, #8b695a);
 }
 .overview-note svg {

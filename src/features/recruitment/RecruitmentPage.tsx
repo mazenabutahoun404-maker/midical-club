@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState, type CSSProperties } from "react";
 import {
   Activity,
@@ -89,7 +90,7 @@ export default function RecruitmentPage() {
     <div className="recruitment-v9 recruitment-page">
       <div className="container">
         <RecruitmentNavigation />
-        <section className="recruitment-hero">
+        <section className="recruitment-hero artwork-scene">
           <div className="recruitment-hero-copy">
             <span className="eyebrow">{label("recruitmentEyebrow")}</span>
             <h1 tabIndex={-1} data-page-heading>
@@ -114,18 +115,7 @@ export default function RecruitmentPage() {
               </span>
             </div>
           </div>
-          <div className="recruitment-signal-board" aria-hidden="true">
-            <div className="signal-orbit signal-orbit-one" />
-            <div className="signal-orbit signal-orbit-two" />
-            <Activity className="signal-heartbeat" size={42} />
-            <div className="signal-team-dots">
-              {teams.map((item, index) => (
-                <i key={item} style={{ "--index": index } as CSSProperties} />
-              ))}
-            </div>
-            <span>{label("recruitmentPulse")}</span>
-            <strong>{label("recruitmentPulseTitle")}</strong>
-          </div>
+          <HeroArtwork section="team" />
         </section>
 
         <section className="recruitment-openings" id="open-positions">

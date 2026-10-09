@@ -20,10 +20,7 @@ export function InvolvementNavigation() {
   useEffect(() => rememberInvolvement(pathname), [pathname]);
   if (!isInvolvementPath(pathname)) return null;
   return (
-    <nav
-      className="involvement-navigation container"
-      aria-label={t(involvedLabel)}
-    >
+    <nav className="involvement-navigation" aria-label={t(involvedLabel)}>
       {involvementItems.map((item, index) => {
         const Icon = icons[index];
         const active =

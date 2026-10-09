@@ -89,7 +89,7 @@
 }
 .adaptive-navigation-panel > .navigation-reveal-actions button:hover,
 .adaptive-navigation-panel > .navigation-reveal-actions button:focus-visible {
-  background: var(--tone-surface-inset, #eadbd0);
+  background: var(--tone-surface-coral, #eadbd0);
   color: var(--tone-ink-coral, #6f191c);
 }
 .adaptive-navigation-panel

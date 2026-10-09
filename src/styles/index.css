@@ -1,3 +1,4 @@
+@import "./action-receipts.css";
 @import "tailwindcss" source("../");
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
@@ -40,3 +41,10 @@
 
 @import "./dark-palette.css";
 @import "./compact-header.css";
+
+@import "./campus-experience.css";
+@import "./navigation-v1312.css";
+@import "./navigation-comfort-v1317.css";
+
+@import "./reading-palettes.css";
+@import "./study-route-frame.css";

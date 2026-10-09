@@ -1,0 +1,1493 @@
+/* Keep a definite reading area; paper flags never resize the book. */
+html:root body .app-shell[data-study-environment="true"] main {
+  height: calc(100dvh - var(--study-header-offset));
+}
+html:root
+  body
+  .app-shell[data-study-environment="true"]
+  .course-study-edition.container {
+  height: calc(100dvh - var(--study-header-offset));
+  min-height: 0;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 8px 14px calc(66px + env(safe-area-inset-bottom));
+}
+html:root body .app-shell[data-study-environment="true"] .study-environment {
+  height: 100%;
+  min-height: 0;
+}
+html:root body .course-study-edition .study-environment .study-notebook {
+  height: 100%;
+  min-height: 0;
+  --section-rail-space: 40px;
+  /* Fixed shelf/tools belong to the viewport, not an inline-size container. */
+  container-type: normal;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook:not([data-focus="true"]) {
+  grid-template-rows: 76px minmax(0, 1fr);
+  gap: 6px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-focus="true"] {
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-object {
+  height: 100%;
+  min-height: 0;
+  margin-block: 0;
+  align-self: stretch;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook:not([data-focus="true"])
+  .notebook-object {
+  grid-row: 2;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-focus="true"]
+  .notebook-object {
+  grid-row: 1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-spread {
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-study-layout {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  align-items: stretch;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-object {
+  margin-inline: 0;
+  margin-block-start: var(--section-rail-space);
+  height: calc(100% - var(--section-rail-space));
+}
+
+/* Preserve the shelf silhouette, with every utility on the same grid row. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-toolbar {
+  top: var(--study-header-offset);
+  inset-inline-start: calc(
+    var(--study-shelf-inset, 0px) + (100% - var(--study-shelf-inset, 0px)) *
+      0.08
+  );
+  inset-inline-end: 8%;
+  width: auto;
+  height: 76px;
+  min-height: 76px;
+  grid-template-columns: 44px minmax(0, 1fr) 176px;
+  grid-template-rows: 64px;
+  gap: 8px;
+  padding: 6px max(14px, 2.2vw);
+  box-sizing: border-box;
+  align-items: start;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-toolbar
+  > :is(.shelf-back-control, .course-shelf, .course-shelf-controls) {
+  grid-row: 1;
+  min-width: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-header-outline {
+  height: 76px;
+  overflow: hidden;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-back-control {
+  align-self: start;
+  margin-top: 2px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.7fr) minmax(0, 1.5fr);
+  height: 64px;
+  align-items: center;
+  gap: 10px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-caption {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  align-self: center;
+  gap: 0;
+  padding: 0;
+  min-width: 0;
+  line-height: 15px;
+  text-align: start;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-caption
+  strong {
+  max-width: 100%;
+  width: 100%;
+  font-size: 11px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-window {
+  position: relative;
+  top: auto;
+  inset-inline: auto;
+  width: 100%;
+  height: 64px;
+  align-self: start;
+  overflow: hidden;
+  pointer-events: auto;
+  isolation: isolate;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-books {
+  height: 64px;
+  gap: 7px;
+  padding-inline: 4px;
+  align-items: flex-start;
+  justify-content: safe center;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-lip {
+  top: 60px;
+  bottom: auto;
+  inset-inline: 3px;
+  height: 3px;
+  border-radius: 1px;
+  background: linear-gradient(var(--book-rule), var(--book-paper-side));
+  box-shadow: 0 2px 3px #251b2420;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book {
+  flex-basis: 86px;
+  height: 64px;
+  transform: none;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  outline-offset: -3px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book[aria-current="page"] {
+  transform: none;
+  z-index: 28;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book:is(:hover, :focus-visible) {
+  height: 64px;
+  transform: none;
+  box-shadow: none;
+  z-index: 30;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-cover {
+  /* Only the cover moves. Moving its parent too hid the entire book above the shelf. */
+  top: -68px;
+  bottom: auto;
+  inset-inline: 0;
+  height: 112px;
+  box-sizing: border-box;
+  transform: none;
+  padding: 8px 9px;
+  color: #fff7ed;
+  background: var(--shelf-gradient, var(--book-cover));
+  border-radius: 3px 3px 2px 2px;
+  box-shadow:
+    inset 2px 0 2px #fff7ed20,
+    1px 2px 2px var(--book-shadow);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book[aria-current="page"]
+  .shelf-book-cover {
+  transform: translateY(8px);
+  outline: 1px solid var(--book-highlight);
+  outline-offset: -2px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book:is(:hover, :focus-visible)
+  .shelf-book-cover {
+  transform: translateY(16px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-cover
+  strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 13px;
+}
+/* Keep the course hues while giving the small cream labels sufficient contrast. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-red {
+  --shelf-gradient: linear-gradient(110deg, #7d2334, #9d3e50);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-russet {
+  --shelf-gradient: linear-gradient(110deg, #763e35, #94503e);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-olive {
+  --shelf-gradient: linear-gradient(110deg, #4e6147, #657252);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-purple {
+  --shelf-gradient: linear-gradient(110deg, #57436d, #78618f);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-cover
+  small {
+  color: inherit;
+  opacity: 1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book-cover
+  i {
+  display: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-book[aria-current="page"]
+  .shelf-book-cover
+  i {
+  display: block;
+  width: 6px;
+  height: 16px;
+  bottom: -6px;
+  background: #f1d18c;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-controls {
+  display: flex;
+  align-self: start;
+  margin-top: 2px;
+  width: 176px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-controls-content {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  align-items: flex-start;
+}
+/* This is deliberately more specific than the shared paper-control rule. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-controls
+  > .shelf-mobile-control {
+  display: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-control-paper {
+  top: 4px;
+  height: 36px;
+  inset-inline: 6px;
+  background: linear-gradient(110deg, var(--book-paper) 60%, var(--book-tab));
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-paper-control:is(:hover, :focus-within)
+  .shelf-control-paper {
+  transform: translateY(2px) rotateX(-2deg);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-paper-control
+  > :is(button, a)
+  > :is(svg, .utility-mode-glyph, .utility-glyph) {
+  transform: none;
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-back-courses
+  > svg.directional {
+  transform: scaleX(-1);
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-paper-control:is(:hover, :focus-within)
+  .notebook-back-courses
+  > svg.directional {
+  transform: scaleX(-1);
+}
+
+/* Horizontal flags emerge from the paper edge and flatten gently on hover. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-index,
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-index[data-expanded="true"] {
+  position: absolute;
+  inset-block-start: calc(-1 * var(--section-rail-space));
+  inset-block-end: auto;
+  inset-inline: 0;
+  width: 100%;
+  height: var(--section-rail-space);
+  min-height: 0;
+  padding: 0;
+  display: block;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  z-index: 30;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-index
+  .notebook-bookmarks {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 5px;
+  width: calc(100% - 44px);
+  height: var(--section-rail-space);
+  padding: 0 3px 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-index
+  .notebook-bookmark {
+  position: relative;
+  width: 102px;
+  min-width: 82px;
+  max-width: 120px;
+  flex: 0 0 auto;
+  height: 36px;
+  min-height: 36px;
+  padding: 8px;
+  border: 1px solid var(--book-rule);
+  border-bottom: 0;
+  border-radius: 3px 5px 0 0;
+  background: linear-gradient(175deg, var(--book-tab) 65%, var(--book-paper));
+  color: var(--book-ink);
+  transform: perspective(700px) rotateX(-14deg) translateY(3px);
+  transform-origin: center bottom;
+  box-shadow:
+    inset 0 -5px 5px #251b2412,
+    1px 0 2px #251b2414;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-index
+  .notebook-bookmark:is(
+    :hover,
+    :focus-visible,
+    [data-peeking="true"],
+    [aria-current="page"]
+  ) {
+  width: 102px;
+  transform: perspective(700px) rotateX(0) scaleY(0.94);
+  box-shadow:
+    inset 0 -1px 2px #251b2409,
+    1px 0 2px #251b2414;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-bookmark::after {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: auto;
+  width: 7px;
+  height: 7px;
+  clip-path: polygon(0 0, 100% 100%, 100% 0);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-bookmark-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 18px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-bookmark-top
+  b {
+  display: block;
+  visibility: visible;
+  opacity: 0.7;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 18px;
+  transition: opacity 180ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-bookmark:is(
+    :hover,
+    :focus-visible,
+    [data-peeking="true"],
+    [aria-current="page"]
+  )
+  .notebook-bookmark-top
+  b {
+  opacity: 1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-section-close {
+  top: 0;
+  bottom: auto;
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  width: 44px;
+  height: 40px;
+  min-width: 44px;
+  min-height: 40px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-index[data-closed="true"] {
+  inset-block-start: -7px;
+  height: 7px;
+  width: 100%;
+  background: var(--book-rule);
+  border-radius: 3px 3px 0 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-peek {
+  inset-inline-end: auto;
+  width: min(280px, calc(100% - 16px));
+  max-height: min(260px, calc(100dvh - 180px));
+  border-radius: 4px 6px 8px 6px;
+  background: linear-gradient(175deg, var(--book-paper), var(--book-tab));
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"]
+  .notebook-peek::after {
+  top: -4px;
+  inset-inline-start: var(--peek-anchor);
+  width: 8px;
+  height: 8px;
+  border-inline-start: 1px solid var(--book-rule);
+  border-top: 1px solid var(--book-rule);
+}
+/* Side flags keep their binding edge fixed while the folded paper straightens. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"]
+  .notebook-index
+  .notebook-bookmark {
+  min-height: 44px;
+  height: 44px;
+  flex-basis: 44px;
+  transform: perspective(700px) rotateY(-14deg) scaleX(1.03);
+  transform-origin: right center;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"]
+  .notebook-index
+  .notebook-bookmark:is(:hover, :focus-visible, [data-peeking="true"]) {
+  width: 126px;
+  transform: perspective(700px) rotateY(0) scaleX(0.98);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"]
+  .notebook-peek {
+  inset-inline-start: 132px;
+  background: linear-gradient(175deg, var(--book-paper), var(--book-tab));
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"]
+  .notebook-index
+  .notebook-bookmark {
+  transform: perspective(700px) rotateY(14deg) scaleX(1.03);
+  transform-origin: left center;
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"]
+  .notebook-index
+  .notebook-bookmark:is(:hover, :focus-visible, [data-peeking="true"]) {
+  transform: perspective(700px) rotateY(0) scaleX(0.98);
+}
+
+/* Edge docking moves only the tool surface; the recovery handle stays in place. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock {
+  position: fixed;
+  width: max-content;
+  height: auto;
+  z-index: 90;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-content {
+  position: relative;
+  transition:
+    transform 200ms ease,
+    opacity 160ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-tucked="true"]
+  .study-tool-content {
+  opacity: 0;
+  pointer-events: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-tucked="true"][data-edge="left"]
+  .study-tool-content {
+  transform-origin: left center;
+  transform: scaleX(0.08);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-tucked="true"][data-edge="right"]
+  .study-tool-content {
+  transform-origin: right center;
+  transform: scaleX(0.08);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-tucked="true"][data-edge="top"]
+  .study-tool-content {
+  transform-origin: center top;
+  transform: scaleY(0.08);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-tucked="true"][data-edge="bottom"]
+  .study-tool-content {
+  transform-origin: center bottom;
+  transform: scaleY(0.08);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  min-width: 28px;
+  min-height: 44px;
+  width: 28px;
+  height: 64px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle
+  > span {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 56px;
+  background: color-mix(
+    in srgb,
+    var(--book-cover-light) 35%,
+    var(--book-paper)
+  );
+  color: var(--book-action-ink, var(--book-ink));
+  border: 1px solid color-mix(in srgb, var(--book-ink) 48%, var(--book-paper));
+  border-radius: 0 6px 6px 0;
+  box-shadow: 2px 1px 5px #251b2420;
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-dots {
+  display: block;
+  width: 8px;
+  height: 20px;
+  background: radial-gradient(
+      circle at 2px 2px,
+      currentColor 1.2px,
+      transparent 1.3px
+    )
+    0 0 / 4px 7px;
+  opacity: 0.85;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle:active {
+  cursor: grabbing;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle:is(:hover, :focus-visible)
+  > span {
+  transform: scale(1.08);
+  background: var(--book-highlight);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="left"]
+  .study-dock-handle {
+  left: -8px;
+  top: calc(50% - 32px);
+  justify-items: start;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="right"]
+  .study-dock-handle {
+  right: -8px;
+  top: calc(50% - 32px);
+  justify-items: end;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="right"]
+  .study-dock-handle
+  > span {
+  border-radius: 6px 0 0 6px;
+  box-shadow: -2px 1px 5px #251b2420;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock:is([data-edge="top"], [data-edge="bottom"])
+  .study-dock-handle {
+  width: 64px;
+  height: 28px;
+  min-height: 28px;
+  left: calc(50% - 32px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="top"]
+  .study-dock-handle {
+  top: -8px;
+  align-items: start;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="bottom"]
+  .study-dock-handle {
+  bottom: -8px;
+  align-items: end;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock:is([data-edge="top"], [data-edge="bottom"])
+  .study-dock-handle
+  > span {
+  width: 56px;
+  height: 14px;
+  border-radius: 0 0 6px 6px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock:is([data-edge="top"], [data-edge="bottom"])
+  .study-dock-dots {
+  width: 20px;
+  height: 8px;
+  background-size: 7px 4px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="bottom"]
+  .study-dock-handle
+  > span {
+  border-radius: 6px 6px 0 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock:not([data-tucked="true"])
+  .study-dock-handle {
+  opacity: 0.6;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge]
+  .study-dock-handle:focus-visible {
+  opacity: 1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-time {
+  position: absolute;
+  color: var(--book-ink);
+  background: var(--book-paper);
+  border: 1px solid var(--book-rule);
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 10px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="left"]
+  .study-dock-time {
+  left: 18px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="right"]
+  .study-dock-time {
+  right: 18px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="top"]
+  .study-dock-time {
+  top: 18px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-edge="bottom"]
+  .study-dock-time {
+  bottom: 18px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-strip
+  .study-section-layout {
+  flex: 0 0 44px;
+  width: 44px;
+  min-height: 44px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-strip
+  .study-section-layout:is(:hover, :focus-visible) {
+  background: var(--book-tab);
+}
+
+@media (min-width: 768px) {
+  html:root body .app-shell[data-study-environment="true"] > .app-content {
+    margin: 0;
+    margin-inline-start: 0;
+  }
+  html:root body .app-shell[data-study-environment="true"] {
+    --study-shelf-inset: 0px;
+  }
+  html:root
+    body
+    .app-shell[data-study-environment="true"][data-navigation="horizontal"]:not(
+      [data-study-focus="true"]
+    ):not([data-nav-hidden="true"]) {
+    --study-header-offset: calc(var(--shell-top) + var(--shell-gap) + 6px);
+  }
+  html:root
+    body
+    .app-shell[data-study-environment="true"][data-navigation="horizontal"]
+    > .app-content {
+    margin: 0;
+  }
+}
+@media (max-width: 1200px) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-toolbar {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: 4px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-controls {
+    display: block;
+    width: 44px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-controls
+    > .shelf-mobile-control {
+    display: inline-flex;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-controls-content {
+    display: none;
+    position: absolute;
+    top: 46px;
+    inset-inline-end: 0;
+    width: min(270px, calc(100vw - 32px));
+    padding: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    background: var(--book-paper);
+    border: 1px solid var(--book-rule);
+    border-radius: 6px;
+    box-shadow: 0 5px 16px #25141820;
+    z-index: 30;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-controls[data-open="true"]
+    .shelf-controls-content {
+    display: grid;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-controls-content
+    .shelf-paper-control {
+    width: 100%;
+    height: 66px;
+    flex-direction: column;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-controls-content
+    :is(.shelf-control-paper, .shelf-control-tooltip) {
+    display: none;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-controls-content
+    .shelf-control-caption {
+    display: block;
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--book-muted);
+    text-align: center;
+  }
+}
+@media (max-width: 767px) {
+  html:root
+    body
+    .app-shell[data-study-environment="true"]:not(
+      [data-study-focus="true"]
+    ):not([data-nav-hidden="true"])
+    .course-study-edition.container {
+    padding-bottom: max(4px, env(safe-area-inset-bottom));
+  }
+  html:root body .course-study-edition .study-environment .study-notebook {
+    --section-rail-space: 48px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-toolbar {
+    inset-inline: 4%;
+    padding-inline: 10px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf {
+    grid-template-columns: minmax(0, 1fr);
+    height: 64px;
+    grid-template-rows: 20px 44px;
+    gap: 0;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-caption {
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-caption
+    strong {
+    width: auto;
+    font-size: 10px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-window {
+    height: 44px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-books {
+    height: 44px;
+    gap: 5px;
+    padding-inline: 2px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book {
+    flex-basis: 76px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"]
+    .notebook-index
+    .notebook-bookmark,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"]
+    .notebook-index
+    .notebook-bookmark:is(
+      :hover,
+      :focus-visible,
+      [data-peeking="true"],
+      [aria-current="page"]
+    ) {
+    height: 44px;
+    min-height: 44px;
+    width: 90px;
+    padding: 8px;
+    transform: none;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"]
+    .notebook-section-close {
+    height: 44px;
+    min-height: 44px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"]
+    .notebook-bookmark-top
+    b {
+    opacity: 1;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="vertical"]
+    .notebook-peek {
+    inset-inline-start: 54px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-dock-handle {
+    min-width: 44px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-tool-dock:is([data-edge="top"], [data-edge="bottom"])
+    .study-dock-handle {
+    height: 44px;
+    min-height: 44px;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book[aria-current="page"],
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book:is(:hover, :focus-visible) {
+    transform: none;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book-cover,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book[aria-current="page"]
+    .shelf-book-cover,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-book:is(:hover, :focus-visible)
+    .shelf-book-cover {
+    /* Keep both title lines in the phone window without requiring hover. */
+    top: -62px;
+    transform: none;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf-lip {
+    top: 41px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"]
+    .notebook-index
+    .notebook-bookmark,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"]
+    .notebook-index
+    .notebook-bookmark:is(
+      :hover,
+      :focus-visible,
+      [data-peeking="true"],
+      [aria-current="page"]
+    ) {
+    transform: none;
+    min-height: 44px;
+    height: 44px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="vertical"]
+    .notebook-index
+    .notebook-bookmark {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    :is(
+      .shelf-book,
+      .shelf-book-cover,
+      .shelf-control-paper,
+      .notebook-bookmark,
+      .notebook-bookmark-top b,
+      .study-tool-content,
+      .study-dock-handle > span
+    ) {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    :is(
+      .course-shelf-lip,
+      .shelf-control-paper,
+      .notebook-bookmark,
+      .study-dock-handle > span
+    ) {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-tool-strip
+    .study-section-layout {
+    color: CanvasText;
+    border: 1px solid CanvasText;
+  }
+}
+
+/* An invisible dock cannot cover the document; only its small handle is a target. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock[data-tucked="true"] {
+  pointer-events: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle {
+  pointer-events: auto;
+}
+
+/* Keep the handle present during a hover reveal so it cannot flicker closed. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle:hover {
+  opacity: 1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-dock:not([data-tucked="true"])
+  .study-dock-time {
+  display: none;
+}

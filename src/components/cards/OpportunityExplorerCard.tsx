@@ -16,7 +16,11 @@ export function OpportunityExplorerCard({
   const open = opportunityIsOpen(opportunity);
   const days = daysFromDemo(opportunity.deadline);
   return (
-    <article className="opportunity-explorer" data-open={open}>
+    <article
+      className="opportunity-explorer"
+      data-open={open}
+      data-status={!open ? "closed" : days <= 14 ? "closing-soon" : "open"}
+    >
       <div className="opportunity-ribbon">
         <span>{t(opportunity.type)}</span>
         <i />

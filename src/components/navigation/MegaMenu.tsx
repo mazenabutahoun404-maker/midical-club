@@ -3,16 +3,26 @@ import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
 import { Icon } from "../ui/Icon";
+import type { PointerEventHandler } from "react";
 export function MegaMenu({
   navigation,
   onNavigate,
+  onPointerEnter,
+  onPointerLeave,
 }: {
   navigation: SiteContent["navigation"];
   onNavigate: () => void;
+  onPointerEnter?: PointerEventHandler<HTMLDivElement>;
+  onPointerLeave?: PointerEventHandler<HTMLDivElement>;
 }) {
   const { t, label } = useLocale();
   return (
-    <div className="mega-menu" id="learn-menu">
+    <div
+      className="mega-menu"
+      id="learn-menu"
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+    >
       <div className="container mega-grid">
         {[navigation.academic, navigation.tools].map((items, index) => (
           <div key={index}>

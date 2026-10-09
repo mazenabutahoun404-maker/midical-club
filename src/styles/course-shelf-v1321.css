@@ -1,0 +1,514 @@
+/* A persistent, balanced desk; equal side columns keep the shelf centered. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook.course-desk-chrome {
+  display: contents;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-toolbar[data-persistent-desk="true"] {
+  grid-template-columns: minmax(44px, 1fr) minmax(0, 2.5fr) minmax(44px, 1fr);
+  gap: 8px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-toolbar-space {
+  grid-row: 1;
+  min-height: 0;
+  pointer-events: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-heading {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 48px;
+  gap: 6px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .shelf-heading-caption {
+  color: var(--book-ink);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 135px;
+  font-size: 11px;
+  line-height: 16px;
+}
+.shelf-heading-caption span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.shelf-heading-caption bdi {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--book-muted);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf {
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 64px;
+  gap: 0;
+  width: 100%;
+  max-width: 520px;
+  justify-self: center;
+  min-width: 0;
+  height: 64px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf-controls {
+  grid-column: 3;
+  justify-self: end;
+}
+/* A top-mounted rack: beveled rail, shallow recess and concealed brackets. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .course-shelf-lip {
+  top: 0px;
+  bottom: auto;
+  inset-inline-start: 50%;
+  inset-inline-end: auto;
+  width: min(var(--shelf-content-width, 260px), calc(100% - 88px));
+  height: 6px;
+  transform: translateX(-50%);
+  border: 1px solid var(--book-rule);
+  border-top-color: var(--book-highlight);
+  border-radius: 1px 1px 3px 3px;
+  background: linear-gradient(
+    180deg,
+    var(--book-paper),
+    var(--book-paper-side) 45%,
+    var(--book-rule)
+  );
+  box-shadow:
+    inset 0 1px 0 var(--book-highlight),
+    inset 0 -1px 1px var(--book-shadow),
+    0 2px 3px var(--book-shadow);
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 32;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[dir="rtl"]
+  .course-shelf
+  .course-shelf-lip {
+  transform: translateX(50%);
+}
+.course-shelf-lip i {
+  position: absolute;
+  width: 12px;
+  height: 3px;
+  border-radius: 0 0 2px 2px;
+  background: var(--book-rule);
+  bottom: 0px;
+}
+.course-shelf-lip i:first-child {
+  inset-inline-start: 16px;
+}
+.course-shelf-lip i:last-child {
+  inset-inline-end: 16px;
+}
+.course-shelf-lip::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  inset-inline: 2px;
+  height: 3px;
+  background: var(--book-paper-side);
+  border-top: 1px solid var(--book-highlight);
+  transform: skewX(-16deg);
+  pointer-events: none;
+}
+.course-shelf-window::before {
+  content: "";
+  position: absolute;
+  inset-inline: 44px;
+  top: 0;
+  height: 12px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(180deg, var(--book-shadow), transparent);
+  box-shadow: inset 0 2px 2px var(--book-shadow);
+  pointer-events: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .course-shelf-window {
+  height: 68px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .course-shelf-books {
+  width: max-content;
+  min-width: 100%;
+  height: 64px;
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  justify-content: center;
+  align-items: start;
+  overflow: visible;
+  box-sizing: border-box;
+}
+.course-shelf-scroll {
+  position: absolute;
+  inset-inline: 44px;
+  inset-block: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pinch-zoom;
+  cursor: grab;
+}
+.course-shelf-scroll::-webkit-scrollbar {
+  display: none;
+}
+.course-shelf[data-dragging="true"] .course-shelf-scroll {
+  cursor: grabbing;
+  user-select: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book {
+  position: relative;
+  flex: 0 0 84px;
+  width: 84px;
+  height: 64px;
+  clip-path: inset(0px 0 4px round 2px);
+  transition: clip-path 220ms cubic-bezier(0.22, 0.72, 0.22, 1);
+  transform: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book[aria-current="page"] {
+  clip-path: inset(0px 0 4px round 2px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book:is(:hover, :focus-visible) {
+  clip-path: inset(0px 0 4px round 2px);
+  transform: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book
+  .shelf-book-cover {
+  top: -100px;
+  height: 112px;
+  transform: none;
+  transition: transform 240ms cubic-bezier(0.22, 0.72, 0.22, 1);
+  background: var(--shelf-gradient);
+  border-inline-start: 3px solid #fff7ed22;
+  color: #fff7ed;
+  overflow: hidden;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book-cover
+  bdi {
+  position: absolute;
+  inset-inline: 8px;
+  bottom: 4px;
+  font-size: 9px;
+  line-height: 10px;
+  font-weight: 700;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book-cover
+  strong {
+  position: absolute;
+  inset-inline: 8px;
+  bottom: 18px;
+  color: inherit;
+  font-size: 10px;
+  line-height: 12px;
+  max-height: 36px;
+  -webkit-line-clamp: 3;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book[aria-current="page"]
+  .shelf-book-cover {
+  outline: 1px solid var(--book-highlight);
+  outline-offset: -2px;
+  transform: translateY(4px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book
+  .shelf-book-cover
+  i {
+  display: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book[aria-current="page"]
+  .shelf-book-cover
+  i {
+  display: block;
+  position: absolute;
+  inset-inline-end: 4px;
+  top: auto;
+  bottom: 2px;
+  width: 3px;
+  height: 10px;
+  background: #f1d18c;
+}
+.shelf-browse {
+  position: absolute;
+  top: 8px;
+  height: 44px;
+  width: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  color: var(--book-ink);
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 35;
+}
+.shelf-browse-before {
+  inset-inline-start: 0;
+}
+.shelf-browse-after {
+  inset-inline-end: 0;
+}
+.shelf-browse:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+.shelf-browse:is(:hover, :focus-visible):enabled {
+  background: var(--book-paper-side);
+}
+.shelf-browse:focus-visible {
+  outline: 2px solid var(--book-ink);
+  outline-offset: -3px;
+}
+/* Material images are shared and subtle; lettering and PDFs stay sharp HTML. */
+.course-study-edition .study-notebook {
+  --leather-tile: url("../assets/materials/leather-pebbled.webp");
+}
+.course-study-edition
+  .study-notebook:is([data-course-tone="olive"], [data-course-tone="purple"]) {
+  --leather-tile: url("../assets/materials/leather-smooth.webp");
+}
+.course-study-edition .shelf-book:is(.shelf-book-olive, .shelf-book-purple) {
+  --leather-tile: url("../assets/materials/leather-smooth.webp");
+}
+.course-study-edition
+  :is(.study-opening-cover, .notebook-back-cover, .shelf-book-cover)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--leather-tile);
+  background-size: 192px 192px;
+  opacity: 0.08;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.course-study-edition .study-opening-cover::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed #fff7ed36;
+  border-radius: inherit;
+  pointer-events: none;
+}
+@media (max-width: 1200px) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .notebook-toolbar[data-persistent-desk="true"] {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .shelf-heading-caption {
+    display: none;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book:is([aria-current="page"], :hover, :focus-visible) {
+    clip-path: inset(0px 0 4px round 2px);
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book
+    .shelf-book-cover {
+    top: -100px;
+    transform: translateY(38px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book-cover {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .course-study-edition
+    :is(.study-opening-cover, .notebook-back-cover, .shelf-book-cover)::before {
+    display: none;
+  }
+}
+
+/* Top-mounted shelf: covers emerge directly from the screen edge. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf {
+  margin-top: -6px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-shelf
+  .shelf-book:is(:hover, :focus-visible)
+  .shelf-book-cover {
+  transform: translateY(44px);
+}
+@media (hover: none), (pointer: coarse) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book:is([aria-current="page"], :hover, :focus-visible)
+    .shelf-book-cover {
+    transform: translateY(38px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .course-shelf
+    .shelf-book
+    .shelf-book-cover {
+    transition: none;
+  }
+}

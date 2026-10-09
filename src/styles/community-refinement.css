@@ -68,7 +68,7 @@
   background: linear-gradient(
     125deg,
     var(--community-paper),
-    var(--tone-surface-inset, #f3e6de)
+    var(--tone-surface-coral, #f3e6de)
   );
   box-shadow: none;
 }
@@ -230,7 +230,7 @@
   padding: 16px;
 }
 .community-v5 .portal-medical-icon {
-  background: var(--tone-surface-inset, #f4dfda);
+  background: var(--tone-surface-coral, #f4dfda);
 }
 .community-v5 :is(.journal-card-signal, .reading-signal) {
   display: none;

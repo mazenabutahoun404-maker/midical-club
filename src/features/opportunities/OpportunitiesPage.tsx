@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState } from "react";
 import {
   Bookmark,
@@ -110,7 +111,7 @@ export default function OpportunitiesPage() {
   ] as const;
   return (
     <div className="discovery-page opportunity-hub container">
-      <section className="discovery-hero opportunity-discovery-hero">
+      <section className="discovery-hero opportunity-discovery-hero artwork-scene">
         <div className="discovery-hero-copy">
           <span className="eyebrow">{label("opportunitiesHubEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
@@ -118,14 +119,7 @@ export default function OpportunitiesPage() {
           </h1>
           <p>{label("opportunitiesHubBody")}</p>
         </div>
-        <div className="door-sculpture" aria-hidden="true">
-          <i />
-          <i />
-          <span>
-            <Sparkles size={27} />
-          </span>
-          <b />
-        </div>
+        <HeroArtwork section="involved" />
       </section>
       <section
         className="discovery-controls"

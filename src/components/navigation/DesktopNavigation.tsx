@@ -1,3 +1,4 @@
+import { NavigationSelection } from "./NavigationSelection";
 import { NotebookFittings } from "./NotebookFittings";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -54,14 +55,47 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
   const location = useLocation();
   const [expanded, setExpanded] = useState(false);
   const root = useRef<HTMLElement>(null);
-  const trigger = useRef<HTMLButtonElement>(null);
+  const learnLink = useRef<HTMLAnchorElement>(null);
+  const learnArea = useRef<HTMLDivElement>(null);
+  const openTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const cancelLearningTimers = () => {
+    clearTimeout(openTimer.current);
+    clearTimeout(closeTimer.current);
+  };
+  const closeLearning = () => {
+    cancelLearningTimers();
+    setExpanded(false);
+  };
+  const keepLearningOpen = () => {
+    cancelLearningTimers();
+  };
+  const leaveLearning = () => {
+    cancelLearningTimers();
+    closeTimer.current = setTimeout(() => {
+      const focused = document.activeElement;
+      if (
+        learnArea.current?.contains(focused) ||
+        root.current?.querySelector("#learn-menu")?.contains(focused)
+      )
+        return;
+      setExpanded(false);
+    }, 220);
+  };
   const { scrollArea, scrollCues } = useNavigationScrollCues(
     `${location.pathname}:${navigation}:${expanded}`,
   );
-  useEffect(() => setExpanded(false), [location.key]);
+  useEffect(() => {
+    closeLearning();
+    return cancelLearningTimers;
+  }, [location.key]);
   useEffect(() => {
     const outside = (event: PointerEvent) => {
-      if (!root.current?.contains(event.target as Node)) setExpanded(false);
+      if (!root.current?.contains(event.target as Node)) closeLearning();
     };
     document.addEventListener("pointerdown", outside);
     return () => document.removeEventListener("pointerdown", outside);
@@ -83,8 +117,8 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
       aria-label={label("mainNavigation")}
       onKeyDown={(event) => {
         if (event.key === "Escape" && expanded) {
-          setExpanded(false);
-          trigger.current?.focus();
+          closeLearning();
+          learnLink.current?.focus();
         }
       }}
       onBlur={(event) => {
@@ -92,7 +126,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
           event.relatedTarget &&
           !event.currentTarget.contains(event.relatedTarget)
         )
-          setExpanded(false);
+          closeLearning();
       }}
     >
       <NotebookFittings axis="rail" />
@@ -113,6 +147,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
           className="navigation-scroll"
           id="public-sidebar-links"
         >
+          <NavigationSelection />
           <p className="navigation-label">{label("exploreLabel")}</p>
           <nav className="navigation-primary" aria-label={label("discover")}>
             <NavigationHint label={label("home")}>
@@ -125,17 +160,32 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                 <span>{label("home")}</span>
               </AppLink>
             </NavigationHint>
-            <div className="learn-disclosure">
+            <div
+              className="learn-disclosure"
+              ref={learnArea}
+              onPointerLeave={leaveLearning}
+            >
               <NavigationHint label={label("learn")}>
-                <button
-                  ref={trigger}
+                <AppLink
+                  href="/learn"
+                  ref={learnLink}
                   className={`navigation-item ${active("/learn") ? "active" : ""}`}
-                  aria-expanded={expanded}
+                  aria-current={active("/learn") ? "page" : undefined}
                   aria-controls="learn-menu"
-                  onClick={() => setExpanded((value) => !value)}
+                  aria-expanded={expanded}
+                  onPointerEnter={(event) => {
+                    if (event.pointerType === "touch") return;
+                    cancelLearningTimers();
+                    openTimer.current = setTimeout(
+                      () => setExpanded(true),
+                      140,
+                    );
+                  }}
+                  onClick={closeLearning}
                   onKeyDown={(event) => {
                     if (event.key === "ArrowDown") {
                       event.preventDefault();
+                      cancelLearningTimers();
                       setExpanded(true);
                       requestAnimationFrame(() =>
                         root.current
@@ -146,14 +196,22 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                   }}
                 >
                   <MorphIcon icon={BookOpen} size={20} />
-                  <span>{label("learn")}</span>
-                  <ChevronDown size={15} className="disclosure-chevron" />
-                </button>
+                  <ChevronDown
+                    size={12}
+                    className="learn-disclosure-indicator"
+                    aria-hidden="true"
+                  />
+                  <span className="learn-destination-label">
+                    {label("learn")}
+                  </span>
+                </AppLink>
               </NavigationHint>
               {expanded && navigation !== "horizontal" && (
                 <MegaMenu
                   navigation={site.navigation}
-                  onNavigate={() => setExpanded(false)}
+                  onNavigate={closeLearning}
+                  onPointerEnter={keepLearningOpen}
+                  onPointerLeave={leaveLearning}
                 />
               )}
             </div>
@@ -211,7 +269,9 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
       {expanded && navigation === "horizontal" && (
         <MegaMenu
           navigation={site.navigation}
-          onNavigate={() => setExpanded(false)}
+          onNavigate={closeLearning}
+          onPointerEnter={keepLearningOpen}
+          onPointerLeave={leaveLearning}
         />
       )}
       <div className="navigation-bottom">

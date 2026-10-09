@@ -14,6 +14,7 @@ export function WelcomeSequence() {
     if (
       typeof window === "undefined" ||
       pathname === "/" ||
+      /^\/(?:learn\/courses|my\/learning)\/[^/]+\/?$/.test(pathname) ||
       visitedDocuments.has(document)
     )
       return false;

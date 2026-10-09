@@ -41,8 +41,8 @@ const copy = {
   noReferences: ["References not supplied", "لم تُرفق مراجع"],
   page: ["Page bookmark", "علامة الصفحة"],
   pageHelp: [
-    "Set your page here to restore it next time. PDF viewer scrolling cannot update this bookmark automatically.",
-    "حدّد صفحتك هنا لاستعادتها لاحقاً. التمرير داخل عارض PDF لا يحدّث العلامة تلقائياً.",
+    "Your actual PDF page is saved as you turn. Drag an edge, use the arrows, or enter a page number.",
+    "تُحفظ صفحة PDF عند قلبها. اسحب الحافة أو استخدم الأسهم أو أدخل رقم الصفحة.",
   ],
   minutes: ["min", "دقيقة"],
   resumeAt: ["Resume at", "المتابعة من"],

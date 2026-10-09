@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, TicketCheck, UsersRound, X } from "lucide-react";
 import { toast } from "sonner";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -12,6 +12,12 @@ export function EventRegistrationAction({ event }: { event: ClubEvent }) {
   const { label } = useLocale();
   const registrations = useEventRegistrations();
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [justConfirmed, setJustConfirmed] = useState(false);
+  useEffect(() => {
+    if (!justConfirmed) return;
+    const timeout = window.setTimeout(() => setJustConfirmed(false), 500);
+    return () => window.clearTimeout(timeout);
+  }, [justConfirmed]);
   const registration = registrations.registrations.find(
     (item) => item.eventId === event.id,
   );
@@ -21,6 +27,7 @@ export function EventRegistrationAction({ event }: { event: ClubEvent }) {
   async function join() {
     try {
       const result = await registrations.register(event.id);
+      setJustConfirmed(true);
       toast.success(
         label(
           result.status === "registered"
@@ -36,6 +43,7 @@ export function EventRegistrationAction({ event }: { event: ClubEvent }) {
     try {
       await registrations.cancel(event.id);
       setConfirmCancel(false);
+      setJustConfirmed(false);
       toast.success(label("registrationCancelled"));
     } catch {
       toast.error(label("registrationFailed"));
@@ -48,6 +56,8 @@ export function EventRegistrationAction({ event }: { event: ClubEvent }) {
         <>
           <div
             className="registration-confirmed"
+            data-just-confirmed={justConfirmed || undefined}
+            onAnimationEnd={() => setJustConfirmed(false)}
             data-status={registration.status}
             role="status"
           >

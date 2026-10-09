@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import {
   ArrowUpRight,
   BookOpenCheck,
@@ -19,7 +20,7 @@ export default function ContributionsPage() {
   ] as const;
   return (
     <div className="contributions-v6 contribution-public-page container">
-      <header className="contribution-hero">
+      <header className="contribution-hero artwork-scene">
         <div>
           <span className="eyebrow">{label("contributionsEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
@@ -34,12 +35,7 @@ export default function ContributionsPage() {
             <ArrowUpRight size={17} className="directional" />
           </AppLink>
         </div>
-        <div className="review-gate" aria-hidden="true">
-          <ScanSearch size={32} />
-          <span />
-          <b>REVIEW GATE</b>
-          <small>source · rights · references</small>
-        </div>
+        <HeroArtwork section="involved" />
       </header>
       <section className="workflow-section">
         <span className="eyebrow">{label("contributionWorkflow")}</span>

@@ -1,3 +1,4 @@
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { HeartHandshake, Search, ShieldCheck, Stethoscope } from "lucide-react";
@@ -61,7 +62,7 @@ export default function MentorshipPage() {
   return (
     <div className="mentorship-v6 mentorship-page container">
       <MentorshipNavigation />
-      <header className="mentorship-hero">
+      <header className="mentorship-hero artwork-scene">
         <div>
           <span className="eyebrow">{label("mentorshipEyebrow")}</span>
           <h1 tabIndex={-1} data-page-heading>
@@ -69,16 +70,7 @@ export default function MentorshipPage() {
           </h1>
           <p>{label("mentorshipBody")}</p>
         </div>
-        <div className="conversation-signal" aria-hidden="true">
-          <span>
-            <Stethoscope size={26} />
-          </span>
-          <i />
-          <b />
-          <small>
-            <ShieldCheck size={16} /> VERIFIED PATH
-          </small>
-        </div>
+        <HeroArtwork section="mentorship" />
       </header>
       <section className="mentor-controls" aria-label={label("mentorFilters")}>
         <label className="mentor-search">

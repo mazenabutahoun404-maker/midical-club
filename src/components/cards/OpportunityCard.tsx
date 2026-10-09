@@ -4,6 +4,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { formatDate } from "../../lib/dates";
 import { SaveButton } from "./SaveButton";
 import { AppLink } from "../navigation/AppLink";
+import { opportunityIsOpen, daysFromDemo } from "../../lib/discovery";
 import { opportunityPath } from "../../constants/routes";
 export function OpportunityCard({
   opportunity: o,
@@ -12,7 +13,16 @@ export function OpportunityCard({
 }) {
   const { t, label, locale } = useLocale();
   return (
-    <article className="opportunity">
+    <article
+      className="opportunity"
+      data-status={
+        !opportunityIsOpen(o)
+          ? "closed"
+          : daysFromDemo(o.deadline) <= 14
+            ? "closing-soon"
+            : "open"
+      }
+    >
       <span className="opportunity-icon">
         <Microscope size={22} />
       </span>

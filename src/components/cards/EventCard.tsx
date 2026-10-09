@@ -4,11 +4,21 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { formatDate } from "../../lib/dates";
 import { SaveButton } from "./SaveButton";
 import { AppLink } from "../navigation/AppLink";
+import { eventAvailability } from "../../lib/discovery";
 import { eventPath } from "../../constants/routes";
 export function EventCard({ event: e }: { event: ClubEvent }) {
   const { t, label, locale } = useLocale();
+  const status = eventAvailability(e);
+  const statusKey =
+    status === "open"
+      ? "eventOpen"
+      : status === "upcoming"
+        ? "opensSoon"
+        : status === "waitlist"
+          ? "eventWaitlist"
+          : "registrationClosed";
   return (
-    <article className="event-card">
+    <article className="event-card" data-status={status}>
       <div className="event-top">
         <div className="event-date">
           <span>{formatDate(e.startDate, locale, { month: "short" })}</span>
@@ -19,6 +29,9 @@ export function EventCard({ event: e }: { event: ClubEvent }) {
           <h3>{t(e.title)}</h3>
         </div>
       </div>
+      <span className="event-status" data-status={status}>
+        {label(statusKey)}
+      </span>
       <p className="event-place">
         <MapPin size={14} />
         {t(e.location)}

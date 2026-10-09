@@ -1,0 +1,931 @@
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
+import {
+  Bookmark,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  SlidersHorizontal,
+  X,
+  ZoomIn,
+  ZoomOut,
+  SunMoon,
+} from "lucide-react";
+import { getAppearancePalette } from "../../app/providers/appearance-palettes";
+import { recolorPdfPaper } from "./pdf-paper-colors";
+import { useAppearance } from "../../app/providers/AppearanceProvider";
+import { useLocale } from "../../app/providers/LocaleProvider";
+import type { Resource } from "../../types/content";
+import type {
+  PDFDocumentLoadingTask,
+  PdfRasterPool as RasterPool,
+  PdfApi,
+} from "./pdf-engine";
+import { nextSpread, spreadStart, type TurnDirection } from "./page-turn";
+import { TurnLeaf, usePageTurn } from "./usePageTurn";
+import { useStudyTools } from "./StudyTools";
+import "../../vendor/pdfjs/text-layer.css";
+
+const PdfPage = memo(function PdfPage({
+  pool,
+  number,
+  width,
+  selectable = true,
+  query = "",
+  onActivate,
+  paperColors,
+}: {
+  pool: RasterPool;
+  number: number | null;
+  width: number;
+  selectable?: boolean;
+  query?: string;
+  onActivate?: (page: number) => void;
+  paperColors?: { paper: string; ink: string };
+}) {
+  const { t } = useLocale();
+  const canvas = useRef<HTMLCanvasElement>(null),
+    text = useRef<HTMLDivElement>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    number ? "loading" : "ready",
+  );
+  const [ratio, setRatio] = useState(1 / 1.414);
+  const queryRef = useRef(query);
+  queryRef.current = query;
+  function highlight() {
+    const value = queryRef.current.toLocaleLowerCase();
+    text.current
+      ?.querySelectorAll<HTMLSpanElement>("span")
+      .forEach((span) =>
+        span.toggleAttribute(
+          "data-search-match",
+          !!value && !!span.textContent?.toLocaleLowerCase().includes(value),
+        ),
+      );
+  }
+  useEffect(() => {
+    highlight();
+  }, [query]);
+  useEffect(() => {
+    if (!number) return;
+    let cancelled = false;
+    let layer: InstanceType<PdfApi["TextLayer"]> | undefined;
+    setStatus("loading");
+    void pool
+      .get(number, width)
+      .then(async (raster) => {
+        if (cancelled || !canvas.current) return;
+        const target = canvas.current,
+          context = target.getContext("2d");
+        if (!context || !raster.canvas.width)
+          throw new Error("Page raster is unavailable");
+        target.width = raster.canvas.width;
+        target.height = raster.canvas.height;
+        context.drawImage(raster.canvas, 0, 0);
+        if (paperColors) {
+          const pixels = context.getImageData(
+            0,
+            0,
+            target.width,
+            target.height,
+          );
+          recolorPdfPaper(pixels.data, paperColors.paper, paperColors.ink);
+          context.putImageData(pixels, 0, 0);
+        }
+        setRatio(raster.viewport.width / raster.viewport.height);
+        if (selectable && text.current) {
+          const container = text.current;
+          container.replaceChildren();
+          container.style.setProperty(
+            "--total-scale-factor",
+            String(raster.viewport.scale * (raster.viewport.userUnit || 1)),
+          );
+          container.style.setProperty("--scale-round-x", "1px");
+          container.style.setProperty("--scale-round-y", "1px");
+          layer = new pool.api.TextLayer({
+            textContentSource: raster.text,
+            container,
+            viewport: raster.viewport,
+          });
+          await layer.render();
+          if (!cancelled) highlight();
+        }
+        if (!cancelled) setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+    return () => {
+      cancelled = true;
+      layer?.cancel();
+    };
+  }, [pool, number, width, selectable, paperColors?.paper, paperColors?.ink]);
+  return (
+    <div
+      className="pdf-paper-page"
+      style={{ width, aspectRatio: ratio } as CSSProperties}
+      data-page-number={number || undefined}
+      data-page-status={status}
+      role={selectable ? "region" : undefined}
+      aria-label={
+        number ? t({ en: "PDF page ", ar: "صفحة PDF " }) + number : undefined
+      }
+      onPointerDown={
+        number && onActivate ? () => onActivate(number) : undefined
+      }
+    >
+      {number && (
+        <>
+          <canvas ref={canvas} aria-hidden="true" />
+          {selectable && <div ref={text} className="textLayer" />}
+        </>
+      )}
+      {status === "loading" && (
+        <span className="pdf-page-loading">
+          {t({ en: "Loading page…", ar: "جارٍ تحميل الصفحة…" })}
+        </span>
+      )}
+      {status === "error" && (
+        <span className="pdf-page-loading" role="status">
+          {t({
+            en: "This page could not be rendered. Open the original file.",
+            ar: "تعذّر عرض هذه الصفحة. افتح الملف الأصلي.",
+          })}
+        </span>
+      )}
+    </div>
+  );
+});
+
+interface SearchMatch {
+  page: number;
+  snippet: string;
+}
+export function PdfBook({
+  item,
+  url,
+  initialPage,
+  initialScroll = 0,
+  onScroll,
+  onPage,
+  onCount,
+  companion = false,
+  onBoundary,
+  canBoundary,
+  boundaryPreview,
+}: {
+  item: Resource;
+  url: string;
+  initialPage: number;
+  initialScroll?: number;
+  onScroll?: (scroll: number) => void;
+  onPage: (page: number) => void;
+  companion?: boolean;
+  onBoundary?: (direction: TurnDirection) => void;
+  canBoundary?: (direction: TurnDirection) => boolean;
+  boundaryPreview?: (direction: TurnDirection) => ReactNode;
+  onCount?: (count: number) => void;
+}) {
+  const { t, dir } = useLocale(),
+    tools = useStudyTools();
+  const { resolvedTheme, colorMode, palette } = useAppearance();
+  const [paperOverride, setPaperOverride] = useState<boolean | null>(null);
+  const darkPaper = paperOverride ?? resolvedTheme === "dark";
+  // Site appearance changes always return the document to its automatic tone.
+  // The reader can then independently choose Original colors again.
+  useLayoutEffect(
+    () => setPaperOverride(null),
+    [resolvedTheme, colorMode, palette],
+  );
+  const paletteDefinition = getAppearancePalette(palette);
+  const paperColors = useMemo(
+    () =>
+      darkPaper
+        ? { paper: paletteDefinition.darkPaper, ink: paletteDefinition.darkInk }
+        : undefined,
+    [darkPaper, paletteDefinition],
+  );
+  const root = useRef<HTMLDivElement>(null),
+    position = useRef(onPage);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const restoredScroll = useRef(false);
+  position.current = onPage;
+  const documentCount = useRef(onCount);
+  documentCount.current = onCount;
+  const [pool, setPool] = useState<RasterPool | null>(null),
+    [error, setError] = useState(false),
+    [retry, setRetry] = useState(0);
+  const [width, setWidth] = useState(Math.max(280, window.innerWidth - 80)),
+    [zoom, setZoom] = useState(1);
+
+  const [page, setPage] = useState(Math.max(1, initialPage)),
+    [pageDraft, setPageDraft] = useState(String(Math.max(1, initialPage)));
+  const [password, setPassword] = useState<{
+      update: (value: string) => void;
+      incorrect: boolean;
+    } | null>(null),
+    [passwordText, setPasswordText] = useState("");
+  const [query, setQuery] = useState(""),
+    [searched, setSearched] = useState(""),
+    [matches, setMatches] = useState<SearchMatch[]>([]),
+    [searching, setSearching] = useState(false),
+    [searchError, setSearchError] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchToken = useRef(0),
+    searchInput = useRef<HTMLInputElement>(null);
+  const count = pool?.document.numPages || 1;
+  const twoPages = !companion && width >= 860;
+  const compactControls = width < 640;
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const options = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    if (!optionsOpen || !compactControls) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!options.current?.contains(event.target as Node))
+        setOptionsOpen(false);
+    };
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [optionsOpen, compactControls]);
+  const first = spreadStart(Math.min(page, count), twoPages);
+  const paperWidth = Math.max(
+    160,
+    Math.round(
+      (((width - (twoPages ? 26 : 0) - 4) / (twoPages ? 2 : 1)) * zoom) / 8,
+    ) * 8,
+  );
+  const canTurn = (direction: TurnDirection) =>
+    !!pool &&
+    (nextSpread(first, count, twoPages, direction) !== null ||
+      !!canBoundary?.(direction));
+  const turner = usePageTurn({
+    rtl: dir === "rtl",
+    canTurn,
+    identity: url + ":" + first + ":" + paperWidth + ":" + twoPages,
+    onCommit: (direction) => {
+      const next = nextSpread(first, count, twoPages, direction);
+      if (next !== null) {
+        setPage(next);
+        if (viewportRef.current) viewportRef.current.scrollTop = 0;
+      } else onBoundary?.(direction);
+    },
+  });
+  const turn = turner.turn;
+  const next = turn ? nextSpread(first, count, twoPages, turn.direction) : null;
+  const turningInside = !!turn && next !== null;
+  const frontPage =
+    turn?.direction === 1 && twoPages
+      ? first + 1 <= count
+        ? first + 1
+        : null
+      : first;
+  const backPage =
+    next === null
+      ? null
+      : turn?.direction === -1 && twoPages
+        ? next + 1 <= count
+          ? next + 1
+          : null
+        : next;
+  let left = first,
+    right: number | null = first + 1 <= count ? first + 1 : null;
+  if (turningInside) {
+    if (turn!.direction === 1) {
+      left = turn!.progress >= 0.5 ? next! : first;
+      right = next! + 1 <= count ? next! + 1 : null;
+    } else {
+      left = next!;
+      right =
+        turn!.progress >= 0.5 ? (next! + 1 <= count ? next! + 1 : null) : right;
+    }
+  }
+  useEffect(() => {
+    if (!pool || restoredScroll.current) return;
+    const frame = requestAnimationFrame(() => {
+      if (viewportRef.current) viewportRef.current.scrollTop = initialScroll;
+      restoredScroll.current = true;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pool, paperWidth, initialScroll]);
+  const activate = useCallback((number: number) => setPage(number), []);
+  useEffect(() => {
+    let active = true;
+    let task: PDFDocumentLoadingTask | undefined,
+      rasters: RasterPool | undefined;
+    setError(false);
+    setPool(null);
+    setPassword(null);
+    void import("./pdf-engine")
+      .then(async (engine) => {
+        const opened = await engine.openPdf(url, (update, incorrect) => {
+          if (active) setPassword({ update, incorrect });
+        });
+        task = opened.task;
+        if (!active) {
+          await task.destroy();
+          return;
+        }
+        const document = await task.promise;
+        if (!active) {
+          await task.destroy();
+          return;
+        }
+        rasters = new engine.PdfRasterPool(document, opened.api);
+        documentCount.current?.(document.numPages);
+        setPassword(null);
+        setPool(rasters);
+        setPage((previous) =>
+          Math.min(document.numPages, Math.max(1, previous)),
+        );
+      })
+      .catch(() => {
+        if (active) {
+          setError(true);
+          setPassword(null);
+        }
+      });
+    return () => {
+      active = false;
+      searchToken.current++;
+      rasters?.dispose();
+      void task?.destroy().catch(() => {});
+    };
+  }, [url, retry]);
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    const measure = () => {
+      const nextWidth = element.clientWidth;
+      if (nextWidth > 0) setWidth(nextWidth);
+    };
+    const observer =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver(measure);
+    observer?.observe(element);
+    const viewport = element.querySelector(".pdf-book-viewport");
+    if (viewport) observer?.observe(viewport);
+    window.addEventListener("resize", measure);
+    measure();
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [!!pool]);
+  useEffect(() => {
+    if (pool) {
+      position.current(page);
+      setPageDraft(String(page));
+    }
+  }, [page, pool]);
+  useEffect(() => {
+    if (!companion && pool)
+      tools?.setReader({ id: item.id, title: t(item.title), page });
+  }, [page, pool, companion, item.id, item.title, t, tools?.setReader]);
+  useEffect(() => {
+    if (!pool) return;
+    const nearby = twoPages
+      ? [first, first + 1, first + 2, first + 3, first - 2, first - 1]
+      : [first, first + 1, first - 1];
+    for (const number of nearby.filter((value) => value >= 1 && value <= count))
+      void pool.get(number, paperWidth).catch(() => {});
+  }, [pool, first, twoPages, paperWidth, count]);
+  function jump(number: number) {
+    if (!pool || turn) return;
+    setPage(Math.max(1, Math.min(count, Math.floor(number))));
+  }
+  async function findInFile() {
+    const value = query.trim().slice(0, 160),
+      token = ++searchToken.current;
+    setMatches([]);
+    setSearched(value);
+    setSearchError(false);
+    if (!value || !pool) {
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    const results: SearchMatch[] = [];
+    try {
+      for (let number = 1; number <= count; number++) {
+        if (token !== searchToken.current) return;
+        const text = (
+          await (await pool.document.getPage(number)).getTextContent()
+        ).items
+          .map((item) => item.str || "")
+          .join(" ");
+        const index = text
+          .toLocaleLowerCase()
+          .indexOf(value.toLocaleLowerCase());
+        if (index >= 0)
+          results.push({
+            page: number,
+            snippet: text.slice(
+              Math.max(0, index - 45),
+              index + value.length + 90,
+            ),
+          });
+        if (results.length >= 100) break;
+      }
+      if (token === searchToken.current) setMatches(results);
+    } catch {
+      if (token === searchToken.current) setSearchError(true);
+    } finally {
+      if (token === searchToken.current) setSearching(false);
+    }
+  }
+  const bookmarked = tools?.state.bookmarks[item.id] || [];
+  return (
+    <div
+      ref={root}
+      className="pdf-book"
+      style={
+        {
+          "--pdf-paper-color": paletteDefinition.darkPaper,
+          "--pdf-ink-color": paletteDefinition.darkInk,
+        } as CSSProperties
+      }
+      data-paper-comfort={darkPaper ? "dark" : "original"}
+      data-two-pages={twoPages || undefined}
+      data-turning={!!turn || undefined}
+      onKeyDown={(event) => {
+        if (
+          event.defaultPrevented ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.altKey ||
+          event.shiftKey ||
+          window.getSelection()?.isCollapsed === false ||
+          (event.target as HTMLElement).closest(
+            "input,textarea,select,button,a",
+          )
+        )
+          return;
+        const forward = dir === "rtl" ? "ArrowLeft" : "ArrowRight";
+        if (
+          event.key === forward ||
+          event.key === (dir === "rtl" ? "ArrowRight" : "ArrowLeft")
+        ) {
+          event.preventDefault();
+          turner.request(event.key === forward ? 1 : -1);
+        }
+        if (event.key === "Escape" && turn) {
+          event.preventDefault();
+          event.stopPropagation();
+          turner.cancel();
+        }
+      }}
+    >
+      {pool &&
+        boundaryPreview &&
+        ([-1, 1] as TurnDirection[])
+          .filter(
+            (direction) =>
+              nextSpread(first, count, twoPages, direction) === null &&
+              canBoundary?.(direction),
+          )
+          .map((direction) => (
+            <div key={direction} hidden aria-hidden="true" inert>
+              {boundaryPreview(direction)}
+            </div>
+          ))}
+      <div
+        className="pdf-book-toolbar"
+        data-compact={compactControls || undefined}
+      >
+        <button
+          type="button"
+          className="notebook-icon-button"
+          disabled={!canTurn(-1) || !!turn}
+          aria-label={t({ en: "Previous page", ar: "الصفحة السابقة" })}
+          onClick={() => turner.request(-1)}
+        >
+          <ChevronLeft className="directional" size={18} />
+        </button>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            const number = Number(pageDraft);
+            if (Number.isFinite(number)) jump(number);
+            else setPageDraft(String(page));
+          }}
+          className="pdf-page-jump"
+        >
+          <input
+            type="number"
+            min={1}
+            max={count}
+            value={pageDraft}
+            disabled={!pool || !!turn}
+            aria-label={t({ en: "Page bookmark", ar: "علامة الصفحة" })}
+            onChange={(event) => setPageDraft(event.target.value)}
+            onBlur={() => {
+              const number = Number(pageDraft);
+              if (Number.isFinite(number)) jump(number);
+            }}
+          />
+          <span aria-hidden="true">/ {pool ? count : "…"}</span>
+        </form>
+        <button
+          type="button"
+          className="notebook-icon-button"
+          disabled={!canTurn(1) || !!turn}
+          aria-label={t({ en: "Next page", ar: "الصفحة التالية" })}
+          onClick={() => turner.request(1)}
+        >
+          <ChevronRight className="directional" size={18} />
+        </button>
+        <details
+          ref={options}
+          className="pdf-reader-options"
+          open={!compactControls || optionsOpen}
+          onToggle={(event) => {
+            if (compactControls) setOptionsOpen(event.currentTarget.open);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape" && compactControls && optionsOpen) {
+              event.stopPropagation();
+              setOptionsOpen(false);
+              options.current
+                ?.querySelector("summary")
+                ?.focus({ preventScroll: true });
+            }
+          }}
+        >
+          <summary aria-label={t({ en: "PDF tools", ar: "أدوات PDF" })}>
+            <SlidersHorizontal size={18} aria-hidden="true" />
+          </summary>
+          <div className="pdf-reader-options-content">
+            <strong className="pdf-options-label">
+              {t({ en: "PDF tools", ar: "أدوات PDF" })}
+            </strong>
+            <span className="pdf-toolbar-divider" />
+            <button
+              type="button"
+              className="notebook-icon-button pdf-paper-comfort"
+              title={t({
+                en: "Choose Original colors when inspecting image detail",
+                ar: "اختر الألوان الأصلية عند فحص تفاصيل الصور",
+              })}
+              aria-pressed={darkPaper}
+              aria-label={t(
+                darkPaper
+                  ? {
+                      en: "Show original page colors",
+                      ar: "عرض ألوان الصفحة الأصلية",
+                    }
+                  : { en: "Use dark PDF paper", ar: "استخدام ورق PDF داكن" },
+              )}
+              onClick={() => setPaperOverride(!darkPaper)}
+            >
+              <SunMoon size={18} aria-hidden="true" />
+              <span className="pdf-control-label">
+                {t({ en: "Page colors", ar: "ألوان الصفحات" })}
+              </span>
+            </button>
+            <button
+              type="button"
+              className="notebook-icon-button"
+              disabled={zoom <= 0.75 || !!turn}
+              aria-label={t({ en: "Zoom out", ar: "تصغير" })}
+              onClick={() => setZoom((value) => Math.max(0.75, value - 0.25))}
+            >
+              <ZoomOut size={18} />
+            </button>
+            <button
+              type="button"
+              className="pdf-zoom-reset"
+              disabled={!!turn}
+              aria-label={t({
+                en: "Reset PDF zoom",
+                ar: "إعادة ضبط تكبير PDF",
+              })}
+              onClick={() => setZoom(1)}
+            >
+              {Math.round(zoom * 100)}%
+            </button>
+            <button
+              type="button"
+              className="notebook-icon-button"
+              disabled={zoom >= 1.75 || !!turn}
+              aria-label={t({ en: "Zoom in", ar: "تكبير" })}
+              onClick={() => setZoom((value) => Math.min(1.75, value + 0.25))}
+            >
+              <ZoomIn size={18} />
+            </button>
+            <button
+              type="button"
+              className="notebook-icon-button pdf-find-toggle"
+              disabled={!pool}
+              aria-expanded={searchOpen}
+              aria-label={t({
+                en: "Search this PDF",
+                ar: "البحث في هذا الملف",
+              })}
+              onClick={() => {
+                setSearchOpen((value) => !value);
+                if (compactControls) setOptionsOpen(false);
+                requestAnimationFrame(() =>
+                  searchInput.current?.focus({ preventScroll: true }),
+                );
+              }}
+            >
+              <Search size={18} />
+              <span className="pdf-control-label">
+                {t({ en: "Search this PDF", ar: "البحث في هذا الملف" })}
+              </span>
+            </button>
+            {tools && (
+              <button
+                type="button"
+                className="notebook-icon-button pdf-page-bookmark"
+                disabled={!pool}
+                aria-pressed={bookmarked.includes(page)}
+                aria-label={t(
+                  bookmarked.includes(page)
+                    ? { en: "Remove page bookmark", ar: "إزالة علامة الصفحة" }
+                    : { en: "Bookmark this page", ar: "وضع علامة لهذه الصفحة" },
+                )}
+                onClick={() => tools.toggleBookmark(item.id, page)}
+              >
+                <Bookmark
+                  size={18}
+                  fill={bookmarked.includes(page) ? "currentColor" : "none"}
+                />
+                <span className="pdf-control-label">
+                  {t(
+                    bookmarked.includes(page)
+                      ? { en: "Remove page bookmark", ar: "إزالة علامة الصفحة" }
+                      : {
+                          en: "Bookmark this page",
+                          ar: "وضع علامة لهذه الصفحة",
+                        },
+                  )}
+                </span>
+              </button>
+            )}
+            {bookmarked.length > 0 && (
+              <details className="pdf-bookmark-list">
+                <summary>
+                  {t({ en: "Bookmarks", ar: "العلامات" })}{" "}
+                  <b>{bookmarked.length}</b>
+                </summary>
+                <div>
+                  {bookmarked
+                    .filter((value) => value <= count)
+                    .map((number) => (
+                      <button
+                        key={number}
+                        type="button"
+                        onClick={() => jump(number)}
+                      >
+                        {t({ en: "Page ", ar: "صفحة " })}
+                        {number}
+                      </button>
+                    ))}
+                </div>
+              </details>
+            )}
+          </div>
+        </details>
+      </div>
+      {searchOpen && (
+        <div className="pdf-file-search">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              void findInFile();
+            }}
+          >
+            <input
+              ref={searchInput}
+              value={query}
+              maxLength={160}
+              onChange={(event) => setQuery(event.target.value)}
+              aria-label={t({ en: "Search PDF text", ar: "البحث في نص PDF" })}
+              placeholder={t({
+                en: "Find a term in this file",
+                ar: "ابحث عن مصطلح في الملف",
+              })}
+            />
+            <button type="submit" disabled={!pool || searching}>
+              {t({ en: "Find", ar: "ابحث" })}
+            </button>
+            <button
+              type="button"
+              className="notebook-icon-button"
+              aria-label={t({ en: "Close PDF search", ar: "إغلاق البحث" })}
+              onClick={() => {
+                searchToken.current++;
+                setSearching(false);
+                setSearchOpen(false);
+              }}
+            >
+              <X size={17} />
+            </button>
+          </form>
+          {searched && (
+            <p role="status">
+              {t(
+                searching
+                  ? { en: "Searching…", ar: "جارٍ البحث…" }
+                  : searchError
+                    ? {
+                        en: "Search could not finish.",
+                        ar: "تعذّر إكمال البحث.",
+                      }
+                    : { en: "Matching pages: ", ar: "الصفحات المطابقة: " },
+              )}
+              {!searching &&
+                !searchError &&
+                matches.length + (matches.length >= 100 ? "+" : "")}
+            </p>
+          )}
+          {matches.length > 0 && (
+            <ol>
+              {matches.map((match) => (
+                <li key={match.page}>
+                  <button type="button" onClick={() => jump(match.page)}>
+                    <b>
+                      {t({ en: "Page ", ar: "صفحة " })}
+                      {match.page}
+                    </b>
+                    <span>{match.snippet}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      )}
+      {password && (
+        <form
+          className="pdf-password"
+          onSubmit={(event) => {
+            event.preventDefault();
+            password.update(passwordText);
+            setPasswordText("");
+            setPassword(null);
+          }}
+        >
+          <label>
+            {t({ en: "PDF password", ar: "كلمة مرور PDF" })}
+            <input
+              type="password"
+              autoComplete="off"
+              value={passwordText}
+              onChange={(event) => setPasswordText(event.target.value)}
+            />
+          </label>
+          {password.incorrect && (
+            <p role="alert">
+              {t({
+                en: "Incorrect password. Try again.",
+                ar: "كلمة مرور غير صحيحة. حاول مجدداً.",
+              })}
+            </p>
+          )}
+          <button type="submit">
+            {t({ en: "Unlock file", ar: "فتح الملف" })}
+          </button>
+        </form>
+      )}
+      {error ? (
+        <div className="pdf-load-error" role="status">
+          <p>
+            {t({
+              en: "This PDF could not be rendered here. You can open the original file.",
+              ar: "تعذّر عرض هذا الملف هنا. يمكنك فتح الملف الأصلي.",
+            })}
+          </p>
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            {t({ en: "Open original PDF", ar: "فتح ملف PDF الأصلي" })}
+          </a>
+          <button type="button" onClick={() => setRetry((value) => value + 1)}>
+            {t({ en: "Try again", ar: "حاول مجدداً" })}
+          </button>
+        </div>
+      ) : !pool ? (
+        !password && (
+          <div className="pdf-load-status" role="status">
+            {t({ en: "Opening your document…", ar: "جارٍ فتح مستندك…" })}
+          </div>
+        )
+      ) : (
+        <div className="pdf-book-reading-surface">
+          <div
+            ref={viewportRef}
+            className="pdf-book-viewport"
+            onScroll={(event) => onScroll?.(event.currentTarget.scrollTop)}
+            tabIndex={0}
+            aria-label={t({ en: "PDF reading spread", ar: "صفحتا قراءة PDF" })}
+          >
+            <div
+              className="pdf-book-pages"
+              style={{
+                width: paperWidth * (twoPages ? 2 : 1) + (twoPages ? 26 : 0),
+              }}
+              data-two-pages={twoPages || undefined}
+              data-turn-progress={turn?.progress}
+            >
+              <PdfPage
+                paperColors={paperColors}
+                pool={pool}
+                number={twoPages ? left : turningInside ? next! : first}
+                width={paperWidth}
+                query={searched}
+                onActivate={activate}
+              />
+              {twoPages && (
+                <>
+                  <div className="pdf-spread-gutter" aria-hidden="true" />
+                  <PdfPage
+                    paperColors={paperColors}
+                    pool={pool}
+                    number={right}
+                    width={paperWidth}
+                    query={searched}
+                    onActivate={activate}
+                  />
+                </>
+              )}
+              {turn && next === null && boundaryPreview && (
+                <div className="section-turn-underlay" aria-hidden="true" inert>
+                  {boundaryPreview(turn.direction)}
+                </div>
+              )}
+              {turn && (
+                <TurnLeaf
+                  turn={turn}
+                  rtl={dir === "rtl"}
+                  twoPages={twoPages}
+                  front={
+                    <PdfPage
+                      paperColors={paperColors}
+                      pool={pool}
+                      number={frontPage}
+                      width={paperWidth}
+                      selectable={false}
+                    />
+                  }
+                  back={
+                    next === null && boundaryPreview ? (
+                      boundaryPreview(turn.direction)
+                    ) : (
+                      <PdfPage
+                        paperColors={paperColors}
+                        pool={pool}
+                        number={backPage}
+                        width={paperWidth}
+                        selectable={false}
+                      />
+                    )
+                  }
+                />
+              )}
+            </div>
+          </div>
+          <button
+            type="button"
+            className="page-hand-edge page-hand-previous"
+            disabled={!canTurn(-1)}
+            aria-label={t({
+              en: "Turn previous page",
+              ar: "قلب الصفحة السابقة",
+            })}
+            onClick={() => turner.request(-1)}
+          >
+            <ChevronLeft className="directional" size={17} />
+          </button>
+          <button
+            type="button"
+            className="page-hand-edge page-hand-next"
+            disabled={!canTurn(1)}
+            aria-label={t({
+              en: "Turn next page",
+              ar: "قلب الصفحة التالية",
+            })}
+            onClick={() => turner.request(1)}
+          >
+            <ChevronRight className="directional" size={17} />
+          </button>
+        </div>
+      )}
+      {pool && (
+        <span className="sr-only" role="status">
+          {t({ en: "Page ", ar: "صفحة " })}
+          {page} / {count}
+        </span>
+      )}
+    </div>
+  );
+}

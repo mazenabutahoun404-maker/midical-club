@@ -27,7 +27,7 @@
   --book-cover-light: #976846;
   --book-tab: #f0e3d5;
   --book-paper: var(--tone-surface-raised, #fffdf8);
-  --book-paper-side: var(--tone-surface-inset, #f6f0e6);
+  --book-paper-side: var(--tone-surface-amber, #f6f0e6);
   --book-ink: #3e3027;
   --book-muted: #716151;
   --book-rule: #d7c9b5;

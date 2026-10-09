@@ -10,7 +10,7 @@ export const initialHeaderScroll = (y = 0): HeaderScrollState => ({
   distance: 0,
   hidden: false,
 });
-/** Directional hysteresis: a deliberate 200px descent hides, a 50px ascent reveals. */
+/** Directional hysteresis: a deliberate 200px descent hides, a 300px ascent reveals. */
 export function advanceHeaderScroll(
   state: HeaderScrollState,
   nextY: number,
@@ -18,8 +18,7 @@ export function advanceHeaderScroll(
 ): HeaderScrollState {
   const y = Math.max(0, nextY);
   const delta = y - state.y;
-  if (held || y === 0 || (y <= 20 && delta < 0))
-    return initialHeaderScroll(y);
+  if (held || y === 0 || (y <= 20 && delta < 0)) return initialHeaderScroll(y);
   if (Math.abs(delta) < 0.5) return { ...state, y };
   const direction = Math.sign(delta);
   let distance =
@@ -29,7 +28,7 @@ export function advanceHeaderScroll(
   let hidden = state.hidden;
   if (
     (!hidden && direction === 1 && y >= 200 && distance >= 200) ||
-    (hidden && direction === -1 && distance >= 50)
+    (hidden && direction === -1 && distance >= 300)
   ) {
     hidden = !hidden;
     distance = 0;

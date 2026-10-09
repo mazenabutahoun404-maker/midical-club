@@ -11,7 +11,7 @@ import { useLocale } from "../providers/LocaleProvider";
 
 export function AdminLayout() {
   const { navigation, sidebarCollapsed } = useAppearance();
-  const adaptive = useAdaptiveNavigation(true);
+  const adaptive = useAdaptiveNavigation();
   const { label } = useLocale();
   return (
     <div
@@ -19,7 +19,7 @@ export function AdminLayout() {
       data-navigation={navigation}
       data-sidebar={sidebarCollapsed ? "collapsed" : "expanded"}
       data-space="admin"
-      data-nav-adaptive="manual"
+      data-nav-adaptive={adaptive.secondary ? "section" : "scroll"}
       data-nav-hidden={adaptive.hidden || undefined}
       data-nav-manual-hidden={adaptive.manualHidden || undefined}
       data-nav-pinned={adaptive.pinned || undefined}

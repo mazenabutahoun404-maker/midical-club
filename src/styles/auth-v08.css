@@ -354,7 +354,7 @@
     linear-gradient(
       145deg,
       var(--tone-surface-raised, #fffdf9),
-      var(--tone-surface-inset, #f6ede8)
+      var(--tone-surface-coral, #f6ede8)
     );
   color: var(--tone-ink-strong, #351c1b);
   box-shadow: 0 30px 100px #0004;
@@ -475,7 +475,7 @@
   color: var(--tone-ink-muted, #806761);
 }
 .auth-password-field button:hover {
-  background: var(--tone-surface-inset, #f4e7e1);
+  background: var(--tone-surface-coral, #f4e7e1);
   color: var(--tone-ink-coral, #942d29);
 }
 .auth-password-field svg {
@@ -576,8 +576,8 @@
   padding: 18px;
   border: 1px solid var(--tone-line-5b4a3f45, #5e9b7b45);
   border-radius: 20px;
-  background: var(--tone-surface-raised, #edf8f1);
-  color: var(--tone-ink-muted, #35694f);
+  background: var(--tone-surface-green, #edf8f1);
+  color: var(--tone-ink-green, #35694f);
   font-size: 0.88rem;
   line-height: 1.6;
 }
@@ -594,8 +594,8 @@
   place-items: center;
   margin: 0 auto 24px;
   border-radius: 28px;
-  background: var(--tone-surface-inset, #e5f4e9);
-  color: var(--tone-ink-muted, #3c7658);
+  background: var(--tone-surface-green, #e5f4e9);
+  color: var(--tone-ink-green, #3c7658);
   box-shadow: 0 16px 45px #37684e1c;
 }
 .auth-success-icon svg {
@@ -639,8 +639,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--tone-ink-muted, #3d7258);
-  background: var(--tone-surface-inset, #e4f1e8);
+  color: var(--tone-ink-green, #3d7258);
+  background: var(--tone-surface-green, #e4f1e8);
 }
 .profile-verified svg {
   width: 14px;
@@ -710,7 +710,7 @@
   display: grid;
   place-items: center;
   border-radius: 16px;
-  background: var(--tone-surface-inset, #efe1da);
+  background: var(--tone-surface-coral, #efe1da);
   color: var(--tone-ink-d3a99a, #8d3d35);
 }
 .profile-security-card p {

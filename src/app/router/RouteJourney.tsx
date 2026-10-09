@@ -17,6 +17,11 @@ import {
 import { LoadingState } from "../../components/feedback/LoadingState";
 
 type Phase = "idle" | "leaving" | "waiting" | "arriving";
+export function courseDeskFamily(path: string) {
+  if (/^\/learn\/courses\/[^/]+\/?$/.test(path)) return "public";
+  if (/^\/my\/learning\/[^/]+\/?$/.test(path)) return "personal";
+  return null;
+}
 export const RouteJourneyContext = createContext<{
   phase: Phase;
   ready: (location: Location) => void;
@@ -34,6 +39,7 @@ export function useRouteJourney(target: Location) {
   currentAction.current = action;
   const positions = useRef(new Map<string, number>());
   const moved = useRef(false);
+  const deskSwitch = useRef(false);
   const completed = useRef("");
   const timers = useRef<number[]>([]);
   const frames = useRef<number[]>([]);
@@ -65,6 +71,22 @@ export function useRouteJourney(target: Location) {
     hashObserver.current?.disconnect();
     timers.current = [];
     frames.current = [];
+    // Only the keyed reader turns over between courses in the same desk.
+    // The surrounding shelf never fades, scrolls to the top or becomes inert.
+    if (
+      old.pathname !== target.pathname &&
+      courseDeskFamily(old.pathname) &&
+      courseDeskFamily(old.pathname) === courseDeskFamily(target.pathname)
+    ) {
+      deskSwitch.current = true;
+      moved.current = false;
+      visible.current = target;
+      setLocation(target);
+      setPhase("idle");
+      document.documentElement.style.removeProperty("--route-hold-height");
+      return;
+    }
+    deskSwitch.current = false;
     if (old.pathname === target.pathname) {
       visible.current = target;
       setLocation(target);
@@ -103,6 +125,11 @@ export function useRouteJourney(target: Location) {
     )
       return;
     completed.current = `${arrived.key}:${arrived.hash}`;
+    if (deskSwitch.current) {
+      deskSwitch.current = false;
+      setPhase("idle");
+      return;
+    }
     const root = document.documentElement;
     root.style.removeProperty("--route-hold-height");
     const previousBehavior = root.style.scrollBehavior;

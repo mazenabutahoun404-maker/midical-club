@@ -1,3 +1,4 @@
+import { appearancePalettes } from "../../app/providers/appearance-palettes";
 import { UtilityGlyph } from "./UtilityGlyph";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { NavigationHint } from "./NavigationHint";
@@ -12,8 +13,9 @@ import {
 import { useLocale } from "../../app/providers/LocaleProvider";
 export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
   const paths = useWorkspacePaths();
-  const { navigation, setNavigation, persisted } = useAppearance();
-  const { label } = useLocale();
+  const { navigation, setNavigation, persisted, palette, setPalette } =
+    useAppearance();
+  const { label, t } = useLocale();
   const [open, setOpen] = useState(false);
   const location = useLocation();
   useEffect(() => setOpen(false), [location.key]);
@@ -63,6 +65,44 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
             <SlidersHorizontal size={25} />
           </span>
         </div>
+        <fieldset className="appearance-palettes">
+          <legend>{t({ en: "Reading palette", ar: "ألوان القراءة" })}</legend>
+          <p>
+            {t({
+              en: "Choose a palette; the light / dark / system button still works.",
+              ar: "اختر الألوان؛ يبقى زر الفاتح والداكن وحسب الجهاز متاحاً.",
+            })}
+          </p>
+          <div className="appearance-palette-grid">
+            {appearancePalettes.map((choice) => (
+              <label
+                key={choice.id}
+                className="appearance-palette-option"
+                data-selected={palette === choice.id || undefined}
+              >
+                <input
+                  type="radio"
+                  name="appearance-palette"
+                  value={choice.id}
+                  checked={palette === choice.id}
+                  onChange={() => setPalette(choice.id)}
+                />
+                <span className="palette-swatches" aria-hidden="true">
+                  {choice.swatches.map((color) => (
+                    <i key={color} style={{ backgroundColor: color }} />
+                  ))}
+                </span>
+                <span>
+                  <strong>{t(choice.title)}</strong>
+                  <small>{t(choice.description)}</small>
+                </span>
+                {palette === choice.id && (
+                  <Check size={15} aria-hidden="true" />
+                )}
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <fieldset className="layout-options">
           <legend>{label("desktopNavigation")}</legend>
           {(["vertical", "horizontal"] as NavigationLayout[]).map((layout) => (

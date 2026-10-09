@@ -1,0 +1,31 @@
+/* Lock only the course route; each book/PDF surface owns its own scrolling. */
+html[data-study-route="true"],
+html[data-study-route="true"] body {
+  height: 100%;
+  overflow: hidden;
+  scrollbar-gutter: auto;
+  overscroll-behavior: none;
+}
+html:root body .app-shell[data-study-environment="true"] {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  --study-header-offset: 0px;
+}
+html:root body .app-shell[data-study-environment="true"] > .app-content {
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+html:root body .app-shell[data-study-environment="true"] main {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+html:root
+  body
+  .app-shell[data-study-environment="true"]
+  :is(.personal-footnote, .workspace-warning) {
+  display: none;
+}
