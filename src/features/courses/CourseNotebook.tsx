@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import type { PageAnchor } from "../../types/study-hub";
 import { CourseEmptySection } from "./CourseEmptySection";
 import "../../styles/course-reading-v1334.css";
+import "../../styles/reader-layout-v1337.css";
 import { CoursePublisherNotes } from "./CoursePublisherNotes";
 import { StudentNotes } from "../utilities/StudentNotes";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -1175,42 +1176,49 @@ export function CourseNotebook({
                     back={boundaryPreview(handTurn.turn.direction)}
                   />
                 )}
-                <button
-                  type="button"
-                  className="page-hand-edge page-hand-previous"
-                  disabled={!canStep(-1)}
-                  aria-label={t({
-                    en: "Previous section",
-                    ar: "القسم السابق",
-                  })}
-                  onClick={() => {
-                    handSnapshot.current = captureSectionPage(
-                      page.current,
-                      true,
-                    );
-                    handTurn.request(-1);
-                  }}
+                <nav
+                  className="notebook-section-turn-controls"
+                  aria-label={t({ en: "Section navigation", ar: "التنقل بين الأقسام" })}
                 >
-                  <ChevronLeft className="directional" size={17} />
-                </button>
-                <button
-                  type="button"
-                  className="page-hand-edge page-hand-next"
-                  disabled={!canStep(1)}
-                  aria-label={t({
-                    en: "Next section",
-                    ar: "القسم التالي",
-                  })}
-                  onClick={() => {
-                    handSnapshot.current = captureSectionPage(
-                      page.current,
-                      false,
-                    );
-                    handTurn.request(1);
-                  }}
-                >
-                  <ChevronRight className="directional" size={17} />
-                </button>
+                  <button
+                    type="button"
+                    className="notebook-section-turn-button"
+                    disabled={!canStep(-1) || !!handTurn.turn}
+                    aria-label={t({
+                      en: "Previous section",
+                      ar: "القسم السابق",
+                    })}
+                    onClick={() => {
+                      if (handTurn.turn) return;
+                      handSnapshot.current = captureSectionPage(
+                        page.current,
+                        true,
+                      );
+                      handTurn.request(-1);
+                    }}
+                  >
+                    <ChevronLeft className="directional" size={17} />
+                  </button>
+                  <button
+                    type="button"
+                    className="notebook-section-turn-button"
+                    disabled={!canStep(1) || !!handTurn.turn}
+                    aria-label={t({
+                      en: "Next section",
+                      ar: "القسم التالي",
+                    })}
+                    onClick={() => {
+                      if (handTurn.turn) return;
+                      handSnapshot.current = captureSectionPage(
+                        page.current,
+                        false,
+                      );
+                      handTurn.request(1);
+                    }}
+                  >
+                    <ChevronRight className="directional" size={17} />
+                  </button>
+                </nav>
               </>
             )}
           </section>

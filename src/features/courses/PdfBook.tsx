@@ -45,6 +45,7 @@ import "../../styles/course-reading-v1334.css";
 import "../../vendor/pdfjs/text-layer.css";
 import "./pdf-reader-base.css";
 import "./pdf-controls.css";
+import "../../styles/reader-layout-v1337.css";
 
 const emptyMargins = {
   owner: null, open: false, placing: false, panel: null, notes: [] as MarginNote[],
@@ -305,6 +306,7 @@ export function PdfBook({
     [retry, setRetry] = useState(0);
   const [width, setWidth] = useState(Math.max(280, window.innerWidth - 80)),
     [zoom, setZoom] = useState(1);
+  const [readingWidth, setReadingWidth] = useState(Math.max(1, width - (width < 520 ? 0 : 104)));
 
   const [page, setPage] = useState(Math.max(1, initialPage)),
     [pageDraft, setPageDraft] = useState(String(Math.max(1, initialPage)));
@@ -337,7 +339,7 @@ export function PdfBook({
     onPlace: placeMargin,
   };
   const count = pool?.document.numPages || 1;
-  const twoPages = !companion && width >= 860;
+  const twoPages = !companion && readingWidth >= 860;
   const compactControls = width < 760;
   const [optionsOpen, setOptionsOpen] = useState(false);
   const options = useRef<HTMLDetailsElement>(null);
@@ -351,11 +353,12 @@ export function PdfBook({
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [optionsOpen, compactControls]);
   const first = spreadStart(Math.min(page, count), twoPages);
-  const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(width, twoPages, zoom);
+  const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(readingWidth, twoPages, zoom);
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
     const measure = (viewportWidth: number) => {
+      if (viewportWidth > 0) setReadingWidth(viewportWidth);
       const limit = pdfPanLimit(spreadWidth, viewportWidth);
       setPanLimit(limit);
       const offset = pdfPanOffset(viewport.scrollLeft, limit);
@@ -514,7 +517,11 @@ export function PdfBook({
     const element = root.current;
     if (!element) return;
     const measure = (nextWidth: number) => {
-      if (nextWidth > 0) setWidth(nextWidth);
+      if (nextWidth <= 0) return;
+      setWidth(nextWidth);
+      // Match the reserved 44px rails and 8px gaps until the viewport is mounted.
+      if (!viewportRef.current)
+        setReadingWidth(Math.max(1, nextWidth - (nextWidth < 520 ? 0 : 104)));
     };
     const observer =
       typeof ResizeObserver === "undefined"
@@ -1017,7 +1024,11 @@ export function PdfBook({
           </div>
         )
       ) : (
-        <div className="pdf-book-reading-surface">
+        <div
+          className="pdf-book-reading-surface"
+          data-turn-layout={width < 520 ? "row" : "rails"}
+          data-pannable={panLimit > 1 || undefined}
+        >
           <div
             ref={viewportRef}
             className="pdf-book-viewport"

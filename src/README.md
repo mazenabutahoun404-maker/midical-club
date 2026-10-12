@@ -1,6 +1,6 @@
-# Current release: MedClub V0.13.36
+# Current release: MedClub V0.13.39
 
-Read [V0.13.36-PDF-READER-STABILITY.md](./V0.13.36-PDF-READER-STABILITY.md) for this release, integration instructions,
+Read [V0.13.39-CAMPUS-NIGHT-RTL.md](./V0.13.39-CAMPUS-NIGHT-RTL.md) for this release, integration instructions,
 verification and remaining limits. The V0.11 document below is retained as historical context.
 
 ---

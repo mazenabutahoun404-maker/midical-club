@@ -1,0 +1,163 @@
+/* Section turns have their own row, outside the scrolling file/card actions. */
+html:root body .course-study-edition .study-environment .study-notebook .notebook-reading-page {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+html:root body .course-study-edition .study-environment .study-notebook .notebook-study-layout {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 0;
+}
+html:root body .course-study-edition .study-environment .study-notebook .notebook-section-turn-controls {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding-block: 4px;
+  border-block-start: 1px solid var(--book-rule);
+}
+.notebook-section-turn-button {
+  position: static;
+  display: grid;
+  place-items: center;
+  flex: 0 0 64px;
+  width: 64px;
+  min-width: 64px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid var(--book-rule);
+  border-radius: 12px;
+  background: var(--book-tab);
+  color: var(--book-action-ink, var(--book-ink));
+  cursor: pointer;
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+.notebook-section-turn-button:not(:disabled):hover {
+  background: var(--book-paper-side);
+  transform: translateY(-1px);
+}
+.notebook-section-turn-button:not(:disabled):active { transform: scale(.96); }
+.notebook-section-turn-button:disabled { opacity: .4; cursor: default; }
+.notebook-section-turn-button:focus-visible { outline: 2px solid var(--book-action-ink, var(--book-ink)); outline-offset: 2px; }
+
+/* PDF turns occupy grid tracks rather than floating over the document/tools. */
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface {
+  display: grid;
+  flex: 1 1 0;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "previous viewport next";
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-pannable="true"] {
+  grid-template-rows: minmax(0, 1fr) 44px;
+  grid-template-areas: "previous viewport next" ". pan .";
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-book-viewport,
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-book-viewport[data-pannable="true"] {
+  grid-area: viewport;
+  min-width: 0;
+  min-height: 0;
+  padding-bottom: 1px;
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .page-hand-edge {
+  position: static;
+  inset: auto;
+  transform: none;
+  align-self: center;
+  width: 44px;
+  min-width: 44px;
+  height: clamp(120px, 32vh, 280px);
+  min-height: 0;
+  max-height: 100%;
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .page-hand-previous { grid-area: previous; }
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .page-hand-next { grid-area: next; }
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-pan-control {
+  position: static;
+  inset: auto;
+  transform: none;
+  grid-area: pan;
+  justify-self: center;
+  width: min(260px, 100%);
+  min-width: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) 64px;
+  grid-template-areas: "viewport viewport" "previous next";
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"][data-pannable="true"] {
+  grid-template-rows: minmax(0, 1fr) 44px 64px;
+  grid-template-areas: "viewport viewport" "pan pan" "previous next";
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] > .page-hand-edge {
+  width: 72px;
+  min-width: 64px;
+  height: 64px;
+  border-radius: 12px;
+}
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] > .page-hand-previous { justify-self: start; }
+html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] > .page-hand-next { justify-self: end; }
+
+/* An explicit material layer stays above the toolbar background and below text. */
+html:root body .course-study-edition .study-environment .study-notebook .notebook-toolbar.course-header-material {
+  isolation: isolate;
+  background: transparent;
+}
+html:root[data-palette][data-theme] body .course-study-edition .study-environment .study-notebook .notebook-toolbar.course-header-material.course-header-material::before { content: none; }
+html:root body .course-study-edition .study-environment .study-notebook .course-header-material > .course-header-leather {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--book-cover);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 54' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1000V2C994 2 994 50 980 50H850C810 50 800 54 750 54H250C200 54 190 50 150 50H20C6 50 6 2 0 2Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 54' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1000V2C994 2 994 50 980 50H850C810 50 800 54 750 54H250C200 54 190 50 150 50H20C6 50 6 2 0 2Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+html:root body .course-study-edition .study-environment .study-notebook .course-header-leather::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--leather-tile);
+  background-size: 192px 192px;
+  opacity: .78;
+  mix-blend-mode: soft-light;
+}
+html:root body .course-study-edition .study-environment .study-notebook .course-header-material > :is(.shelf-heading, .course-shelf, .course-shelf-controls) {
+  position: relative;
+  z-index: 2;
+}
+html:root body .course-study-edition .study-environment .study-notebook .course-header-material > .shelf-header-outline { z-index: 1; }
+@media (forced-colors: none) {
+  html:root body .course-study-edition .study-environment .study-notebook .notebook-toolbar.course-header-material {
+    --book-paper: var(--book-cover);
+    --book-paper-side: var(--book-cover);
+    --book-ink: #fff4e6;
+    --book-muted: #f0ddc8;
+    --book-tab: color-mix(in srgb, var(--book-cover) 90%, #fff4e6);
+    --book-rule: #d4bca3;
+  }
+  html:root body .course-study-edition .study-environment .study-notebook .course-header-leather::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(#00000042, #00000042), color-mix(in srgb, var(--book-cover) 30%, transparent);
+  }
+  html:root body .course-study-edition .study-environment .study-notebook .course-header-material > .shelf-header-outline path { fill: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notebook-section-turn-button { transition: none; }
+}
+@media (forced-colors: active) {
+  html:root body .course-study-edition .study-environment .study-notebook .course-header-material > .course-header-leather { display: none; }
+}

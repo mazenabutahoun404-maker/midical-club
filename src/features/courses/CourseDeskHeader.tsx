@@ -18,6 +18,7 @@ import { CourseShelf } from "./CourseShelf";
 import { CourseShelfControls, ShelfPaperControl } from "./ShelfPaperControl";
 import { useStudyCopy } from "./study-copy";
 import { bookMaterial } from "./book-material";
+import "../../styles/reader-layout-v1337.css";
 
 export interface CourseDeskControls {
   split: boolean;
@@ -73,7 +74,12 @@ export function CourseDeskHeader({
     s = useStudyCopy();
   const { setFocus } = useStudyChrome();
   return (
-    <div className="notebook-toolbar" data-persistent-desk="true">
+    <div
+      className="notebook-toolbar course-header-material"
+      data-persistent-desk="true"
+      data-leather={bookMaterial(course.id)}
+    >
+      <div className="course-header-leather" aria-hidden="true" />
       <svg
         className="shelf-header-outline"
         viewBox="0 0 1000 54"

@@ -144,20 +144,20 @@ export const siteContent: SiteContent = {
   },
   hero: {
     eyebrow: t("YOUR NEXT CHAPTER STARTS HERE", "هنا تبدأ مرحلتك القادمة"),
-    title: t("Learn beyond\nthe lecture.", "تعلّم يتجاوز\nالمحاضرة."),
-    accent: t("Grow together.", "لننمو معاً."),
+    title: t("Learn beyond.", "تعلّم بلا حدود."),
+    accent: t("Belong anywhere.", "انتمِ أينما كنت."),
     description: t(
-      "Your courses, your community, your next opportunity. One place for every chapter of your medical journey.",
-      "مساقاتك ومجتمعك وفرصتك القادمة. مكان يجمع كل مرحلة من رحلتك الطبية.",
+      "A global home for medical students.",
+      "بيت عالمي لطلبة الطب.",
     ),
     primary: {
       id: "learn",
-      label: t("Explore resources", "تصفّح المصادر"),
+      label: t("Explore MedClub", "اكتشف ميدكلب"),
       href: routes.learn,
     },
     secondary: {
       id: "community",
-      label: t("Find your people", "تعرّف على مجتمعك"),
+      label: t("Discover the community", "اكتشف المجتمع"),
       href: routes.community,
     },
     note: t(
