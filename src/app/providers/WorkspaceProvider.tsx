@@ -1,3 +1,9 @@
+import { useAuth } from "./AuthProvider";
+import {
+  workspaceInverse,
+  workspaceActionFingerprint,
+} from "../../lib/workspace-undo";
+import { offerUndo } from "../../components/feedback/undo-action";
 import {
   createContext,
   useContext,
@@ -23,10 +29,14 @@ interface WorkspaceContext {
 }
 const Context = createContext<WorkspaceContext | null>(null);
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
-  const { workspace } = useServices();
-  const { label } = useLocale();
+  const { workspace, auth } = useServices();
+  const { snapshot: authSnapshot } = useAuth();
+  const account = `${authSnapshot.status}:${authSnapshot.user?.id || "guest"}`;
+  const { label, t } = useLocale();
   const profile = useStudentProfile();
   const id = profile.data?.id;
+  const currentId = useRef(id);
+  currentId.current = id;
   const client = useQueryClient();
   const queue = useRef<Promise<unknown>>(Promise.resolve());
   const key = ["workspace", id];
@@ -50,7 +60,49 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       .catch(() => undefined)
       .then(async () => {
         try {
+          const before = (await workspace.get(id)).state;
           const snapshot = await workspace.dispatch(id, action);
+          const inverse = workspaceInverse(before, action);
+          if (inverse) {
+            const expected = workspaceActionFingerprint(snapshot.state, action);
+            offerUndo({
+              message: t(
+                action.type.startsWith("delete") ||
+                  action.type === "toggle-save"
+                  ? { en: "Item removed", ar: "حُذف العنصر" }
+                  : { en: "Changes saved", ar: "حُفظت التغييرات" },
+              ),
+              label: t({ en: "Undo", ar: "تراجع" }),
+              restored: t({ en: "Action undone", ar: "تم التراجع" }),
+              failed: t({
+                en: "Could not undo. This item may have changed.",
+                ar: "تعذّر التراجع. ربما تغيّر هذا العنصر.",
+              }),
+              canRestore: () => currentId.current === id,
+              undo: async () => {
+                const job = queue.current
+                  .catch(() => undefined)
+                  .then(async () => {
+                    const fresh = await auth.getSnapshot();
+                    if (
+                      currentId.current !== id ||
+                      `${fresh.status}:${fresh.user?.id || "guest"}` !== account
+                    )
+                      throw new Error("ACCOUNT_CHANGED");
+                    const current = await workspace.get(id);
+                    if (
+                      workspaceActionFingerprint(current.state, action) !==
+                      expected
+                    )
+                      throw new Error("ITEM_CHANGED");
+                    const restored = await workspace.dispatch(id, inverse);
+                    client.setQueryData(["workspace", id], restored);
+                  });
+                queue.current = job;
+                await job;
+              },
+            });
+          }
           client.setQueryData(["workspace", id], snapshot);
           if (!snapshot.persistent) toast(label("sessionOnly"));
           return true;

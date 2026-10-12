@@ -1,12 +1,28 @@
+export type TimerMode = "focus" | "relax";
+export interface StudyTimer {
+  minutes: number;
+  restMinutes: number;
+  mode: TimerMode;
+  phase: TimerMode | "rest";
+  remaining: number;
+  startedAt: number | null;
+}
 export interface StudyToolState {
   notes: string;
   bookmarks: Record<string, number[]>;
-  timer: { minutes: number; remaining: number; startedAt: number | null };
+  timer: StudyTimer;
 }
 export const emptyStudyTools = (): StudyToolState => ({
   notes: "",
   bookmarks: {},
-  timer: { minutes: 25, remaining: 1500, startedAt: null },
+  timer: {
+    minutes: 25,
+    restMinutes: 5,
+    mode: "focus",
+    phase: "focus",
+    remaining: 1500,
+    startedAt: null,
+  },
 });
 const record = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === "object" && !Array.isArray(value);
@@ -37,11 +53,31 @@ export function normalizeStudyTools(value: unknown): StudyToolState {
         .sort((a, b) => a - b);
     }
   if (record(value.timer)) {
-    const { minutes, remaining, startedAt } = value.timer;
-    if ([5, 15, 25, 45].includes(Number(minutes)))
-      next.timer.minutes = Number(minutes);
-    if (typeof remaining === "number" && Number.isFinite(remaining))
-      next.timer.remaining = Math.max(0, Math.min(2700, remaining));
+    const { minutes, restMinutes, mode, phase, remaining, startedAt } =
+      value.timer;
+    if (
+      typeof minutes === "number" &&
+      Number.isFinite(minutes) &&
+      minutes >= 1 &&
+      minutes <= 180
+    )
+      next.timer.minutes = Math.round(minutes);
+    if (
+      typeof restMinutes === "number" &&
+      Number.isFinite(restMinutes) &&
+      restMinutes >= 0 &&
+      restMinutes <= 60
+    )
+      next.timer.restMinutes = Math.round(restMinutes);
+    next.timer.mode = mode === "relax" ? "relax" : "focus";
+    next.timer.phase =
+      phase === "rest" && next.timer.restMinutes > 0 ? "rest" : next.timer.mode;
+    const duration =
+      next.timer.phase === "rest" ? next.timer.restMinutes : next.timer.minutes;
+    next.timer.remaining =
+      typeof remaining === "number" && Number.isFinite(remaining)
+        ? Math.max(0, Math.min(duration * 60, remaining))
+        : duration * 60;
     if (
       typeof startedAt === "number" &&
       Number.isFinite(startedAt) &&
@@ -83,6 +119,24 @@ export function togglePageBookmark(
       [resourceId]: existing.includes(page)
         ? existing.filter((value) => value !== page)
         : [...existing, page].sort((a, b) => a - b).slice(0, 100),
+    },
+  };
+}
+
+/** One completed phase becomes a paused rest or a completed session, never an unseen auto-start. */
+export function finishStudyTimer(
+  timer: StudyTimer,
+  now: number,
+): { timer: StudyTimer; ended: StudyTimer["phase"] } | null {
+  if (timer.startedAt === null || timerRemaining(timer, now) > 0) return null;
+  const rest = timer.phase !== "rest" && timer.restMinutes > 0;
+  return {
+    ended: timer.phase,
+    timer: {
+      ...timer,
+      phase: rest ? "rest" : timer.mode,
+      remaining: rest ? timer.restMinutes * 60 : 0,
+      startedAt: null,
     },
   };
 }

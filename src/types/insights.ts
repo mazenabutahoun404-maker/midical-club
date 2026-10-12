@@ -41,7 +41,13 @@ export type ContentHealthIssueCode =
 export interface ContentHealthRecord {
   id: string;
   sourceId: string;
-  kind: "resource" | "article" | "contribution" | "homepage" | "event" | "opportunity";
+  kind:
+    | "resource"
+    | "article"
+    | "contribution"
+    | "homepage"
+    | "event"
+    | "opportunity";
   title: Text;
   context: Text;
   updatedAt: string;
@@ -90,8 +96,28 @@ export interface InsightsService {
   getAdminAnalytics: (range: AnalyticsRange) => Promise<AdminAnalyticsSnapshot>;
   getContentHealth: () => Promise<ContentHealthSnapshot>;
   getAcademicRecord: (studentId: string) => Promise<AcademicInsightRecord>;
-  setConfidence: (studentId: string, courseId: string, value: number) => Promise<AcademicInsightRecord>;
-  recordAssessment: (studentId: string, input: AssessmentInput) => Promise<AcademicInsightRecord>;
-  deleteAssessment: (studentId: string, attemptId: string) => Promise<AcademicInsightRecord>;
+  setConfidence: (
+    studentId: string,
+    courseId: string,
+    value: number,
+  ) => Promise<AcademicInsightRecord>;
+  recordAssessment: (
+    studentId: string,
+    input: AssessmentInput,
+  ) => Promise<AcademicInsightRecord>;
+  deleteAssessment: (
+    studentId: string,
+    attemptId: string,
+  ) => Promise<AcademicInsightRecord>;
+  restoreAssessment?: (
+    studentId: string,
+    attempt: AssessmentAttempt,
+  ) => Promise<AcademicInsightRecord>;
+  restoreConfidence?: (
+    studentId: string,
+    courseId: string,
+    before: ConfidenceRecord | null,
+    expected: ConfidenceRecord,
+  ) => Promise<AcademicInsightRecord>;
   subscribe: (studentId: string, listener: () => void) => () => void;
 }

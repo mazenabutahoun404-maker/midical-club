@@ -1,5 +1,5 @@
 import { RouteViewport } from "../router/RouteJourney";
-import { ThemeMenu } from "../../components/navigation/ThemeMenu";
+import { AppearanceSettings } from "../../components/navigation/AppearanceSettings";
 import { Outlet, useLocation } from "react-router-dom";
 import { BookOpenCheck, Fingerprint, ShieldCheck } from "lucide-react";
 import logo from "../../assets/brand/medclub-logo.png";
@@ -35,7 +35,7 @@ export function AuthLayout() {
             {label("authBackHome")}
           </AppLink>
           <LanguageMenu />
-          <ThemeMenu />
+          <AppearanceSettings compact />
         </div>
       </header>
       <aside className="auth-visual" aria-label={label("authFieldTitle")}>

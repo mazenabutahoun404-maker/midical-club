@@ -33,10 +33,10 @@ export function PersonalLayout() {
         {label("skip")}
       </a>
       <AdaptiveNavigation state={adaptive} personal>
-        <PersonalNavigation profile={profile.data} />
+        <PersonalNavigation />
       </AdaptiveNavigation>
       <div className="app-content">
-        {!adaptive.studying && <PersonalHeader />}
+        {!adaptive.studying && <PersonalHeader profile={profile.data} />}
         <main id="main" tabIndex={-1}>
           {!workspace.persistent && (
             <p className="container workspace-warning" role="status">

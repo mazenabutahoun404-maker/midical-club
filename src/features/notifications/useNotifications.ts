@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "../../app/providers/AuthProvider";
 import { useServices } from "../../app/providers/ServicesProvider";
 import { useWorkspace } from "../../app/providers/WorkspaceProvider";
 import {
@@ -19,6 +20,9 @@ import { calendarDate, shiftDay } from "../../lib/calendar";
 import { text } from "../../lib/localize";
 import type { StudentNotification } from "../../types/workspace";
 export function useNotifications() {
+  const { snapshot } = useAuth();
+  const accountId =
+    snapshot.status === "authenticated" ? snapshot.user?.id || null : null;
   const { notifications } = useServices(),
     workspace = useWorkspace();
   const profile = useStudentProfile(),
@@ -33,8 +37,9 @@ export function useNotifications() {
   const recruitmentPositions = useRecruitmentPositions();
   const recruitment = useRecruitmentWorkspace();
   const query = useQuery({
-    queryKey: ["personal", "notifications"],
+    queryKey: ["personal", "notifications", accountId],
     queryFn: notifications.list,
+    enabled: !!accountId,
   });
   const end = shiftDay(DEMO_TODAY, 14);
   const approaching = (value: string) => {

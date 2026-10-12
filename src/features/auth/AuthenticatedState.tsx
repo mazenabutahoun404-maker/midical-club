@@ -1,4 +1,5 @@
-import { CheckCircle2, LogOut } from "lucide-react";
+import { SignOutGlyph } from "../../components/navigation/SignOutGlyph";
+import { CheckCircle2 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -34,10 +35,11 @@ export function AuthenticatedState() {
         <Button
           type="button"
           variant="ghost"
-          className="auth-quiet-action"
+          className="auth-quiet-action sign-out-action"
+          disabled={auth.isPending}
           onClick={() => void auth.signOut()}
         >
-          <LogOut />
+          <SignOutGlyph />
           {label("signOut")}
         </Button>
       </div>

@@ -1,3 +1,4 @@
+import { isPersonalActivityPath } from "./personal-activities";
 import { NavigationSelection } from "./NavigationSelection";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { NotebookFittings } from "./NotebookFittings";
@@ -9,51 +10,37 @@ import {
   BookOpen,
   Bookmark,
   Timer,
-  UserRound,
-  SlidersHorizontal,
-  Sparkles,
   CalendarDays,
-  Bell,
   Menu,
-  CalendarCheck,
-  Telescope,
   HeartHandshake,
-  FileCheck2,
   PackageCheck,
   ClipboardList,
   ContactRound,
   ShieldCheck,
   ArrowUpRight,
-  ChartNoAxesCombined,
+  Layers,
+  Layers2,
 } from "lucide-react";
 import { Modal } from "../ui/Modal";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import type { StudentProfile } from "../../types/student";
 import type { MessageKey } from "../../constants/messages";
 import { AppLink } from "./AppLink";
 import { NavigationHint } from "./NavigationHint";
 import { SidebarToggle } from "./SidebarToggle";
 import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
-import { useAuth } from "../../app/providers/AuthProvider";
 import { useAccess } from "../../admin/governance/useGovernance";
 import { MorphIcon } from "../ui/MorphIcon";
 const items = [
   { href: "/my", label: "mySpace", icon: House },
   { href: "/my/learning", label: "myLearning", icon: BookOpen },
-  { href: "/my/progress", label: "myProgress", icon: ChartNoAxesCombined },
   { href: "/my/library", label: "libraryShort", icon: Bookmark },
   { href: "/my/calendar", label: "calendar", icon: CalendarDays },
-  { href: "/my/notifications", label: "notifications", icon: Bell },
-  { href: "/my/events", label: "myEvents", icon: CalendarCheck },
-  { href: "/my/opportunities", label: "myOpportunities", icon: Telescope },
+  { href: "/my/activities", label: "myActivities", icon: Layers },
   { href: "/my/mentorship", label: "myMentorship", icon: HeartHandshake },
-  { href: "/my/contributions", label: "myContributions", icon: FileCheck2 },
   { href: "/my/orders", label: "myOrders", icon: PackageCheck },
   { href: "/my/applications", label: "myApplications", icon: ClipboardList },
   { href: "/my/team", label: "teamProfile", icon: ContactRound },
   { href: "/my/focus", label: "myFocus", icon: Timer },
-  { href: "/my/profile", label: "myProfile", icon: UserRound },
-  { href: "/my/settings", label: "personalSettings", icon: SlidersHorizontal },
 ] satisfies { href: string; label: MessageKey; icon: typeof House }[];
 const phonePrimaryHrefs = new Set([
   "/my",
@@ -61,11 +48,10 @@ const phonePrimaryHrefs = new Set([
   "/my/library",
   "/my/calendar",
 ]);
-export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
-  const { label, t } = useLocale();
+export function PersonalNavigation() {
+  const { label } = useLocale();
   const { pathname } = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);
-  const auth = useAuth();
   const access = useAccess();
   const canOpenAdmin =
     access.data?.capabilities.includes("admin.access") ?? false;
@@ -74,9 +60,19 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
   const { scrollArea, scrollCues } = useNavigationScrollCues(pathname);
   useEffect(() => setMoreOpen(false), [pathname]);
   const active = (href: string) =>
-    href === "/my"
-      ? pathname === "/my"
-      : pathname === href || pathname.startsWith(href + "/");
+    href === "/my/focus"
+      ? pathname === href ||
+        pathname === "/my/study" ||
+        pathname.startsWith("/my/study/")
+      : href === "/my/learning"
+        ? pathname === "/my/progress" ||
+          pathname === href ||
+          pathname.startsWith(href + "/")
+        : href === "/my/activities"
+          ? isPersonalActivityPath(pathname)
+          : href === "/my"
+            ? pathname === "/my"
+            : pathname === href || pathname.startsWith(href + "/");
   return (
     <>
       <aside
@@ -101,7 +97,7 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             className="navigation-scroll"
             id="personal-sidebar-links"
           >
-          <NavigationSelection />
+            <NavigationSelection />
             <p className="navigation-label">{label("workspace")}</p>
             <nav
               className="navigation-primary"
@@ -117,7 +113,11 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
                     className={`navigation-item ${active(href) ? "active" : ""}`}
                     aria-current={active(href) ? "page" : undefined}
                   >
-                    <MorphIcon icon={Icon} size={20} />
+                    <MorphIcon
+                      icon={Icon}
+                      to={href === "/my/activities" ? Layers2 : undefined}
+                      size={20}
+                    />
                     <span>{label(key)}</span>
                   </AppLink>
                 </NavigationHint>
@@ -125,35 +125,33 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             </nav>
           </div>
         </div>
+        <div className="personal-nav-footer">
+          <AppearanceSettings />
+          <div className="navigation-version navigation-controls-row">
+            <span className="navigation-status-copy"><span className="status-dot" />{label("previewShort")}</span>
+            <div className="navigation-controls-slot"><NavigationControls /></div>
+          </div>
+        </div>
         {canOpenAdmin && (
           <NavigationHint label={label("governancePortalTitle")}>
-            <AppLink href="/admin" className="personal-admin-portal">
+            <AppLink
+              href="/admin"
+              className="personal-admin-portal control-room-portal space-portal-link"
+              aria-label={label("governancePortalTitle")}
+            >
               <MorphIcon
                 icon={ShieldCheck}
                 size={19}
                 className="personal-admin-portal-icon"
               />
-              <span>
+              <span className="control-room-copy">
                 <small>{label("governancePriority")}</small>
                 <strong>{label("governancePortalTitle")}</strong>
               </span>
-              <ArrowUpRight size={16} className="directional" />
+              <ArrowUpRight size={16} className="directional" aria-hidden="true" />
             </AppLink>
           </NavigationHint>
         )}
-        <div className="personal-nav-footer">
-          <AppearanceSettings />
-          <NavigationControls />
-        </div>
-        <div className="personal-sidebar-footer">
-          <span className="personal-mini-avatar" aria-hidden="true">
-            {profile ? t(profile.initials) : <UserRound size={20} />}
-          </span>
-          <div>
-            <strong>{profile ? t(profile.name) : label("myProfile")}</strong>
-            <span>{auth.snapshot.user?.email || label("verifiedAccount")}</span>
-          </div>
-        </div>
       </aside>
       <nav
         className="phone-navigation personal-phone-navigation"
@@ -168,7 +166,11 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             className={active(href) ? "active" : ""}
             aria-current={active(href) ? "page" : undefined}
           >
-            <MorphIcon icon={Icon} size={21} />
+            <MorphIcon
+              icon={Icon}
+              to={href === "/my/activities" ? Layers2 : undefined}
+              size={21}
+            />
             <span>
               {label(
                 key === "mySpace"
@@ -210,16 +212,17 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
         >
           {canOpenAdmin && (
             <AppLink
-              className="personal-mobile-admin-portal"
+              className="personal-mobile-admin-portal control-room-portal space-portal-link"
               href="/admin"
+              aria-label={label("governancePortalTitle")}
               onClick={() => setMoreOpen(false)}
             >
               <MorphIcon icon={ShieldCheck} size={21} />
-              <span>
+              <span className="control-room-copy">
                 <small>{label("governancePriority")}</small>
-                {label("governancePortalTitle")}
+                <strong>{label("governancePortalTitle")}</strong>
               </span>
-              <ArrowUpRight size={17} className="directional" />
+              <ArrowUpRight size={17} className="directional" aria-hidden="true" />
             </AppLink>
           )}
           {phoneMore.map(({ href, label: key, icon: Icon }) => (
@@ -229,7 +232,11 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
               onClick={() => setMoreOpen(false)}
               aria-current={active(href) ? "page" : undefined}
             >
-              <MorphIcon icon={Icon} size={21} />
+              <MorphIcon
+                icon={Icon}
+                to={href === "/my/activities" ? Layers2 : undefined}
+                size={21}
+              />
               {label(key)}
             </AppLink>
           ))}
@@ -237,6 +244,9 @@ export function PersonalNavigation({ profile }: { profile?: StudentProfile }) {
             {label("backToMedClub")}
           </AppLink>
         </nav>
+        <div className="personal-more-preferences">
+          <AppearanceSettings />
+        </div>
       </Modal>
     </>
   );

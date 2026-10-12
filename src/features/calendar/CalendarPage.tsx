@@ -276,6 +276,7 @@ export default function CalendarPage() {
               key={item.id}
               className="agenda-entry"
               data-kind={item.kind}
+              data-study-entry-id={item.id}
               onClick={() => openItem(item)}
             >
               <span className="agenda-date">

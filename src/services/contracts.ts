@@ -45,6 +45,7 @@ import type {
   SearchFilters,
 } from "../types/content";
 export interface MedClubServices {
+  studyHub?: import("../types/study-hub").StudyHubService;
   artwork?: import("../types/artwork").ArtworkService;
   /** Public lists are visible records. A sample source declares its fixed calendar anchor. */
   contentSnapshot?: { kind: "sample" | "live"; asOf?: string };
@@ -119,6 +120,12 @@ export interface MedClubServices {
     ) => Promise<StudentContribution>;
     submit: (studentId: string, id: string) => Promise<StudentContribution>;
     deleteDraft: (studentId: string, id: string) => Promise<void>;
+    /** Restore an owned draft only if the current record still matches the completed action. */
+    restoreDraft?: (
+      studentId: string,
+      before: StudentContribution,
+      expected: StudentContribution | null,
+    ) => Promise<StudentContribution>;
   };
   recruitment: {
     listPositions: () => Promise<RecruitmentPosition[]>;

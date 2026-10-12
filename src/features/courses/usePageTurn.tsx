@@ -2,6 +2,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
   type CSSProperties,
@@ -11,11 +12,13 @@ import {
   shouldCommitTurn,
   type TurnDirection,
 } from "./page-turn";
+import { createTurnMotion, turnStageChanged, type TurnMotion } from "./page-turn-motion";
 
 export interface TurnState {
   direction: TurnDirection;
   progress: number;
   settling: boolean;
+  motion?: TurnMotion;
 }
 export function usePageTurn({
   rtl,
@@ -30,6 +33,8 @@ export function usePageTurn({
 }) {
   const [turn, setTurn] = useState<TurnState | null>(null);
   const current = useRef<TurnState | null>(null);
+  const published = useRef<TurnState | null>(null);
+  const motion = useRef(createTurnMotion());
   const callbacks = useRef({ canTurn, onCommit, rtl });
   callbacks.current = { canTurn, onCommit, rtl };
   const gesture = useRef<{
@@ -44,8 +49,13 @@ export function usePageTurn({
   const frame = useRef(0),
     suppressClick = useRef(false);
   const update = (next: TurnState | null) => {
+    if (next) next = { ...next, motion: motion.current };
     current.current = next;
-    setTurn(next);
+    motion.current.setProgress(next?.progress ?? 0);
+    if (turnStageChanged(published.current, next)) {
+      published.current = next;
+      setTurn(next);
+    }
   };
   function settle(commit: boolean) {
     const state = current.current;
@@ -57,7 +67,7 @@ export function usePageTurn({
     const duration = window.matchMedia("(prefers-reduced-motion: reduce)")
       .matches
       ? 0
-      : Math.max(160, Math.abs(to - from) * 360);
+      : Math.max(160, Math.abs(to - from) * 460);
     const animate = (now: number) => {
       const elapsed = duration ? Math.min(1, (now - start) / duration) : 1;
       const progress =
@@ -164,6 +174,8 @@ export function usePageTurn({
     cancelAnimationFrame(frame.current);
     gesture.current = null;
     current.current = null;
+    published.current = null;
+    motion.current.setProgress(0);
     setTurn(null);
   }, [identity, rtl]);
   return {
@@ -189,43 +201,39 @@ export function TurnLeaf({
   front: ReactNode;
   back: ReactNode;
 }) {
+  const progress = useSyncExternalStore(
+    turn.motion?.subscribe ?? noSubscription,
+    turn.motion?.getSnapshot ?? (() => turn.progress),
+  );
   const forward = turn.direction === 1;
   const physicalRight = forward !== rtl;
-  const angle = turn.progress * 180 * (physicalRight ? -1 : 1);
   return (
     <div
       className="hand-turn-leaf"
+      data-transition="ribbon"
       data-side={physicalRight ? "right" : "left"}
       data-single={!twoPages || undefined}
       aria-hidden="true"
       inert
       style={
         {
-          "--turn-progress": turn.progress,
-          transform:
-            "rotateY(" +
-            angle +
-            "deg) scaleY(" +
-            (1 - Math.sin(turn.progress * Math.PI) * 0.035) +
-            ")",
-          "--turn-bend": Math.sin(turn.progress * Math.PI),
+          "--turn-progress": progress,
+          "--turn-cut": `${progress * 100}%`,
+          "--turn-position": `${(physicalRight ? 1 - progress : progress) * 100}%`,
+          "--turn-lift": Math.sin(progress * Math.PI),
         } as CSSProperties
       }
     >
-      <div className="hand-turn-body">
-        <div className="hand-turn-front">{front}</div>
-        <div className="hand-turn-back">{back}</div>
+      <div className="hand-turn-back">{back}</div>
+      <div className="hand-turn-front">{front}</div>
+      <div className="hand-ribbon-track">
+        <i className="magic-paper-ribbon">
+          <b />
+          <b />
+          <b />
+        </i>
       </div>
-      <div className="hand-turn-curl">
-        <div className="hand-turn-curl-front">
-          <div className="hand-turn-curl-content">{front}</div>
-        </div>
-        <div className="hand-turn-curl-back">
-          <div className="hand-turn-curl-content">{back}</div>
-        </div>
-      </div>
-      <i className="hand-turn-crease" />
-      <i className="hand-turn-curled-edge" />
     </div>
   );
 }
+const noSubscription = () => () => {};

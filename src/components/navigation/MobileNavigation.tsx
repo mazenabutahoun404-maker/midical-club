@@ -8,6 +8,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { signInPath } from "../../constants/routes";
+import { AppearanceSettings } from "./AppearanceSettings";
 export function MobileNavigation({ site }: { site: SiteContent }) {
   const [open, setOpen] = useState(false);
   const { label, t } = useLocale();
@@ -76,6 +77,9 @@ export function MobileNavigation({ site }: { site: SiteContent }) {
             {label(signedIn ? "myProfile" : "signIn")}
           </AppLink>
         </nav>
+        <div className="mobile-more-appearance">
+          <AppearanceSettings />
+        </div>
       </Modal>
     </>
   );

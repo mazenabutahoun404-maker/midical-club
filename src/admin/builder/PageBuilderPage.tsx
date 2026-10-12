@@ -1,3 +1,4 @@
+import { throwToTrash } from "../../components/feedback/action-flight";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -157,6 +158,13 @@ export default function PageBuilderPage() {
     });
   };
   const deleteBlock = (id: string) => {
+    const source =
+      [
+        ...document.querySelectorAll<HTMLElement>("[data-builder-block-id]"),
+      ].find((row) => row.dataset.builderBlockId === id) || null;
+    const block = page.blocks.find((block) => block.id === id);
+    void throwToTrash(source, block ? t(block.name) : label("builderUndo"))
+      .finished;
     editor.change((current) => ({
       ...current,
       blocks: current.blocks.filter((block) => block.id !== id),

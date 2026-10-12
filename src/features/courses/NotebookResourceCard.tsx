@@ -6,7 +6,7 @@ import {
   FileText,
   Trash2,
 } from "lucide-react";
-import { toast } from "sonner";
+import { throwToTrash } from "../../components/feedback/action-flight";
 import type { Course, Resource } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { SaveButton } from "../../components/cards/SaveButton";
@@ -33,6 +33,7 @@ export function NotebookResourceCard({
   const [details, setDetails] = useState(false),
     [removing, setRemoving] = useState(false),
     [error, setError] = useState(false);
+  const row = useRef<HTMLElement>(null);
   const alive = useRef(true),
     busy = useRef(false);
   useEffect(() => {
@@ -46,17 +47,12 @@ export function NotebookResourceCard({
     busy.current = true;
     setError(false);
     setRemoving(true);
+    const flight = throwToTrash(row.current, t(resource.title));
     try {
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-        await new Promise((resolve) => setTimeout(resolve, 180));
+      if (flight.animated) await flight.finished;
       await onRemove();
-      toast.success(
-        t({
-          en: "PDF removed from this course",
-          ar: "حُذف الملف من هذا المساق",
-        }),
-      );
     } catch {
+      flight.cancel();
       if (alive.current) {
         setRemoving(false);
         setError(true);
@@ -67,6 +63,7 @@ export function NotebookResourceCard({
   }
   return (
     <article
+      ref={row}
       className="notebook-material notebook-file-row"
       data-removing={removing || undefined}
     >

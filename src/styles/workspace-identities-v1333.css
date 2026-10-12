@@ -1,0 +1,270 @@
+/* V0.13.33 — brown personal chrome, wine admin chrome, and light-theme contours. */
+@media (forced-colors: none) {
+  :root[data-palette][data-theme] {
+    --workspace-ink: #fff4e6;
+    --workspace-muted: #ecddd0;
+    --personal-line: #c8b096;
+    --admin-line: #bc929f;
+    --personal-ring: #f3d6aa;
+    --admin-ring: #f3c5cf;
+  }
+  :root[data-palette][data-theme="light"] {
+    --canvas-wash: color-mix(in srgb, var(--theme-wash) 25%, var(--card));
+    --canvas-contour: color-mix(in srgb, var(--theme-contour) 25%, var(--card));
+  }
+  :root[data-palette="medclub"][data-theme="light"] {
+    --personal-surface: #513626;
+    --personal-selection: #71513c;
+    --admin-surface: #3b1b1d;
+    --admin-selection: #662c3a;
+    --theme-wash: #bb6265;
+    --theme-contour: #a77773;
+    --theme-curve-x: 94%;
+    --theme-curve-y: 6%;
+  }
+  :root[data-palette="medclub"][data-theme="dark"] {
+    --personal-surface: #3d2c23;
+    --personal-selection: #614636;
+    --admin-surface: #36232b;
+    --admin-selection: #583342;
+  }
+  :root[data-palette="paper"][data-theme="light"] {
+    --personal-surface: #5b4230;
+    --personal-selection: #785a40;
+    --admin-surface: #4b2530;
+    --admin-selection: #6b3946;
+    --theme-wash: #bd9751;
+    --theme-contour: #9a8760;
+    --theme-curve-x: 8%;
+    --theme-curve-y: 15%;
+  }
+  :root[data-palette="paper"][data-theme="dark"] {
+    --personal-surface: #403328;
+    --personal-selection: #624c38;
+    --admin-surface: #3b2831;
+    --admin-selection: #5c3b47;
+  }
+  :root[data-palette="dusk"][data-theme="light"] {
+    --personal-surface: #4e3f35;
+    --personal-selection: #6b5548;
+    --admin-surface: #402733;
+    --admin-selection: #613e50;
+    --theme-wash: #7f98b9;
+    --theme-contour: #7488ac;
+    --theme-curve-x: 90%;
+    --theme-curve-y: 22%;
+  }
+  :root[data-palette="dusk"][data-theme="dark"] {
+    --personal-surface: #39302a;
+    --personal-selection: #58473d;
+    --admin-surface: #322735;
+    --admin-selection: #513b55;
+  }
+  :root[data-palette="contrast"][data-theme="light"] {
+    --personal-surface: #34251b;
+    --personal-selection: #513b2b;
+    --admin-surface: #2f1420;
+    --admin-selection: #512337;
+  }
+  :root[data-palette="contrast"][data-theme="dark"] {
+    --personal-surface: #241b15;
+    --personal-selection: #493324;
+    --admin-surface: #25131c;
+    --admin-selection: #482032;
+  }
+  :root[data-palette="tokyo"][data-theme="light"] {
+    --personal-surface: #554035;
+    --personal-selection: #715646;
+    --admin-surface: #452838;
+    --admin-selection: #654252;
+    --theme-wash: #ac91b9;
+    --theme-contour: #9885af;
+    --theme-curve-x: 15%;
+    --theme-curve-y: 5%;
+  }
+  :root[data-palette="tokyo"][data-theme="dark"] {
+    --personal-surface: #3c2f29;
+    --personal-selection: #5d4538;
+    --admin-surface: #372839;
+    --admin-selection: #573b55;
+  }
+  :root[data-palette="solarized"][data-theme="light"] {
+    --personal-surface: #504331;
+    --personal-selection: #6d5c42;
+    --admin-surface: #442a2b;
+    --admin-selection: #663e40;
+    --theme-wash: #75a69b;
+    --theme-contour: #639890;
+    --theme-curve-x: 93%;
+    --theme-curve-y: 15%;
+  }
+  :root[data-palette="solarized"][data-theme="dark"] {
+    --personal-surface: #3b3427;
+    --personal-selection: #59513a;
+    --admin-surface: #36282c;
+    --admin-selection: #553c42;
+  }
+  :root[data-palette="sage"][data-theme="light"] {
+    --personal-surface: #514331;
+    --personal-selection: #6e5b42;
+    --admin-surface: #402d29;
+    --admin-selection: #623e3a;
+    --theme-wash: #8fa678;
+    --theme-contour: #80946f;
+    --theme-curve-x: 12%;
+    --theme-curve-y: 24%;
+  }
+  :root[data-palette="sage"][data-theme="dark"] {
+    --personal-surface: #3b3327;
+    --personal-selection: #594d37;
+    --admin-surface: #342a29;
+    --admin-selection: #533d3b;
+  }
+  :root[data-palette="midnight"][data-theme="light"] {
+    --personal-surface: #4d3b31;
+    --personal-selection: #695041;
+    --admin-surface: #342335;
+    --admin-selection: #563b50;
+    --theme-wash: #8097bc;
+    --theme-contour: #b19865;
+    --theme-curve-x: 86%;
+    --theme-curve-y: 8%;
+  }
+  :root[data-palette="midnight"][data-theme="dark"] {
+    --personal-surface: #392c25;
+    --personal-selection: #584332;
+    --admin-surface: #302334;
+    --admin-selection: #50364c;
+  }
+  :root[data-palette="espresso"][data-theme="light"] {
+    --personal-surface: #55382b;
+    --personal-selection: #74503b;
+    --admin-surface: #4a2527;
+    --admin-selection: #6e393c;
+    --theme-wash: #bc9874;
+    --theme-contour: #a88060;
+    --theme-curve-x: 20%;
+    --theme-curve-y: 12%;
+  }
+  :root[data-palette="espresso"][data-theme="dark"] {
+    --personal-surface: #3e2c22;
+    --personal-selection: #614431;
+    --admin-surface: #3d2529;
+    --admin-selection: #60353e;
+  }
+
+  /* Override palette flattening only in workspace chrome; content keeps its theme. */
+  html:root[data-palette][data-theme] body .app-shell.personal-shell[data-navigation] {
+    --workspace-surface: var(--personal-surface);
+    --workspace-selection: var(--personal-selection);
+    --workspace-line: var(--personal-line);
+    --workspace-ring: var(--personal-ring);
+  }
+  html:root[data-palette][data-theme] body .app-shell.admin-shell[data-navigation] {
+    --workspace-surface: var(--admin-surface);
+    --workspace-selection: var(--admin-selection);
+    --workspace-line: var(--admin-line);
+    --workspace-ring: var(--admin-ring);
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation] {
+    --shell-surface: var(--workspace-surface);
+    --shell-gradient: var(--workspace-surface);
+    --shell-ink: var(--workspace-ink);
+    --shell-muted: var(--workspace-muted);
+    --shell-line: var(--workspace-line);
+    --shell-selection: var(--workspace-selection);
+    --shell-inset: var(--workspace-surface);
+    --palette-ink: var(--workspace-ink);
+    --palette-selection: var(--workspace-selection);
+    --sidebar: var(--workspace-surface);
+    --sidebar-foreground: var(--workspace-ink);
+    --sidebar-accent: var(--workspace-selection);
+    --sidebar-accent-foreground: var(--workspace-ink);
+    --sidebar-border: var(--workspace-line);
+    --sidebar-ring: var(--workspace-ring);
+    --nav-depth-front: color-mix(in srgb, var(--workspace-surface) 85%, var(--workspace-line));
+    --nav-depth-back: color-mix(in srgb, var(--workspace-surface) 70%, var(--workspace-line));
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation]
+    :is(.desktop-navigation, .scroll-header, .phone-navigation) {
+    background-color: var(--workspace-surface);
+    color: var(--workspace-ink);
+    border-color: var(--workspace-line);
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation] .scroll-header
+    :is(.shell-location, .workspace-icon, .language-button, .workspace-search) {
+    color: var(--workspace-ink);
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation] .shell-location-parent {
+    color: var(--workspace-muted);
+    opacity: 1;
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation]
+    :is(.navigation-item:not(.profile-portal), .navigation-preferences):is(:hover, :focus-visible),
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation] .scroll-header
+    :is(.workspace-icon, .language-button, .workspace-search):is(:hover, :focus-visible),
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation]
+    :is(.admin-live-chip, .admin-back, .back-to-medclub, .admin-operator) {
+    background: var(--workspace-selection);
+    color: var(--workspace-ink);
+    border-color: var(--workspace-line);
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation]
+    .desktop-navigation .navigation-controls-slot button::before,
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation]
+    .desktop-navigation .navigation-controls-slot button:is(:hover, :focus-visible, [aria-pressed="true"])::before {
+    background: var(--workspace-selection);
+    border-color: var(--workspace-line);
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell:is(.personal-shell, .admin-shell)[data-navigation]
+    :is(.desktop-navigation, .scroll-header, .phone-navigation) :is(a, button):focus-visible {
+    outline-color: var(--workspace-ring);
+  }
+
+  /* Static, responsive accents: no overlays or decoration on study pages or media. */
+  html:root[data-palette][data-theme="light"]:not([data-palette="contrast"]) body
+    .app-shell:not([data-study-environment="true"]) {
+    background-image:
+      radial-gradient(ellipse 580px 440px at var(--theme-curve-x) var(--theme-curve-y),
+        color-mix(in srgb, var(--canvas-wash) 16%, transparent), transparent 85%),
+      radial-gradient(ellipse 480px 340px at var(--theme-curve-x) var(--theme-curve-y),
+        transparent 68%, color-mix(in srgb, var(--canvas-contour) 13%, transparent) 68.2%,
+        transparent 68.6%),
+      radial-gradient(ellipse 650px 470px at var(--theme-curve-x) var(--theme-curve-y),
+        transparent 70%, color-mix(in srgb, var(--canvas-contour) 9%, transparent) 70.2%,
+        transparent 70.5%),
+      radial-gradient(ellipse 800px 650px at 45% 100%,
+        color-mix(in srgb, var(--canvas-wash) 7%, transparent), transparent 85%);
+    background-repeat: no-repeat;
+  }
+  html:root[data-palette][data-theme="light"]:not([data-palette="contrast"]) body
+    .app-shell[data-navigation] :is(.desktop-navigation, .scroll-header) {
+    background-image:
+      radial-gradient(ellipse 290px 180px at 100% 0,
+        transparent 59%, color-mix(in srgb, var(--shell-ink) 8%, transparent) 59.4%,
+        transparent 60%),
+      radial-gradient(ellipse 380px 235px at 100% 0,
+        transparent 61%, color-mix(in srgb, var(--shell-ink) 4%, transparent) 61.4%,
+        transparent 62%),
+      linear-gradient(125deg, color-mix(in srgb, var(--theme-wash) 9%, transparent), transparent 65%);
+    background-repeat: no-repeat;
+  }
+  @media (prefers-contrast: more) {
+    html:root[data-palette][data-theme="light"]:not([data-palette="contrast"]) body
+      .app-shell:not([data-study-environment="true"]),
+    html:root[data-palette][data-theme="light"]:not([data-palette="contrast"]) body .app-shell[data-navigation]
+      :is(.desktop-navigation, .scroll-header) {
+      background-image: none;
+    }
+  }
+}

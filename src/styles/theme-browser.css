@@ -1,0 +1,221 @@
+.medclub-native-modal.appearance-dialog {
+  width: min(960px, calc(100vw - 28px));
+  max-width: 960px !important;
+  padding: 24px !important;
+}
+.appearance-theme-browser {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  min-width: 0;
+}
+.appearance-theme-groups {
+  min-width: 0;
+}
+.appearance-theme-groups .appearance-palette-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.appearance-theme-groups .appearance-palette-option {
+  min-height: 72px;
+  padding: 10px;
+  font-size: 0.8rem;
+}
+.appearance-theme-groups .appearance-palette-option > span:has(strong) {
+  flex: 1;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.appearance-theme-groups .appearance-palette-option > svg {
+  width: 14px;
+  flex: none;
+}
+.theme-choice-swatches {
+  position: relative;
+  display: flex;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 30px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  overflow: visible;
+}
+.theme-choice-swatches i {
+  flex: 1;
+}
+.theme-choice-swatches i:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.theme-choice-swatches i:nth-child(3) {
+  border-radius: 0 6px 6px 0;
+}
+.theme-choice-swatches b {
+  position: absolute;
+  bottom: -5px;
+  inset-inline-end: -4px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 0.55rem;
+}
+.appearance-palettes:last-child .appearance-palette-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.appearance-heading {
+  display: none;
+}
+.theme-choice-symbol {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: var(--secondary);
+  color: var(--foreground);
+}
+.theme-preview,
+.theme-preview-idle {
+  position: sticky;
+  top: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--card-foreground);
+  min-width: 0;
+}
+.theme-preview > header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.theme-preview > header strong {
+  flex: 1;
+  font-size: 0.75rem;
+}
+.theme-preview button {
+  min-width: 32px;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--secondary);
+  color: var(--foreground);
+  cursor: pointer;
+}
+.theme-preview-scene {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.theme-preview[data-preview-mode="automatic"]
+  .theme-preview-controls
+  button[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  transform-origin: left;
+  background: currentColor;
+  animation: theme-slide-progress 2s linear both;
+}
+.theme-preview-controls button {
+  position: relative;
+  overflow: hidden;
+}
+@keyframes theme-slide-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.theme-preview-scene[hidden] {
+  display: none;
+}
+.theme-preview-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.theme-preview-controls button[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.theme-preview > small,
+.theme-preview-idle p {
+  display: block;
+  margin-block-start: 8px;
+  color: var(--muted-foreground);
+  font-size: 0.67rem;
+  line-height: 1.6;
+}
+@media (max-width: 700px) {
+  .medclub-native-modal.appearance-dialog {
+    padding: 18px !important;
+  }
+  .appearance-theme-browser {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .appearance-theme-groups .appearance-palette-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .theme-preview,
+  .theme-preview-idle {
+    position: relative;
+    top: auto;
+    grid-row: 1;
+  }
+  .theme-preview-scene {
+    max-height: 190px;
+  }
+  .theme-preview button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+@media (max-width: 360px) {
+  .appearance-theme-groups .appearance-palette-option {
+    padding: 8px;
+    gap: 6px;
+    font-size: 0.72rem;
+  }
+  .theme-choice-swatches {
+    flex-basis: 25px;
+    width: 25px;
+    height: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-preview[data-preview-mode="automatic"]
+    .theme-preview-controls
+    button[aria-pressed="true"]::after {
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  .theme-choice-swatches i {
+    background: Canvas !important;
+    border-inline-start: 1px solid CanvasText;
+  }
+}
+@media (min-width: 1000px) {
+  .appearance-theme-groups .appearance-palette-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .appearance-palettes:last-child .appearance-palette-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

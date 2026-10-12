@@ -61,10 +61,10 @@ export function saveNote(userId: string, note: StudentNote) {
   const key = notesKey(userId);
   const validated = normalizeNotes([note])[0];
   if (!validated) throw new Error("INVALID_NOTE");
-  const notes = [
-    validated,
-    ...readNotes(userId).filter((item) => item.id !== note.id),
-  ].slice(0, 500);
+  const existing = readNotes(userId);
+  if (existing.length >= 500 && !existing.some((item) => item.id === note.id))
+    throw new Error("NOTES_LIMIT_REACHED");
+  const notes = [validated, ...existing.filter((item) => item.id !== note.id)];
   localStorage.setItem(key, JSON.stringify(notes));
   window.dispatchEvent(
     new CustomEvent("medclub:notes-updated", { detail: key }),

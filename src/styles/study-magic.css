@@ -1,0 +1,400 @@
+/* A physical LTR pan canvas keeps both page edges reachable in either language. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .pdf-book-reading-surface
+  > .pdf-book-viewport {
+  overflow: auto;
+  touch-action: pan-x pan-y;
+  direction: ltr;
+  min-width: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .pdf-pan-canvas
+  > .pdf-book-pages {
+  margin: 0 auto;
+}
+.pdf-pan-canvas {
+  position: relative;
+  display: flow-root;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .pdf-book-reading-surface
+  > .pdf-book-viewport[data-pannable="true"] {
+  padding-bottom: 60px;
+}
+.pdf-pan-control {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(260px, calc(100% - 96px));
+  min-height: 44px;
+  padding: 4px 12px;
+  border: 1px solid var(--book-rule);
+  border-radius: 22px;
+  background: var(--book-paper);
+  color: var(--book-ink);
+  box-shadow: 0 2px 8px #0002;
+  font-size: 0.72rem;
+}
+.pdf-pan-control input {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  accent-color: var(--book-action-ink, var(--book-action));
+  direction: ltr;
+}
+.study-notebook {
+  --book-cover-foreground: #fff8f1;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle
+  > .study-dock-tab {
+  background: linear-gradient(
+    150deg,
+    var(--book-cover-light),
+    var(--book-cover)
+  );
+  color: var(--book-cover-foreground);
+  border: 1px solid var(--book-cover-light);
+  box-shadow:
+    inset 0 1px #ffffff25,
+    0 2px 6px #0002;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-dock-handle:is(:hover, :focus-visible)
+  .study-dock-tab {
+  background: var(--book-cover);
+  color: var(--book-cover-foreground);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-grip
+  > span {
+  background: var(--book-cover);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .study-tool-grip:is(:hover, :focus-visible)
+  > span {
+  background: var(--book-cover-light);
+}
+/* The outgoing face peels away along a narrow illuminated paper ribbon.
+   It reveals real incoming content, stays inside the spread, and never rotates text. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .hand-turn-leaf[data-transition="ribbon"] {
+  transform: none;
+  transform-style: flat;
+  perspective: none;
+  overflow: clip;
+  will-change: auto;
+}
+.hand-turn-leaf[data-transition="ribbon"]
+  > :is(.hand-turn-front, .hand-turn-back) {
+  transform: none;
+  backface-visibility: visible;
+  box-shadow: none;
+  overflow: hidden;
+}
+.hand-turn-leaf[data-transition="ribbon"] > .hand-turn-back {
+  z-index: 0;
+}
+.hand-turn-leaf[data-transition="ribbon"] > .hand-turn-front {
+  z-index: 1;
+  clip-path: inset(0 var(--turn-cut) 0 0);
+}
+.hand-turn-leaf[data-transition="ribbon"][data-side="left"] > .hand-turn-front {
+  clip-path: inset(0 0 0 var(--turn-cut));
+}
+.hand-turn-leaf[data-transition="ribbon"]
+  > :is(.hand-turn-front, .hand-turn-back)::after {
+  display: none;
+}
+.magic-paper-ribbon {
+  position: absolute;
+  left: var(--turn-position);
+  inset-block: 0;
+  width: 26px;
+  transform: translateX(-50%) skewY(calc(var(--turn-lift) * -4deg));
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--book-cover) 20%, transparent) 25%,
+    var(--book-paper) 45%,
+    var(--book-highlight) 50%,
+    var(--book-paper) 57%,
+    transparent
+  );
+  opacity: calc(var(--turn-lift) * 0.95);
+  pointer-events: none;
+}
+.magic-paper-ribbon b {
+  position: absolute;
+  width: 3px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--book-highlight);
+  top: 22%;
+  left: 4px;
+}
+.magic-paper-ribbon b:nth-child(2) {
+  top: 51%;
+  left: 18px;
+  height: 5px;
+}
+.magic-paper-ribbon b:nth-child(3) {
+  top: 77%;
+  left: 6px;
+  height: 4px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-turn-sheet[data-transition="ribbon"] {
+  transform: none;
+  animation: magic-section-peel 520ms cubic-bezier(0.3, 0.1, 0.3, 1) both;
+  transform-style: flat;
+  box-shadow: none;
+  background: var(--book-paper);
+  clip-path: inset(0 0 0 0);
+}
+.notebook-turn-sheet[data-transition="ribbon"]
+  :is(.section-turn-front, .section-turn-back) {
+  transform: none;
+  backface-visibility: visible;
+}
+.notebook-turn-sheet[data-transition="ribbon"] .section-turn-back {
+  display: none;
+}
+.notebook-turn-sheet[data-transition="ribbon"] > b {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 22px;
+  transform: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--book-paper) 45%,
+    var(--book-highlight) 50%,
+    transparent
+  );
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-turn-sheet[data-transition="ribbon"][data-backwards="true"] {
+  animation-name: magic-section-return;
+}
+@keyframes magic-section-peel {
+  0% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  80% {
+    clip-path: inset(0 90% 0 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+}
+@keyframes magic-section-return {
+  0% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  80% {
+    clip-path: inset(0 0 0 90%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+  }
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-turn-sheet[data-transition="ribbon"] {
+  animation-name: magic-section-return;
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .notebook-turn-sheet[data-transition="ribbon"][data-backwards="true"] {
+  animation-name: magic-section-peel;
+}
+/* Shared clock/notes surfaces inside the compact dock use the course color. */
+.study-notebook .study-tools-panel .study-focus-timer {
+  background: var(--book-paper);
+  color: var(--book-ink);
+}
+.study-notebook .study-tools-panel .study-focus-timer > .study-alarm-clock {
+  display: block;
+}
+.study-notebook .study-tools-panel .study-alarm-clock output {
+  color: var(--book-ink);
+  font-size: 1.3rem;
+}
+.study-notebook .study-tools-panel .study-timer-durations {
+  display: grid;
+}
+.study-notebook
+  .study-tools-panel
+  .study-timer-modes
+  button[aria-pressed="true"],
+.study-notebook .study-tools-panel .study-timer-actions button:first-child {
+  background: var(--book-cover);
+  color: var(--book-cover-foreground);
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    :is(
+      .notebook-turn-sheet[data-transition="ribbon"],
+      .hand-turn-leaf[data-transition="ribbon"]
+    ) {
+    display: none;
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-dock-handle
+    > .study-dock-tab,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-dock-handle:is(:hover, :focus-visible)
+    .study-dock-tab {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-tool-grip
+    > span,
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook
+    .study-tool-grip:is(:hover, :focus-visible)
+    > span {
+    background: ButtonText;
+  }
+}
+.study-notebook .study-tools-panel .study-focus-timer button {
+  background: var(--book-paper-side);
+  color: var(--book-ink);
+  border: 1px solid var(--book-rule);
+}
+.study-notebook
+  .study-tools-panel
+  .study-focus-timer
+  .study-timer-modes
+  button[aria-pressed="true"],
+.study-notebook
+  .study-tools-panel
+  .study-focus-timer
+  .study-timer-actions
+  button:first-child {
+  background: var(--book-cover);
+  color: var(--book-cover-foreground);
+}
+.notebook-turn-sheet[data-transition="ribbon"] > b {
+  left: 0;
+  right: auto;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent calc(100% - 24px),
+    var(--book-paper) calc(100% - 12px),
+    var(--book-highlight) calc(100% - 9px),
+    transparent
+  );
+  animation: magic-seam-out 520ms cubic-bezier(0.3, 0.1, 0.3, 1) both !important;
+}
+.notebook-turn-sheet[data-transition="ribbon"][data-backwards="true"] > b {
+  animation-name: magic-seam-back !important;
+}
+html[dir="rtl"] .notebook-turn-sheet[data-transition="ribbon"] > b {
+  animation-name: magic-seam-back !important;
+}
+html[dir="rtl"]
+  .notebook-turn-sheet[data-transition="ribbon"][data-backwards="true"]
+  > b {
+  animation-name: magic-seam-out !important;
+}
+@keyframes magic-seam-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes magic-seam-back {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

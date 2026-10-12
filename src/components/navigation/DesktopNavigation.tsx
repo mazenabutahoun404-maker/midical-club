@@ -245,7 +245,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
             <p className="navigation-label">{label("workspace")}</p>
             <NavigationHint label={label(signedIn ? "myProfile" : "signIn")}>
               <AppLink
-                className={`navigation-item workspace-portal-item space-portal-link ${active("/my") ? "active" : ""}`}
+                className={`navigation-item workspace-portal-item profile-portal space-portal-link ${active("/my") ? "active" : ""}`}
                 href={signedIn ? "/my" : signInPath("/my")}
                 aria-current={active("/my") ? "page" : undefined}
               >
@@ -286,10 +286,9 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
           </AppLink>
         </div>
         <AppearanceSettings />
-        <NavigationControls />
-        <div className="navigation-version">
-          <span className="status-dot" />
-          {label("previewShort")}
+        <div className="navigation-version navigation-controls-row">
+          <span className="navigation-status-copy"><span className="status-dot" />{label("previewShort")}</span>
+          <div className="navigation-controls-slot"><NavigationControls /></div>
         </div>
       </div>
     </aside>

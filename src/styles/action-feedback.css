@@ -1,0 +1,81 @@
+.action-trash-flight {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: auto;
+  height: auto;
+  background: transparent;
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+}
+.action-flight-paper {
+  position: absolute;
+  border-radius: 3px 12px 3px 3px;
+  padding: 13px;
+  background: var(--flight-paper);
+  color: var(--flight-ink);
+  box-shadow:
+    0 8px 22px #0003,
+    inset 0 0 0 1px var(--flight-cover);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+.action-flight-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 13px;
+  height: 13px;
+  background: linear-gradient(45deg, var(--flight-cover) 50%, transparent 51%);
+  border-radius: 0 10px 0 2px;
+}
+.action-flight-paper span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.action-flight-bin {
+  position: absolute;
+  inset-inline-end: max(16px, env(safe-area-inset-right));
+  bottom: max(30px, env(safe-area-inset-bottom));
+  width: 52px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  color: var(--flight-cover);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px #0002;
+}
+.flight-bin-lid {
+  transform-origin: 4px 9px;
+}
+.student-note-row[data-removing="true"],
+.notebook-file-row[data-removing="true"] {
+  opacity: 0.5;
+  animation: none;
+  pointer-events: none;
+}
+[data-sonner-toaster] [data-button] {
+  min-height: 44px;
+  padding-inline: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .action-trash-flight {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .action-flight-paper,
+  .action-flight-bin {
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+  }
+}

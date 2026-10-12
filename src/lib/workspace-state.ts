@@ -164,6 +164,43 @@ export function reduceWorkspace(
       }
       break;
     }
+    case "restore-collection": {
+      const collection = action.collection,
+        name = collection.name.trim();
+      if (
+        !collection.id ||
+        !name ||
+        name.length > 60 ||
+        state.collections.length >= 50 ||
+        state.collections.some(
+          (c) =>
+            c.id === collection.id ||
+            c.name.toLowerCase() === name.toLowerCase(),
+        )
+      )
+        throw new Error("Collection changed or limit reached");
+      state.collections.push({
+        ...collection,
+        name,
+        itemIds: [...new Set(collection.itemIds)].filter((id) =>
+          state.savedIds.includes(id),
+        ),
+      });
+      break;
+    }
+    case "restore-saved":
+      if (!action.id || state.savedIds.includes(action.id))
+        throw new Error("Saved item changed");
+      state.savedIds.push(action.id);
+      state.savedAt[action.id] = action.savedAt || now;
+      state.collections.forEach((c) => {
+        if (
+          action.collectionIds.includes(c.id) &&
+          !c.itemIds.includes(action.id)
+        )
+          c.itemIds.push(action.id);
+      });
+      break;
     case "delete-collection":
       state.collections = state.collections.filter((c) => c.id !== action.id);
       break;

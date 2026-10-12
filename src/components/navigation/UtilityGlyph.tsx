@@ -1,5 +1,5 @@
 /** Parts move inside a stable 20px box; utility labels and hit areas never shift. */
-export function UtilityGlyph({ kind }: { kind: "language" | "appearance" }) {
+export function UtilityGlyph({ kind, locale = "ar" }: { kind: "language" | "appearance"; locale?: "en" | "ar" }) {
   return (
     <svg
       className={`utility-glyph utility-${kind}`}
@@ -23,10 +23,10 @@ export function UtilityGlyph({ kind }: { kind: "language" | "appearance" }) {
       ) : (
         <>
           <g className="utility-language-first">
-            <path d="M3 5h12M9 3v2M12 5c0 5-4 9-9 11M5 8c1 4 4 6 7 7" />
+            <text x="6" y="11" textAnchor="middle" fill="currentColor" stroke="none" fontSize={locale === "en" ? "16" : "13"} fontWeight="750">{locale === "en" ? "ع" : "A"}</text>
           </g>
           <g className="utility-language-second">
-            <path d="m14 21 4-10 4 10M15.5 17h5" />
+            <text x="18" y="21" textAnchor="middle" fill="currentColor" stroke="none" fontSize={locale === "en" ? "13" : "16"} fontWeight="750">{locale === "en" ? "A" : "ع"}</text>
           </g>
         </>
       )}

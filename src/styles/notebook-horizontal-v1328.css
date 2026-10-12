@@ -1,0 +1,238 @@
+/* One predictable row for section papers; PDF actions occupy the separate row below. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-object {
+  margin-block-start: 0;
+  height: 100%;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 44px minmax(0, 1fr);
+  min-height: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-index,
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-index:is(
+    :hover,
+    :focus-within,
+    [data-expanded="true"],
+    [data-closed="true"]
+  ) {
+  position: relative;
+  inset: auto;
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  max-width: 100%;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  clip-path: none;
+  transform: none;
+  overflow: visible;
+  border: 0;
+  z-index: 20;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-index
+  .notebook-bookmarks,
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-index:is(:hover, :focus-within, [data-expanded="true"])
+  .notebook-bookmarks {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  width: calc(100% - 44px);
+  max-width: calc(100% - 44px);
+  height: 44px;
+  padding: 0 3px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-padding-inline: 3px;
+  scrollbar-width: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-reading-page {
+  grid-row: 2;
+  grid-column: 1;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-section-close {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  inset-block-start: 0;
+  inset-block-end: auto;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  transform: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-bookmark {
+  height: 40px;
+  min-height: 40px;
+  flex: 0 0 100px;
+  transform: perspective(700px) rotateX(-12deg) translateY(4px);
+  transition: transform 180ms ease;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-bookmark:is(
+    :hover,
+    :focus-visible,
+    [aria-current="page"],
+    [data-peeking="true"]
+  ) {
+  transform: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-index[data-closed="true"]
+  .notebook-bookmark {
+  transform: translateY(32px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading]
+  .notebook-peek {
+  max-width: calc(100% - 60px);
+  max-height: calc(100dvh - 160px);
+  overflow: auto;
+  z-index: 25;
+}
+@media (max-width: 599px) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"][data-reading]
+    .notebook-bookmark {
+    flex-basis: 86px;
+    min-width: 86px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"][data-reading]
+    .notebook-bookmark {
+    transition: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="horizontal"][data-reading]
+    .notebook-bookmark {
+    height: 44px;
+    min-height: 44px;
+    transform: none;
+  }
+}
+/* Preserve the centered browse-mode book and its equal top/bottom gutters. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook:not(
+    [data-focus="true"]
+  )[data-section-layout="horizontal"][data-reading]
+  .notebook-object {
+  margin-block: var(--study-book-gap);
+  height: calc(100% - 2 * var(--study-book-gap));
+}
+
+/* Closing removes the occupied row. The small reopen tab floats at the outer edge. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading][data-sections-hidden="true"]
+  .notebook-spread {
+  grid-template-rows: 0px minmax(0, 1fr);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="horizontal"][data-reading][data-sections-hidden="true"]
+  .notebook-index {
+  height: 0;
+  min-height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  pointer-events: none;
+}
+.notebook-sections-reopen {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px 10px;
+  margin: 4px;
+  border: 1px solid var(--book-rule);
+  border-radius: 7px;
+  background: var(--book-paper);
+  color: var(--book-ink);
+  cursor: pointer;
+}

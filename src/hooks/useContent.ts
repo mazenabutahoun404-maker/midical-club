@@ -1,3 +1,4 @@
+import { useUndoNotice } from "../components/feedback/useUndoNotice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServices } from "../app/providers/ServicesProvider";
 import { useAuth } from "../app/providers/AuthProvider";
@@ -216,6 +217,7 @@ export function useMentorshipWorkspace() {
 }
 export function useContributions() {
   const s = useServices();
+  const undoNotice = useUndoNotice();
   const profile = useStudentProfile();
   const client = useQueryClient();
   const studentId = profile.data?.id;
@@ -226,8 +228,23 @@ export function useContributions() {
     enabled: !!studentId,
   });
   const save = useMutation({
-    mutationFn: (input: import("../types/content").ContributionInput) =>
-      s.contributions.saveDraft(studentId!, input),
+    mutationFn: async (input: import("../types/content").ContributionInput) => {
+      const owner = studentId!,
+        before = input.id
+          ? (await s.contributions.list(owner)).find(
+              (item) => item.id === input.id,
+            )
+          : undefined;
+      const after = await s.contributions.saveDraft(owner, input);
+      if (before && s.contributions.restoreDraft)
+        undoNotice({ en: "Draft updated", ar: "عُدّلت المسودة" }, async () => {
+          await s.contributions.restoreDraft!(owner, before, after);
+          await client.invalidateQueries({
+            queryKey: ["contributions", owner],
+          });
+        });
+      return after;
+    },
     onSuccess: () => client.invalidateQueries({ queryKey: key }),
   });
   const submit = useMutation({
@@ -235,7 +252,20 @@ export function useContributions() {
     onSuccess: () => client.invalidateQueries({ queryKey: key }),
   });
   const remove = useMutation({
-    mutationFn: (id: string) => s.contributions.deleteDraft(studentId!, id),
+    mutationFn: async (id: string) => {
+      const owner = studentId!,
+        before = (await s.contributions.list(owner)).find(
+          (item) => item.id === id,
+        );
+      await s.contributions.deleteDraft(owner, id);
+      if (before && s.contributions.restoreDraft)
+        undoNotice({ en: "Draft deleted", ar: "حُذفت المسودة" }, async () => {
+          await s.contributions.restoreDraft!(owner, before, null);
+          await client.invalidateQueries({
+            queryKey: ["contributions", owner],
+          });
+        });
+    },
     onSuccess: () => client.invalidateQueries({ queryKey: key }),
   });
   return {
@@ -270,6 +300,7 @@ export function useStoreProduct(slug?: string) {
 }
 export function useStoreWorkspace() {
   const s = useServices();
+  const undoNotice = useUndoNotice();
   const profile = useStudentProfile();
   const client = useQueryClient();
   const studentId = profile.data?.id;
@@ -308,7 +339,49 @@ export function useStoreWorkspace() {
       productId: string;
       variantId: string;
       quantity: number;
-    }) => s.store.setCartLine(studentId!, productId, variantId, quantity),
+    }) => {
+      const owner = studentId!;
+      return (async () => {
+        const previous = (await s.store.getCart(owner)).lines.find(
+          (line) =>
+            line.productId === productId && line.variantId === variantId,
+        );
+        const updated = await s.store.setCartLine(
+          owner,
+          productId,
+          variantId,
+          quantity,
+        );
+        const expected =
+          updated.lines.find(
+            (line) =>
+              line.productId === productId && line.variantId === variantId,
+          )?.quantity || 0;
+        if (previous)
+          undoNotice(
+            { en: "Quantity updated", ar: "عُدّلت الكمية" },
+            async () => {
+              const current = await s.store.getCart(owner);
+              if (
+                (current.lines.find(
+                  (line) =>
+                    line.productId === productId &&
+                    line.variantId === variantId,
+                )?.quantity || 0) !== expected
+              )
+                throw new Error("CART_CHANGED");
+              const restored = await s.store.setCartLine(
+                owner,
+                productId,
+                variantId,
+                previous.quantity,
+              );
+              client.setQueryData(["store", "cart", owner], restored);
+            },
+          );
+        return updated;
+      })();
+    },
     onSuccess: refreshCart,
   });
   const remove = useMutation({
@@ -318,7 +391,38 @@ export function useStoreWorkspace() {
     }: {
       productId: string;
       variantId: string;
-    }) => s.store.removeCartLine(studentId!, productId, variantId),
+    }) => {
+      const owner = studentId!;
+      return (async () => {
+        const previous = (await s.store.getCart(owner)).lines.find(
+          (line) =>
+            line.productId === productId && line.variantId === variantId,
+        );
+        const updated = await s.store.removeCartLine(
+          owner,
+          productId,
+          variantId,
+        );
+        if (previous)
+          undoNotice({ en: "Item removed", ar: "حُذف العنصر" }, async () => {
+            if (
+              (await s.store.getCart(owner)).lines.some(
+                (line) =>
+                  line.productId === productId && line.variantId === variantId,
+              )
+            )
+              throw new Error("CART_CHANGED");
+            const restored = await s.store.setCartLine(
+              owner,
+              productId,
+              variantId,
+              previous.quantity,
+            );
+            client.setQueryData(["store", "cart", owner], restored);
+          });
+        return updated;
+      })();
+    },
     onSuccess: refreshCart,
   });
   const reserve = useMutation({
@@ -374,6 +478,7 @@ export function useRecruitmentPosition(slug?: string) {
 
 export function useRecruitmentWorkspace() {
   const services = useServices();
+  const undoNotice = useUndoNotice();
   const auth = useAuth();
   const profile = useStudentProfile();
   const client = useQueryClient();
@@ -396,7 +501,33 @@ export function useRecruitmentWorkspace() {
   const saveDraft = useMutation({
     mutationFn: (
       input: import("../types/recruitment").RecruitmentApplicationInput,
-    ) => services.recruitment.saveDraft(studentId!, input),
+    ) => {
+      const owner = studentId!;
+      return (async () => {
+        const before = input.id
+          ? (await services.recruitment.listApplications(owner)).find(
+              (item) => item.id === input.id,
+            )
+          : undefined;
+        const after = await services.recruitment.saveDraft(owner, input);
+        if (before)
+          undoNotice(
+            { en: "Application draft updated", ar: "عُدّلت مسودة الطلب" },
+            async () => {
+              const current = (
+                await services.recruitment.listApplications(owner)
+              ).find((item) => item.id === after.id);
+              if (JSON.stringify(current) !== JSON.stringify(after))
+                throw new Error("APPLICATION_CHANGED");
+              await services.recruitment.saveDraft(owner, before);
+              await client.invalidateQueries({
+                queryKey: ["recruitment", "applications", owner],
+              });
+            },
+          );
+        return after;
+      })();
+    },
     onSuccess: refreshApplications,
   });
   const submit = useMutation({

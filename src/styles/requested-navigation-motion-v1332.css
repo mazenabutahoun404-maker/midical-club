@@ -1,0 +1,323 @@
+/* V0.13.32 — only the requested header, control-space and motion corrections. */
+
+/* Hidden controls consume no row, column or gap. Touch controls remain revealed. */
+html:root[data-palette][data-theme] body .app-shell[data-navigation] .desktop-navigation {
+  --controls-target-width: var(--nav-control-span);
+  --controls-target-height: var(--nav-control-size);
+  --controls-width: 0px;
+  --controls-height: 0px;
+  --controls-gap: 0px;
+  --controls-overflow: hidden;
+}
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"] .desktop-navigation {
+  --controls-target-width: var(--nav-control-size);
+  --controls-target-height: var(--nav-control-span);
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation:is(:hover, :focus-within) {
+  --controls-width: var(--controls-target-width);
+  --controls-height: var(--controls-target-height);
+  --controls-gap: 4px;
+  --controls-overflow: visible;
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot,
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot .navigation-reveal-actions {
+  width: var(--controls-width);
+  height: var(--controls-height);
+  min-height: var(--controls-height);
+  max-height: var(--controls-height);
+  margin: 0;
+  padding: 0;
+}
+/* The collapsed branch has more specificity in the previous release. */
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .desktop-navigation .navigation-controls-slot,
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .desktop-navigation .navigation-controls-slot .navigation-reveal-actions {
+  width: var(--controls-width);
+  height: var(--controls-height);
+  min-height: var(--controls-height);
+  max-height: var(--controls-height);
+  margin-inline: auto;
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot {
+  overflow: var(--controls-overflow);
+}
+html:root[data-palette][data-theme] body .personal-navigation .personal-nav-footer {
+  grid-template-columns: minmax(0, 1fr) var(--controls-width);
+  gap: var(--controls-gap);
+}
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .personal-navigation .personal-nav-footer {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--controls-gap);
+}
+@media (any-pointer: coarse), (hover: none) {
+  html:root[data-palette][data-theme] body .app-shell[data-navigation] .desktop-navigation {
+    --controls-width: var(--controls-target-width);
+    --controls-height: var(--controls-target-height);
+    --controls-gap: 4px;
+    --controls-overflow: visible;
+  }
+}
+@media (min-width: 768px) {
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation :is(.navigation-bottom, .admin-nav-footer, .personal-nav-footer) {
+    position: relative;
+    inset: auto;
+    transform: none;
+    display: flex;
+    align-items: center;
+    flex: none;
+    width: auto;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    gap: var(--controls-gap);
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation :is(.navigation-bottom, .admin-nav-footer, .personal-nav-footer)
+    > .navigation-preferences {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation :is(.navigation-bottom, .admin-nav-footer, .personal-nav-footer)
+    > .navigation-preferences > span {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation :is(.navigation-bottom, .admin-nav-footer, .personal-nav-footer)
+    > .navigation-controls-slot {
+    display: block;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation .navigation-scroll-frame {
+    padding-inline-end: 0;
+  }
+}
+.mobile-more-appearance {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.mobile-more-appearance .navigation-preferences {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+/* Equal outer columns keep the operations signal centered in the actual header. */
+html:root[data-palette][data-theme] body .app-shell .scroll-header.admin-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+.admin-header-start {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+  overflow: hidden;
+}
+.admin-header-start .admin-back {
+  min-width: 0;
+  max-width: 100%;
+  flex: 0 1 auto;
+}
+.admin-header-start .admin-back > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html:root[data-palette][data-theme] body .app-shell .admin-header .admin-live-chip {
+  display: inline-flex;
+  justify-self: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 160px;
+  gap: 6px;
+  padding: 6px 10px;
+}
+.admin-signal-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html:root[data-palette][data-theme] body .app-shell .admin-header .admin-header-actions {
+  justify-self: end;
+}
+html:root[data-palette][data-theme] body .app-shell .scroll-header.admin-header .admin-operator {
+  width: 44px;
+  max-width: 44px;
+  padding: 0;
+}
+@media (max-width: 767px) {
+  html:root[data-palette][data-theme] body .app-shell .scroll-header.admin-header {
+    gap: 8px;
+  }
+  .admin-header-start .shell-location {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .admin-header .admin-live-chip {
+    max-width: 112px;
+    font-size: 10px;
+    padding-inline: 6px;
+  }
+}
+@media (max-width: 420px) {
+  html:root[data-palette][data-theme] body .app-shell .admin-header .admin-live-chip {
+    max-width: 88px;
+    font-size: 9px;
+    gap: 4px;
+  }
+}
+@media (forced-colors: none) {
+  /* A light content theme can have a dark administrative navigation surface. */
+  html:root[data-palette="medclub"][data-theme="light"] body .app-shell.admin-shell {
+    --shell-surface: #3b1b1d;
+    --shell-gradient: #3b1b1d;
+    --shell-ink: #fdf5ec;
+    --shell-muted: #dfcbd0;
+    --shell-line: #ad8190;
+    --shell-selection: #662c3a;
+    --shell-inset: #2c151b;
+    --sidebar: #3b1b1d;
+    --sidebar-foreground: #fdf5ec;
+    --sidebar-accent: #662c3a;
+    --sidebar-accent-foreground: #fdf5ec;
+    --sidebar-border: #ad8190;
+    --sidebar-ring: #f3c5cf;
+    --nav-depth-front: #542833;
+    --nav-depth-back: #603441;
+  }
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell
+    .desktop-navigation .navigation-item:not(.profile-portal):is(:hover, :focus-visible),
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell
+    .navigation-preferences:is(:hover, :focus-visible),
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell .scroll-header
+    :is(.workspace-icon, .language-button):is(:hover, :focus-visible) {
+    background: var(--shell-selection);
+    color: var(--shell-ink);
+    border-color: var(--shell-line);
+  }
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell
+    :is(.admin-live-chip, .admin-back) {
+    background: var(--shell-selection);
+    color: var(--shell-ink);
+    border-color: var(--shell-line);
+  }
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell[data-navigation]
+    .desktop-navigation .navigation-controls-slot button::before,
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell[data-navigation]
+    .desktop-navigation .navigation-controls-slot button:is(:hover, :focus-visible, [aria-pressed="true"])::before {
+    background: var(--shell-selection);
+    border-color: var(--shell-line);
+  }
+  html:root[data-palette="medclub"][data-theme="light"] body .admin-shell
+    :is(.desktop-navigation, .scroll-header) :is(a, button):focus-visible {
+    outline-color: var(--sidebar-ring);
+  }
+}
+
+/* Only the existing study-completion indicator is replaced visually. */
+.study-progress {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.review-meter .study-progress .study-progress-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.study-progress-track,
+.study-progress-fill {
+  display: block;
+  width: 100%;
+  height: 5px;
+  border-radius: 8px;
+}
+.study-progress-track {
+  overflow: hidden;
+  background: var(--muted);
+}
+.study-progress-fill {
+  background: var(--primary);
+  transform-origin: left center;
+  transition: transform 360ms ease-out;
+}
+html[dir="rtl"] .study-progress-fill {
+  transform-origin: right center;
+}
+.notification-bell .notification-bell-icon {
+  transform-box: fill-box;
+  transform-origin: 50% 15%;
+}
+
+/* SaveButton and its flying bookmark use plain SVGs and are outside this morph scope. */
+.motion-icon[data-morph*="bookmark"] > .motion-icon-to {
+  transform-origin: 50% 0;
+  transform: perspective(120px) rotateX(-55deg) translateY(-2px) scale(0.95);
+  clip-path: inset(0 0 100% 0);
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  fill: currentColor;
+  fill-opacity: 0;
+  transition: transform 200ms ease-out, clip-path 180ms ease-out,
+    opacity 100ms ease-out, fill-opacity 180ms ease-out !important;
+}
+:is(a, button):is(:hover, :focus-visible, .active, [aria-current], [aria-pressed="true"])
+  .motion-icon[data-morph*="bookmark"] > .motion-icon-from {
+  opacity: 0;
+  transform: perspective(120px) rotateX(24deg) scaleY(0.6);
+}
+:is(a, button):is(:hover, :focus-visible, .active, [aria-current], [aria-pressed="true"])
+  .motion-icon[data-morph*="bookmark"] > .motion-icon-to {
+  transform: perspective(120px) rotateX(0) translateY(0) scale(1);
+  clip-path: inset(0);
+  fill-opacity: 0.18;
+}
+@media (prefers-reduced-motion: reduce) {
+  .notification-bell .notification-bell-icon {
+    animation: none !important;
+    transform: none;
+  }
+  .study-progress-fill {
+    transition: none;
+  }
+  .motion-icon[data-morph*="bookmark"] > svg {
+    transition: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .study-progress-track { background: Canvas; border: 1px solid ButtonText; }
+  .study-progress-fill { background: Highlight; }
+}

@@ -3,11 +3,18 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import type { MessageKey } from "../../constants/messages";
 import { involvementItems, involvedLabel } from "./involvement";
 const titles: [string, MessageKey][] = [
+  ["/my/study/recall", "recallDesk"],
+  ["/my/study/offline", "offlinePacks"],
+  ["/my/study/rooms", "quietRooms"],
+  ["/my/study", "studyDesk"],
+  ["/my/portfolio", "campusPortfolio"],
+  ["/portfolio", "campusPortfolio"],
   ["/my/learning", "myLearning"],
   ["/my/progress", "myProgress"],
   ["/my/library", "libraryShort"],
   ["/my/calendar", "calendar"],
   ["/my/notifications", "notifications"],
+  ["/my/activities", "myActivities"],
   ["/my/events", "myEvents"],
   ["/my/opportunities", "myOpportunities"],
   ["/my/mentorship", "myMentorship"],

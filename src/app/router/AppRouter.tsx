@@ -1,3 +1,4 @@
+import { PersonalActivitiesLayout } from "../../components/navigation/PersonalActivitiesLayout";
 import { RouteJourneyContext, useRouteJourney } from "./RouteJourney";
 import { lazy, Suspense } from "react";
 import { SearchDialog } from "../../features/search/SearchDialog";
@@ -18,6 +19,24 @@ import { useLocale } from "../providers/LocaleProvider";
 import { ActionLink } from "../../components/ui/ActionLink";
 import { RequireAuth } from "./RequireAuth";
 import { CapabilityGate } from "./CapabilityGate";
+const StudyDeskPage = lazy(
+  () => import("../../features/study-hub/StudyDeskPage"),
+);
+const RecallDeskPage = lazy(
+  () => import("../../features/study-hub/RecallDeskPage"),
+);
+const OfflinePacksPage = lazy(
+  () => import("../../features/study-hub/OfflinePacksPage"),
+);
+const QuietRoomsPage = lazy(
+  () => import("../../features/study-hub/QuietRoomsPage"),
+);
+const PortfolioPage = lazy(
+  () => import("../../features/study-hub/PortfolioPage"),
+);
+const SharedPortfolioPage = lazy(
+  () => import("../../features/study-hub/SharedPortfolioPage"),
+);
 const Homepage = lazy(() => import("../../features/homepage/Homepage"));
 const AppOverlays = lazy(() =>
   import("../layouts/AppOverlays").then((module) => ({
@@ -52,9 +71,6 @@ const StudentDashboard = lazy(
 );
 const MyLearningPage = lazy(
   () => import("../../features/academics/MyLearningPage"),
-);
-const AcademicProgressPage = lazy(
-  () => import("../../features/insights/AcademicProgressPage"),
 );
 const ProfilePage = lazy(() => import("../../features/profile/ProfilePage"));
 const SettingsPage = lazy(() => import("../../features/settings/SettingsPage"));
@@ -430,6 +446,10 @@ export function AppRouter() {
                 element={<Navigate to="/my/orders" replace />}
               />
               <Route path="utilities" element={<StudyToolsPage />} />
+              <Route
+                path="portfolio/:shareToken"
+                element={<SharedPortfolioPage />}
+              />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route element={<RequireAuth />}>
@@ -440,7 +460,10 @@ export function AppRouter() {
                   element={<Navigate to="/my" replace />}
                 />
                 <Route path="learning" element={<MyLearningPage />} />
-                <Route path="progress" element={<AcademicProgressPage />} />
+                <Route
+                  path="progress"
+                  element={<Navigate to="/my/learning?view=insights" replace />}
+                />
                 <Route
                   path="learning/:slug"
                   element={
@@ -452,10 +475,22 @@ export function AppRouter() {
                 <Route path="library" element={<LibraryPage />} />
                 <Route path="calendar" element={<CalendarPage />} />
                 <Route path="notifications" element={<NotificationsPage />} />
-                <Route path="events" element={<MyEventsPage />} />
-                <Route path="opportunities" element={<MyOpportunitiesPage />} />
+                <Route element={<PersonalActivitiesLayout />}>
+                  <Route
+                    path="activities"
+                    element={<Navigate to="/my/events" replace />}
+                  />
+                  <Route path="events" element={<MyEventsPage />} />
+                  <Route
+                    path="opportunities"
+                    element={<MyOpportunitiesPage />}
+                  />
+                  <Route
+                    path="contributions"
+                    element={<MyContributionsPage />}
+                  />
+                </Route>
                 <Route path="mentorship" element={<MyMentorshipPage />} />
-                <Route path="contributions" element={<MyContributionsPage />} />
                 <Route path="orders" element={<MyOrdersPage />} />
                 <Route path="applications" element={<MyApplicationsPage />} />
                 <Route path="team" element={<TeamProfilePage />} />
@@ -463,6 +498,11 @@ export function AppRouter() {
                 <Route path="focus" element={<PersonalFocusPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
+                <Route path="study" element={<StudyDeskPage />} />
+                <Route path="study/recall" element={<RecallDeskPage />} />
+                <Route path="study/offline" element={<OfflinePacksPage />} />
+                <Route path="study/rooms" element={<QuietRoomsPage />} />
+                <Route path="portfolio" element={<PortfolioPage />} />
                 <Route path="*" element={<NotFound personal />} />
               </Route>
               <Route path="admin" element={<AdminLayout />}>

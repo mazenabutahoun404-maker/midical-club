@@ -6,7 +6,7 @@ import {
   FileText,
   Upload,
 } from "lucide-react";
-import type { CourseSectionKind } from "../../types/content";
+import type { CourseSectionKind, Text } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import {
   validateCoursePdf,
@@ -20,11 +20,24 @@ export function CoursePdfImporter({
   pending,
   onImport,
   onRead,
+  copy,
 }: {
   section: CourseSectionKind;
   pending: boolean;
   onImport: ImportCoursePdfs;
   onRead?: (id: string) => void;
+  copy?: Partial<
+    Record<
+      | "title"
+      | "idle"
+      | "dragging"
+      | "working"
+      | "success"
+      | "boundary"
+      | "receipt",
+      Text
+    >
+  >;
 }) {
   const { t } = useLocale(),
     id = useId();
@@ -130,27 +143,32 @@ export function CoursePdfImporter({
         </span>
       </div>
       <div className="pdf-import-copy">
-        <h3 id={id}>{t({ en: "Place PDF material", ar: "إضافة مادة PDF" })}</h3>
+        <h3 id={id}>
+          {t(copy?.title || { en: "Place PDF material", ar: "إضافة مادة PDF" })}
+        </h3>
         <p role={state === "error" ? "alert" : "status"}>
           {t(
             state === "dragging"
-              ? {
+              ? copy?.dragging || {
                   en: "Release to place the PDF into this section",
                   ar: "أفلت الملف لإضافته إلى هذا القسم",
                 }
               : working
-                ? {
+                ? copy?.working || {
                     en: "Checking and saving your PDFs…",
                     ar: "جارٍ التحقق من ملفاتك وحفظها…",
                   }
                 : state === "success"
-                  ? { en: "PDF material added", ar: "أضيفت مادة PDF" }
+                  ? copy?.success || {
+                      en: "PDF material added",
+                      ar: "أضيفت مادة PDF",
+                    }
                   : state === "error"
                     ? {
                         en: "Import failed. Choose valid PDFs under 30 MB, up to 8 at once, and try again.",
                         ar: "تعذّر الاستيراد. اختر ملفات PDF صالحة أصغر من ٣٠ ميجابايت، حتى ٨ ملفات، وحاول مجددًا.",
                       }
-                    : {
+                    : copy?.idle || {
                         en: "Drop course PDFs here or choose them from your device.",
                         ar: "أسقط ملفات المساق هنا أو اخترها من جهازك.",
                       },
@@ -215,7 +233,7 @@ export function CoursePdfImporter({
           />
           <small>
             {progress?.completed || added.length} / {files.length}{" "}
-            {t({ en: "saved", ar: "محفوظ" })}
+            {t(copy?.receipt || { en: "saved", ar: "محفوظ" })}
           </small>
           {state === "success" && onRead && added[0] && (
             <button
@@ -231,15 +249,16 @@ export function CoursePdfImporter({
       )}
       <p className="pdf-import-boundary">
         {t(
-          sessionOnly
-            ? {
-                en: "Available for this session only: device storage is unavailable. Keep your original files.",
-                ar: "متاح للجلسة الحالية فقط: تخزين الجهاز غير متاح. احتفظ بملفاتك الأصلية.",
-              }
-            : {
-                en: "Device-local course preview. Shared publishing requires the course API.",
-                ar: "معاينة للمساق على جهازك. النشر المشترك يحتاج إلى واجهة المساق البرمجية.",
-              },
+          copy?.boundary ||
+            (sessionOnly
+              ? {
+                  en: "Available for this session only: device storage is unavailable. Keep your original files.",
+                  ar: "متاح للجلسة الحالية فقط: تخزين الجهاز غير متاح. احتفظ بملفاتك الأصلية.",
+                }
+              : {
+                  en: "Device-local course preview. Shared publishing requires the course API.",
+                  ar: "معاينة للمساق على جهازك. النشر المشترك يحتاج إلى واجهة المساق البرمجية.",
+                }),
         )}
       </p>
     </section>

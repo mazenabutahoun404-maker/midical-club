@@ -1,0 +1,69 @@
+.student-notes.unified-notes [data-note-color="amber"], .pdf-note-sticker[data-note-color="amber"] { --note-color: #ffdf98; }
+.student-notes.unified-notes [data-note-color="mint"], .pdf-note-sticker[data-note-color="mint"] { --note-color: #b8e0c8; }
+.student-notes.unified-notes [data-note-color="rose"], .pdf-note-sticker[data-note-color="rose"] { --note-color: #f0c1cc; }
+.student-notes.unified-notes .student-note-row { border-radius: 10px; margin-block: 8px; }
+.student-notes.unified-notes .student-note-face { display: block; }
+.student-notes.unified-notes .student-note-row[data-note-type="course"] .student-note-face { border-inline-start: 4px solid var(--note-color); }
+.student-notes.unified-notes .student-note-copy { padding-inline-end: 44px; min-height: 84px; }
+.student-notes.unified-notes .student-note-row[data-note-type="course"] .student-note-copy { min-height: 112px; }
+.student-notes.unified-notes :is(.student-note-open, .student-note-text) { width: 100%; text-align: start; padding: 12px; background: transparent; color: var(--foreground); border: 0; }
+.student-notes.unified-notes .student-note-text p { display: block; margin: 4px 0 8px; max-height: 180px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8rem; line-height: 1.6; }
+.student-notes.unified-notes .student-note-text small, .note-revision-warning { color: var(--muted-foreground); font-size: .7rem; }
+.student-notes.unified-notes .note-revision-warning { display: block; padding: 0 12px 8px; }
+.student-notes.unified-notes .student-note-item-actions { position: absolute; top: 6px; inset-inline-end: 6px; display: flex; flex-direction: column; gap: 3px; opacity: 0; visibility: hidden; transform: translateX(3px); transition: opacity 130ms, transform 130ms; }
+.student-notes.unified-notes .student-note-row:is(:hover, :focus-within) .student-note-item-actions { opacity: 1; visibility: visible; transform: none; }
+.student-notes.unified-notes .student-note-item-actions button { display: inline-grid; place-items: center; width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0; margin: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--foreground); visibility: inherit; transition: background-color 130ms, transform 100ms; }
+.student-notes.unified-notes .student-note-item-actions button:is(:hover, :focus-visible) { background: var(--muted); border-color: var(--input); }
+.student-notes.unified-notes .student-note-item-actions button:active { transform: scale(.9); }
+.student-notes.unified-notes .student-note-item-actions svg { transition: transform 160ms; }
+.student-notes.unified-notes .student-note-edit:is(:hover, :focus-visible) svg { transform: rotate(-15deg) translateY(-1px); }
+.student-notes.unified-notes .student-note-item-delete:is(:hover, :focus-visible) svg { transform: rotate(10deg); }
+.student-notes.unified-notes .student-note-row:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+.student-notes.unified-notes .student-note-editor { display: grid; gap: 12px; min-width: 0; padding: 12px; border: 2px solid var(--border); border-radius: 12px; background: var(--card); color: var(--foreground); transition: border-color 150ms; }
+.student-notes.unified-notes .student-note-editor[data-note-color] { border-color: var(--note-color); }
+.student-notes.unified-notes .student-note-editor label { display: grid; gap: 6px; min-width: 0; font-size: .8rem; }
+.student-notes.unified-notes :is(input:not([type="radio"]), select, textarea) { width: 100%; min-width: 0; min-height: 44px; padding: 8px 10px; border: 1px solid var(--input); border-radius: 8px; background: var(--card); color: var(--foreground); }
+.student-notes.unified-notes textarea { resize: vertical; }
+.student-notes.unified-notes input[aria-invalid="true"], .student-notes.unified-notes select[aria-invalid="true"], .student-notes.unified-notes textarea[aria-invalid="true"] { border-color: var(--destructive); }
+.note-attachment-fields { display: grid; grid-template-columns: minmax(0, 1fr) 76px; gap: 10px; }
+.note-attachment-fields > label:first-child { grid-column: 1 / -1; }
+.note-attachment-fields > p { grid-column: 1 / -1; }
+.note-type-picker { display: flex; gap: 6px; }
+.note-type-picker button { flex: 1; min-height: 44px; border: 1px solid var(--input); background: var(--card); color: var(--foreground); border-radius: 8px; }
+.note-type-picker button[aria-pressed="true"] { background: var(--accent); color: var(--accent-foreground); border-color: var(--ring); }
+.note-color-picker { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; border: 0; }
+.note-color-picker legend { font-size: .8rem; padding-bottom: 6px; }
+.student-notes.unified-notes .note-color-picker label { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 5px; flex: 1; min-height: 44px; padding: 5px; border: 2px solid var(--border); border-radius: 8px; background: var(--card); cursor: pointer; }
+.note-color-picker label[data-selected] { border-color: var(--note-color); box-shadow: inset 0 0 0 1px var(--note-color); }
+.note-color-picker label[data-selected]::after { content: "✓"; position: absolute; inset-inline-end: 3px; top: 1px; font-size: 11px; font-weight: 800; color: var(--foreground); }
+.note-color-picker label > span { width: 14px; height: 14px; border: 1px solid var(--input); border-radius: 50%; background: var(--note-color); }
+.note-color-picker input[type="radio"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.note-color-picker label:focus-within { outline: 2px solid var(--ring); outline-offset: 2px; }
+.note-field-error { color: var(--foreground); font-size: .75rem; font-weight: 650; }
+.note-file-status { font-size: .75rem; color: var(--muted-foreground); }
+.note-discard-question { padding: 10px; border: 1px solid var(--input); border-radius: 8px; }
+.note-discard-question button { min-height: 44px; }
+.student-notes.unified-notes .student-note-actions { display: flex; align-items: center; gap: 8px; }
+.student-notes.unified-notes .student-note-actions button { min-height: 44px; }
+.student-notes.unified-notes .student-note-actions button { transition: transform 100ms ease; }
+.student-notes.unified-notes .student-note-actions button:active:not(:disabled) { transform: scale(.94); }
+.student-notes.unified-notes blockquote { padding: 8px 12px; border-inline-start: 3px solid var(--note-color, var(--input)); white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (any-pointer: coarse), (hover: none) {
+  .student-notes.unified-notes .student-note-item-actions { opacity: 1; visibility: visible; transform: none; }
+  .student-notes.unified-notes .student-note-item-actions button { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+  .student-notes.unified-notes .student-note-copy { padding-inline-end: 56px; min-height: 106px; }
+  .student-notes.unified-notes .student-note-row[data-note-type="course"] .student-note-copy { min-height: 150px; }
+}
+@media (max-width: 360px) {
+  .note-attachment-fields { grid-template-columns: minmax(0, 1fr); }
+  .note-color-picker { gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .student-notes.unified-notes .student-note-item-actions, .student-notes.unified-notes .student-note-editor,
+  .student-notes.unified-notes .student-note-item-actions button, .student-notes.unified-notes .student-note-item-actions svg,
+  .student-notes.unified-notes .student-note-actions button { transition: none; }
+}
+@media (forced-colors: active) {
+  .student-notes.unified-notes .student-note-editor, .student-notes.unified-notes .student-note-row[data-note-type="course"] .student-note-face { border-color: ButtonText; }
+  .note-color-picker label[data-selected] { border-color: Highlight; box-shadow: none; }
+}

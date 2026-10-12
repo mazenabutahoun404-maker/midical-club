@@ -11,6 +11,7 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 import { DEMO_TODAY } from "../../constants/config";
 import { calendarDate, dateAtNoon } from "../../lib/calendar";
 import { formatDate } from "../../lib/dates";
+import { StudyProgress } from "../../components/ui/StudyProgress";
 export function StudyOverview() {
   const { label, t, locale } = useLocale(),
     { state } = useWorkspace();
@@ -98,10 +99,10 @@ export function StudyOverview() {
                 {reviewed}/{mine.length}
               </strong>
             </div>
-            <progress
+            <StudyProgress
               max={Math.max(mine.length, 1)}
               value={reviewed}
-              aria-label={label("reviewProgress")}
+              label={label("reviewProgress")}
             />
             <small>{label("reviewNote")}</small>
           </div>

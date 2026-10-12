@@ -162,6 +162,32 @@ export function createLocalContributionService() {
       );
       return structuredClone(submitted);
     },
+    restoreDraft: async (
+      studentId: string,
+      before: StudentContribution,
+      expected: StudentContribution | null,
+    ) => {
+      validate(before);
+      if (
+        before.studentId !== studentId ||
+        !before.id ||
+        !["draft", "changes-requested"].includes(before.status)
+      )
+        throw new Error("CONTRIBUTION_LOCKED");
+      const current = read(studentId),
+        found = current.find((item) => item.id === before.id) || null;
+      if (
+        JSON.stringify(found) !== JSON.stringify(expected) ||
+        (found && found.status !== "draft")
+      )
+        throw new Error("CONTRIBUTION_CHANGED");
+      const restored = structuredClone(before);
+      write(studentId, [
+        ...current.filter((item) => item.id !== before.id),
+        restored,
+      ]);
+      return restored;
+    },
     deleteDraft: async (studentId: string, id: string) => {
       const current = read(studentId);
       const existing = current.find((item) => item.id === id);

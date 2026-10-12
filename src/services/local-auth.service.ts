@@ -255,6 +255,39 @@ export function createLocalAuthService(): AuthService {
       state.session = null;
       return write(state);
     },
+    restoreProfile: async (before, expected) => {
+      const state = read();
+      if (!state.session || state.session.profile.id !== before.id)
+        throw new Error("authentication-required");
+      if (JSON.stringify(state.session.profile) !== JSON.stringify(expected))
+        throw new Error("PROFILE_CHANGED");
+      for (const field of ["name", "initials", "batch", "bio"] as const)
+        if (
+          typeof before[field]?.en !== "string" ||
+          typeof before[field]?.ar !== "string"
+        )
+          throw new Error("INVALID_PROFILE");
+      if (
+        !Number.isInteger(before.year) ||
+        !Number.isFinite(before.focusMinutes)
+      )
+        throw new Error("INVALID_PROFILE");
+      state.session.profile = {
+        ...state.session.profile,
+        name: clone(before.name),
+        initials: clone(before.initials),
+        batch: clone(before.batch),
+        bio: clone(before.bio),
+        year: before.year,
+        focusMinutes: before.focusMinutes,
+      };
+      state.accounts = state.accounts.map((account) =>
+        account.user.id === state.session?.id
+          ? { ...account, user: clone(state.session) }
+          : account,
+      );
+      return write(state);
+    },
     subscribe: (listener) => {
       listeners.add(listener);
       const storageListener = (event: StorageEvent) => {

@@ -1,0 +1,132 @@
+/* Reading surfaces retain their theme; course chrome borrows the actual cover texture. */
+@media (forced-colors: none) {
+  html:root[data-palette][data-theme] body .course-study-edition .study-environment .study-notebook.course-desk-chrome {
+    --book-paper: var(--book-cover);
+    --book-paper-side: var(--book-cover);
+    --book-ink: #fff4e6;
+    --book-muted: #f0ddc8;
+    --book-tab: color-mix(in srgb, var(--book-cover) 90%, #fff4e6);
+    --book-rule: #d4bca3;
+  }
+  html:root[data-palette][data-theme] body .course-study-edition .study-environment .study-notebook.course-desk-chrome .notebook-toolbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--book-cover);
+    background-image: linear-gradient(color-mix(in srgb, var(--book-cover) 70%, transparent), color-mix(in srgb, var(--book-cover) 70%, transparent)), var(--leather-tile);
+    background-size: cover;
+    background-blend-mode: normal, soft-light;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 54' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1000V2C994 2 994 50 980 50H850C810 50 800 54 750 54H250C200 54 190 50 150 50H20C6 50 6 2 0 2Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 54' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1000V2C994 2 994 50 980 50H850C810 50 800 54 750 54H250C200 54 190 50 150 50H20C6 50 6 2 0 2Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  }
+  html:root[data-palette][data-theme] body .course-study-edition .study-environment .study-notebook.course-desk-chrome .shelf-header-outline path { fill: transparent; }
+  .study-notebook { --course-scroll-thumb: color-mix(in srgb, var(--book-cover-light) 80%, var(--foreground)); }
+  .study-notebook :is(.study-tools-panel, .study-tools-panel *, .pdf-reader-options-content, .pdf-file-search, .pdf-note-sticker, .pdf-note-sticker *) {
+    scrollbar-color: var(--course-scroll-thumb) transparent;
+    scrollbar-width: thin;
+  }
+  .study-notebook :is(.study-tools-panel, .study-tools-panel *, .pdf-reader-options-content, .pdf-file-search, .pdf-note-sticker, .pdf-note-sticker *)::-webkit-scrollbar { width: 7px; height: 7px; }
+  .study-notebook :is(.study-tools-panel, .study-tools-panel *, .pdf-reader-options-content, .pdf-file-search, .pdf-note-sticker, .pdf-note-sticker *)::-webkit-scrollbar-thumb { background: var(--course-scroll-thumb); border-radius: 6px; }
+  .study-notebook :is(.study-tools-panel, .study-tools-panel *, .pdf-reader-options-content, .pdf-file-search, .pdf-note-sticker, .pdf-note-sticker *)::-webkit-scrollbar-track { background: transparent; }
+}
+/* The close button keeps its own 44px cell, inside the PDF rather than over a turn edge. */
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar {
+  padding-inline: 8px;
+  gap: 4px;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar .pdf-close-resource {
+  position: static;
+  inset: auto;
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  margin-inline: 4px 0;
+  transform: none;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface {
+  margin-inline: 0;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .page-hand-edge {
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  height: clamp(120px, 32vh, 280px);
+  min-height: 120px;
+  max-height: calc(100% - 24px);
+  width: 44px;
+  min-width: 44px;
+  transform: translateY(-50%);
+}
+.pdf-tool-tooltip { z-index: 240; max-width: min(260px, calc(100vw - 24px)); line-height: 1.45; background: var(--foreground); color: var(--background); }
+.pdf-paper-page .pdf-note-sticker {
+  position: absolute;
+  z-index: 22;
+  width: min(240px, calc(100% - 24px));
+  max-height: 220px;
+  overflow: auto;
+  padding: 10px;
+  border: 1px solid #30261d66;
+  border-radius: 5px 12px 12px 5px;
+  background: var(--note-color, #ffdf98);
+  color: #30261d;
+  box-shadow: 0 3px 12px #0002;
+  font-size: 12px;
+  line-height: 1.5;
+  animation: pdf-note-open 160ms ease-out;
+}
+.pdf-note-sticker > header { position: sticky; top: 0; background: var(--note-color, #ffdf98); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pdf-note-sticker > header button { display: grid; place-items: center; width: 32px; min-width: 32px; height: 32px; border: 1px solid #30261d66; border-radius: 8px; background: transparent; color: inherit; }
+.pdf-note-sticker :is(p, blockquote) { margin-block: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pdf-note-sticker blockquote { font-size: 11px; padding-inline-start: 6px; border-inline-start: 2px solid currentColor; }
+.pdf-note-sticker :focus-visible { outline: 2px solid #30261d; outline-offset: 2px; }
+@keyframes pdf-note-open { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: none; } }
+.notebook-empty-section { display: grid; justify-items: center; align-content: center; gap: 12px; min-height: 320px; padding: 32px 20px; text-align: center; color: var(--book-ink); }
+.notebook-empty-section svg { max-width: 85%; height: auto; }
+.notebook-empty-section strong { font-size: 1rem; }
+.notebook-empty-section p { max-width: 300px; color: var(--book-muted); font-size: .85rem; line-height: 1.6; }
+.empty-book-cover { fill: var(--book-cover); opacity: .18; }
+.empty-book-paper { fill: var(--book-paper); stroke: var(--book-rule); stroke-width: 1.4; }
+.empty-book-fold { fill: none; stroke: var(--book-rule); stroke-width: 1.4; }
+.empty-book-rule { fill: none; stroke: var(--book-rule); stroke-width: 1; opacity: .4; stroke-dasharray: 3 6; }
+.study-notebook[data-empty-section="true"] .notebook-back-cover { box-shadow: 0 2px 4px #0001; }
+.study-notebook[data-empty-section="true"] .notebook-binding { opacity: .6; }
+@media (max-width: 420px) {
+  html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar { padding-inline: 4px; gap: 2px; }
+  html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-page-jump { min-width: 64px; max-width: 80px; }
+  html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar .pdf-close-resource { margin-inline: 0; }
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-narrow="true"] {
+  display: grid;
+  grid-template-columns: 44px minmax(44px, 1fr) 44px;
+  justify-content: stretch;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-narrow="true"] .pdf-page-jump {
+  min-width: 44px;
+  max-width: 100%;
+  justify-self: center;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-narrow="true"] .pdf-page-jump > span { display: none; }
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-narrow="true"] > .pdf-reader-options {
+  grid-row: 2;
+  grid-column: 1 / 3;
+  justify-self: start;
+  width: 44px;
+  margin: 0;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-narrow="true"] .pdf-close-resource {
+  grid-row: 2;
+  grid-column: 3;
+  margin: 0;
+}
+@media (prefers-reduced-motion: reduce) { .pdf-note-sticker { animation: none; } }
+@media (forced-colors: active) {
+  .pdf-paper-page .pdf-note-sticker { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; }
+  .pdf-note-sticker :focus-visible { outline-color: CanvasText; }
+  .empty-book-cover, .empty-book-paper { fill: Canvas; stroke: CanvasText; }
+  .empty-book-fold, .empty-book-rule { stroke: CanvasText; }
+}

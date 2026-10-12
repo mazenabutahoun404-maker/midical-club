@@ -1,3 +1,4 @@
+import { throwToTrash } from "../../components/feedback/action-flight";
 import { useState } from "react";
 import { createRecordId } from "../../lib/record-id";
 import { useWorkspace } from "../../app/providers/WorkspaceProvider";
@@ -39,6 +40,14 @@ export function CollectionDialog({
       return;
     }
     setBusy(true);
+    if (action.kind === "delete") {
+      const source =
+        [
+          ...document.querySelectorAll<HTMLElement>("[data-collection-id]"),
+        ].find((row) => row.dataset.collectionId === action.collection.id) ||
+        null;
+      await throwToTrash(source, action.collection.name).finished;
+    }
     const ok = await send(
       action.kind === "create"
         ? { type: "create-collection", id: createRecordId(), name: cleaned }

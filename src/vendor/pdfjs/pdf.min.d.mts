@@ -12,7 +12,7 @@ export interface PDFDocumentLoadingTask { promise: Promise<PDFDocumentProxy>; on
 export const GlobalWorkerOptions: { workerSrc: string };
 export function getDocument(options: Record<string, unknown>): PDFDocumentLoadingTask;
 export class TextLayer {
-  constructor(options: { textContentSource: TextContent; container: HTMLDivElement; viewport: PageViewport });
+  constructor(options: { textContentSource: TextContent | ReadableStream<TextContent>; container: HTMLDivElement; viewport: PageViewport });
   render(): Promise<void>;
   cancel(): void;
 }

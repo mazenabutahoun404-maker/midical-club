@@ -1,3 +1,11 @@
+import { bookMaterial } from "./book-material";
+import { useLocation } from "react-router-dom";
+import { toast } from "sonner";
+import type { PageAnchor } from "../../types/study-hub";
+import { CourseEmptySection } from "./CourseEmptySection";
+import "../../styles/course-reading-v1334.css";
+import { CoursePublisherNotes } from "./CoursePublisherNotes";
+import { StudentNotes } from "../utilities/StudentNotes";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { StudyToolsPanel, useStudyTools } from "./StudyTools";
 import { SectionTurnPreview } from "./SectionTurnPreview";
@@ -59,6 +67,9 @@ const icons = {
   external: Globe2,
 } satisfies Record<CourseSectionKind, typeof FileText>;
 
+export const studySectionKind = (kind: CourseSectionKind): CourseSectionKind =>
+  kind === "guidance" || kind === "book" ? "notes" : kind;
+
 export function CourseNotebook({
   course,
   resources,
@@ -68,6 +79,7 @@ export function CourseNotebook({
   pdfImportError = false,
   onImportPdfs,
   onRemoveImportedPdf,
+  fileSourcesPending = false,
 }: {
   course: Course;
   resources: Resource[];
@@ -81,6 +93,7 @@ export function CourseNotebook({
     report?: PdfImportReporter,
   ) => Promise<string[]>;
   onRemoveImportedPdf?: (id: string) => Promise<void>;
+  fileSourcesPending?: boolean;
 }) {
   const { t, label, dir } = useLocale();
   const s = useStudyCopy();
@@ -89,28 +102,58 @@ export function CourseNotebook({
   const workspace = useWorkspace();
   const study = useStudyState(storageKey);
   const desk = useCourseDesk();
+  const location = useLocation();
+  const incomingNote = useRef("");
   const sectionLayout = resolveSectionLayout(
     study.state.sectionLayout,
     focus,
     courseNavigationVisible,
   );
-  const ordered = useMemo(
-    () => [...course.sections].sort((a, b) => a.order - b.order),
-    [course.sections],
-  );
+  const ordered = useMemo(() => {
+    const sections = course.sections.filter(
+      (section) => !["guidance", "book"].includes(section.kind),
+    );
+    if (!sections.some((section) => section.kind === "notes"))
+      sections.push({
+        id: "notes",
+        kind: "notes",
+        title: { en: "Notes", ar: "الملاحظات" },
+        description: {
+          en: "Publisher and private course notes",
+          ar: "ملاحظات الناشر وملاحظاتك الخاصة",
+        },
+        order: 3,
+      });
+    return sections.sort((a, b) => a.order - b.order);
+  }, [course.sections]);
   const bySection = useMemo(
     () =>
       Object.fromEntries(
         ordered.map((section) => [
           section.kind,
-          resources.filter((resource) => resource.kind === section.kind),
+          resources.filter(
+            (resource) => studySectionKind(resource.kind) === section.kind,
+          ),
         ]),
       ) as Partial<Record<CourseSectionKind, Resource[]>>,
     [ordered, resources],
   );
   const active =
-    ordered.find((section) => section.kind === study.state.active) ||
-    ordered[0];
+    ordered.find(
+      (section) => section.kind === studySectionKind(study.state.active),
+    ) || ordered[0];
+  useEffect(() => {
+    const previousKind = study.current.current.active;
+    if (["guidance", "book"].includes(previousKind))
+      study.update((previous) => ({
+        ...previous,
+        active: "notes",
+        sections: {
+          ...previous.sections,
+          notes: previous.sections[previousKind] || previous.sections.notes,
+        },
+      }));
+  }, []);
   const [peek, setPeek] = useState<CourseSectionKind | null>(null);
   const [turn, setTurn] = useState<{ id: number; backwards: boolean } | null>(
     null,
@@ -146,7 +189,7 @@ export function CourseNotebook({
   activeRef.current = active?.kind;
   const selected = resources.find(
     (resource) =>
-      resource.kind === active?.kind &&
+      studySectionKind(resource.kind) === active?.kind &&
       resource.id === study.state.sections[active?.kind]?.resourceId,
   );
   const companion = resources.find(
@@ -157,12 +200,36 @@ export function CourseNotebook({
     (resource) => resource.id === study.state.lastResourceId,
   );
   const visible = bySection[active?.kind] || [];
+  const emptySection = !selected && active?.kind !== "overview" && active?.kind !== "notes" && visible.length === 0;
   const peekSection = ordered.find((section) => section.kind === peek);
   const peekResources = peek ? bySection[peek] || [] : [];
   const firstMaterial =
     resources.find((resource) => safeResourceUrl(resource.fileUrl)) ||
-    resources.find((resource) => resource.kind === "guidance") ||
     resources[0];
+  useEffect(() => {
+    tools?.registerNoteOpener((anchor: PageAnchor, ownerCourse: string) => {
+      const resource = resources.find((item) => item.id === anchor.resourceId);
+      if (ownerCourse !== course.id || !resource || resource.updatedAt !== anchor.resourceRevision || !safeResourceUrl(resource.fileUrl)) return false;
+      open(resource, false);
+      return true;
+    });
+    return () => tools?.registerNoteOpener(null);
+  }, [tools?.registerNoteOpener, resources, course.id, active?.kind]);
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const id = query.get("pdf");
+    if (!id || fileSourcesPending || incomingNote.current === location.search) return;
+    const resource = resources.find((item) => item.id === id);
+    const requested = Number(query.get("page"));
+    const revision = query.get("revision");
+    incomingNote.current = location.search;
+    if (!resource || !safeResourceUrl(resource.fileUrl) || !Number.isSafeInteger(requested) || requested < 1 || (revision && revision !== resource.updatedAt)) {
+      toast.error(t({ en: "The note's PDF page is unavailable or its file has changed. The note is still saved.", ar: "صفحة PDF المرتبطة غير متاحة أو تغيّر الملف. الملاحظة ما زالت محفوظة." })); return;
+    }
+    study.update((previous) => ({ ...previous, resources: { ...previous.resources, [resource.id]: { scroll: 0, seconds: previous.resources[resource.id]?.seconds || 0, page: requested } } }));
+    open(resource, false);
+    tools?.openNote({ resourceId: resource.id, resourceRevision: resource.updatedAt, page: requested, x: .85, y: .1 }, course.id);
+  }, [location.search, resources, fileSourcesPending]);
 
   useEffect(() => {
     closePeek();
@@ -270,7 +337,7 @@ export function CourseNotebook({
     const files = (bySection[kind] || []).filter((item) =>
       safeResourceUrl(item.fileUrl),
     );
-    if (kind !== active.kind && files.length === 1) {
+    if (kind !== "notes" && kind !== active.kind && files.length === 1) {
       open(files[0], animate);
       return;
     }
@@ -283,17 +350,18 @@ export function CourseNotebook({
     study.update((previous) => ({ ...previous, active: kind }));
   }
   function open(resource: Resource, animate = true) {
+    const kind = studySectionKind(resource.kind);
     rememberSection();
-    switching.current = resource.kind !== active.kind;
-    if (animate) animateTo(resource.kind);
+    switching.current = kind !== active.kind;
+    if (animate) animateTo(kind);
     study.update((previous) => ({
       ...previous,
-      active: resource.kind,
+      active: kind,
       lastResourceId: resource.id,
       sections: {
         ...previous.sections,
-        [resource.kind]: {
-          scroll: previous.sections[resource.kind]?.scroll || 0,
+        [kind]: {
+          scroll: previous.sections[kind]?.scroll || 0,
           resourceId: resource.id,
         },
       },
@@ -304,7 +372,7 @@ export function CourseNotebook({
       !workspace.isError
     )
       void workspace.send({ type: "view-resource", id: resource.id });
-    suppressed.current = resource.kind;
+    suppressed.current = kind;
     if (window.matchMedia("(hover: none), (pointer: coarse)").matches)
       setMobileIndex(false);
   }
@@ -478,7 +546,7 @@ export function CourseNotebook({
   }, [focus]);
   useEffect(() => {
     if (!turn) return;
-    const timeout = setTimeout(() => setTurn(null), 380);
+    const timeout = setTimeout(() => setTurn(null), 560);
     return () => clearTimeout(timeout);
   }, [turn]);
   useEffect(() => {
@@ -511,11 +579,14 @@ export function CourseNotebook({
     <div
       ref={book}
       className="study-notebook"
+      data-leather={bookMaterial(course.id)}
       data-course-tone={course.accent}
       data-focus={focus || undefined}
       data-section-layout={sectionLayout}
+      data-sections-hidden={railClosed || undefined}
       data-split={study.state.split || undefined}
       data-reading={selected ? "resource" : "section"}
+      data-empty-section={emptySection || undefined}
       dir={dir}
     >
       {focus && (
@@ -566,8 +637,9 @@ export function CourseNotebook({
           <aside
             ref={rail}
             className="notebook-index"
-            tabIndex={0}
+            tabIndex={railClosed ? -1 : 0}
             aria-label={label("courseSections")}
+            inert={railClosed || undefined}
             data-expanded={mobileIndex || undefined}
             data-closed={railClosed || undefined}
             onPointerEnter={(event) => {
@@ -647,7 +719,7 @@ export function CourseNotebook({
                 closingRail.current = true;
                 setMobileIndex(false);
                 setRailClosed(true);
-                rail.current?.focus({ preventScroll: true });
+                page.current?.focus({ preventScroll: true });
                 requestAnimationFrame(() => {
                   closingRail.current = false;
                 });
@@ -838,10 +910,25 @@ export function CourseNotebook({
           </div>
           <section
             ref={page}
+            tabIndex={-1}
             id="notebook-reading-page"
             className="notebook-reading-page"
             aria-labelledby="notebook-section-heading"
           >
+            {!selected && railClosed && (
+              <button
+                type="button"
+                className="notebook-sections-reopen"
+                aria-label={t({
+                  en: "Show course sections",
+                  ar: "إظهار أقسام المساق",
+                })}
+                onClick={() => setRailClosed(false)}
+              >
+                <BookOpen size={16} />
+                {t({ en: "Sections", ar: "الأقسام" })}
+              </button>
+            )}
             <header
               className={
                 selected
@@ -869,9 +956,20 @@ export function CourseNotebook({
                       savePosition(selected.id, position)
                     }
                     onClose={closeResource}
-                    canBoundary={canStep}
-                    onBoundary={(direction) => stepStudy(direction, false)}
-                    boundaryPreview={boundaryPreview}
+                    onShowSections={
+                      railClosed
+                        ? () => {
+                            setRailClosed(false);
+                            requestAnimationFrame(() =>
+                              rail.current
+                                ?.querySelector<HTMLButtonElement>(
+                                  "[data-notebook-section]",
+                                )
+                                ?.focus({ preventScroll: true }),
+                            );
+                          }
+                        : undefined
+                    }
                   />
                 ) : active.kind === "overview" ? (
                   <div className="notebook-overview">
@@ -906,6 +1004,13 @@ export function CourseNotebook({
                   </div>
                 ) : (
                   <>
+                    {active.kind === "notes" && (
+                      <CoursePublisherNotes
+                        courseId={course.id}
+                        initial={course.publisherNotes}
+                        canEdit={canImportPdfs}
+                      />
+                    )}
                     {canImportPdfs &&
                       onImportPdfs &&
                       !["recording", "external"].includes(active.kind) && (
@@ -944,10 +1049,19 @@ export function CourseNotebook({
                         ))}
                       </div>
                     ) : (
-                      <EmptyState
-                        title={label("emptyTitle")}
-                        description={label("emptyBody")}
-                      />
+                      <CourseEmptySection />
+                    )}
+                    {active.kind === "notes" && (
+                      <div className="course-private-notes">
+                        <StudentNotes
+                          courseId={course.id}
+                          legacyKey={storageKey}
+                          onlyCourse
+                          resources={resources}
+                          reader={tools?.reader}
+                          onOpenAnchor={tools?.openNote}
+                        />
+                      </div>
                     )}
                   </>
                 )}
@@ -1017,6 +1131,7 @@ export function CourseNotebook({
               <div
                 key={turn.id}
                 className="notebook-turn-sheet"
+                data-transition="ribbon"
                 data-backwards={turn.backwards || undefined}
                 aria-hidden="true"
                 onAnimationEnd={(event) => {
@@ -1040,9 +1155,7 @@ export function CourseNotebook({
                 <b />
               </div>
             )}
-            {(!selected ||
-              resourceMediaType(selected) !== "pdf" ||
-              !safeResourceUrl(selected.fileUrl)) && (
+            {(!selected || resourceMediaType(selected) !== "pdf") && (
               <>
                 {handTurn.turn && (
                   <div
@@ -1106,6 +1219,7 @@ export function CourseNotebook({
       <StudyToolsPanel
         courseId={course.id}
         storageKey={storageKey}
+        resources={resources}
         sectionLayout={study.state.sectionLayout}
         onSectionLayoutChange={(sectionLayout) => {
           closePeek();

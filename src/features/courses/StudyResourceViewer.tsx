@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { ArrowUpRight, BookOpen, FileText, X } from "lucide-react";
 import type { Resource } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -14,10 +7,10 @@ import { SaveButton } from "../../components/cards/SaveButton";
 import { formatDate } from "../../lib/dates";
 import { useStudyCopy } from "./study-copy";
 import { safeResourceUrl, timeLabel, type StudyPosition } from "./study-state";
-import { PdfBook } from "./PdfBook";
+import { AnnotatedPdfBook } from "./AnnotatedPdfBook";
 import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 import { useStudyTools } from "./StudyTools";
-import type { TurnDirection } from "./page-turn";
+import { PdfToolButton } from "./PdfToolButton";
 
 export function resourceMediaType(item: Resource) {
   if (item.mediaType) return item.mediaType;
@@ -106,19 +99,15 @@ export function StudyResourceViewer({
   position,
   onPosition,
   onClose,
+  onShowSections,
   companion = false,
-  onBoundary,
-  canBoundary,
-  boundaryPreview,
 }: {
   item: Resource;
   position?: StudyPosition;
   onPosition: (position: Partial<StudyPosition>) => void;
   onClose?: () => void;
+  onShowSections?: () => void;
   companion?: boolean;
-  onBoundary?: (direction: TurnDirection) => void;
-  canBoundary?: (direction: TurnDirection) => boolean;
-  boundaryPreview?: (direction: TurnDirection) => ReactNode;
 }) {
   const { t } = useLocale();
   const s = useStudyCopy();
@@ -134,6 +123,7 @@ export function StudyResourceViewer({
   const [error, setError] = useState(false);
   const url = safeResourceUrl(item.fileUrl);
   const type = resourceMediaType(item);
+  const ReaderButton = type === "pdf" ? PdfToolButton : "button";
   const thumbnail = safeResourceUrl(item.preview?.thumbnailUrl);
   useLayoutEffect(() => {
     if (pane.current) pane.current.scrollTop = initial.current?.scroll || 0;
@@ -191,6 +181,16 @@ export function StudyResourceViewer({
           {t(item.title)}
         </h3>
       )}
+      {focus && onClose && (type !== "pdf" || !url || error) && (
+        <ReaderButton
+          type="button"
+          className="notebook-icon-button study-reader-focus-close"
+          onClick={onClose}
+          aria-label={s("close")}
+        >
+          <X size={18} />
+        </ReaderButton>
+      )}
       {!focus && (
         <header className="study-reader-heading">
           <div>
@@ -209,14 +209,14 @@ export function StudyResourceViewer({
             </a>
           )}
           {onClose && (
-            <button
+            <ReaderButton
               type="button"
               className="notebook-icon-button"
               onClick={onClose}
               aria-label={s("close")}
             >
               <X size={18} />
-            </button>
+            </ReaderButton>
           )}
         </header>
       )}
@@ -268,20 +268,19 @@ export function StudyResourceViewer({
               />
             )}
             {type === "pdf" && (
-              <PdfBook
+              <AnnotatedPdfBook
                 item={item}
                 url={url}
                 initialPage={page}
                 initialScroll={initial.current?.scroll || 0}
                 onScroll={(scroll) => onPosition({ scroll })}
                 companion={companion}
+                onShowSections={onShowSections}
                 onPage={(value) => {
                   setPage(value);
                   onPosition({ page: value });
                 }}
-                onBoundary={onBoundary}
-                canBoundary={canBoundary}
-                boundaryPreview={boundaryPreview}
+                onClose={focus ? onClose : undefined}
               />
             )}
             {type === "external" && (

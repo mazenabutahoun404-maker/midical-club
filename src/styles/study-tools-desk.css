@@ -1,0 +1,160 @@
+.study-tools-page {
+  --book-cover: var(--primary);
+  --book-cover-light: var(--primary);
+  --book-cover-foreground: var(--primary-foreground);
+  --book-paper: var(--card);
+  --book-paper-side: var(--secondary);
+  --book-ink: var(--foreground);
+  --book-rule: var(--border);
+  --book-edge: var(--border);
+  --book-action-ink: var(--foreground);
+  padding-block: 32px 60px;
+}
+.study-tools-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(20px, 4vw, 64px);
+}
+.study-desk-intro h1 {
+  font-size: clamp(2.2rem, 4.3vw, 4.4rem);
+  line-height: 1.08;
+  margin-block: 12px 18px;
+  text-wrap: balance;
+}
+.study-desk-intro p {
+  line-height: 1.75;
+  max-width: 46ch;
+}
+.study-desk-intro small {
+  display: block;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.study-tool-stage {
+  min-width: 0;
+  min-height: 340px;
+}
+.study-tool-scene[hidden] {
+  display: none;
+}
+.study-tools-hero .study-focus-timer {
+  max-width: 440px;
+  margin-inline: auto;
+  box-shadow: 0 12px 32px #00000010;
+}
+.study-tools-hero .study-focus-timer > .study-alarm-clock {
+  width: min(216px, 70%);
+}
+.study-tools-hero .study-alarm-clock output {
+  font-size: 1.6rem;
+}
+.study-tool-scene:not([hidden]) {
+  animation: desk-tool-enter 220ms ease-out;
+}
+.study-desk-notice {
+  min-height: 32px;
+  margin-block: 12px;
+  color: var(--foreground);
+  font-size: 0.8rem;
+}
+.study-desk-notice span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: desk-tool-enter 220ms ease-out;
+}
+.study-desk-tools {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-block: 12px 28px;
+}
+.study-desk-tools button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  text-align: start;
+  align-items: center;
+  gap: 4px 12px;
+  min-height: 88px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--card-foreground);
+  cursor: pointer;
+}
+.study-desk-tools button svg {
+  grid-row: span 2;
+}
+.study-desk-tools button small {
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+.study-desk-tools button[aria-pressed="true"] {
+  border-color: var(--primary);
+  box-shadow: inset 0 -3px var(--primary);
+}
+.study-desk-tools button:is(:hover, :focus-visible) {
+  background: var(--secondary);
+}
+.study-desk-checklist {
+  padding-block-start: 20px;
+  border-block-start: 1px solid var(--border);
+}
+.study-desk-checklist h2 {
+  font-size: 1.1rem;
+}
+.study-desk-checklist .study-checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@keyframes desk-tool-enter {
+  from {
+    opacity: 0.3;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  .study-tools-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .study-desk-intro h1 {
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+  .study-tool-stage {
+    min-height: 0;
+  }
+  .study-desk-tools {
+    gap: 6px;
+  }
+  .study-desk-tools button {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+    padding: 12px 6px;
+    font-size: 0.78rem;
+  }
+  .study-desk-tools button svg {
+    grid-row: auto;
+  }
+  .study-desk-tools button small {
+    font-size: 0.68rem;
+  }
+  .study-desk-checklist .study-checklist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .study-tool-scene:not([hidden]),
+  .study-desk-notice span {
+    animation: none;
+  }
+}

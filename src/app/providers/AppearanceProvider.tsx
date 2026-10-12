@@ -5,6 +5,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   type ReactNode,
 } from "react";
 import {
@@ -12,7 +13,9 @@ import {
   isAppearancePalette,
   type AppearancePalette,
 } from "./appearance-palettes";
+import { findAppearanceChoice } from "./appearance-choices";
 import { STORAGE_KEYS } from "../../constants/config";
+import { captureThemeColors, fadeThemeColors } from "./theme-color-fade";
 export type ColorMode = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 export type NavigationLayout = "vertical" | "horizontal";
@@ -68,11 +71,14 @@ interface AppearanceContext extends AppearancePreferences {
   resolvedTheme: ResolvedTheme;
   setColorMode: (mode: ColorMode) => void;
   setPalette: (palette: AppearancePalette) => void;
+  setThemeChoice: (id: string) => void;
 }
 const Context = createContext<AppearanceContext | null>(null);
 export function AppearanceProvider({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useState(readPreferences);
   const [persisted, setPersisted] = useState(true);
+  const lastTheme = useRef<string | null>(null);
+  const themeAnimations = useRef<Animation[]>([]);
   const [systemDark, setSystemDark] = useState(
     () => window.matchMedia("(prefers-color-scheme: dark)").matches,
   );
@@ -83,11 +89,30 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
         : "light"
       : preferences.colorMode;
   useLayoutEffect(() => {
+    const signature = `${preferences.palette}:${resolvedTheme}`;
+    const changed = lastTheme.current !== null && lastTheme.current !== signature;
+    const snapshots = changed && !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? captureThemeColors(document.documentElement)
+      : [];
+    themeAnimations.current.forEach((animation) => animation.cancel());
     document.documentElement.dataset.theme = resolvedTheme;
     document.documentElement.dataset.palette = preferences.palette;
     document.documentElement.style.colorScheme = resolvedTheme;
     document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+    lastTheme.current = signature;
+    themeAnimations.current = fadeThemeColors(snapshots);
   }, [resolvedTheme, preferences.palette]);
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const stop = () => {
+      if (reduced.matches) themeAnimations.current.forEach((animation) => animation.cancel());
+    };
+    reduced.addEventListener("change", stop);
+    return () => {
+      reduced.removeEventListener("change", stop);
+      themeAnimations.current.forEach((animation) => animation.cancel());
+    };
+  }, []);
   useEffect(() => {
     const query = window.matchMedia("(prefers-color-scheme: dark)");
     const sync = () => setSystemDark(query.matches);
@@ -118,6 +143,10 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
       ...preferences,
       persisted,
       resolvedTheme,
+      setThemeChoice: (id: string) => {
+        const choice = findAppearanceChoice(id);
+        if (choice) update({ palette: choice.palette, colorMode: choice.mode });
+      },
       setPalette: (palette: AppearancePalette) => {
         if (isAppearancePalette(palette)) {
           const preferred = getAppearancePalette(palette).preferred;

@@ -57,6 +57,13 @@ export type WorkspaceAction =
   | { type: "create-collection"; id: string; name: string }
   | { type: "rename-collection"; id: string; name: string }
   | { type: "delete-collection"; id: string }
+  | { type: "restore-collection"; collection: LibraryCollection }
+  | {
+      type: "restore-saved";
+      id: string;
+      savedAt?: string;
+      collectionIds: string[];
+    }
   | {
       type: "collection-item";
       collectionId: string;

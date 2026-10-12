@@ -1,0 +1,263 @@
+/* Shared by live-course, split, and downloaded readers; no dependency on course chrome. */
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 30;
+  flex: none;
+  min-height: 48px;
+  gap: 4px;
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--book-rule, var(--border));
+  color: var(--book-ink, var(--foreground));
+  background: var(--book-paper, var(--card));
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar
+  :is(button, summary) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-height: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 6px;
+  border: 0;
+  border-radius: 8px;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 150ms,
+    transform 150ms;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar
+  button:is(:hover, :focus-visible):not(:disabled),
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar
+  summary:is(:hover, :focus-visible) {
+  background: var(--book-tab, var(--muted));
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar
+  button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar
+  button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-page-jump {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 4px;
+  min-width: 76px;
+  max-width: 100px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-page-jump
+  input {
+  width: 44px;
+  min-width: 44px;
+  height: 38px;
+  padding: 4px;
+  text-align: center;
+  background: var(--book-paper, var(--card));
+  color: inherit;
+  border: 1px solid var(--book-rule, var(--border));
+  border-radius: 6px;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-reader-options {
+  display: block;
+  flex: 1;
+  position: relative;
+  min-width: 0;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-reader-options
+  > summary {
+  display: none;
+  list-style: none;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  summary::-webkit-details-marker {
+  display: none;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-reader-options-content {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: static;
+  width: auto;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  :is(.pdf-options-label, .pdf-control-label) {
+  display: none;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-toolbar-divider {
+  display: block;
+  height: 22px;
+  width: 1px;
+  flex: none;
+  background: var(--book-rule, var(--border));
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-zoom-reset {
+  width: 60px;
+  font-size: 12px;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-close-resource {
+  margin-inline-start: auto;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-reader-options {
+  flex: 0 0 44px;
+  margin-inline-start: auto;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-reader-options
+  > summary {
+  display: flex;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-reader-options-content {
+  display: grid;
+  grid-template-columns: 44px minmax(60px, 1fr) 44px;
+  gap: 4px;
+  position: absolute;
+  top: calc(100% + 4px);
+  inset-inline-end: 0;
+  width: min(244px, calc(100dvw - 32px));
+  max-height: min(360px, 65dvh);
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--book-rule, var(--border));
+  border-radius: 10px;
+  background: var(--book-paper, var(--card));
+  color: var(--book-ink, var(--foreground));
+  box-shadow: 0 8px 28px #20131e25;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-reader-options:not([open])
+  .pdf-reader-options-content {
+  display: none;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-options-label {
+  display: block;
+  grid-column: 1 / -1;
+  padding: 4px;
+  font-size: 12px;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-toolbar-divider {
+  display: none;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  :is(
+    .pdf-paper-comfort,
+    .pdf-find-toggle,
+    button:has(.pdf-control-label),
+    .pdf-bookmark-list
+  ) {
+  grid-column: 1 / -1;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-control-label {
+  display: inline;
+  font-size: 12px;
+  text-align: start;
+}
+html:root
+  body
+  .pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-toolbar[data-compact="true"]
+  .pdf-bookmark-list
+  > div {
+  position: static;
+  max-height: 120px;
+  overflow: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .pdf-book.pdf-controls-ready.pdf-controls-ready
+    .pdf-book-toolbar
+    :is(button, summary) {
+    transition: none;
+  }
+}

@@ -1,0 +1,215 @@
+/* Real HTML controls on a tactile desk; no model, raster text or continuous motion. */
+.study-focus-timer {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--book-rule, var(--border));
+  border-radius: 10px;
+  background: var(--book-paper, var(--card));
+  color: var(--book-ink, var(--card-foreground));
+}
+.study-focus-timer > .study-timer-modes,
+.study-focus-timer > .study-timer-actions {
+  display: flex;
+  gap: 8px;
+}
+.study-focus-timer .study-timer-modes button {
+  flex: 1;
+}
+.study-focus-timer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--book-rule, var(--border));
+  border-radius: 6px;
+  padding: 8px 12px;
+  min-width: 44px;
+  min-height: 44px;
+  background: var(--book-paper-side, var(--secondary));
+  color: var(--book-ink, var(--foreground));
+  cursor: pointer;
+}
+.study-focus-timer button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.study-focus-timer
+  button:is([aria-pressed="true"], .study-timer-actions button:first-child) {
+  background: var(--book-cover, var(--primary));
+  color: var(--book-cover-foreground, var(--primary-foreground));
+}
+.study-focus-timer .study-timer-durations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.study-timer-durations label {
+  display: grid;
+  gap: 5px;
+  font-size: 0.78rem;
+}
+.study-timer-durations input {
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--book-rule, var(--input));
+  border-radius: 5px;
+  background: var(--book-paper, var(--background));
+  color: var(--book-ink, var(--foreground));
+}
+.study-focus-timer .study-timer-phase-label {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.study-focus-timer > .study-alarm-clock {
+  display: block;
+  position: relative;
+  width: min(164px, 68%);
+  aspect-ratio: 1;
+  margin: 18px auto 12px;
+  isolation: isolate;
+  flex: none;
+}
+.clock-face {
+  position: absolute;
+  inset: 0;
+  border: 7px solid var(--book-cover, var(--primary));
+  border-radius: 50%;
+  background: var(--book-paper, var(--card));
+  box-shadow:
+    inset 0 0 0 2px var(--book-edge, var(--border)),
+    0 6px 12px #0002;
+}
+.clock-dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.clock-track,
+.clock-progress {
+  fill: none;
+  stroke-width: 1.7;
+}
+.clock-track {
+  stroke: var(--book-rule, var(--border));
+}
+.clock-progress {
+  stroke: var(--book-action-ink, var(--primary));
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+.clock-tick,
+.clock-hand {
+  fill: none;
+  stroke: var(--book-ink, var(--foreground));
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.clock-hub {
+  fill: var(--book-ink, var(--foreground));
+}
+.study-focus-timer .study-alarm-clock output {
+  position: absolute;
+  inset: auto 12% 17%;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1rem, 2vw, 1.45rem);
+  line-height: 1.2;
+  color: var(--book-ink, var(--foreground));
+}
+.clock-bell {
+  position: absolute;
+  top: -8%;
+  width: 30%;
+  height: 19%;
+  border-radius: 50% 50% 10% 10%;
+  background: linear-gradient(
+    150deg,
+    var(--book-cover-light, var(--primary)),
+    var(--book-cover, var(--primary))
+  );
+  border: 1px solid var(--book-cover, var(--border));
+  z-index: -1;
+}
+.clock-bell-left {
+  left: 1%;
+  transform: rotate(-28deg);
+}
+.clock-bell-right {
+  right: 1%;
+  transform: rotate(28deg);
+}
+.clock-foot {
+  position: absolute;
+  bottom: -4%;
+  width: 8%;
+  height: 15%;
+  border-radius: 3px;
+  background: var(--book-cover, var(--primary));
+  z-index: -1;
+}
+.clock-foot-left {
+  left: 17%;
+  transform: rotate(24deg);
+}
+.clock-foot-right {
+  right: 17%;
+  transform: rotate(-24deg);
+}
+.study-notes-book {
+  position: relative;
+  padding: 20px 18px 20px 27px;
+  border-radius: 5px 12px 12px 5px;
+  border: 1px solid var(--book-rule, var(--border));
+  border-inline-start: 8px solid var(--book-cover, var(--primary));
+  background: var(--book-paper, var(--card));
+  color: var(--book-ink, var(--card-foreground));
+  box-shadow:
+    3px 3px 0 var(--book-edge, var(--border)),
+    5px 5px 0 var(--book-paper, var(--card));
+  min-width: 0;
+}
+.study-notes-book::before {
+  content: "";
+  position: absolute;
+  inset-block: 14px;
+  inset-inline-start: 9px;
+  width: 1px;
+  background: var(--book-rule, var(--border));
+  pointer-events: none;
+}
+.study-notes-book .student-notes {
+  min-width: 0;
+}
+.gpa-calculator > header h3 {
+  flex: 1;
+}
+.gpa-calculator > header button {
+  width: 44px;
+  min-height: 44px;
+  flex: none;
+  border: 1px solid var(--book-rule, var(--border));
+  background: var(--book-paper-side, var(--secondary));
+  color: var(--book-ink, var(--foreground));
+}
+.gpa-calculator > header button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+@media (forced-colors: active) {
+  .clock-face,
+  .study-notes-book {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+  .clock-bell,
+  .clock-foot {
+    background: CanvasText;
+  }
+}

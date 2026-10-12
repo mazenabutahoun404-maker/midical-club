@@ -1,3 +1,4 @@
+import { useServices } from "../../app/providers/ServicesProvider";
 import { useEffect, useRef, useState } from "react";
 import type {
   CourseSectionKind,
@@ -18,6 +19,7 @@ export async function validatePersonalPdf(file: File) {
 }
 /** Temporary personal reading file; never writes to course storage or publishing APIs. */
 export function usePersonalPdf(courseId: string, owner = "guest") {
+  const services = useServices();
   const [resources, setResources] = useState<Resource[]>([]),
     [pending, setPending] = useState(false),
     [error, setError] = useState(false);
@@ -43,6 +45,15 @@ export function usePersonalPdf(courseId: string, owner = "guest") {
     try {
       await validatePersonalPdf(file);
       if (!alive.current || currentScope.current !== scope) return null;
+      if (owner === "guest") throw new Error("AUTHENTICATION_REQUIRED");
+      if (services.studyHub?.source === "api") {
+        const item = await services.studyHub.uploadPrivatePdf(courseId, file);
+        if (!alive.current || currentScope.current !== scope) return null;
+        if (item.courseId !== courseId || item.personalFileOwnerId !== owner)
+          throw new Error("PRIVATE_FILE_OWNER_MISMATCH");
+        setResources((previous) => [...previous, item]);
+        return item.id;
+      }
       const id = "personal-pdf-" + crypto.randomUUID(),
         url = URL.createObjectURL(file);
       urls.current.set(id, url);

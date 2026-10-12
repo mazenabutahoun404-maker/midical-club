@@ -13,11 +13,11 @@ import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { AppLink } from "../../components/navigation/AppLink";
 import { AppearanceSettings } from "../../components/navigation/AppearanceSettings";
-import { ThemeMenu } from "../../components/navigation/ThemeMenu";
 import { LanguageMenu } from "../../components/navigation/LanguageMenu";
 import { CourseShelf } from "./CourseShelf";
 import { CourseShelfControls, ShelfPaperControl } from "./ShelfPaperControl";
 import { useStudyCopy } from "./study-copy";
+import { bookMaterial } from "./book-material";
 
 export interface CourseDeskControls {
   split: boolean;
@@ -50,6 +50,7 @@ export function CourseDesk({
         <div
           className="study-notebook course-desk-chrome"
           data-course-tone={course.accent}
+          data-leather={bookMaterial(course.id)}
           dir={dir}
         >
           <CourseDeskHeader course={course} controls={controls} />
@@ -75,11 +76,11 @@ export function CourseDeskHeader({
     <div className="notebook-toolbar" data-persistent-desk="true">
       <svg
         className="shelf-header-outline"
-        viewBox="0 0 1000 60"
+        viewBox="0 0 1000 54"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
-        <path d="M0 0H1000V2C994 2 994 52 980 52H850C810 52 800 60 750 60H250C200 60 190 52 150 52H20C6 52 6 2 0 2Z" />
+        <path d="M0 0H1000V2C994 2 994 50 980 50H850C810 50 800 54 750 54H250C200 54 190 50 150 50H20C6 50 6 2 0 2Z" />
       </svg>
       <div className="shelf-heading">
         <ShelfPaperControl
@@ -105,11 +106,6 @@ export function CourseDeskHeader({
           label={t({ en: "Reading palettes", ar: "ألوان القراءة" })}
         >
           <AppearanceSettings compact />
-        </ShelfPaperControl>
-        <ShelfPaperControl
-          label={t({ en: "Change appearance", ar: "تغيير المظهر" })}
-        >
-          <ThemeMenu nativeTooltip={false} />
         </ShelfPaperControl>
         <ShelfPaperControl
           label={t({ en: "Change language", ar: "تغيير اللغة" })}

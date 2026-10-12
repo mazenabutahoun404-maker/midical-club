@@ -1,0 +1,503 @@
+/* Reader-owned layout: direct offline entry must not depend on visiting a course first. */
+.pdf-book {
+  min-width: 0;
+  color: var(--book-ink);
+}
+.pdf-book-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px 2px 10px;
+}
+.pdf-book-toolbar button,
+.pdf-book-toolbar summary {
+  min-height: 44px;
+  cursor: pointer;
+}
+.pdf-page-jump {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+}
+.pdf-page-jump input {
+  width: 56px;
+  min-height: 40px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid var(--book-rule);
+  background: var(--book-paper);
+  color: var(--book-ink);
+}
+.pdf-toolbar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--book-rule);
+  margin-inline: 4px;
+}
+.pdf-zoom-reset {
+  background: transparent;
+  border: 0;
+  font-size: 0.72rem;
+  padding: 6px;
+  min-width: 42px;
+  color: var(--book-ink);
+}
+.pdf-bookmark-list {
+  position: relative;
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+}
+.pdf-bookmark-list summary {
+  padding: 6px 8px;
+  align-content: center;
+}
+.pdf-bookmark-list > div {
+  position: absolute;
+  z-index: 12;
+  top: 100%;
+  inset-inline-end: 0;
+  width: 160px;
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--book-rule);
+  border-radius: 8px;
+  background: var(--book-paper);
+  padding: 6px;
+  box-shadow: var(--shadow-overlay);
+}
+.pdf-bookmark-list button {
+  display: block;
+  width: 100%;
+  text-align: start;
+  border: 0;
+  background: transparent;
+  color: var(--book-ink);
+  padding: 8px;
+}
+.pdf-page-bookmark[aria-pressed="true"] {
+  color: var(--book-action-ink, var(--book-action));
+}
+.pdf-book-viewport {
+  position: relative;
+  min-height: 60dvh;
+  padding: 1px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  outline-offset: 4px;
+}
+.pdf-book-pages {
+  display: grid;
+  grid-template-columns: 1fr;
+  position: relative;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  margin-inline: auto;
+}
+.pdf-book-pages[data-two-pages="true"] {
+  grid-template-columns: minmax(0, 1fr) 26px minmax(0, 1fr);
+  align-items: start;
+}
+.pdf-paper-page {
+  position: relative;
+  max-width: none;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 2px 5px #1911181f;
+  color: #111;
+}
+.pdf-paper-page > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.pdf-paper-page > .textLayer {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  --highlight-bg-color: #f5bd4970;
+  --highlight-selected-bg-color: #d38b2880;
+}
+.pdf-text-stage {
+  position: absolute;
+  inset: 0 auto auto 0;
+  transform-origin: 0 0;
+}
+.pdf-paper-page > .pdf-text-stage > .textLayer {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  --highlight-bg-color: #f5bd4970;
+  --highlight-selected-bg-color: #d38b2880;
+}
+.pdf-paper-page [data-search-match] {
+  background: #f6c24d65;
+  border-radius: 2px;
+}
+.pdf-spread-gutter {
+  position: sticky;
+  top: 0;
+  height: 100%;
+  min-height: 60dvh;
+  background: linear-gradient(
+    90deg,
+    #34271f22,
+    #31241c50 44%,
+    #f8ecd0 49%,
+    #31241c58 54%,
+    #34271f13
+  );
+  box-shadow:
+    5px 0 9px #251a1014,
+    -5px 0 9px #251a1014;
+  z-index: 2;
+  pointer-events: none;
+}
+.pdf-page-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-size: 0.8rem;
+  color: #67574b;
+  background: #fffaf3;
+  text-align: center;
+}
+.pdf-load-status,
+.pdf-load-error,
+.pdf-password {
+  min-height: 55dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 30px;
+  border: 1px solid var(--book-line);
+  color: var(--book-muted);
+}
+.pdf-load-error button,
+.pdf-password button,
+.pdf-file-search form > button:not(.notebook-icon-button) {
+  min-height: 44px;
+  padding: 8px 14px;
+  color: var(--primary-foreground);
+  background: var(--primary);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.pdf-password label {
+  display: grid;
+  gap: 8px;
+}
+.pdf-password input {
+  border: 1px solid var(--book-rule);
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 6px;
+}
+.pdf-file-search {
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--book-rule);
+  border-radius: 8px;
+  background: var(--book-paper-side);
+}
+.pdf-file-search form {
+  display: flex;
+  gap: 6px;
+}
+.pdf-file-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--book-rule);
+  border-radius: 6px;
+  min-height: 44px;
+}
+.pdf-file-search p {
+  font-size: 0.75rem;
+  margin: 10px 0 0;
+}
+.pdf-file-search ol {
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 8px 0 0;
+  list-style: none;
+  padding: 0;
+}
+.pdf-file-search li > button {
+  width: 100%;
+  text-align: start;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--book-line);
+  color: var(--book-ink);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.pdf-file-search li b {
+  color: var(--book-action-ink, var(--book-action));
+}
+.hand-turn-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc((100% - 26px) / 2);
+  z-index: 5;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  will-change: transform;
+}
+.hand-turn-leaf[data-side="right"] {
+  left: calc(50% + 13px);
+  transform-origin: 0 50%;
+}
+.hand-turn-leaf[data-side="left"] {
+  left: 0;
+  transform-origin: 100% 50%;
+}
+.hand-turn-leaf[data-single="true"] {
+  width: 100%;
+  left: 0;
+}
+.hand-turn-front,
+.hand-turn-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border: 1px solid #45322725;
+  border-radius: 2px 6px 10px 2px;
+  background: var(--book-paper, #fffaf4);
+}
+.hand-turn-back {
+  transform: rotateY(180deg);
+}
+.hand-turn-front::after,
+.hand-turn-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #24150c50,
+    transparent 15%,
+    transparent 65%,
+    #24150c1a
+  );
+  opacity: calc(var(--turn-progress) * 0.8);
+  pointer-events: none;
+}
+.hand-turn-crease {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 12%;
+  background: linear-gradient(90deg, #34251d30, transparent);
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.page-hand-edge {
+  position: absolute;
+  top: 32%;
+  bottom: auto;
+  height: min(28%, 180px);
+  min-height: 100px;
+  min-width: 24px;
+  width: 24px;
+  z-index: 7;
+  border: 0;
+  background: color-mix(in srgb, var(--book-highlight) 18%, transparent);
+  color: var(--book-action-ink, var(--book-action));
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  border-radius: 6px;
+  opacity: 0.45;
+  touch-action: pan-y !important;
+  user-select: none;
+}
+.page-hand-edge:active {
+  cursor: grabbing;
+}
+.page-hand-edge:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+.page-hand-previous {
+  inset-inline-start: 0;
+}
+.page-hand-next {
+  inset-inline-end: 0;
+}
+
+.pdf-book.pdf-controls-ready .pdf-book-reading-surface > .pdf-book-viewport {
+  overflow: auto;
+  touch-action: pan-x pan-y;
+  direction: ltr;
+  min-width: 0;
+}
+.pdf-book.pdf-controls-ready .pdf-pan-canvas > .pdf-book-pages {
+  margin: 0 auto;
+}
+.pdf-pan-canvas {
+  position: relative;
+  display: flow-root;
+}
+.pdf-book.pdf-controls-ready
+  .pdf-book-reading-surface
+  > .pdf-book-viewport[data-pannable="true"] {
+  padding-bottom: 60px;
+}
+.pdf-pan-control {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(260px, calc(100% - 96px));
+  min-height: 44px;
+  padding: 4px 12px;
+  border: 1px solid var(--book-rule);
+  border-radius: 22px;
+  background: var(--book-paper);
+  color: var(--book-ink);
+  box-shadow: 0 2px 8px #0002;
+  font-size: 0.72rem;
+}
+.pdf-pan-control input {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  accent-color: var(--book-action-ink, var(--book-action));
+  direction: ltr;
+}
+.pdf-book.pdf-controls-ready .hand-turn-leaf[data-transition="ribbon"] {
+  transform: none;
+  transform-style: flat;
+  perspective: none;
+  overflow: clip;
+  will-change: auto;
+}
+.hand-turn-leaf[data-transition="ribbon"]
+  > :is(.hand-turn-front, .hand-turn-back) {
+  transform: none;
+  backface-visibility: visible;
+  box-shadow: none;
+  overflow: hidden;
+}
+.hand-turn-leaf[data-transition="ribbon"] > .hand-turn-back {
+  z-index: 0;
+}
+.hand-turn-leaf[data-transition="ribbon"] > .hand-turn-front {
+  z-index: 1;
+  clip-path: inset(0 var(--turn-cut) 0 0);
+}
+.hand-turn-leaf[data-transition="ribbon"][data-side="left"] > .hand-turn-front {
+  clip-path: inset(0 0 0 var(--turn-cut));
+}
+.hand-turn-leaf[data-transition="ribbon"]
+  > :is(.hand-turn-front, .hand-turn-back)::after {
+  display: none;
+}
+.magic-paper-ribbon {
+  position: absolute;
+  left: var(--turn-position);
+  inset-block: 0;
+  width: 26px;
+  transform: translateX(-50%) skewY(calc(var(--turn-lift) * -4deg));
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--book-cover) 20%, transparent) 25%,
+    var(--book-paper) 45%,
+    var(--book-highlight) 50%,
+    var(--book-paper) 57%,
+    transparent
+  );
+  opacity: calc(var(--turn-lift) * 0.95);
+  pointer-events: none;
+}
+.magic-paper-ribbon b {
+  position: absolute;
+  width: 3px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--book-highlight);
+  top: 22%;
+  left: 4px;
+}
+.magic-paper-ribbon b:nth-child(2) {
+  top: 51%;
+  left: 18px;
+  height: 5px;
+}
+.magic-paper-ribbon b:nth-child(3) {
+  top: 77%;
+  left: 6px;
+  height: 4px;
+}
+/* Only an active turn allocates these layers. Move the ribbon with a transform,
+   avoiding an animated left-position/layout update across the PDF surface. */
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .hand-turn-leaf[data-transition="ribbon"] > .hand-turn-front {
+  will-change: clip-path;
+  contain: paint;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .hand-turn-leaf[data-transition="ribbon"] > .hand-ribbon-track {
+  position: absolute;
+  inset: 0;
+  transform: translateX(var(--turn-position));
+  will-change: transform;
+  pointer-events: none;
+}
+html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .hand-turn-leaf[data-transition="ribbon"] .hand-ribbon-track > .magic-paper-ribbon {
+  left: 0;
+}
+.pdf-book.pdf-controls-ready {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+.pdf-book.pdf-controls-ready .pdf-book-reading-surface {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+.pdf-book.pdf-controls-ready .pdf-paper-page {
+  background: var(--pdf-paper-color);
+  color: var(--pdf-ink-color);
+}
+.pdf-book.pdf-controls-ready .pdf-page-loading {
+  background: var(--pdf-paper-color);
+  color: var(--pdf-ink-color);
+}
+.pdf-book.pdf-controls-ready .page-hand-edge {
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 24px;
+  min-height: 44px;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdf-book.pdf-controls-ready .magic-paper-ribbon {
+    display: none;
+  }
+}

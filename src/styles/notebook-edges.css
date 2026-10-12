@@ -1,0 +1,75 @@
+/* Section flags and their previews never cover the logical backward hit strip.
+   This overlays the same book frame: it does not reduce the PDF canvas. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"][data-reading]
+  .notebook-index {
+  inset-inline-start: 44px;
+  max-width: calc(100% - 88px);
+  clip-path: inset(-8px -420px -8px 0);
+}
+html:root[dir="rtl"]
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"][data-reading]
+  .notebook-index {
+  clip-path: inset(-8px 0 -8px -420px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"][data-reading]
+  .notebook-bookmark:focus-visible {
+  outline-offset: -3px;
+}
+/* The unfocused reader has an inset; keep its entire previous-page target clear too. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook:not(
+    [data-focus="true"]
+  )[data-reading="resource"][data-section-layout="vertical"]
+  .notebook-index {
+  inset-inline-start: 64px;
+  max-width: calc(100% - 108px);
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .page-hand-edge {
+  width: 44px;
+  min-width: 44px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook[data-section-layout="vertical"][data-reading]
+  .notebook-peek {
+  width: min(250px, calc(100dvw - 244px));
+  max-width: calc(100dvw - 244px);
+}
+/* At phone widths the preview uses the strip above/below the bookmarks.
+   Its inline box remains inside the two page-turn strips. */
+@media (max-width: 599px) {
+  html:root
+    body
+    .course-study-edition
+    .study-environment
+    .study-notebook[data-section-layout="vertical"][data-reading]
+    .notebook-peek {
+    inset-inline-start: 0;
+    width: min(250px, calc(100cqw - 148px));
+    max-width: calc(100cqw - 148px);
+    z-index: 2;
+  }
+}

@@ -41,6 +41,7 @@ export interface Course {
   sharedWithBatchIds: string[];
   outcomes: Text[];
   sections: CourseSection[];
+  publisherNotes?: Text;
 }
 export interface CourseSection {
   id: string;
@@ -108,6 +109,15 @@ export interface Resource {
   references?: { title: Text; url?: string }[];
   /** Present only for a PDF imported into the device-local course preview. */
   localFile?: { name: string; sizeBytes: number };
+  /** Set by the private study-file API; never an authority supplied by the caller. */
+  personalFileOwnerId?: string;
+  /** Optional server-issued offline rights and file integrity. */
+  offline?: {
+    allowed: boolean;
+    sha256?: string;
+    revision: string;
+    sizeBytes: number;
+  };
 }
 export interface ClubEvent {
   id: string;

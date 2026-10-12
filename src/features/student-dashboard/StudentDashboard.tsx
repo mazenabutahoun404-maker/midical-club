@@ -15,6 +15,7 @@ import { CourseCard } from "../../components/cards/CourseCard";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { StudyOverview } from "./StudyOverview";
+import { StudyDeskLinks } from "../study-hub/StudyDeskPage";
 export default function StudentDashboard() {
   const profile = useStudentProfile();
   const library = useLibraryContent();
@@ -95,6 +96,15 @@ export default function StudentDashboard() {
         </AppLink>
       </div>
       <StudyOverview />
+      <section className="personal-study-desk">
+        <div className="personal-section-heading">
+          <h2>{t({ en: "Your study desk", ar: "مكتب دراستك" })}</h2>
+          <AppLink href="/my/study" className="text-link">
+            {label("viewAll")}
+          </AppLink>
+        </div>
+        <StudyDeskLinks />
+      </section>
       <div className="personal-dashboard-grid">
         <section>
           <div className="personal-section-heading">

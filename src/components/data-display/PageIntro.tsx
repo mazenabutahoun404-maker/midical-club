@@ -8,12 +8,15 @@ export function PageIntro({
   description,
   eyebrow,
   children,
+  headingLevel = 1,
 }: {
   title: string;
   description: string;
   eyebrow?: string;
   children?: ReactNode;
+  headingLevel?: 1 | 2;
 }) {
+  const Heading = headingLevel === 1 ? "h1" : "h2";
   const paths = useWorkspacePaths();
   const { label } = useLocale();
   return (
@@ -33,9 +36,12 @@ export function PageIntro({
         <span aria-current="page">{title}</span>
       </nav>
       {eyebrow && <span className="eyebrow">{eyebrow}</span>}
-      <h1 tabIndex={-1} data-page-heading>
+      <Heading
+        tabIndex={-1}
+        data-page-heading={headingLevel === 1 || undefined}
+      >
         {title}
-      </h1>
+      </Heading>
       <p>{description}</p>
       {children}
     </div>

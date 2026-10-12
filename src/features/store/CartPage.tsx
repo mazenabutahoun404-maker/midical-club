@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { throwToTrash } from "../../components/feedback/action-flight";
+import { useState, useRef } from "react";
 import { Minus, PackageCheck, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -19,6 +20,7 @@ export default function CartPage() {
   const products = useStoreProducts();
   const store = useStoreWorkspace();
   const [confirming, setConfirming] = useState(false);
+  const removing = useRef(new Set<string>());
   if (products.isPending || store.isPending) return <LoadingState />;
   if (products.isError || store.isError)
     return (
@@ -49,10 +51,24 @@ export default function CartPage() {
     }
   }
   async function remove(productId: string, variantId: string) {
+    const key = `${productId}:${variantId}`;
+    if (removing.current.has(key)) return;
+    removing.current.add(key);
     try {
+      const source =
+        [...document.querySelectorAll<HTMLElement>("[data-cart-line]")].find(
+          (row) => row.dataset.cartLine === `${productId}:${variantId}`,
+        ) || null;
+      const name = rows.find(
+        (row) => row.product.id === productId && row.variant.id === variantId,
+      )?.product.name;
+      const flight = throwToTrash(source, name ? t(name) : label("removeItem"));
+      if (flight.animated) await flight.finished;
       await store.remove({ productId, variantId });
     } catch {
       toast.error(label("cartError"));
+    } finally {
+      removing.current.delete(key);
     }
   }
   async function reserve() {
@@ -79,7 +95,10 @@ export default function CartPage() {
         <div className="cart-layout">
           <section className="cart-lines" aria-label={label("cart")}>
             {rows.map(({ line, product, variant }) => (
-              <article key={`${line.productId}:${line.variantId}`}>
+              <article
+                key={`${line.productId}:${line.variantId}`}
+                data-cart-line={`${line.productId}:${line.variantId}`}
+              >
                 <ProductVisual visual={product.visual} />
                 <div className="cart-line-copy">
                   <span>{label(product.category)}</span>

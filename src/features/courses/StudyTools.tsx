@@ -1,29 +1,26 @@
+import { StudyTimerControls, type TimerAction } from "./StudyTimerControls";
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
-import {
-  NotebookPen,
-  Pause,
-  Play,
-  RotateCcw,
-  Timer,
-  X,
-  Calculator,
-  Maximize2,
-} from "lucide-react";
+import { NotebookPen, Timer, X, Calculator, Maximize2 } from "lucide-react";
 import { StudentNotes } from "../utilities/StudentNotes";
 import { GpaCalculator } from "../utilities/GpaCalculator";
 import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 import { useMovableDock } from "./useMovableDock";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { SectionLayoutControl } from "./SectionLayoutControl";
 import type { SectionLayout } from "./study-state";
+import type { Resource } from "../../types/content";
+import type { PageAnchor } from "../../types/study-hub";
+import type { CourseNoteRequest, NotesReader } from "../utilities/course-note-model";
 import {
+  finishStudyTimer,
   emptyStudyTools,
   normalizeStudyTools,
   timerRemaining,
@@ -39,10 +36,15 @@ interface StudyToolsValue {
   persistent: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
-  reader: { id: string; title: string; page: number } | null;
+  reader: NotesReader | null;
   setReader: (
-    reader: { id: string; title: string; page: number } | null,
+    reader: NotesReader | null,
   ) => void;
+  noteRequest: CourseNoteRequest | null;
+  addNote: (request: Omit<CourseNoteRequest, "token">) => void;
+  noteJump: { token: number; anchor: PageAnchor } | null;
+  openNote: (anchor: PageAnchor, courseId: string) => boolean;
+  registerNoteOpener: (opener: ((anchor: PageAnchor, courseId: string) => boolean) | null) => void;
   toggleBookmark: (id: string, page: number) => void;
 }
 const Context = createContext<StudyToolsValue | null>(null);
@@ -71,7 +73,18 @@ export function StudyToolsProvider({
     [open, setOpen] = useState(false);
   const [tool, setTool] = useState<StudyToolsValue["tool"]>("timer");
   const [reader, setReader] = useState<StudyToolsValue["reader"]>(null);
-  function flush() {
+  const [noteRequest, setNoteRequest] = useState<CourseNoteRequest | null>(null);
+  const [noteJump, setNoteJump] = useState<StudyToolsValue["noteJump"]>(null);
+  const noteSequence = useRef(0);
+  const noteOpener = useRef<((anchor: PageAnchor, courseId: string) => boolean) | null>(null);
+  const registerNoteOpener = useCallback((opener: typeof noteOpener.current) => { noteOpener.current = opener; }, []);
+  const openNote = useCallback((anchor: PageAnchor, courseId: string) => {
+    if (!noteOpener.current?.(anchor, courseId)) return false;
+    setNoteJump({ token: ++noteSequence.current, anchor });
+    setOpen(false);
+    return true;
+  }, []);
+  const flush = useCallback(() => {
     if (!dirty.current) return;
     try {
       localStorage.setItem(key, JSON.stringify(current.current));
@@ -80,14 +93,14 @@ export function StudyToolsProvider({
     } catch {
       setPersistent(false);
     }
-  }
-  function update(change: (previous: StudyToolState) => StudyToolState) {
+  }, [key]);
+  const update = useCallback((change: (previous: StudyToolState) => StudyToolState) => {
     current.current = change(current.current);
     dirty.current = true;
     setState(current.current);
     clearTimeout(debounce.current);
     debounce.current = setTimeout(flush, 400);
-  }
+  }, [flush]);
   useEffect(() => {
     const storage = (event: StorageEvent) => {
       if (event.key === key && !dirty.current) {
@@ -116,23 +129,19 @@ export function StudyToolsProvider({
       window.removeEventListener("storage", storage);
       document.removeEventListener("visibilitychange", visibility);
     };
-  }, [key]);
+  }, [key, flush]);
+  const addNote = useCallback((request: Omit<CourseNoteRequest, "token">) => {
+    setNoteRequest({ ...request, token: ++noteSequence.current });
+    setTool("notes"); setOpen(true);
+  }, []);
+  const toggleBookmark = useCallback((id: string, page: number) =>
+    update((previous) => togglePageBookmark(previous, id, page)), [update]);
+  const value = useMemo(() => ({ state, tool, setTool, update, persistent, open,
+    setOpen, reader, setReader, noteRequest, noteJump, openNote, registerNoteOpener,
+    addNote, toggleBookmark }), [state, tool, update, persistent, open, reader,
+      noteRequest, noteJump, openNote, registerNoteOpener, addNote, toggleBookmark]);
   return (
-    <Context.Provider
-      value={{
-        state,
-        tool,
-        setTool,
-        update,
-        persistent,
-        open,
-        setOpen,
-        reader,
-        setReader,
-        toggleBookmark: (id, page) =>
-          update((previous) => togglePageBookmark(previous, id, page)),
-      }}
-    >
+    <Context.Provider value={value}>
       {children}
     </Context.Provider>
   );
@@ -161,11 +170,13 @@ export function StudyToolsPanel({
   storageKey,
   sectionLayout,
   onSectionLayoutChange,
+  resources = [],
 }: {
   courseId: string;
   storageKey: string;
   sectionLayout: SectionLayout;
   onSectionLayoutChange: (layout: SectionLayout) => void;
+  resources?: Resource[];
 }) {
   const tools = useStudyTools(),
     { t } = useLocale();
@@ -176,6 +187,17 @@ export function StudyToolsPanel({
     !!tools?.open,
   );
   const [now, setNow] = useState(Date.now());
+  const [timerNotice, setTimerNotice] = useState<{
+    kind: TimerAction;
+    token: number;
+    text: string;
+  } | null>(null);
+  const noticeSequence = useRef(0);
+  useEffect(() => {
+    if (!timerNotice || timerNotice.kind === "completed") return;
+    const timeout = setTimeout(() => setTimerNotice(null), 1600);
+    return () => clearTimeout(timeout);
+  }, [timerNotice]);
   const panel = useRef<HTMLElement>(null),
     lastTrigger = useRef<HTMLElement | null>(null);
   const timer = tools?.state.timer;
@@ -199,11 +221,31 @@ export function StudyToolsPanel({
     };
   }, [timer?.startedAt]);
   useEffect(() => {
-    if (timer?.startedAt && remaining === 0)
-      tools?.update((previous) => ({
-        ...previous,
-        timer: { ...previous.timer, remaining: 0, startedAt: null },
-      }));
+    if (!timer || !tools) return;
+    const completed = finishStudyTimer(timer, now);
+    if (completed) {
+      tools.update((previous) => ({ ...previous, timer: completed.timer }));
+      const text = t(
+        completed.ended !== "rest" && completed.timer.phase !== "rest"
+          ? { en: "Session complete", ar: "اكتملت الجلسة" }
+          : completed.ended === "rest"
+            ? { en: "Rest complete", ar: "اكتملت الاستراحة" }
+            : completed.ended === "relax"
+              ? {
+                  en: "Relaxation complete. Rest is ready.",
+                  ar: "اكتمل الاسترخاء. الاستراحة جاهزة.",
+                }
+              : {
+                  en: "Focus complete. Rest is ready.",
+                  ar: "اكتمل التركيز. الاستراحة جاهزة.",
+                },
+      );
+      setTimerNotice({
+        kind: "completed",
+        token: ++noticeSequence.current,
+        text,
+      });
+    }
   }, [remaining, timer?.startedAt]);
   useEffect(() => {
     if (!tools?.open) return;
@@ -225,11 +267,37 @@ export function StudyToolsPanel({
       ref={dock.root}
       style={dock.style}
       data-movable
+      data-timer-notice={timerNotice?.kind}
       data-dragging={dock.dragging || undefined}
       data-edge={dock.edge || undefined}
       data-tucked={dock.tucked || undefined}
       {...dock.surface}
     >
+      <span className="sr-only" role="status">
+        {timerNotice?.text}
+      </span>
+      {timerNotice && (
+        <span
+          key={timerNotice.token}
+          className="study-timer-action-ring"
+          aria-hidden="true"
+        />
+      )}
+      {timerNotice?.kind === "completed" && !dock.tucked && (
+        <div className="study-timer-complete-note">
+          {timerNotice.text}
+          <button
+            type="button"
+            aria-label={t({
+              en: "Dismiss timer notice",
+              ar: "إغلاق إشعار المؤقّت",
+            })}
+            onClick={() => setTimerNotice(null)}
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
       {dock.edge && (
         <button
           ref={dock.handle}
@@ -251,15 +319,8 @@ export function StudyToolsPanel({
           <span className="study-dock-tab" aria-hidden="true">
             <i className="study-dock-dots" />
           </span>
-          {timer!.startedAt && (
-            <output
-              className="study-dock-time"
-              aria-label={t({ en: "Time remaining", ar: "الوقت المتبقّي" })}
-              aria-live="off"
-            >
-              {Math.floor(remaining / 60)}:
-              {String(remaining % 60).padStart(2, "0")}
-            </output>
+          {timerNotice?.kind === "completed" && (
+            <span className="study-dock-alert" aria-hidden="true" />
           )}
         </button>
       )}
@@ -318,6 +379,7 @@ export function StudyToolsPanel({
               >
                 <Icon size={18} aria-hidden="true" />
                 {tool === "timer" &&
+                  !dock.tucked &&
                   (!tools.open || tools.tool !== "timer") &&
                   (timer!.startedAt ||
                     timer!.remaining < timer!.minutes * 60) && (
@@ -348,11 +410,6 @@ export function StudyToolsPanel({
               </button>
             );
           })}
-          <SectionLayoutControl
-            value={sectionLayout}
-            focus={focus}
-            onChange={onSectionLayoutChange}
-          />
           {focus && (
             <button
               type="button"
@@ -425,104 +482,48 @@ export function StudyToolsPanel({
           </button>
         </header>
         {tools.tool === "timer" && (
-          <section className="study-focus-timer">
-            <label htmlFor="study-timer-duration">
-              <Timer size={17} />
-              {t({ en: "Focus timer", ar: "مؤقّت التركيز" })}
-            </label>
-            <select
-              id="study-timer-duration"
-              value={timer!.minutes}
-              onChange={(event) => {
-                const minutes = Number(event.target.value);
-                tools.update((previous) => ({
-                  ...previous,
-                  timer: { minutes, remaining: minutes * 60, startedAt: null },
-                }));
-                setNow(Date.now());
-              }}
-            >
-              {[5, 15, 25, 45].map((minutes) => (
-                <option key={minutes} value={minutes}>
-                  {minutes} {t({ en: "minutes", ar: "دقيقة" })}
-                </option>
-              ))}
-            </select>
-            <output
-              role="timer"
-              aria-live="off"
-              aria-label={t({ en: "Time remaining", ar: "الوقت المتبقّي" })}
-            >
-              {Math.floor(remaining / 60)}:
-              {String(remaining % 60).padStart(2, "0")}
-            </output>
-            <div>
-              <button
-                type="button"
-                onClick={() => {
-                  const at = Date.now();
-                  setNow(at);
-                  tools.update((previous) => ({
-                    ...previous,
-                    timer: {
-                      ...previous.timer,
-                      remaining: previous.timer.startedAt
-                        ? timerRemaining(previous.timer, at)
-                        : previous.timer.remaining ||
-                          previous.timer.minutes * 60,
-                      startedAt: previous.timer.startedAt ? null : at,
-                    },
-                  }));
-                }}
-              >
-                {timer!.startedAt ? <Pause size={16} /> : <Play size={16} />}
-                {t(
-                  timer!.startedAt
-                    ? { en: "Pause", ar: "إيقاف مؤقت" }
-                    : { en: "Start", ar: "ابدأ" },
-                )}
-              </button>
-              <button
-                type="button"
-                aria-label={t({ en: "Reset timer", ar: "إعادة ضبط المؤقّت" })}
-                onClick={() =>
-                  tools.update((previous) => ({
-                    ...previous,
-                    timer: {
-                      ...previous.timer,
-                      remaining: previous.timer.minutes * 60,
-                      startedAt: null,
-                    },
-                  }))
-                }
-              >
-                <RotateCcw size={16} />
-              </button>
-            </div>
-            {remaining === 0 && (
-              <p role="status">
-                {t({
-                  en: "Session complete. Take a short break.",
-                  ar: "اكتملت الجلسة. خذ استراحة قصيرة.",
-                })}
-              </p>
-            )}
-          </section>
+          <StudyTimerControls
+            timer={timer!}
+            remaining={remaining}
+            onChange={(next, kind) => {
+              setNow(Date.now());
+              tools.update((previous) => ({ ...previous, timer: next }));
+              setTimerNotice({
+                kind,
+                token: ++noticeSequence.current,
+                text: t(
+                  kind === "configured"
+                    ? { en: "Timer configured", ar: "تم ضبط المؤقّت" }
+                    : kind === "started"
+                      ? { en: "Timer started", ar: "بدأ المؤقّت" }
+                      : kind === "paused"
+                        ? { en: "Timer paused", ar: "تم إيقاف المؤقّت مؤقتاً" }
+                        : { en: "Timer reset", ar: "تمت إعادة ضبط المؤقّت" },
+                ),
+              });
+            }}
+          />
         )}
         {tools.tool === "notes" && (
-          <StudentNotes
-            courseId={courseId}
-            legacyKey={storageKey}
-            reference={
-              tools.reader
-                ? tools.reader.title +
-                  " · " +
-                  t({ en: "Page", ar: "صفحة" }) +
-                  " " +
-                  tools.reader.page
-                : undefined
-            }
-          />
+          <div className="study-notes-book">
+            <StudentNotes
+              courseId={courseId}
+              legacyKey={storageKey}
+              resources={resources}
+              reader={tools.reader}
+              request={tools.noteRequest}
+              onOpenAnchor={tools.openNote}
+              reference={
+                tools.reader
+                  ? tools.reader.title +
+                    " · " +
+                    t({ en: "Page", ar: "صفحة" }) +
+                    " " +
+                    tools.reader.page
+                  : undefined
+              }
+            />
+          </div>
         )}
         {tools.tool === "gpa" && <GpaCalculator />}
       </aside>

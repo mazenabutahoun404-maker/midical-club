@@ -1,3 +1,4 @@
+import { throwToTrash } from "../../components/feedback/action-flight";
 import { useState } from "react";
 import {
   CheckCircle2,
@@ -96,9 +97,13 @@ export default function MyContributionsPage() {
   async function remove() {
     if (!deleting) return;
     try {
+      const source =
+        [
+          ...document.querySelectorAll<HTMLElement>("[data-contribution-id]"),
+        ].find((row) => row.dataset.contributionId === deleting.id) || null;
+      await throwToTrash(source, deleting.title).finished;
       await contributions.deleteDraft(deleting.id);
       setDeleting(null);
-      toast.success(label("deleteDraft"));
     } catch {
       toast.error(label("contributionFailed"));
     }
@@ -132,7 +137,11 @@ export default function MyContributionsPage() {
       {filtered.length ? (
         <div className="contribution-records">
           {filtered.map((item) => (
-            <article key={item.id} data-status={item.status}>
+            <article
+              key={item.id}
+              data-status={item.status}
+              data-contribution-id={item.id}
+            >
               <header>
                 <span className="contribution-kind">
                   <FileCheck2 size={17} />

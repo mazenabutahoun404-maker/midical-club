@@ -1,5 +1,4 @@
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 export interface SelectionBox {
   x: number;
@@ -25,9 +24,8 @@ export function selectionBox(
 
 export function NavigationSelection() {
   const leaf = useRef<HTMLSpanElement>(null);
-  const location = useLocation();
   const [box, setBox] = useState<SelectionBox | null>(null);
-  useLayoutEffect(() => {
+  useEffect(() => {
     const host = leaf.current?.parentElement;
     if (!host) return;
     host.classList.add("navigation-selection-host");
@@ -71,7 +69,7 @@ export function NavigationSelection() {
     });
     observer?.observe(host);
     window.addEventListener("resize", queue);
-    measure();
+    queue();
     return () => {
       observer?.disconnect();
       mutations.disconnect();
@@ -80,7 +78,7 @@ export function NavigationSelection() {
       host.classList.remove("navigation-selection-host");
       host.removeAttribute("data-selection-ready");
     };
-  }, [location.pathname, location.hash]);
+  }, []);
   const style = box
     ? {
         transform: "translate3d(" + box.x + "px," + box.y + "px,0)",

@@ -27,7 +27,7 @@ export const RouteJourneyContext = createContext<{
   ready: (location: Location) => void;
 }>({ phase: "idle", ready: () => {} });
 
-/** One routed tree: fade out, commit the destination, restore while hidden, fade in. */
+/** One routed tree: commit immediately, show loading, restore position, then gently arrive. */
 export function useRouteJourney(target: Location) {
   const action = useNavigationType();
   const [location, setLocation] = useState(target);
@@ -45,8 +45,18 @@ export function useRouteJourney(target: Location) {
   const frames = useRef<number[]>([]);
   const hashObserver = useRef<MutationObserver | null>(null);
   const focusAtNavigation = useRef<Element | null>(null);
+  const mainHeight = useRef(320);
   const motionOff = () =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  useEffect(() => {
+    const main = document.getElementById("main");
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) mainHeight.current = Math.max(320, entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height);
+    });
+    if (main) observer?.observe(main);
+    return () => observer?.disconnect();
+  }, [location.pathname]);
   useEffect(() => {
     const previous = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
@@ -106,16 +116,12 @@ export function useRouteJourney(target: Location) {
     }
     document.documentElement.style.setProperty(
       "--route-hold-height",
-      `${Math.max(320, main?.offsetHeight ?? 0)}px`,
+      `${mainHeight.current}px`,
     );
-    setPhase("leaving");
-    const commit = () => {
-      visible.current = target;
-      setLocation(target);
-      setPhase("waiting");
-    };
-    if (motionOff()) commit();
-    else timers.current.push(window.setTimeout(commit, 140));
+    // Commit immediately. Lazy/query loading has its own visible loading state.
+    visible.current = target;
+    setLocation(target);
+    setPhase("waiting");
   }, [target]);
   const ready = useCallback((arrived: Location) => {
     if (
@@ -132,8 +138,6 @@ export function useRouteJourney(target: Location) {
     }
     const root = document.documentElement;
     root.style.removeProperty("--route-hold-height");
-    const previousBehavior = root.style.scrollBehavior;
-    root.style.scrollBehavior = "auto";
     if (arrived.hash) {
       let id = arrived.hash.slice(1);
       try {
@@ -166,7 +170,6 @@ export function useRouteJourney(target: Location) {
         0;
       window.scrollTo({ top, behavior: "instant" });
     }
-    root.style.scrollBehavior = previousBehavior;
     if (
       moved.current &&
       !document.querySelector('dialog[open], [role="dialog"], [role="menu"]') &&
@@ -180,7 +183,9 @@ export function useRouteJourney(target: Location) {
         if (arrived.key !== destination.current.key) return;
         setPhase(motionOff() ? "idle" : "arriving");
         timers.current.push(
-          window.setTimeout(() => setPhase("idle"), motionOff() ? 0 : 240),
+          window.setTimeout(() => {
+            if (arrived.key === destination.current.key) setPhase("idle");
+          }, motionOff() ? 0 : 180),
         );
       }),
     );

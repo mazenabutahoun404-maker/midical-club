@@ -1,0 +1,109 @@
+/* Only Appearance removes backdrop blur. Other dialogs retain their existing behavior. */
+html:root body .medclub-native-modal.appearance-dialog::backdrop,
+html:root body:has(.appearance-dialog[open]) .medclub-native-modal::backdrop {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* A mobile More dialog can stay open below Appearance; keep the page visible too. */
+html:root body:has(.appearance-dialog[open])
+  .medclub-native-modal:is(.mobile-menu-dialog, .personal-menu-modal, .admin-mobile-menu-modal)[open] {
+  opacity: 0;
+  pointer-events: none;
+}
+@media (forced-colors: none) {
+  html:root[data-palette][data-theme] body .medclub-native-modal.appearance-dialog {
+    --glass-surface: color-mix(in srgb, var(--card) 96%, transparent);
+    --glass-accent: color-mix(in srgb, var(--accent) 96%, transparent);
+    --glass-line: color-mix(in srgb, var(--input) 85%, var(--foreground));
+    color: var(--foreground);
+    background:
+      linear-gradient(135deg, #ffffff22, transparent 28%, transparent 72%, #ffffff12),
+      color-mix(in srgb, var(--card) 38%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--foreground) 24%, transparent) !important;
+    box-shadow: inset 0 1px 0 #ffffff60, inset 0 -1px 0 #ffffff12,
+      0 12px 32px #0000001a !important;
+    backdrop-filter: blur(10px) saturate(1.12);
+    -webkit-backdrop-filter: blur(10px) saturate(1.12);
+  }
+  .medclub-native-modal.appearance-dialog :is(.modal-heading, .settings-note, .settings-saved),
+  .medclub-native-modal.appearance-dialog .appearance-palettes > legend,
+  .medclub-native-modal.appearance-dialog .layout-options > legend {
+    width: fit-content;
+    max-width: 100%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: var(--glass-surface);
+    color: var(--foreground);
+  }
+  .medclub-native-modal.appearance-dialog .modal-heading {
+    padding-inline-end: 38px;
+  }
+  .medclub-native-modal.appearance-dialog .modal-heading [data-slot="dialog-title"] {
+    color: var(--foreground);
+  }
+  .medclub-native-modal.appearance-dialog .modal-heading [data-slot="dialog-description"] {
+    color: var(--muted-foreground);
+  }
+  .medclub-native-modal.appearance-dialog .appearance-palette-option,
+  .medclub-native-modal.appearance-dialog .appearance-workspace-options > div,
+  .medclub-native-modal.appearance-dialog .layout-option,
+  .medclub-native-modal.appearance-dialog .theme-preview-idle {
+    background: var(--glass-surface);
+    color: var(--foreground);
+    border-color: var(--glass-line);
+  }
+  .medclub-native-modal.appearance-dialog .appearance-palette-option:is(:hover, [data-selected]),
+  .medclub-native-modal.appearance-dialog .layout-option.selected {
+    background: var(--glass-accent);
+    border-color: var(--ring);
+    color: var(--accent-foreground);
+  }
+  .medclub-native-modal.appearance-dialog .layout-option-label {
+    color: var(--foreground);
+  }
+  .medclub-native-modal.appearance-dialog .layout-option small {
+    color: var(--muted-foreground);
+  }
+  .medclub-native-modal.appearance-dialog .layout-option.selected
+    :is(.layout-option-label, small) {
+    color: var(--accent-foreground);
+  }
+  .medclub-native-modal.appearance-dialog .appearance-palette-option:focus-within,
+  .medclub-native-modal.appearance-dialog .layout-option:focus-within {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  .medclub-native-modal.appearance-dialog .modal-close {
+    min-width: 44px;
+    min-height: 44px;
+    background: var(--glass-surface);
+    color: var(--foreground);
+    border: 1px solid var(--glass-line);
+  }
+  .medclub-native-modal.appearance-dialog .modal-close:hover {
+    background: var(--glass-accent);
+  }
+  /* Browsers without glass support, and contrast/transparency preferences, use solid surfaces. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    html:root[data-palette][data-theme] body .medclub-native-modal.appearance-dialog {
+      background: var(--card) !important;
+    }
+  }
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    html:root[data-palette][data-theme] body .medclub-native-modal.appearance-dialog {
+      --glass-surface: var(--card);
+      --glass-accent: var(--accent);
+      background: var(--card) !important;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+  html:root[data-palette="contrast"][data-theme] body .medclub-native-modal.appearance-dialog {
+    --glass-surface: var(--card);
+    --glass-accent: var(--accent);
+    background: var(--card) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

@@ -1267,8 +1267,8 @@
   display: none;
 }
 .personal-mobile-admin-portal {
-  color: var(--tone-ink-fcf8f4, #fff) !important;
-  background: linear-gradient(115deg, #741d28, #9a493b) !important;
+  color: var(--control-room-ink, var(--foreground));
+  background: var(--control-room-fill, var(--card));
 }
 .personal-mobile-admin-portal span {
   display: grid;
@@ -1423,13 +1423,13 @@
   box-shadow: 0 14px 30px #300e1620;
 }
 .workspace-portal-item {
-  color: var(--tone-ink-coral, #7e2026) !important;
+  color: var(--accent-foreground);
   border: 1px solid var(--tone-line-5b4a3f2b, #ad46402b);
-  background: #a82b2510;
+  background: var(--accent);
 }
 .workspace-portal-item:hover {
-  color: var(--tone-ink-fcf8f4, #fff) !important;
-  background: linear-gradient(105deg, #8d2027, #9a4b3c) !important;
+  color: var(--accent-foreground);
+  background: var(--accent);
 }
 .admin-governance-command {
   display: grid;

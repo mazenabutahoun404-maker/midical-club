@@ -11,6 +11,12 @@ import { v12Messages } from "./v12-messages";
 import { v13Messages } from "./v13-messages";
 export const messages = {
   en: {
+    studyDesk: "Study desk",
+    recallDesk: "Active recall",
+    offlinePacks: "Offline course packs",
+    quietRooms: "Study together",
+    campusPortfolio: "Verified achievements",
+    myActivities: "My activities",
     ...workspaceMessages.en,
     ...v04Messages.en,
     ...v05Messages.en,
@@ -301,6 +307,12 @@ export const messages = {
     allCoursesLink: "Explore every course",
   },
   ar: {
+    studyDesk: "مكتب الدراسة",
+    recallDesk: "المراجعة النشطة",
+    offlinePacks: "حزم المساقات دون اتصال",
+    quietRooms: "الدراسة معاً",
+    campusPortfolio: "الإنجازات المعتمدة",
+    myActivities: "أنشطتي",
     ...workspaceMessages.ar,
     ...v04Messages.ar,
     ...v05Messages.ar,

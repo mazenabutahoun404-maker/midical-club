@@ -1,3 +1,4 @@
+import { bookMaterial } from "./book-material";
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -235,6 +236,7 @@ export function CourseShelf({
                 key={item.id}
                 href={paths.course(item.slug)}
                 className={`shelf-book shelf-book-${item.accent}`}
+                data-leather={bookMaterial(item.id)}
                 data-course-id={item.id}
                 aria-label={`${t(item.title)} · ${item.code}`}
                 title={t(item.title)}

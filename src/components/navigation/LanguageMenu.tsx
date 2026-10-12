@@ -11,11 +11,12 @@ export function LanguageMenu({
     <Button
       variant="ghost"
       className="language-button"
+      data-locale={locale}
       aria-label={label("language") + ": " + hint}
       title={nativeTooltip ? hint : undefined}
       onClick={() => setLocale(next)}
     >
-      <UtilityGlyph kind="language" />
+      <UtilityGlyph kind="language" locale={locale} />
       <span>{locale === "en" ? "EN" : "عربي"}</span>
     </Button>
   );

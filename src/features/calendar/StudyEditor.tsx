@@ -1,3 +1,4 @@
+import { throwToTrash } from "../../components/feedback/action-flight";
 import { useState } from "react";
 import { createRecordId } from "../../lib/record-id";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -61,6 +62,13 @@ export function StudyEditor({
             disabled={busy}
             onClick={async () => {
               setBusy(true);
+              const source =
+                [
+                  ...document.querySelectorAll<HTMLElement>(
+                    "[data-study-entry-id]",
+                  ),
+                ].find((row) => row.dataset.studyEntryId === form.id) || null;
+              await throwToTrash(source, form.title).finished;
               if (await send({ type: "delete-study", id: form.id })) close();
               setBusy(false);
             }}

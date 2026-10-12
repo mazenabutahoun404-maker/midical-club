@@ -60,6 +60,7 @@ export function BuilderCanvas({
         {blocks.map((block, index) => (
           <article
             key={block.id}
+            data-builder-block-id={block.id}
             className="builder-canvas-block"
             data-selected={selectedId === block.id || undefined}
             data-disabled={!block.enabled || undefined}

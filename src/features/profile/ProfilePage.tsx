@@ -1,10 +1,12 @@
+import { SignOutGlyph } from "../../components/navigation/SignOutGlyph";
+import { useServices } from "../../app/providers/ServicesProvider";
+import { useUndoNotice } from "../../components/feedback/useUndoNotice";
 import { useState, type FormEvent } from "react";
 import {
   ArrowUpRight,
   BookOpen,
   CheckCircle2,
   GraduationCap,
-  LogOut,
   PencilLine,
   ShieldCheck,
   UserRound,
@@ -25,6 +27,8 @@ import { routes } from "../../constants/routes";
 export default function ProfilePage() {
   const profile = useStudentProfile();
   const auth = useAuth();
+  const undoNotice = useUndoNotice();
+  const services = useServices();
   const navigate = useNavigate();
   const { label, t } = useLocale();
   const [editing, setEditing] = useState(false);
@@ -53,9 +57,34 @@ export default function ProfilePage() {
     if (!form?.fullName.trim() || !form.batch.trim() || !form.bio.trim())
       return;
     try {
-      await auth.updateProfile(form);
+      const before: AuthProfileInput = {
+        fullName: t(student.name),
+        year: student.year,
+        batch: t(student.batch),
+        focusMinutes: student.focusMinutes,
+        bio: t(student.bio),
+      };
+      const beforeProfile = structuredClone(student);
+      const after = { ...form };
+      const updated = await auth.updateProfile(after);
+      undoNotice(label("profileSaved"), async () => {
+        const current = (await services.auth.getSnapshot()).user?.profile;
+        // The auth service enforces the signed-in account; do not undo another edit.
+        if (
+          current &&
+          updated.user?.profile &&
+          JSON.stringify(current) !== JSON.stringify(updated.user.profile)
+        )
+          throw new Error("PROFILE_CHANGED");
+        if (services.auth.restoreProfile && updated.user?.profile) {
+          await services.auth.restoreProfile(
+            beforeProfile,
+            updated.user.profile,
+          );
+          await auth.refresh();
+        } else await auth.updateProfile(before);
+      });
       setEditing(false);
-      toast.success(label("profileSaved"));
     } catch {
       toast.error(label("profileSaveFailed"));
     }
@@ -217,12 +246,14 @@ export default function ProfilePage() {
         <Button
           type="button"
           variant="outline"
+          className="sign-out-action"
+          disabled={auth.isPending}
           onClick={async () => {
             await auth.signOut();
             navigate(routes.signIn, { replace: true });
           }}
         >
-          <LogOut />
+          <SignOutGlyph />
           {label("signOut")}
         </Button>
       </section>

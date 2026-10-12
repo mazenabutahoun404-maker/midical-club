@@ -12,6 +12,11 @@ import "../../styles/study-comfort-v1317.css";
 import "../../styles/course-shelf-v1321.css";
 import "../../styles/study-file-controls.css";
 import "../../styles/study-viewport.css";
+import "../../styles/study-refinement.css";
+import "../../styles/study-magic.css";
+import "../../styles/book-materials.css";
+import "../../styles/notebook-edges.css";
+import "../../styles/notebook-horizontal-v1328.css";
 export function StudyEnvironment({
   course,
   storageKey,

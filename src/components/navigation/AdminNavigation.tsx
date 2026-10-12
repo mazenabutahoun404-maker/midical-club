@@ -206,7 +206,7 @@ export function AdminNavigation() {
             className="navigation-scroll"
             id="admin-sidebar-links"
           >
-          <NavigationSelection />
+            <NavigationSelection />
             <nav
               className="navigation-primary"
               aria-label={label("adminNavigation")}
@@ -227,11 +227,10 @@ export function AdminNavigation() {
           </div>
         </div>
         <div className="admin-nav-footer">
-          <NavigationControls />
           <AppearanceSettings />
-          <div className="navigation-version">
-            <span className="status-dot" />
-            {label("insightsPreviewShort")}
+          <div className="navigation-version navigation-controls-row">
+            <span className="navigation-status-copy"><span className="status-dot" />{label("insightsPreviewShort")}</span>
+            <div className="navigation-controls-slot"><NavigationControls /></div>
           </div>
         </div>
       </aside>
@@ -322,6 +321,9 @@ export function AdminNavigation() {
             {label("adminBackHome")}
           </AppLink>
         </nav>
+        <div className="mobile-more-appearance">
+          <AppearanceSettings />
+        </div>
       </Modal>
     </>
   );

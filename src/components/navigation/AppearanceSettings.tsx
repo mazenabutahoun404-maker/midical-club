@@ -1,4 +1,10 @@
-import { appearancePalettes } from "../../app/providers/appearance-palettes";
+import { appearancePreviewColors } from "../../app/providers/appearance-preview-colors";
+import {
+  appearanceChoices,
+  appearanceChoiceId,
+} from "../../app/providers/appearance-choices";
+import { LanguageMenu } from "./LanguageMenu";
+import { ThemePreview } from "./ThemePreview";
 import { UtilityGlyph } from "./UtilityGlyph";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { NavigationHint } from "./NavigationHint";
@@ -13,12 +19,36 @@ import {
 import { useLocale } from "../../app/providers/LocaleProvider";
 export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
   const paths = useWorkspacePaths();
-  const { navigation, setNavigation, persisted, palette, setPalette } =
-    useAppearance();
+  const {
+    navigation,
+    setNavigation,
+    sidebarCollapsed,
+    setSidebarCollapsed,
+    persisted,
+    palette,
+    colorMode,
+    setThemeChoice,
+    resolvedTheme,
+  } = useAppearance();
   const { label, t } = useLocale();
   const [open, setOpen] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [manualPreview, setManualPreview] = useState(false);
+  const closePreview = () => {
+    setPreview(null);
+    setManualPreview(false);
+  };
+  const showPreview = (id: string) => {
+    setPreview(id);
+  };
+  const previewChoice = appearanceChoices.find(
+    (choice) => choice.id === preview,
+  );
   const location = useLocation();
-  useEffect(() => setOpen(false), [location.key]);
+  useEffect(() => {
+    setOpen(false);
+    closePreview();
+  }, [location.key]);
   return (
     <>
       <NavigationHint label={label("appearance")}>
@@ -31,7 +61,11 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           aria-label={label("appearance")}
           aria-haspopup="dialog"
           aria-expanded={open}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setOpen(true);
+            setManualPreview(false);
+            setPreview(appearanceChoiceId(palette, colorMode));
+          }}
         >
           <UtilityGlyph kind="appearance" />
           {!compact && <span>{label("appearance")}</span>}
@@ -39,7 +73,10 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
       </NavigationHint>
       <Modal
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          closePreview();
+        }}
         title={label("appearanceTitle")}
         description={label("appearanceDescription")}
         className="appearance-dialog"
@@ -65,44 +102,163 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
             <SlidersHorizontal size={25} />
           </span>
         </div>
-        <fieldset className="appearance-palettes">
-          <legend>{t({ en: "Reading palette", ar: "ألوان القراءة" })}</legend>
-          <p>
-            {t({
-              en: "Choose a palette; the light / dark / system button still works.",
-              ar: "اختر الألوان؛ يبقى زر الفاتح والداكن وحسب الجهاز متاحاً.",
-            })}
-          </p>
-          <div className="appearance-palette-grid">
-            {appearancePalettes.map((choice) => (
-              <label
-                key={choice.id}
-                className="appearance-palette-option"
-                data-selected={palette === choice.id || undefined}
-              >
-                <input
-                  type="radio"
-                  name="appearance-palette"
-                  value={choice.id}
-                  checked={palette === choice.id}
-                  onChange={() => setPalette(choice.id)}
-                />
-                <span className="palette-swatches" aria-hidden="true">
-                  {choice.swatches.map((color) => (
-                    <i key={color} style={{ backgroundColor: color }} />
-                  ))}
-                </span>
-                <span>
-                  <strong>{t(choice.title)}</strong>
-                  <small>{t(choice.description)}</small>
-                </span>
-                {palette === choice.id && (
-                  <Check size={15} aria-hidden="true" />
-                )}
-              </label>
+        <div
+          className="appearance-theme-browser"
+          onPointerLeave={(event) => {
+            if (
+              event.pointerType === "mouse" &&
+              !event.currentTarget.contains(document.activeElement)
+            )
+              closePreview();
+          }}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget))
+              closePreview();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape" && preview) {
+              event.stopPropagation();
+              closePreview();
+            }
+          }}
+        >
+          <div className="appearance-theme-groups">
+            {(["light", "dark", "system"] as const).map((mode) => (
+              <fieldset className="appearance-palettes" key={mode}>
+                <legend>
+                  {t(
+                    mode === "light"
+                      ? { en: "Light themes", ar: "مظاهر فاتحة" }
+                      : mode === "dark"
+                        ? { en: "Dark themes", ar: "مظاهر داكنة" }
+                        : { en: "System appearance", ar: "مظهر الجهاز" },
+                  )}
+                </legend>
+                <div className="appearance-palette-grid">
+                  {appearanceChoices
+                    .filter((choice) => choice.mode === mode)
+                    .map((choice) => {
+                      const colors =
+                        appearancePreviewColors[
+                          `${choice.palette}-${choice.mode === "system" ? resolvedTheme : choice.mode}`
+                        ];
+                      return (
+                        <label
+                          key={choice.id}
+                          className="appearance-palette-option"
+                          data-selected={
+                            appearanceChoiceId(palette, colorMode) ===
+                              choice.id || undefined
+                          }
+                          onPointerEnter={(event) => {
+                            if (event.pointerType === "mouse")
+                              showPreview(choice.id);
+                          }}
+                          onFocus={() => showPreview(choice.id)}
+                        >
+                          <input
+                            type="radio"
+                            name="appearance-palette"
+                            value={choice.id}
+                            checked={
+                              appearanceChoiceId(palette, colorMode) ===
+                              choice.id
+                            }
+                            onClick={() => {
+                              // Legacy profiles can pair System mode with another palette.
+                              // Clicking an already-checked radio must still apply this preset.
+                              if (
+                                choice.mode === "system" &&
+                                colorMode === "system" &&
+                                palette !== choice.palette
+                              ) {
+                                setThemeChoice(choice.id);
+                                showPreview(choice.id);
+                                setManualPreview(true);
+                              }
+                            }}
+                            onChange={() => {
+                              setThemeChoice(choice.id);
+                              showPreview(choice.id);
+                              setManualPreview(true);
+                            }}
+                          />
+                          <span
+                            className="theme-choice-swatches"
+                            aria-hidden="true"
+                            data-mode={mode}
+                          >
+                            {[
+                              colors.background,
+                              colors.sidebar,
+                              colors.primary,
+                            ].map((color, i) => (
+                              <i key={i} style={{ backgroundColor: color }} />
+                            ))}
+                            <b>
+                              {mode === "light"
+                                ? "☀"
+                                : mode === "dark"
+                                  ? "☾"
+                                  : "◐"}
+                            </b>
+                          </span>
+                          <span>
+                            <strong>{t(choice.title)}</strong>
+                          </span>
+                          {appearanceChoiceId(palette, colorMode) ===
+                            choice.id && <Check size={15} aria-hidden="true" />}
+                        </label>
+                      );
+                    })}
+                </div>
+              </fieldset>
             ))}
           </div>
-        </fieldset>
+          {previewChoice ? (
+            <ThemePreview
+              key={preview === null ? "closed" : "open"}
+              choice={previewChoice}
+              manual={manualPreview}
+              onManual={() => setManualPreview(true)}
+              onClose={closePreview}
+            />
+          ) : (
+            <div className="theme-preview-idle">
+              <SlidersHorizontal size={24} />
+              <p>
+                {t({
+                  en: "Hover or focus a theme to preview four views. Select a view to pause the slideshow.",
+                  ar: "مرّر أو ركّز على مظهر لمعاينة أربع صفحات. اختر صفحة لإيقاف العرض التلقائي.",
+                })}
+              </p>
+            </div>
+          )}
+        </div>
+        <section
+          className="appearance-workspace-options"
+          aria-label={t({ en: "Workspace preferences", ar: "تفضيلات المساحة" })}
+        >
+          <div>
+            <span>
+              <strong>{label("sidebarSize")}</strong>
+              <small>{label("sidebarSizeBody")}</small>
+            </span>
+            <button
+              className="sidebar-setting-switch"
+              role="switch"
+              aria-checked={sidebarCollapsed}
+              aria-label={label("compactSidebar")}
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            >
+              <span />
+            </button>
+          </div>
+          <div>
+            <strong>{label("language")}</strong>
+            <LanguageMenu />
+          </div>
+        </section>
         <fieldset className="layout-options">
           <legend>{label("desktopNavigation")}</legend>
           {(["vertical", "horizontal"] as NavigationLayout[]).map((layout) => (
@@ -152,7 +308,10 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
         </p>
         <button
           className="button button-primary appearance-done"
-          onClick={() => setOpen(false)}
+          onClick={() => {
+            setOpen(false);
+            closePreview();
+          }}
         >
           {label("done")}
           <Check size={17} />

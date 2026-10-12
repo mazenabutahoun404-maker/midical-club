@@ -1,0 +1,585 @@
+/* V0.13.31 — shallow navigation depth, consistent portals and quiet overflow cues. */
+:root[data-palette][data-theme] {
+  --nav-control-size: 32px;
+  --nav-control-gap: 4px;
+  --nav-control-span: calc(2 * var(--nav-control-size) + var(--nav-control-gap));
+}
+
+/* Geometry applies to system-color mode as well as custom palettes. */
+html:root[data-palette][data-theme] body .app-shell .scroll-header {
+  min-width: 0;
+  gap: 12px;
+  justify-content: space-between;
+}
+html:root[data-palette][data-theme] body .app-shell
+  :is(.workspace-actions, .personal-header-actions, .admin-header-actions) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: none;
+  width: max-content;
+  min-width: 0;
+  gap: 4px;
+}
+html:root[data-palette][data-theme] body .app-shell .scroll-header
+  :is(.workspace-icon, .workspace-search, .language-button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 12px;
+}
+html:root[data-palette][data-theme] body .app-shell .shell-location {
+  flex: 1 1 0;
+  min-width: 0;
+}
+html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-portal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 8px;
+  width: auto;
+  max-width: 240px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 5px 10px;
+  border: 1px solid var(--input);
+  border-radius: 12px;
+  text-align: start;
+}
+.profile-portal-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+.profile-portal-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  max-width: 160px;
+  line-height: 1.3;
+}
+.profile-portal-copy :is(strong, small) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+}
+.profile-portal-copy strong {
+  font-size: 12px;
+  font-weight: 750;
+}
+.profile-portal-copy small {
+  font-size: 10px;
+}
+
+/* Match the old profile position, with a centered icon and a flexible title column. */
+html:root[data-palette][data-theme] body .control-room-portal {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 10px;
+  border: 1px solid var(--input);
+  border-radius: 12px;
+  text-align: start;
+}
+html:root[data-palette][data-theme] body .personal-navigation .control-room-portal {
+  flex: none;
+  width: calc(100% - 16px);
+  margin: 8px 8px 4px;
+}
+html:root[data-palette][data-theme] body .control-room-portal .control-room-copy {
+  display: grid;
+  min-width: 0;
+}
+html:root[data-palette][data-theme] body .control-room-portal small {
+  display: none;
+}
+html:root[data-palette][data-theme] body .control-room-portal strong {
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 750;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  color: inherit;
+}
+html:root[data-palette][data-theme] body .control-room-portal
+  :is(.personal-admin-portal-icon, .motion-icon) {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+}
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .personal-navigation .control-room-portal {
+  grid-template-columns: 32px;
+  min-height: 44px;
+  padding: 5px 0;
+}
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .personal-navigation .control-room-portal
+  > :is(.control-room-copy, .directional) {
+  display: none;
+}
+
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot,
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot .navigation-reveal-actions {
+  width: var(--nav-control-span);
+  height: var(--nav-control-size);
+  min-height: var(--nav-control-size);
+  max-height: var(--nav-control-size);
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot .navigation-reveal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: var(--nav-control-gap);
+  padding: 0;
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 var(--nav-control-size);
+  width: var(--nav-control-size);
+  min-width: var(--nav-control-size);
+  height: var(--nav-control-size);
+  min-height: var(--nav-control-size);
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--shell-ink);
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot button::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+html:root[data-palette][data-theme] body .app-shell[data-navigation]
+  .desktop-navigation .navigation-controls-slot button > svg {
+  position: relative;
+  width: 15px;
+  height: 15px;
+}
+html:root[data-palette][data-theme] body .personal-navigation .personal-nav-footer {
+  grid-template-columns: minmax(0, 1fr) var(--nav-control-span);
+  gap: 4px;
+}
+html:root[data-palette][data-theme] body .personal-navigation .personal-nav-footer
+  > .navigation-preferences {
+  min-width: 0;
+  max-width: 100%;
+  gap: 6px;
+  padding-inline: 6px;
+}
+html:root[data-palette][data-theme] body .personal-navigation .personal-nav-footer
+  > .navigation-preferences > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .personal-navigation .personal-nav-footer {
+  grid-template-columns: minmax(0, 1fr);
+}
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .desktop-navigation .navigation-controls-slot,
+html:root[data-palette][data-theme] body
+  .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+  .desktop-navigation .navigation-controls-slot .navigation-reveal-actions {
+  width: var(--nav-control-size);
+  height: var(--nav-control-span);
+  min-height: var(--nav-control-span);
+  max-height: var(--nav-control-span);
+  flex-direction: column;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  /* Personal Appearance remains in the navigation when its label no longer fits. */
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .personal-navigation .personal-nav-footer {
+    display: flex;
+    flex: none;
+    width: calc(var(--nav-control-span) + 48px);
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .personal-navigation .personal-nav-footer
+    > .navigation-preferences > span {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .personal-navigation .personal-nav-footer
+    > .navigation-preferences {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .personal-navigation .control-room-portal {
+    width: auto;
+    max-width: 220px;
+    min-height: 44px;
+    height: auto;
+    margin: 0;
+    margin-inline-start: 8px;
+    padding: 5px 8px;
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .personal-navigation .control-room-portal strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .desktop-navigation
+    :is(.navigation-bottom, .admin-nav-footer) {
+    width: calc(var(--nav-control-span) + 8px);
+    height: 44px;
+  }
+}
+@media (any-pointer: coarse), (hover: none) {
+  :root[data-palette][data-theme] {
+    --nav-control-size: 44px;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-controls-slot .navigation-reveal-actions {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+@media (max-width: 1100px) {
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-portal {
+    width: 44px;
+    max-width: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-portal
+    > :is(.profile-portal-copy, .directional) {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .admin-operator > span {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .personal-navigation .personal-nav-footer
+    > .navigation-preferences {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme] body .personal-navigation .personal-nav-footer
+    > .navigation-preferences > span {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  html:root[data-palette][data-theme] body .app-shell .scroll-header {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+  html:root[data-palette][data-theme] body .app-shell .workspace-header .shell-location {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .admin-header .admin-live-chip {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .workspace-header .phone-brand {
+    display: block;
+    flex: none;
+  }
+  .phone-brand .brand {
+    width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+  .phone-brand .brand > span {
+    display: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header
+    :is(.back-to-medclub, .admin-back) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+  .scroll-header :is(.back-to-medclub, .admin-back) > span {
+    display: none;
+  }
+}
+@media (max-width: 420px) {
+  html:root[data-palette][data-theme] body .app-shell .scroll-header {
+    padding-inline: 10px;
+  }
+  html:root[data-palette][data-theme] body .app-shell
+    :is(.workspace-actions, .personal-header-actions, .admin-header-actions) {
+    gap: 0;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .shell-location {
+    display: none;
+  }
+}
+
+@media (forced-colors: none) {
+  html:root[data-palette][data-theme] body :focus-visible {
+    outline-color: var(--ring);
+  }
+  html:root[data-palette][data-theme] body .app-shell
+    :is(.desktop-navigation, .scroll-header) :is(a, button):focus-visible,
+  html:root[data-palette][data-theme] body .personal-more-links a:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  :root[data-palette][data-theme="light"] {
+    --control-room-fill: #ebedf7;
+    --control-room-hover: #e0e4f3;
+    --control-room-ink: #3d4677;
+    --control-room-line: #737faf;
+  }
+  :root[data-palette][data-theme="dark"] {
+    --control-room-fill: #343b53;
+    --control-room-hover: #3e4560;
+    --control-room-ink: #d5ddfa;
+    --control-room-line: #9aa7ce;
+  }
+  :root[data-palette="contrast"][data-theme] {
+    --control-room-fill: var(--accent);
+    --control-room-hover: var(--accent);
+    --control-room-ink: var(--accent-foreground);
+    --control-room-line: var(--ring);
+  }
+  html:root[data-palette][data-theme] body .app-shell {
+    --nav-depth-x: 2px;
+    --nav-depth-front: color-mix(in srgb, var(--sidebar) 85%, var(--border));
+    --nav-depth-back: color-mix(in srgb, var(--sidebar) 60%, var(--border));
+    --overflow-angle: 180deg;
+    --overflow-ink: color-mix(in srgb, var(--shell-ink) 10%, transparent);
+  }
+  html:root[dir="rtl"][data-palette][data-theme] body .app-shell {
+    --nav-depth-x: -2px;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation {
+    box-shadow:
+      var(--nav-depth-x) 2px 0 var(--nav-depth-front),
+      calc(2 * var(--nav-depth-x)) 4px 0 var(--nav-depth-back),
+      0 6px 12px #0000000d;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"] {
+    --nav-depth-x: 0px;
+    --overflow-angle: 90deg;
+  }
+  html:root[dir="rtl"][data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] {
+    --overflow-angle: 270deg;
+  }
+  html:root[data-palette="contrast"][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation {
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header
+    :is(.workspace-icon, .workspace-search, .language-button) {
+    background: transparent;
+    color: var(--shell-ink);
+    border: 1px solid transparent;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header
+    :is(.workspace-icon, .workspace-search, .language-button):is(:hover, :focus-visible) {
+    background: var(--muted);
+    border-color: var(--input);
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-portal,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-item.profile-portal {
+    color: var(--accent-foreground);
+    background: var(--accent);
+    border-color: var(--input);
+    box-shadow: none;
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-portal:is(:hover, :focus-visible),
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-item.profile-portal:is(:hover, :focus-visible) {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border-color: var(--ring);
+    transform: translateY(-1px);
+    box-shadow: none;
+  }
+  .profile-portal-avatar {
+    background: var(--card);
+    color: var(--accent-foreground);
+  }
+  html:root[data-palette][data-theme] body .personal-navigation .control-room-portal,
+  html:root[data-palette][data-theme] body .personal-more-links .control-room-portal {
+    background: var(--control-room-fill);
+    color: var(--control-room-ink);
+    border-color: var(--control-room-line);
+    box-shadow: none;
+    transition: transform 160ms ease, background-color 160ms ease;
+  }
+  html:root[data-palette][data-theme] body .personal-navigation .control-room-portal:is(:hover, :focus-visible),
+  html:root[data-palette][data-theme] body .personal-more-links .control-room-portal:is(:hover, :focus-visible) {
+    background: var(--control-room-hover);
+    color: var(--control-room-ink);
+    border-color: var(--control-room-line);
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--control-room-line) 12%, transparent);
+  }
+  html:root[data-palette][data-theme] body .control-room-portal
+    :is(.personal-admin-portal-icon, .motion-icon) {
+    color: inherit;
+    background: color-mix(in srgb, var(--control-room-ink) 8%, var(--control-room-fill));
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-controls-slot button::before {
+    background: var(--muted);
+    border: 1px solid var(--border);
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-controls-slot button:is(:hover, :focus-visible, [aria-pressed="true"])::before {
+    background: var(--accent);
+    border-color: var(--input);
+  }
+
+  /* Short fades follow the actual theme; no fixed brown/black overlays. */
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame::after {
+    height: 14px;
+    opacity: 0;
+    box-shadow: none;
+    transition: opacity 150ms ease;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame::before {
+    background: linear-gradient(var(--overflow-angle), var(--overflow-ink), transparent);
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame::after {
+    background: linear-gradient(var(--overflow-angle), transparent, var(--overflow-ink));
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame[data-scroll-before="true"]::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame[data-scroll-after="true"]::after {
+    opacity: 0.7;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation .navigation-scroll-frame::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation .navigation-scroll-frame::after {
+    height: auto;
+    width: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-portal,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-item.profile-portal,
+  html:root[data-palette][data-theme] body
+    :is(.personal-navigation, .personal-more-links) .control-room-portal,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation] .desktop-navigation
+    .navigation-scroll-frame::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation] .desktop-navigation
+    .navigation-scroll-frame::after,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation] .desktop-navigation
+    .navigation-controls-slot button::before {
+    transition: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell .scroll-header
+    .profile-portal:is(:hover, :focus-visible),
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-item.profile-portal:is(:hover, :focus-visible),
+  html:root[data-palette][data-theme] body
+    :is(.personal-navigation, .personal-more-links) .control-room-portal:is(:hover, :focus-visible) {
+    transform: none;
+  }
+}
+@media (forced-colors: active) {
+  html:root[data-palette][data-theme] body .app-shell .profile-portal,
+  html:root[data-palette][data-theme] body .control-room-portal {
+    background: Canvas;
+    color: CanvasText;
+    border-color: ButtonText;
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-controls-slot button::before {
+    background: ButtonFace;
+    border: 1px solid ButtonText;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame::after {
+    background: CanvasText;
+    height: 2px;
+    opacity: 0;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation .navigation-scroll-frame::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation="horizontal"]
+    .desktop-navigation .navigation-scroll-frame::after {
+    width: 2px;
+    height: auto;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame[data-scroll-before="true"]::before,
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-scroll-frame[data-scroll-after="true"]::after {
+    opacity: 1;
+  }
+}

@@ -22,11 +22,8 @@ export function resolveSectionLayout(
   focus: boolean,
   navigationVisible = !focus,
 ) {
-  return layout === "auto"
-    ? focus || !navigationVisible
-      ? "vertical"
-      : "horizontal"
-    : layout;
+  // Older stored side layouts are retained as data, but cannot float over the reader.
+  return "horizontal" as const;
 }
 export interface StudyState {
   active: CourseSectionKind;

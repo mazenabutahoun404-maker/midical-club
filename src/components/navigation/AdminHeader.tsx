@@ -1,43 +1,45 @@
 import { ScrollHeader } from "./ScrollHeader";
 import { NotebookFittings } from "./NotebookFittings";
-import { ThemeMenu } from "./ThemeMenu";
 import { LocationTitle } from "./LocationTitle";
 import { ArrowLeft, Radio, UserRound } from "lucide-react";
-import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
 import { LanguageMenu } from "./LanguageMenu";
-import { AppearanceSettings } from "./AppearanceSettings";
 
 export function AdminHeader() {
-  const { label, t } = useLocale();
-  const auth = useAuth();
+  const { label } = useLocale();
   return (
     <ScrollHeader className="admin-header container">
       <NotebookFittings axis="header" />
-      <AppLink className="admin-back space-portal-link" href="/">
-        <ArrowLeft size={17} className="directional" aria-hidden="true" />
-        <span>{label("adminBackHome")}</span>
-      </AppLink>
-      <LocationTitle />
-      <span className="admin-live-chip">
-        <Radio size={15} />
-        {label("adminSignalLive")}
+      <div className="admin-header-start">
+        <AppLink
+          className="admin-back space-portal-link"
+          href="/"
+          aria-label={label("adminBackHome")}
+          title={label("adminBackHome")}
+        >
+          <ArrowLeft size={17} className="directional" aria-hidden="true" />
+          <span>{label("adminBackHome")}</span>
+        </AppLink>
+        <LocationTitle />
+      </div>
+      <span
+        className="admin-live-chip"
+        aria-label={label("adminSignalLive")}
+        title={label("adminSignalLive")}
+      >
+        <Radio size={15} aria-hidden="true" />
+        <span className="admin-signal-label">{label("adminSignalLive")}</span>
       </span>
       <div className="admin-header-actions">
         <LanguageMenu />
-        <ThemeMenu />
-        <AppearanceSettings compact />
         <AppLink
           href="/my/profile"
-          className="admin-operator space-portal-link"
+          className="admin-operator profile-portal header-profile-priority space-portal-link"
+          aria-label={label("myProfile")}
+          title={label("myProfile")}
         >
           <UserRound size={18} aria-hidden="true" />
-          <span>
-            {auth.snapshot.user
-              ? t(auth.snapshot.user.profile.name)
-              : label("myProfile")}
-          </span>
         </AppLink>
       </div>
     </ScrollHeader>

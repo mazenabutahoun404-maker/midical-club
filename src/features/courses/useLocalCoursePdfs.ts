@@ -53,12 +53,25 @@ async function readCourse(courseId: string): Promise<StoredPdf[]> {
       return [...localRecords.values()].filter(
         (item) => item.courseId === courseId,
       );
-    const transaction = db.transaction(storeName, "readonly");
-    const result = await request(
-      transaction.objectStore(storeName).index("courseId").getAll(courseId),
-    );
-    db.close();
-    return result;
+    try {
+      const transaction = db.transaction(storeName, "readonly");
+      const result = await request(
+        transaction.objectStore(storeName).index("courseId").getAll(courseId),
+      );
+      // A blocked write can leave an explicitly session-only file alongside
+      // durable records. Do not lose it when a later read succeeds.
+      return [
+        ...result,
+        ...[...localRecords.values()].filter(
+          (item) =>
+            item.courseId === courseId &&
+            sessionRecords.has(item.id) &&
+            !result.some((record) => record.id === item.id),
+        ),
+      ];
+    } finally {
+      db.close();
+    }
   } catch {
     return [...localRecords.values()].filter(
       (item) => item.courseId === courseId,
@@ -97,6 +110,7 @@ async function writePdf(item: StoredPdf) {
 async function deletePdf(id: string) {
   if (!sessionRecords.has(id)) {
     const db = await database();
+    if (!db) throw new Error("PDF_STORAGE_FAILED");
     if (db) {
       try {
         const transaction = db.transaction(storeName, "readwrite");
@@ -158,22 +172,24 @@ function resourceFrom(item: StoredPdf, url: string): Resource {
 export function useLocalCoursePdfs(courseId: string) {
   const [records, setRecords] = useState<StoredPdf[]>([]);
   const [pending, setPending] = useState(false);
+  const [loading, setLoading] = useState(!!courseId);
   const [error, setError] = useState(false);
   const urls = useRef(new Map<string, string>());
 
   useEffect(() => {
     let alive = true;
     setError(false);
+    setLoading(!!courseId);
     if (!courseId) {
       setRecords([]);
       return;
     }
     void readCourse(courseId)
       .then((items) => {
-        if (alive) setRecords(items);
+        if (alive) { setRecords(items); setLoading(false); }
       })
       .catch(() => {
-        if (alive) setError(true);
+        if (alive) { setError(true); setLoading(false); }
       });
     return () => {
       alive = false;
@@ -262,14 +278,32 @@ export function useLocalCoursePdfs(courseId: string) {
     [courseId],
   );
 
-  const remove = useCallback(async (id: string) => {
-    // Preserve the card and its object URL if durable deletion fails.
-    await deletePdf(id);
-    const url = urls.current.get(id);
-    if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
-    urls.current.delete(id);
-    setRecords((current) => current.filter((item) => item.id !== id));
-  }, []);
+  const remove = useCallback(
+    async (id: string) => {
+      const original = (await readCourse(courseId)).find(
+        (item) => item.id === id,
+      );
+      if (!original) throw new Error("PDF_NOT_FOUND");
+      // Preserve the card and its object URL if durable deletion fails.
+      await deletePdf(id);
+      const url = urls.current.get(id);
+      if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
+      urls.current.delete(id);
+      setRecords((current) => current.filter((item) => item.id !== id));
+      return async () => {
+        if (
+          (await readCourse(original.courseId)).some((item) => item.id === id)
+        )
+          throw new Error("PDF_CHANGED");
+        await writePdf(original);
+        setRecords((current) => [
+          ...current.filter((item) => item.id !== id),
+          original,
+        ]);
+      };
+    },
+    [courseId],
+  );
 
-  return { resources, importFiles, remove, pending, error };
+  return { resources, importFiles, remove, pending, loading, error };
 }

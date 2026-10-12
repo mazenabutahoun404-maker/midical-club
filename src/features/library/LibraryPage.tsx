@@ -97,6 +97,7 @@ export default function LibraryPage() {
           {workspace.state.collections.map((c) => (
             <button
               key={c.id}
+              data-collection-id={c.id}
               aria-label={c.name + " " + c.itemIds.length}
               className={
                 selected === c.id ? "collection-tab active" : "collection-tab"

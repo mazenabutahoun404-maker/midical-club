@@ -1,0 +1,180 @@
+/* V0.13.30 — calm application chrome. Layout and document rendering stay feature-owned.
+   Keep OS forced colors outside this layer so existing system-color rules still win. */
+@media (forced-colors: none) {
+  :root[data-theme="light"] {
+    --shadow-card: 0 2px 10px #20282608;
+    --shadow-overlay: 0 12px 36px #20282620;
+  }
+  :root[data-theme="dark"] {
+    --shadow-card: 0 2px 12px #00000020;
+    --shadow-overlay: 0 12px 36px #00000050;
+  }
+
+  /* Every workspace uses the selected palette, including personal and admin shells. */
+  html:root[data-palette][data-theme] body .app-shell {
+    --shell-surface: var(--sidebar);
+    --shell-ink: var(--sidebar-foreground);
+    --shell-muted: var(--muted-foreground);
+    --shell-line: var(--sidebar-border);
+    --shell-selection: var(--sidebar-accent);
+    --shell-inset: var(--muted);
+    --shell-gradient: var(--sidebar);
+    --selection-edge: 3px;
+    background-color: var(--background);
+    background-image: none;
+  }
+  html:root[dir="rtl"][data-palette][data-theme] body .app-shell {
+    --selection-edge: -3px;
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    :is(.desktop-navigation, .scroll-header, .phone-navigation) {
+    background: var(--shell-surface);
+    color: var(--shell-ink);
+    border-color: var(--shell-line);
+    box-shadow: 0 2px 10px #00000008;
+  }
+  html:root[data-palette][data-theme] body .app-shell .desktop-navigation {
+    border-inline-end: 1px solid var(--shell-line);
+  }
+  html:root[data-palette][data-theme] body
+    .app-shell[data-navigation="horizontal"] .desktop-navigation {
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--shell-line);
+  }
+
+  html:root[data-palette][data-theme] body .app-shell .desktop-navigation
+    :is(.navigation-label, .shell-brand-caption, .shell-brand-caption small,
+      .navigation-item, .sidebar-toggle, .navigation-reveal-actions button,
+      .navigation-version, .navigation-preferences, .personal-sidebar-footer,
+      .personal-sidebar-footer strong, .personal-sidebar-footer span) {
+    color: var(--shell-ink);
+  }
+  html:root[data-palette][data-theme] body .app-shell
+    :is(.navigation-item, .navigation-preferences):is(:hover, :focus-visible) {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+  html:root[data-palette][data-theme] body .app-shell[data-navigation]
+    .desktop-navigation .navigation-item.active {
+    background: var(--sidebar-accent);
+    color: var(--sidebar-accent-foreground);
+    box-shadow: inset var(--selection-edge) 0 0 var(--sidebar-ring);
+  }
+  /* Match the moving selection to the fallback selected state, in both directions. */
+  html:root[data-palette][data-theme] body .app-shell
+    .navigation-travelling-selection {
+    background: var(--sidebar-accent);
+    box-shadow: inset var(--selection-edge) 0 0 var(--sidebar-ring);
+  }
+  html:root[data-palette][data-theme] body .app-shell .phone-navigation
+    .navigation-travelling-selection {
+    box-shadow: inset 0 -2px 0 var(--sidebar-ring);
+  }
+  html:root[data-palette][data-theme] body .app-shell .phone-navigation
+    > :is(a, button) {
+    color: var(--shell-ink);
+  }
+  html:root[data-palette][data-theme] body .app-shell .phone-navigation
+    > .active {
+    background: var(--sidebar-accent);
+    color: var(--sidebar-accent-foreground);
+  }
+  html:root[data-palette][data-theme] body .app-shell .desktop-navigation
+    .navigation-item.active .navigation-label {
+    color: inherit;
+  }
+
+  html:root[data-palette][data-theme] body .app-shell
+    :is(.header-profile-priority, .workspace-account) {
+    border-color: var(--input);
+    background: var(--muted);
+    color: var(--foreground);
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .app-shell
+    :is(.header-profile-priority, .workspace-account):is(:hover, :focus-visible) {
+    background: var(--sidebar-accent);
+    color: var(--sidebar-accent-foreground);
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .personal-navigation
+    .personal-admin-portal {
+    border-color: var(--input);
+    background: var(--accent);
+    color: var(--accent-foreground);
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .personal-navigation
+    .personal-admin-portal:is(:hover, :focus-visible) {
+    border-color: var(--ring);
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .personal-navigation
+    .personal-admin-portal::after {
+    background: none;
+  }
+
+  /* Field boundaries remain stronger than decorative card dividers. */
+  html:root[data-palette][data-theme] body
+    :where(input:not([type="checkbox"], [type="radio"], [type="range"],
+      [type="color"], [type="file"], [type="hidden"], [type="submit"],
+      [type="button"]), textarea, select):not([aria-invalid="true"]) {
+    background-color: var(--card);
+    color: var(--foreground);
+    border-color: var(--input);
+  }
+  html:root[data-palette][data-theme] body :is(input, textarea)::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+  html:root[data-palette][data-theme] body :is(select option, select optgroup) {
+    background: var(--card);
+    color: var(--foreground);
+  }
+  html:root[data-palette][data-theme] body .button-primary {
+    color: var(--primary-foreground);
+    box-shadow: none;
+  }
+  html:root[data-palette][data-theme] body .button-primary:hover {
+    box-shadow: none;
+  }
+
+  /* The settings browser gets the same quiet surfaces as the selected theme. */
+  .appearance-theme-groups .appearance-palette-option,
+  .theme-preview, .theme-preview-idle {
+    border-radius: 12px;
+  }
+  .appearance-theme-groups .appearance-palette-option {
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+  .appearance-theme-groups .appearance-palette-option:hover {
+    border-color: var(--input);
+    background: var(--secondary);
+  }
+  .appearance-theme-groups .appearance-palette-option[data-selected] {
+    background: var(--accent);
+    border-color: var(--ring);
+    box-shadow: inset 0 0 0 1px var(--ring);
+  }
+  .appearance-theme-groups .appearance-palette-option strong {
+    font-size: 0.82rem;
+  }
+  .theme-preview-scene {
+    border-radius: 8px;
+  }
+  .theme-preview button {
+    border-radius: 8px;
+  }
+  @media (prefers-contrast: more) {
+    :root[data-palette][data-theme] {
+      --border: var(--muted-foreground);
+      --input: var(--muted-foreground);
+      --sidebar-border: var(--muted-foreground);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .appearance-theme-groups .appearance-palette-option {
+    transition: none;
+  }
+}

@@ -51,6 +51,11 @@ export interface AuthService {
   verifyEmail: (code: string) => Promise<AuthSnapshot>;
   requestPasswordReset: (email: string) => Promise<PasswordResetResult>;
   updateProfile: (input: AuthProfileInput) => Promise<AuthSnapshot>;
+  /** Restore editable fields only, if the current record still matches. */
+  restoreProfile?: (
+    before: StudentProfile,
+    expected: StudentProfile,
+  ) => Promise<AuthSnapshot>;
   signOut: () => Promise<AuthSnapshot>;
   subscribe: (listener: () => void) => () => void;
 }

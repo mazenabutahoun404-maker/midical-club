@@ -218,7 +218,7 @@ export function NavigationControls() {
         title={s(state.pinned ? "unpin" : "pin")}
         onClick={state.togglePin}
       >
-        {state.pinned ? <PinOff size={17} /> : <Pin size={17} />}
+        {state.pinned ? <PinOff size={15} /> : <Pin size={15} />}
       </button>
       <button
         type="button"
@@ -226,7 +226,7 @@ export function NavigationControls() {
         title={s("collapse")}
         onClick={state.hide}
       >
-        <X size={17} />
+        <X size={15} />
       </button>
     </div>
   );

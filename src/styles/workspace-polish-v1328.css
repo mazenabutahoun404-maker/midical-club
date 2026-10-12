@@ -1,0 +1,537 @@
+/* A dedicated control slot stays outside the link/appearance hit areas. */
+html:root
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation
+  .navigation-controls-slot {
+  position: relative;
+  flex: none;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+}
+html:root
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation
+  .navigation-controls-slot
+  .navigation-reveal-actions,
+html:root
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation:is(:hover, :focus-within)
+  .navigation-controls-slot
+  .navigation-reveal-actions {
+  position: relative;
+  inset: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+  overflow: visible;
+  transform: none;
+  transition:
+    opacity 150ms ease,
+    visibility 150ms;
+}
+html:root
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation
+  .navigation-controls-slot
+  .navigation-reveal-actions {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+html:root
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation:is(:hover, :focus-within)
+  .navigation-controls-slot
+  .navigation-reveal-actions {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+html:root
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation
+  .navigation-controls-slot
+  button {
+  width: 40px;
+  min-width: 32px;
+  height: 44px;
+  min-height: 44px;
+  flex: 0 1 40px;
+  border-radius: 8px;
+}
+html:root
+  body
+  .app-shell[data-sidebar="collapsed"]
+  .desktop-navigation
+  .navigation-controls-slot
+  button {
+  width: 32px;
+  flex-basis: 32px;
+}
+html:root body .personal-navigation .personal-nav-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 2px;
+  align-items: center;
+  flex: none;
+}
+html:root
+  body
+  .app-shell[data-sidebar="collapsed"]
+  .personal-navigation
+  .personal-nav-footer {
+  grid-template-columns: minmax(0, 1fr);
+}
+html:root body .personal-navigation .personal-admin-portal {
+  margin: 4px 8px 0;
+  padding: 8px;
+  min-height: 44px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--shell-line);
+  color: var(--shell-ink);
+  box-shadow: none;
+  flex: none;
+}
+html:root body .personal-navigation .personal-admin-portal small {
+  display: none;
+}
+html:root body .personal-navigation .personal-admin-portal strong {
+  font-size: 11px;
+}
+html:root body .app-shell[data-sidebar="collapsed"] .personal-admin-portal {
+  padding: 0;
+  margin-inline: 8px;
+  display: grid;
+  place-items: center;
+}
+html:root
+  body
+  .app-shell[data-sidebar="collapsed"]
+  .personal-admin-portal
+  > :is(span:not(.motion-icon), svg.directional) {
+  display: none;
+}
+@media (min-width: 768px) {
+  html:root
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    :is(.navigation-bottom, .admin-nav-footer) {
+    width: 104px;
+    height: 44px;
+  }
+  html:root
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    .navigation-controls-slot {
+    width: 88px;
+  }
+  html:root
+    body
+    .app-shell[data-navigation="horizontal"]
+    .navigation-scroll-frame {
+    padding-inline-end: 112px;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  html:root
+    body
+    .app-shell[data-navigation]
+    .desktop-navigation
+    .navigation-controls-slot
+    .navigation-reveal-actions {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  html:root
+    body
+    .app-shell[data-sidebar="collapsed"]
+    .desktop-navigation
+    .navigation-controls-slot,
+  html:root
+    body
+    .app-shell[data-sidebar="collapsed"]
+    .desktop-navigation
+    .navigation-controls-slot
+    .navigation-reveal-actions {
+    height: 88px;
+    min-height: 88px;
+    max-height: 88px;
+    flex-direction: column;
+  }
+  html:root
+    body
+    .app-shell[data-sidebar="collapsed"]
+    .desktop-navigation
+    .navigation-controls-slot
+    button {
+    width: 44px;
+    min-width: 44px;
+    flex-basis: 44px;
+  }
+}
+.appearance-workspace-options {
+  display: grid;
+  gap: 8px;
+  margin-block: 14px;
+}
+.appearance-workspace-options > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.appearance-workspace-options strong {
+  font-size: 13px;
+}
+.appearance-workspace-options small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+}
+.my-learning-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 20px;
+  padding: 4px;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+}
+.my-learning-views button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  min-height: 44px;
+  color: var(--muted-foreground);
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 13px;
+}
+.my-learning-views button[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.learning-insights {
+  padding: 0;
+  max-width: none;
+}
+.notification-preview {
+  width: min(380px, calc(100dvw - 20px));
+  max-height: min(540px, var(--radix-popover-content-available-height));
+  overflow: auto;
+  overscroll-behavior: contain;
+  z-index: 170;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--card-foreground);
+  box-shadow: 0 12px 40px #0003;
+  transform-origin: var(--radix-popover-content-transform-origin);
+  animation: notification-preview-arrive 180ms ease-out;
+}
+.notification-preview > header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.notification-preview h2 {
+  font-size: 15px;
+  margin: 0;
+}
+.notification-preview > header button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+}
+.notification-preview > :is(p, div[role="alert"]) {
+  padding: 16px;
+}
+.notification-preview-list > button {
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr) 16px;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  min-height: 60px;
+  text-align: start;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+}
+.notification-preview-list > button:hover {
+  background: var(--muted);
+}
+.notification-preview-list > button > span:nth-child(2) {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.notification-preview-list strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.notification-preview-list button span span {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.notification-preview-list time {
+  font-size: 10px;
+  color: var(--muted-foreground);
+}
+.notification-preview-dot {
+  width: 6px;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: transparent;
+}
+.notification-preview-list [data-unread] .notification-preview-dot {
+  background: var(--primary);
+}
+.notification-preview-all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  min-height: 44px;
+  color: var(--primary);
+  font-size: 12px;
+}
+.notification-preview-empty {
+  padding: 20px 14px;
+}
+.notification-preview-arrow {
+  fill: var(--card);
+}
+@keyframes notification-preview-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.sign-out-glyph {
+  overflow: visible;
+  perspective: 80px;
+}
+.sign-out-door {
+  transform-origin: 13px 12px;
+  transition:
+    transform 220ms ease,
+    fill 220ms;
+  fill: var(--card);
+}
+.sign-out-person {
+  transition: transform 220ms ease;
+}
+.sign-out-action:is(:hover, :focus-visible) .sign-out-door {
+  transform: perspective(60px) rotateY(-65deg);
+  fill: color-mix(in srgb, currentColor 10%, var(--card));
+}
+.sign-out-action:is(:hover, :focus-visible) .sign-out-person {
+  transform: translateX(3px);
+}
+.sign-out-action[disabled] .sign-out-person {
+  transform: translateX(8px);
+  opacity: 0.3;
+}
+.pack-download-editor[data-download-state="success"] {
+  animation: pack-ready 700ms ease-out;
+}
+.pack-download-editor[data-download-state="success"] .pack-progress {
+  color: var(--primary);
+}
+@keyframes pack-ready {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 35%, transparent);
+  }
+  65% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 8%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notification-preview,
+  .pack-download-editor[data-download-state="success"] {
+    animation: none;
+  }
+  .sign-out-door,
+  .sign-out-person {
+    transition: none;
+  }
+  html:root
+    body
+    .app-shell[data-navigation]
+    .desktop-navigation
+    .navigation-controls-slot
+    .navigation-reveal-actions {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .notification-preview {
+    border-color: CanvasText;
+  }
+  .notification-preview-dot {
+    forced-color-adjust: auto;
+  }
+  .sign-out-door {
+    fill: Canvas;
+  }
+}
+
+.pack-download-editor {
+  --book-ink: var(--foreground);
+  --book-muted: var(--muted-foreground);
+  --book-rule: var(--border);
+  --book-line: var(--border);
+  --book-paper: var(--card);
+  --book-paper-side: var(--muted);
+  --book-tab: var(--muted);
+  --book-highlight: var(--primary);
+  --book-action: var(--primary);
+  --book-action-ink: var(--primary-foreground);
+}
+.pack-download-editor .course-pdf-importer > .notebook-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.pack-download-editor .pdf-import-copy h3 {
+  font-size: 15px;
+  margin: 0 0 6px;
+}
+.pack-download-editor .pdf-import-copy p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.pack-download-editor .pdf-import-copy small,
+.pack-download-editor .pdf-import-boundary {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+@media (max-width: 700px) {
+  .pack-download-editor .course-pdf-importer {
+    grid-template-columns: 60px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px;
+  }
+  .pack-download-editor .course-pdf-importer > .notebook-button {
+    grid-column: 1/-1;
+    width: 100%;
+  }
+}
+
+.personal-more-preferences {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+.personal-more-preferences .navigation-preferences {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  width: 100%;
+  color: var(--foreground);
+  background: var(--muted);
+  border-radius: 8px;
+  padding: 10px 14px;
+  border: 0;
+}
+/* The appearance switch has a 44px hit area around a compact theme-colored track. */
+.appearance-workspace-options > div > span {
+  min-width: 0;
+}
+.appearance-workspace-options .sidebar-setting-switch,
+.appearance-workspace-options .sidebar-setting-switch[aria-checked="true"] {
+  position: relative;
+  width: 52px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.appearance-workspace-options .sidebar-setting-switch::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-start: 3px;
+  width: 44px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--muted);
+}
+.appearance-workspace-options
+  .sidebar-setting-switch[aria-checked="true"]::before {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.appearance-workspace-options .sidebar-setting-switch > span {
+  position: absolute;
+  inset-block-start: 13px;
+  inset-inline-start: 6px;
+  width: 18px;
+  height: 18px;
+  background: var(--foreground);
+  box-shadow: none;
+}
+.appearance-workspace-options
+  .sidebar-setting-switch[aria-checked="true"]
+  > span {
+  background: var(--primary-foreground);
+}
