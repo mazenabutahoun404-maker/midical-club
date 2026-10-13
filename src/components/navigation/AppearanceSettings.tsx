@@ -20,6 +20,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
   const paths = useWorkspacePaths();
   const {
+    accountAvailable,
     navigation,
     setNavigation,
     sidebarCollapsed,
@@ -31,6 +32,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
     resolvedTheme,
   } = useAppearance();
   const { label, t } = useLocale();
+  const choices = accountAvailable ? appearanceChoices : appearanceChoices.filter((choice) => choice.palette === "medclub" && choice.mode !== "system");
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [manualPreview, setManualPreview] = useState(false);
@@ -39,7 +41,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
     setManualPreview(false);
   };
   const showPreview = (id: string) => {
-    setPreview(id);
+    if (accountAvailable) setPreview(id);
   };
   const previewChoice = appearanceChoices.find(
     (choice) => choice.id === preview,
@@ -64,7 +66,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           onClick={() => {
             setOpen(true);
             setManualPreview(false);
-            setPreview(appearanceChoiceId(palette, colorMode));
+            setPreview(accountAvailable ? appearanceChoiceId(palette, colorMode) : null);
           }}
         >
           <UtilityGlyph kind="appearance" />
@@ -78,8 +80,8 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           closePreview();
         }}
         title={label("appearanceTitle")}
-        description={label("appearanceDescription")}
-        className="appearance-dialog"
+        description={accountAvailable ? label("appearanceDescription") : t({ en: "Choose MedClub Light or Dark.", ar: "اختر ميدكلب الفاتح أو الداكن." })}
+        className={`appearance-dialog${accountAvailable ? "" : " appearance-dialog-guest"}`}
         onAfterClose={() => {
           // Switching orientation can hide the trigger that originally opened this dialog.
           if (
@@ -123,7 +125,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           }}
         >
           <div className="appearance-theme-groups">
-            {(["light", "dark", "system"] as const).map((mode) => (
+            {(accountAvailable ? ["light", "dark", "system"] as const : ["light", "dark"] as const).map((mode) => (
               <fieldset className="appearance-palettes" key={mode}>
                 <legend>
                   {t(
@@ -135,7 +137,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
                   )}
                 </legend>
                 <div className="appearance-palette-grid">
-                  {appearanceChoices
+                  {choices
                     .filter((choice) => choice.mode === mode)
                     .map((choice) => {
                       const colors =
@@ -215,7 +217,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
               </fieldset>
             ))}
           </div>
-          {previewChoice ? (
+          {accountAvailable && (previewChoice ? (
             <ThemePreview
               key={preview === null ? "closed" : "open"}
               choice={previewChoice}
@@ -233,8 +235,9 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
                 })}
               </p>
             </div>
-          )}
+          ))}
         </div>
+        {accountAvailable && <>
         <section
           className="appearance-workspace-options"
           aria-label={t({ en: "Workspace preferences", ar: "تفضيلات المساحة" })}
@@ -303,6 +306,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           ))}
         </fieldset>
         <p className="settings-note">{label("mobileNavigationNote")}</p>
+        </>}
         <p className="settings-saved" role="status">
           {label(persisted ? "preferencesSaved" : "sessionOnly")}
         </p>

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { SiteContent, HomeSection } from "../../types/content";
 import { useSiteContent } from "../../hooks/useContent";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -11,6 +12,9 @@ import { UpcomingEvents } from "./sections/UpcomingEvents";
 import { Opportunities } from "./sections/Opportunities";
 import { Journal } from "./sections/Journal";
 import { Community } from "./sections/Community";
+import { useHomeReveal } from "./useHomeReveal";
+import "./home-atlas.css";
+
 const registry = {
   pathways: QuickAccess,
   resources: LatestResources,
@@ -21,50 +25,60 @@ const registry = {
 function Section({
   section,
   site,
-  compact = false,
+  chapter,
 }: {
   section: HomeSection;
   site: SiteContent;
-  compact?: boolean;
+  chapter: number;
 }) {
   const { label } = useLocale();
   if (section.type === "announcement")
     return (
-      <section id={section.id}>
+      <section
+        id={section.id}
+        className="home-signal-section"
+        data-home-reveal="rise"
+      >
         <Announcement site={site} />
       </section>
     );
   if (section.type === "community")
     return (
-      <section id={section.id} className="container section">
+      <section
+        id={section.id}
+        className="home-chapter home-community"
+        data-home-section={section.type}
+      >
         <Community site={site} />
       </section>
     );
   const Component = registry[section.type];
+  const href =
+    section.type === "resources"
+      ? "/learn"
+      : section.type === "events"
+        ? "/events"
+        : section.type === "opportunities"
+          ? "/opportunities"
+          : section.type === "journal"
+            ? "/journal"
+            : undefined;
   return (
     <section
       id={section.id}
-      className={
-        compact
-          ? ""
-          : "section " +
-            (section.type === "resources" ? "resource-section" : "container")
-      }
+      className={`home-chapter home-${section.type}`}
+      data-home-section={section.type}
     >
-      <div className={section.type === "resources" ? "container" : undefined}>
+      <div
+        className="home-chapter-heading"
+        data-home-reveal={section.type === "resources" ? "left" : "rise"}
+      >
+        <span className="home-chapter-number" aria-hidden="true">
+          {String(chapter).padStart(2, "0")}
+        </span>
         <SectionHeading
           heading={site.headings[section.type]}
-          href={
-            section.type === "resources"
-              ? "/learn"
-              : section.type === "events"
-                ? "/events"
-                : section.type === "opportunities"
-                  ? "/opportunities"
-                  : section.type === "journal"
-                    ? "/journal"
-                    : undefined
-          }
+          href={href}
           linkLabel={label(
             section.type === "events"
               ? "exploreAllEvents"
@@ -75,6 +89,8 @@ function Section({
                   : "browse",
           )}
         />
+      </div>
+      <div className="home-chapter-content">
         <Component site={site} />
       </div>
     </section>
@@ -82,29 +98,29 @@ function Section({
 }
 export default function Homepage() {
   const { data: site } = useSiteContent();
+  const { dir } = useLocale();
+  const root = useRef<HTMLDivElement>(null);
+  useHomeReveal(root, !!site);
   if (!site) return null;
   const sections = visibleSections(site.sections, new Date());
+  let chapter = 0;
   return (
-    <>
-      <Hero hero={site.hero} brand={site.brand} />
-      {sections.map((section, index) => {
-        if (
-          section.type === "opportunities" &&
-          sections[index + 1]?.type === "journal"
-        )
-          return (
-            <div className="container growth-wrap section" key={section.id}>
-              <Section section={section} site={site} compact />
-              <Section section={sections[index + 1]} site={site} compact />
-            </div>
-          );
-        if (
-          section.type === "journal" &&
-          sections[index - 1]?.type === "opportunities"
-        )
-          return null;
-        return <Section key={section.id} section={section} site={site} />;
-      })}
-    </>
+    <div className="home-atlas" dir={dir} ref={root}>
+      <Hero
+        hero={site.hero}
+        brand={site.brand}
+        nextSectionId={
+          sections.find((section) => section.type !== "announcement")?.id
+        }
+      />
+      {sections.map((section) => (
+        <Section
+          key={section.id}
+          section={section}
+          site={site}
+          chapter={section.type === "announcement" ? 0 : ++chapter}
+        />
+      ))}
+    </div>
   );
 }

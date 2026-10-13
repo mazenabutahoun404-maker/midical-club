@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from "react";
-import { Eye, EyeOff, KeyRound, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { ArrowRight, Eye, EyeOff, KeyRound, Sparkles } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -9,9 +9,19 @@ import { PREVIEW_CREDENTIALS } from "../../services/local-auth.service";
 import { authErrorKey, safeReturnTo } from "../../lib/auth";
 import { routes } from "../../constants/routes";
 import { AuthenticatedState } from "./AuthenticatedState";
+import { useAuthJourney } from "./AuthJourney";
 
 export default function SignInPage() {
   const auth = useAuth();
+  const journey = useAuthJourney();
+  const [welcoming, setWelcoming] = useState(false);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const { label } = useLocale();
   const navigate = useNavigate();
   const [search] = useSearchParams();
@@ -21,20 +31,33 @@ export default function SignInPage() {
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (auth.snapshot.status === "authenticated") return <AuthenticatedState />;
+  if (auth.snapshot.status === "authenticated" && !welcoming)
+    return <AuthenticatedState />;
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (auth.isPending || welcoming) return;
     setError(null);
     if (!email.trim() || !password) {
       setError(label("requiredField"));
       return;
     }
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+      setError(label("emailInvalid"));
+      document.getElementById("auth-email")?.focus();
+      return;
+    }
+    setWelcoming(true);
+    const welcome = journey.startWelcome();
     try {
       await auth.signIn({ email, password });
-      navigate(returnTo, { replace: true });
+      await welcome;
+      if (mounted.current) navigate(returnTo, { replace: true });
     } catch (caught) {
-      setError(label(authErrorKey(caught)));
+      journey.stopWelcome();
+      if (mounted.current) setError(label(authErrorKey(caught)));
+    } finally {
+      if (mounted.current) setWelcoming(false);
     }
   };
 
@@ -48,16 +71,24 @@ export default function SignInPage() {
         <h2>{label("signInTitle")}</h2>
         <p>{label("signInBody")}</p>
       </div>
-      <form className="auth-form" onSubmit={submit} noValidate>
+      <form
+        className="auth-form"
+        onSubmit={submit}
+        noValidate
+        aria-busy={auth.isPending || welcoming}
+      >
         <label className="auth-field" htmlFor="auth-email">
           <span>{label("email")}</span>
           <input
             id="auth-email"
             type="email"
+            dir="ltr"
+            inputMode="email"
             autoComplete="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             required
+            aria-describedby={error ? "signin-error" : undefined}
           />
         </label>
         <label className="auth-field" htmlFor="auth-password">
@@ -67,6 +98,7 @@ export default function SignInPage() {
               id="auth-password"
               type={visible ? "text" : "password"}
               autoComplete="current-password"
+              dir="ltr"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
@@ -75,6 +107,7 @@ export default function SignInPage() {
               type="button"
               onClick={() => setVisible((value) => !value)}
               aria-label={label(visible ? "hidePassword" : "showPassword")}
+              aria-pressed={visible}
             >
               {visible ? <EyeOff /> : <Eye />}
             </button>
@@ -96,27 +129,32 @@ export default function SignInPage() {
           </button>
         </div>
         {error && (
-          <p className="auth-form-error" role="alert">
+          <p id="signin-error" className="auth-form-error" role="alert">
             {error}
           </p>
         )}
         <Button
           type="submit"
-          disabled={auth.isPending}
+          disabled={auth.isPending || welcoming}
           className="button button-primary auth-submit"
         >
-          {auth.isPending ? label("signingIn") : label("signIn")}
+          {auth.isPending || welcoming ? label("signingIn") : label("signIn")}
+          <ArrowRight size={18} className="directional" />
         </Button>
       </form>
       <p className="auth-demo-hint">{label("demoCredentialHint")}</p>
       <p className="auth-switch">
         {label("newHere")}{" "}
-        <AppLink href={routes.register}>{label("createAccount")}</AppLink>
+        <AppLink
+          href={`${routes.register}?returnTo=${encodeURIComponent(returnTo)}`}
+        >
+          {label("createAccount")}
+        </AppLink>
       </p>
-      <div className="auth-boundary-note">
-        <strong>{label("authPreview")}</strong>
+      <details className="auth-boundary-note">
+        <summary>{label("authPreview")}</summary>
         <span>{label("authPreviewBody")}</span>
-      </div>
+      </details>
     </section>
   );
 }

@@ -31,6 +31,10 @@ const DEFAULTS: AppearancePreferences = {
   colorMode: "system",
   palette: "medclub",
 };
+const GUEST_KEY = "medclub.guest-appearance.v1";
+function readGuestMode(): "light" | "dark" {
+  try { return localStorage.getItem(GUEST_KEY) === "dark" ? "dark" : "light"; } catch { return "light"; }
+}
 const isColorMode = (value: unknown): value is ColorMode =>
   value === "light" || value === "dark" || value === "system";
 const isLayout = (value: unknown): value is NavigationLayout =>
@@ -65,6 +69,8 @@ function readPreferences(): AppearancePreferences {
   return DEFAULTS;
 }
 interface AppearanceContext extends AppearancePreferences {
+  accountAvailable: boolean;
+  setAccountAvailable: (available: boolean) => void;
   setNavigation: (layout: NavigationLayout) => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
   persisted: boolean;
@@ -75,7 +81,12 @@ interface AppearanceContext extends AppearancePreferences {
 }
 const Context = createContext<AppearanceContext | null>(null);
 export function AppearanceProvider({ children }: { children: ReactNode }) {
-  const [preferences, setPreferences] = useState(readPreferences);
+  const [accountPreferences, setPreferences] = useState(readPreferences);
+  const [accountAvailable, setAccountAvailable] = useState(false);
+  const [guestMode, setGuestMode] = useState(readGuestMode);
+  const preferences: AppearancePreferences = accountAvailable ? accountPreferences : {
+    navigation: "vertical", sidebarCollapsed: false, palette: "medclub", colorMode: guestMode,
+  };
   const [persisted, setPersisted] = useState(true);
   const lastTheme = useRef<string | null>(null);
   const themeAnimations = useRef<Animation[]>([]);
@@ -124,13 +135,22 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
     const sync = (event: StorageEvent) => {
       if (event.key === STORAGE_KEYS.appearance || event.key === null)
         setPreferences(readPreferences());
+      if (event.key === GUEST_KEY || event.key === null) setGuestMode(readGuestMode());
     };
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
   }, []);
   const value = useMemo(() => {
     function update(change: Partial<AppearancePreferences>) {
-      const next = { ...preferences, ...change };
+      if (!accountAvailable) {
+        if (change.palette && change.palette !== "medclub") return;
+        if (change.colorMode !== "light" && change.colorMode !== "dark") return;
+        setGuestMode(change.colorMode);
+        try { localStorage.setItem(GUEST_KEY, change.colorMode); setPersisted(true); }
+        catch { setPersisted(false); }
+        return;
+      }
+      const next = { ...accountPreferences, ...change };
       setPreferences(next);
       try {
         localStorage.setItem(STORAGE_KEYS.appearance, JSON.stringify(next));
@@ -141,6 +161,8 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
     }
     return {
       ...preferences,
+      accountAvailable,
+      setAccountAvailable,
       persisted,
       resolvedTheme,
       setThemeChoice: (id: string) => {
@@ -162,7 +184,7 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
       setSidebarCollapsed: (sidebarCollapsed: boolean) =>
         update({ sidebarCollapsed }),
     };
-  }, [preferences, persisted, resolvedTheme]);
+  }, [accountPreferences, accountAvailable, guestMode, persisted, resolvedTheme]);
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useAppearance() {

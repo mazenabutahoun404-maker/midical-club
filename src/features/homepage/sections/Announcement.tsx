@@ -9,24 +9,24 @@ export function Announcement({ site }: { site: SiteContent }) {
   const events = useEvents();
   const event = events.data?.find((e) => e.id === site.announcement.eventId);
   return (
-    <div className="container">
-      <div className="announcement">
+    <div className="home-signal">
+      <span className="home-signal-badge">
         <Megaphone size={19} />
-        <span className="tag">{t(site.announcement.label)}</span>
-        <p>
-          {t(site.announcement.title)}
-          <span>{t(site.announcement.description)}</span>
-        </p>
-        {event && (
-          <button
-            className="text-link"
-            onClick={() => openDetail({ kind: "event", item: event })}
-          >
-            {label("upcoming")}
-            <ArrowRight className="directional" size={16} />
-          </button>
-        )}
-      </div>
+        <span>{t(site.announcement.label)}</span>
+      </span>
+      <p>
+        {t(site.announcement.title)}
+        <span>{t(site.announcement.description)}</span>
+      </p>
+      {event && (
+        <button
+          className="text-link"
+          onClick={() => openDetail({ kind: "event", item: event })}
+        >
+          {label("upcoming")}
+          <ArrowRight className="directional" size={16} />
+        </button>
+      )}
     </div>
   );
 }

@@ -166,7 +166,8 @@ html:root
   .study-environment
   .study-notebook
   .pdf-book-viewport {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--book-cover) var(--book-paper);
 }
 html:root
   body
@@ -174,7 +175,9 @@ html:root
   .study-environment
   .study-notebook
   .pdf-book-viewport::-webkit-scrollbar {
-  display: none;
+  display: block;
+  width: 9px;
+  height: 9px;
 }
 html:root
   body

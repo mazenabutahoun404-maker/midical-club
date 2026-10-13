@@ -5,6 +5,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "../../components/navigation/AppLink";
 import { Button } from "../../components/ui/button";
 import { routes } from "../../constants/routes";
+import { authErrorKey } from "../../lib/auth";
 
 export default function RecoverPage() {
   const auth = useAuth();
@@ -15,13 +16,18 @@ export default function RecoverPage() {
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (auth.isPending) return;
     setError(null);
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       setError(label("emailInvalid"));
       return;
     }
-    await auth.requestPasswordReset(email);
-    setSent(true);
+    try {
+      await auth.requestPasswordReset(email.trim());
+      setSent(true);
+    } catch (caught) {
+      setError(label(authErrorKey(caught)));
+    }
   };
 
   return (
@@ -40,12 +46,19 @@ export default function RecoverPage() {
           <p>{label("recoverySent")}</p>
         </div>
       ) : (
-        <form className="auth-form" onSubmit={submit} noValidate>
+        <form
+          className="auth-form"
+          onSubmit={submit}
+          noValidate
+          aria-busy={auth.isPending}
+        >
           <label className="auth-field" htmlFor="recover-email">
             <span>{label("email")}</span>
             <input
               id="recover-email"
               type="email"
+              dir="ltr"
+              inputMode="email"
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}

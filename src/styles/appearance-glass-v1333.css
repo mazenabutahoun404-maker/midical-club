@@ -107,3 +107,8 @@ html:root body:has(.appearance-dialog[open])
     -webkit-backdrop-filter: none;
   }
 }
+
+.appearance-dialog-guest .appearance-theme-browser { display: block; }
+.appearance-dialog-guest .appearance-theme-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.appearance-dialog-guest .appearance-palette-grid { grid-template-columns: 1fr; }
+.appearance-dialog-guest .appearance-heading { display: none; }

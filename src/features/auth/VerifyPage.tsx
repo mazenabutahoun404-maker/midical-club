@@ -22,6 +22,7 @@ export default function VerifyPage() {
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (auth.isPending || code.length !== 6) return;
     setError(null);
     try {
       await auth.verifyEmail(code);
@@ -44,7 +45,7 @@ export default function VerifyPage() {
           <strong>{auth.snapshot.pendingEmail || "—"}</strong>
         </p>
       </div>
-      <form className="auth-form" onSubmit={submit}>
+      <form className="auth-form" onSubmit={submit} aria-busy={auth.isPending}>
         <label
           className="auth-field auth-code-field"
           htmlFor="verification-code"
@@ -54,6 +55,7 @@ export default function VerifyPage() {
             id="verification-code"
             aria-label={label("verificationCode")}
             inputMode="numeric"
+            dir="ltr"
             autoComplete="one-time-code"
             maxLength={6}
             value={code}

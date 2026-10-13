@@ -56,10 +56,6 @@ html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-boo
   min-height: 0;
   overflow: hidden;
 }
-html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-pannable="true"] {
-  grid-template-rows: minmax(0, 1fr) 44px;
-  grid-template-areas: "previous viewport next" ". pan .";
-}
 html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-book-viewport,
 html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-book-viewport[data-pannable="true"] {
   grid-area: viewport;
@@ -80,25 +76,10 @@ html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-boo
 }
 html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .page-hand-previous { grid-area: previous; }
 html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .page-hand-next { grid-area: next; }
-html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-pan-control {
-  position: static;
-  inset: auto;
-  transform: none;
-  grid-area: pan;
-  justify-self: center;
-  width: min(260px, 100%);
-  min-width: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
 html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) 64px;
   grid-template-areas: "viewport viewport" "previous next";
-}
-html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"][data-pannable="true"] {
-  grid-template-rows: minmax(0, 1fr) 44px 64px;
-  grid-template-areas: "viewport viewport" "pan pan" "previous next";
 }
 html:root body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] > .page-hand-edge {
   width: 72px;

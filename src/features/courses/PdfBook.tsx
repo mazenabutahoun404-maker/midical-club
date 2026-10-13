@@ -20,6 +20,8 @@ import {
   ZoomIn,
   ZoomOut,
   SunMoon,
+  File,
+  Scan,
 } from "lucide-react";
 import { getAppearancePalette } from "../../app/providers/appearance-palettes";
 import { appearancePreviewColors } from "../../app/providers/appearance-preview-colors";
@@ -31,11 +33,12 @@ import type {
   PdfRasterPool as RasterPool,
   PageRaster,
 } from "./pdf-engine";
-import { pdfViewGeometry } from "./pdf-view-geometry";
+import { pdfViewGeometry, pdfFitZoom, MIN_PDF_ZOOM } from "./pdf-view-geometry";
 import { yieldPdfTask } from "./pdf-text-stream";
 import { nextSpread, spreadStart, type TurnDirection } from "./page-turn";
 import { TurnLeaf, usePageTurn } from "./usePageTurn";
 import { pdfPanLimit, pdfPanOffset } from "./pdf-pan";
+import { usePdfGrab } from "./usePdfGrab";
 import type { usePdfMargins } from "../study-hub/PdfMarginNotes";
 import type { MarginNote, PageAnchor } from "../../types/study-hub";
 import { useStudyTools } from "./StudyTools";
@@ -46,6 +49,17 @@ import "../../vendor/pdfjs/text-layer.css";
 import "./pdf-reader-base.css";
 import "./pdf-controls.css";
 import "../../styles/reader-layout-v1337.css";
+
+const PDF_LAYOUT_KEY = "medclub.pdf.page-layout.v1";
+function savedPageLayout(): "auto" | "single" {
+  try {
+    return localStorage.getItem(PDF_LAYOUT_KEY) === "single"
+      ? "single"
+      : "auto";
+  } catch {
+    return "auto";
+  }
+}
 
 const emptyMargins = {
   owner: null, open: false, placing: false, panel: null, notes: [] as MarginNote[],
@@ -296,8 +310,9 @@ export function PdfBook({
     position = useRef(onPage);
   const viewportRef = useRef<HTMLDivElement>(null);
   const restoredScroll = useRef(false);
-  const [pan, setPan] = useState(0),
-    [panLimit, setPanLimit] = useState(0);
+  const [panLimit, setPanLimit] = useState(0);
+  const [naturalWidth, setNaturalWidth] = useState(595.28 * 96 / 72);
+  const [fit, setFit] = useState(() => companion || window.innerWidth < 900);
   position.current = onPage;
   const documentCount = useRef(onCount);
   documentCount.current = onCount;
@@ -339,7 +354,9 @@ export function PdfBook({
     onPlace: placeMargin,
   };
   const count = pool?.document.numPages || 1;
-  const twoPages = !companion && readingWidth >= 860;
+  const [pageLayout, setPageLayout] = useState(savedPageLayout);
+  const wideSpread = !companion && readingWidth >= 860;
+  const twoPages = wideSpread && pageLayout !== "single";
   const compactControls = width < 760;
   const [optionsOpen, setOptionsOpen] = useState(false);
   const options = useRef<HTMLDetailsElement>(null);
@@ -353,7 +370,16 @@ export function PdfBook({
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [optionsOpen, compactControls]);
   const first = spreadStart(Math.min(page, count), twoPages);
-  const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(readingWidth, twoPages, zoom);
+  const effectiveZoom = fit ? pdfFitZoom(readingWidth, twoPages, naturalWidth) : zoom;
+  const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(readingWidth, twoPages, effectiveZoom, naturalWidth);
+  useEffect(() => {
+    if (!pool) return;
+    let active = true;
+    void pool.document.getPage(1).then((firstPage) => {
+      if (active) setNaturalWidth(firstPage.getViewport({ scale: 96 / 72 }).width);
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [pool]);
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
@@ -363,7 +389,6 @@ export function PdfBook({
       setPanLimit(limit);
       const offset = pdfPanOffset(viewport.scrollLeft, limit);
       if (viewport.scrollLeft !== offset) viewport.scrollLeft = offset;
-      setPan(offset);
     };
     const observer =
       typeof ResizeObserver === "undefined"
@@ -390,6 +415,7 @@ export function PdfBook({
     },
   });
   const turn = turner.turn;
+  usePdfGrab(viewportRef, !!pool && !turn, margins.placing);
   const turnPreparation = useRef(0);
   const preparing = useRef(false);
   const [preparingTurn, setPreparingTurn] = useState(false);
@@ -615,6 +641,7 @@ export function PdfBook({
         } as CSSProperties
       }
       data-paper-comfort={themedPaper ? resolvedTheme : "original"}
+      data-page-layout={twoPages ? "spread" : "single"}
       data-two-pages={twoPages || undefined}
       data-turning={!!turn || undefined}
       aria-busy={preparingTurn || undefined}
@@ -718,6 +745,43 @@ export function PdfBook({
               {t({ en: "PDF tools", ar: "أدوات PDF" })}
             </strong>
             <span className="pdf-toolbar-divider" />
+            {wideSpread && (
+              <PdfToolButton
+                type="button"
+                className="notebook-icon-button pdf-page-layout-toggle"
+                data-pdf-layout-toggle
+                disabled={!pool || !!turn || preparingTurn}
+                aria-pressed={pageLayout === "single"}
+                aria-label={t(
+                  twoPages
+                    ? { en: "Show one PDF page", ar: "عرض صفحة PDF واحدة" }
+                    : { en: "Show two PDF pages", ar: "عرض صفحتي PDF" },
+                )}
+                onClick={() => {
+                  const nextLayout =
+                    pageLayout === "single" ? "auto" : "single";
+                  setPageLayout(nextLayout);
+                  try {
+                    localStorage.setItem(PDF_LAYOUT_KEY, nextLayout);
+                  } catch {
+                    /* Reading remains available when storage is blocked. */
+                  }
+                }}
+              >
+                {twoPages ? (
+                  <File size={18} aria-hidden="true" />
+                ) : (
+                  <BookOpen size={18} aria-hidden="true" />
+                )}
+                <span className="pdf-control-label">
+                  {t(
+                    twoPages
+                      ? { en: "One page", ar: "صفحة واحدة" }
+                      : { en: "Two pages", ar: "صفحتان" },
+                  )}
+                </span>
+              </PdfToolButton>
+            )}
             <PdfToolButton
               type="button"
               className="notebook-icon-button pdf-paper-comfort"
@@ -748,9 +812,9 @@ export function PdfBook({
             <PdfToolButton
               type="button"
               className="notebook-icon-button"
-              disabled={zoom <= 0.75 || !!turn}
+              disabled={effectiveZoom <= MIN_PDF_ZOOM || !!turn}
               aria-label={t({ en: "Zoom out", ar: "تصغير" })}
-              onClick={() => setZoom((value) => Math.max(0.75, value - 0.25))}
+              onClick={() => { setFit(false); setZoom(Math.max(MIN_PDF_ZOOM, effectiveZoom - 0.25)); }}
             >
               <ZoomOut size={18} />
             </PdfToolButton>
@@ -762,18 +826,28 @@ export function PdfBook({
                 en: "Reset PDF zoom",
                 ar: "إعادة ضبط تكبير PDF",
               })}
-              onClick={() => setZoom(1)}
+              onClick={() => { setFit(false); setZoom(1); }}
             >
-              {Math.round(zoom * 100)}%
+              {Math.round(effectiveZoom * 100)}%
             </PdfToolButton>
             <PdfToolButton
               type="button"
               className="notebook-icon-button"
-              disabled={zoom >= 1.75 || !!turn}
+              disabled={effectiveZoom >= 1.75 || !!turn}
               aria-label={t({ en: "Zoom in", ar: "تكبير" })}
-              onClick={() => setZoom((value) => Math.min(1.75, value + 0.25))}
+              onClick={() => { setFit(false); setZoom(Math.min(1.75, effectiveZoom + 0.25)); }}
             >
               <ZoomIn size={18} />
+            </PdfToolButton>
+            <PdfToolButton
+              type="button"
+              className="notebook-icon-button pdf-fit-toggle"
+              disabled={!!turn}
+              aria-label={t({ en: "Fit PDF to reader", ar: "ملاءمة PDF مع مساحة القراءة" })}
+              aria-pressed={fit}
+              onClick={() => setFit(true)}
+            >
+              <Scan size={18} />
             </PdfToolButton>
             <PdfToolButton
               type="button"
@@ -1036,10 +1110,10 @@ export function PdfBook({
             data-pannable={panLimit > 1 || undefined}
             onScroll={(event) => {
               onScroll?.(event.currentTarget.scrollTop);
-              setPan(pdfPanOffset(event.currentTarget.scrollLeft, panLimit));
             }}
             tabIndex={0}
-            aria-label={t({ en: "PDF reading spread", ar: "صفحتا قراءة PDF" })}
+            aria-description={t({ en: "Drag blank paper to pan. Hold Space or use the middle mouse button to pan over text.", ar: "اسحب المساحة الفارغة للتحريك. اضغط المسافة أو زر الفأرة الأوسط للتحريك فوق النص." })}
+            aria-label={t(twoPages ? { en: "PDF reading spread", ar: "صفحتا قراءة PDF" } : { en: "PDF reading page", ar: "صفحة قراءة PDF" })}
           >
             <div
               className="pdf-pan-canvas"
@@ -1112,31 +1186,6 @@ export function PdfBook({
               </div>
             </div>
           </div>
-          {panLimit > 1 && (
-            <label className="pdf-pan-control">
-              <span>{t({ en: "Pan", ar: "تحريك" })}</span>
-              <input
-                type="range"
-                min={0}
-                max={Math.ceil(panLimit)}
-                step={1}
-                value={Math.round(pan)}
-                aria-label={t({
-                  en: "Scroll PDF horizontally",
-                  ar: "تمرير PDF أفقياً",
-                })}
-                onChange={(event) => {
-                  const offset = pdfPanOffset(
-                    Number(event.target.value),
-                    panLimit,
-                  );
-                  if (viewportRef.current)
-                    viewportRef.current.scrollLeft = offset;
-                  setPan(offset);
-                }}
-              />
-            </label>
-          )}
           <PdfToolButton
             type="button"
             className="page-hand-edge page-hand-previous"

@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAppearance } from "./AppearanceProvider";
 import { useServices } from "./ServicesProvider";
 import type {
   AuthProfileInput,
@@ -33,6 +34,7 @@ const Context = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const services = useServices();
+  const { setAccountAvailable } = useAppearance();
   const queryClient = useQueryClient();
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [isPending, setPending] = useState(true);
@@ -40,12 +42,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const commit = useCallback(
     async (next: AuthSnapshot) => {
       setSnapshot(next);
+      setAccountAvailable(next.status !== "anonymous");
       if (next.user)
         queryClient.setQueryData(["personal", "profile"], next.user.profile);
       else queryClient.removeQueries({ queryKey: ["personal", "profile"] });
       return next;
     },
-    [queryClient],
+    [queryClient, setAccountAvailable],
   );
 
   const refresh = useCallback(async () => {
@@ -77,7 +80,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isPending,
       refresh,
       signIn: (input) => run(() => services.auth.signIn(input)),
-      register: (input) => run(() => services.auth.register(input)),
+      register: (input) => run(async () => {
+        const next = await services.auth.register(input);
+        // A newly created account starts with the guest's selected MedClub mode.
+        if (next.status !== "anonymous") {
+          try {
+            const mode = localStorage.getItem("medclub.guest-appearance.v1") === "dark" ? "dark" : "light";
+            localStorage.setItem("medclub.appearance.v1", JSON.stringify({ navigation: "vertical", sidebarCollapsed: false, palette: "medclub", colorMode: mode }));
+            window.dispatchEvent(new StorageEvent("storage", { key: "medclub.appearance.v1" }));
+          } catch { /* Account creation remains available without browser storage. */ }
+        }
+        return next;
+      }),
       verifyEmail: (code) => run(() => services.auth.verifyEmail(code)),
       requestPasswordReset: async (email) => {
         setPending(true);

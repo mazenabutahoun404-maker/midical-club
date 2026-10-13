@@ -1,11 +1,16 @@
 export const MAX_PDF_ZOOM = 1.75;
-/** Zoom scales the display and text stage; the prepared raster identity stays fixed. */
-export function pdfViewGeometry(width: number, twoPages: boolean, zoom: number) {
-  const gutter = twoPages ? 26 : 0;
-  const base = Math.max(160, Math.floor(((width - gutter - 4) / (twoPages ? 2 : 1)) / 8) * 8);
+export const MIN_PDF_ZOOM = 0.25;
+/** PDF points convert to CSS pixels at 96/72. 100% is independent of the screen. */
+export function pdfFitZoom(width: number, twoPages: boolean, naturalWidth: number) {
+  const available = (width - (twoPages ? 26 : 0) - 4) / (twoPages ? 2 : 1);
+  return Math.max(MIN_PDF_ZOOM, Math.min(1, available / Math.max(1, naturalWidth)));
+}
+export function pdfViewGeometry(_width: number, twoPages: boolean, zoom: number, naturalWidth = 595.28 * 96 / 72) {
+  const paperWidth = Math.round(naturalWidth * zoom);
   return {
-    paperWidth: Math.round(base * zoom),
-    rasterWidth: Math.round(base * MAX_PDF_ZOOM / 8) * 8,
-    spreadWidth: Math.round(base * zoom) * (twoPages ? 2 : 1) + gutter,
+    paperWidth,
+    // A fixed source raster survives zoom, fitting, page layout and window resizing.
+    rasterWidth: Math.min(4096, Math.round(naturalWidth * MAX_PDF_ZOOM / 8) * 8),
+    spreadWidth: paperWidth * (twoPages ? 2 : 1) + (twoPages ? 26 : 0),
   };
 }

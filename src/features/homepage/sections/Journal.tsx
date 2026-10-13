@@ -14,16 +14,30 @@ export function Journal() {
   const article = query.data[0];
   if (!article) return <EmptyState />;
   return (
-    <article className="journal-card">
-      <span className="eyebrow">
-        {t(article.category)} · {article.readMinutes} {label("readMinutes")}
-      </span>
-      <h3>{t(article.title)}</h3>
-      <p>{t(article.excerpt)}</p>
-      <AppLink className="text-link" href={articlePath(article.slug)}>
-        {label("story")}
-        <ArrowRight className="directional" size={16} />
-      </AppLink>
+    <article className="home-journal-spread" data-home-reveal="unfold">
+      <div className="home-journal-cover" aria-hidden="true">
+        <span>{t(article.category)}</span>
+        <strong>{Array.from(t(article.title).trim())[0]}</strong>
+        <span>MedClub Journal</span>
+        <i />
+        <i />
+        <i />
+      </div>
+      <div className="home-journal-story">
+        <span className="eyebrow">
+          {t(article.category)} · {article.readMinutes} {label("readMinutes")}
+        </span>
+        <h3>{t(article.title)}</h3>
+        <p>{t(article.excerpt)}</p>
+        <div className="home-journal-byline">
+          <span>{t(article.author)}</span>
+          <span aria-hidden="true">↗</span>
+        </div>
+        <AppLink className="text-link" href={articlePath(article.slug)}>
+          {label("story")}
+          <ArrowRight className="directional" size={18} />
+        </AppLink>
+      </div>
     </article>
   );
 }
