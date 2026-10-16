@@ -11,6 +11,11 @@ export interface AppProps {
 }
 export default function App(props: AppProps) {
   const insideRouter = useInRouterContext();
+  const rawBase = import.meta.env.BASE_URL || "/";
+  const basename =
+    rawBase === "./" || rawBase === "."
+      ? "/"
+      : rawBase.replace(/\/$/, "") || "/";
   const content = (
     <AppErrorBoundary>
       <AppProviders {...props}>
@@ -21,9 +26,7 @@ export default function App(props: AppProps) {
   return insideRouter ? (
     content
   ) : (
-    <BrowserRouter
-      basename={import.meta.env.BASE_URL.replace(/\/$/, "") || "/"}
-    >
+    <BrowserRouter basename={basename}>
       {content}
     </BrowserRouter>
   );

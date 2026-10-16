@@ -2,8 +2,17 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+// Support GitHub Pages (/midical-club/), custom deployment platforms, or local dev
+const base =
+  process.env.BASE_PATH ||
+  (process.env.NETLIFY || process.env.VERCEL
+    ? '/'
+    : process.env.NODE_ENV === 'production'
+    ? '/midical-club/'
+    : '/')
+
 export default defineConfig({
-  base: './',
+  base,
   plugins: [
     react(),
     tailwindcss(),
