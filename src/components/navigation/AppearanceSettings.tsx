@@ -3,15 +3,19 @@ import {
   appearanceChoices,
   appearanceChoiceId,
 } from "../../app/providers/appearance-choices";
+import { AppearanceQuickTools } from "./AppearanceQuickTools";
 import { LanguageMenu } from "./LanguageMenu";
 import { ThemePreview } from "./ThemePreview";
 import { UtilityGlyph } from "./UtilityGlyph";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { NavigationHint } from "./NavigationHint";
-import { Check, SlidersHorizontal } from "lucide-react";
+import { Check, LockKeyhole, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Modal } from "../ui/Modal";
+import { AppLink } from "./AppLink";
+import { signInPath } from "../../constants/routes";
+import "../../styles/appearance-locked.css";
 import {
   useAppearance,
   type NavigationLayout,
@@ -32,7 +36,8 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
     resolvedTheme,
   } = useAppearance();
   const { label, t } = useLocale();
-  const choices = accountAvailable ? appearanceChoices : appearanceChoices.filter((choice) => choice.palette === "medclub" && choice.mode !== "system");
+  const choices = appearanceChoices;
+  const [lockedChoice, setLockedChoice] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [manualPreview, setManualPreview] = useState(false);
@@ -41,7 +46,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
     setManualPreview(false);
   };
   const showPreview = (id: string) => {
-    if (accountAvailable) setPreview(id);
+    setPreview(id);
   };
   const previewChoice = appearanceChoices.find(
     (choice) => choice.id === preview,
@@ -49,30 +54,41 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
   const location = useLocation();
   useEffect(() => {
     setOpen(false);
+    setLockedChoice(null);
     closePreview();
   }, [location.key]);
   return (
     <>
-      <NavigationHint label={label("appearance")}>
-        <button
-          className={
-            compact
-              ? "workspace-icon appearance-shortcut"
-              : "navigation-preferences"
-          }
-          aria-label={label("appearance")}
-          aria-haspopup="dialog"
-          aria-expanded={open}
-          onClick={() => {
-            setOpen(true);
-            setManualPreview(false);
-            setPreview(accountAvailable ? appearanceChoiceId(palette, colorMode) : null);
-          }}
-        >
-          <UtilityGlyph kind="appearance" />
-          {!compact && <span>{label("appearance")}</span>}
-        </button>
-      </NavigationHint>
+      <AppearanceQuickTools compact={compact} onOpenPanel={open}>
+        <NavigationHint label={label("appearance")}>
+          <button
+            className={
+              compact
+                ? "workspace-icon appearance-shortcut"
+                : "navigation-preferences"
+            }
+            aria-label={label("appearance")}
+            aria-description={t({
+              en: "Hover for one second, hold on touch, or press Arrow Up for quick tools.",
+              ar: "مرّر لثانية، أو اضغط مطولاً باللمس، أو اضغط السهم للأعلى للأدوات السريعة.",
+            })}
+            aria-haspopup="dialog"
+            aria-expanded={open}
+            onClick={() => {
+              setOpen(true);
+              setManualPreview(false);
+              setPreview(
+                accountAvailable
+                  ? appearanceChoiceId(palette, colorMode)
+                  : null,
+              );
+            }}
+          >
+            <UtilityGlyph kind="appearance" />
+            {!compact && <span>{label("appearance")}</span>}
+          </button>
+        </NavigationHint>
+      </AppearanceQuickTools>
       <Modal
         open={open}
         onClose={() => {
@@ -80,7 +96,14 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           closePreview();
         }}
         title={label("appearanceTitle")}
-        description={accountAvailable ? label("appearanceDescription") : t({ en: "Choose MedClub Light or Dark.", ar: "اختر ميدكلب الفاتح أو الداكن." })}
+        description={
+          accountAvailable
+            ? label("appearanceDescription")
+            : t({
+                en: "MedClub Light and Dark are yours to use. Sign in to unlock every theme.",
+                ar: "استخدم ميدكلب الفاتح والداكن. سجّل الدخول لفتح كل المظاهر.",
+              })
+        }
         className={`appearance-dialog${accountAvailable ? "" : " appearance-dialog-guest"}`}
         onAfterClose={() => {
           // Switching orientation can hide the trigger that originally opened this dialog.
@@ -104,6 +127,36 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
             <SlidersHorizontal size={25} />
           </span>
         </div>
+        {!accountAvailable && (
+          <div className="appearance-unlock-callout" role="status">
+            <LockKeyhole size={21} />
+            <div>
+              <strong>
+                {lockedChoice
+                  ? t(
+                      appearanceChoices.find((c) => c.id === lockedChoice)!
+                        .title,
+                    )
+                  : t({
+                      en: "Make MedClub feel like you",
+                      ar: "اجعل ميدكلب على ذوقك",
+                    })}
+              </strong>
+              <p>
+                {t({
+                  en: "Preview every palette. Sign in to apply your favorites.",
+                  ar: "شاهد كل المظاهر. سجّل الدخول لتطبيق مفضلاتك.",
+                })}
+              </p>
+            </div>
+            <AppLink
+              href={signInPath(location.pathname + location.search)}
+              className="button button-primary"
+            >
+              {t({ en: "Sign in to unlock", ar: "سجّل الدخول للفتح" })}
+            </AppLink>
+          </div>
+        )}
         <div
           className="appearance-theme-browser"
           onPointerLeave={(event) => {
@@ -125,7 +178,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
           }}
         >
           <div className="appearance-theme-groups">
-            {(accountAvailable ? ["light", "dark", "system"] as const : ["light", "dark"] as const).map((mode) => (
+            {(["light", "dark", "system"] as const).map((mode) => (
               <fieldset className="appearance-palettes" key={mode}>
                 <legend>
                   {t(
@@ -144,6 +197,64 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
                         appearancePreviewColors[
                           `${choice.palette}-${choice.mode === "system" ? resolvedTheme : choice.mode}`
                         ];
+                      const locked =
+                        !accountAvailable &&
+                        (choice.palette !== "medclub" ||
+                          choice.mode === "system");
+                      if (locked)
+                        return (
+                          <button
+                            type="button"
+                            key={choice.id}
+                            className="appearance-palette-option appearance-theme-locked"
+                            data-theme-choice={choice.id}
+                            aria-label={
+                              t(choice.title) +
+                              " · " +
+                              t({
+                                en: "Sign in to unlock",
+                                ar: "سجّل الدخول للفتح",
+                              })
+                            }
+                            onPointerEnter={(event) => {
+                              if (event.pointerType === "mouse")
+                                showPreview(choice.id);
+                            }}
+                            onFocus={() => showPreview(choice.id)}
+                            onClick={() => {
+                              setLockedChoice(choice.id);
+                              showPreview(choice.id);
+                              setManualPreview(true);
+                            }}
+                          >
+                            <span
+                              className="theme-choice-swatches"
+                              aria-hidden="true"
+                              data-mode={mode}
+                            >
+                              {[
+                                colors.background,
+                                colors.sidebar,
+                                colors.primary,
+                              ].map((color, i) => (
+                                <i key={i} style={{ backgroundColor: color }} />
+                              ))}
+                              <b>
+                                <LockKeyhole size={14} />
+                              </b>
+                            </span>
+                            <span>
+                              <strong>{t(choice.title)}</strong>
+                              <small>
+                                {t({
+                                  en: "Sign in to unlock",
+                                  ar: "سجّل الدخول للفتح",
+                                })}
+                              </small>
+                            </span>
+                            <LockKeyhole size={14} aria-hidden="true" />
+                          </button>
+                        );
                       return (
                         <label
                           key={choice.id}
@@ -217,7 +328,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
               </fieldset>
             ))}
           </div>
-          {accountAvailable && (previewChoice ? (
+          {previewChoice ? (
             <ThemePreview
               key={preview === null ? "closed" : "open"}
               choice={previewChoice}
@@ -235,78 +346,85 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
                 })}
               </p>
             </div>
-          ))}
+          )}
         </div>
-        {accountAvailable && <>
-        <section
-          className="appearance-workspace-options"
-          aria-label={t({ en: "Workspace preferences", ar: "تفضيلات المساحة" })}
-        >
-          <div>
-            <span>
-              <strong>{label("sidebarSize")}</strong>
-              <small>{label("sidebarSizeBody")}</small>
-            </span>
-            <button
-              className="sidebar-setting-switch"
-              role="switch"
-              aria-checked={sidebarCollapsed}
-              aria-label={label("compactSidebar")}
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            >
-              <span />
-            </button>
-          </div>
-          <div>
-            <strong>{label("language")}</strong>
-            <LanguageMenu />
-          </div>
+        <section className="appearance-language-row">
+          <strong>{label("language")}</strong>
+          <LanguageMenu />
         </section>
-        <fieldset className="layout-options">
-          <legend>{label("desktopNavigation")}</legend>
-          {(["vertical", "horizontal"] as NavigationLayout[]).map((layout) => (
-            <label
-              className={`layout-option ${navigation === layout ? "selected" : ""}`}
-              key={layout}
+        {accountAvailable && (
+          <>
+            <section
+              className="appearance-workspace-options"
+              aria-label={t({
+                en: "Workspace preferences",
+                ar: "تفضيلات المساحة",
+              })}
             >
-              <input
-                type="radio"
-                name="navigation-layout"
-                value={layout}
-                checked={navigation === layout}
-                onChange={() => setNavigation(layout)}
-              />
-              <span
-                className={`layout-miniature miniature-${layout}`}
-                aria-hidden="true"
-              >
-                <i className="mini-nav">
-                  <b />
-                  <b />
-                  <b />
-                </i>
-                <i className="mini-page">
-                  <b />
+              <div>
+                <span>
+                  <strong>{label("sidebarSize")}</strong>
+                  <small>{label("sidebarSizeBody")}</small>
+                </span>
+                <button
+                  className="sidebar-setting-switch"
+                  role="switch"
+                  aria-checked={sidebarCollapsed}
+                  aria-label={label("compactSidebar")}
+                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                >
                   <span />
-                  <span />
-                </i>
-              </span>
-              <span className="layout-option-label">
-                {label(layout)}
-                {navigation === layout && <Check size={17} />}
-              </span>
-              <small>
-                {label(
-                  layout === "vertical"
-                    ? "verticalDescription"
-                    : "horizontalDescription",
-                )}
-              </small>
-            </label>
-          ))}
-        </fieldset>
-        <p className="settings-note">{label("mobileNavigationNote")}</p>
-        </>}
+                </button>
+              </div>
+            </section>
+            <fieldset className="layout-options">
+              <legend>{label("desktopNavigation")}</legend>
+              {(["vertical", "horizontal"] as NavigationLayout[]).map(
+                (layout) => (
+                  <label
+                    className={`layout-option ${navigation === layout ? "selected" : ""}`}
+                    key={layout}
+                  >
+                    <input
+                      type="radio"
+                      name="navigation-layout"
+                      value={layout}
+                      checked={navigation === layout}
+                      onChange={() => setNavigation(layout)}
+                    />
+                    <span
+                      className={`layout-miniature miniature-${layout}`}
+                      aria-hidden="true"
+                    >
+                      <i className="mini-nav">
+                        <b />
+                        <b />
+                        <b />
+                      </i>
+                      <i className="mini-page">
+                        <b />
+                        <span />
+                        <span />
+                      </i>
+                    </span>
+                    <span className="layout-option-label">
+                      {label(layout)}
+                      {navigation === layout && <Check size={17} />}
+                    </span>
+                    <small>
+                      {label(
+                        layout === "vertical"
+                          ? "verticalDescription"
+                          : "horizontalDescription",
+                      )}
+                    </small>
+                  </label>
+                ),
+              )}
+            </fieldset>
+            <p className="settings-note">{label("mobileNavigationNote")}</p>
+          </>
+        )}
         <p className="settings-saved" role="status">
           {label(persisted ? "preferencesSaved" : "sessionOnly")}
         </p>

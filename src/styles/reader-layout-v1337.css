@@ -142,3 +142,24 @@ html:root body .course-study-edition .study-environment .study-notebook .course-
 @media (forced-colors: active) {
   html:root body .course-study-edition .study-environment .study-notebook .course-header-material > .course-header-leather { display: none; }
 }
+
+/* One physical frame boundary in both languages; older RTL side-index margins cannot survive. */
+html:root[dir] body .app-shell[data-study-environment="true"] > .app-content {
+  margin-inline: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100%;
+  min-width: 0;
+}
+html:root[dir] body .course-study-edition .study-environment .study-notebook:not([data-focus="true"])[data-section-layout="horizontal"] .notebook-object {
+  margin-left: var(--study-book-gap, 18px) !important;
+  margin-right: var(--study-book-gap, 18px) !important;
+  width: calc(100% - 2 * var(--study-book-gap, 18px));
+  max-width: none;
+}
+html:root[dir] body .course-study-edition .study-environment .study-notebook[data-focus="true"] .notebook-object {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100%;
+  max-width: none;
+}

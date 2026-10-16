@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { NotebookPen, Timer, Calculator, Check } from "lucide-react";
 import { StudentNotes } from "./StudentNotes";
@@ -52,8 +53,11 @@ function DeskSession({
   description: string;
 }) {
   const { t } = useLocale();
-  const [active, setActive] = useState<Tool>("timer"),
-    [visited, setVisited] = useState<Tool[]>(["timer"]);
+  const [params] = useSearchParams();
+  const requested = params.get("tool");
+  const initialTool: Tool = requested === "notes" || requested === "gpa" ? requested : "timer";
+  const [active, setActive] = useState<Tool>(initialTool),
+    [visited, setVisited] = useState<Tool[]>([initialTool]);
   const [timer, setTimer] = useState(() => {
     try {
       const raw = localStorage.getItem(storageKey);
@@ -186,7 +190,7 @@ function DeskSession({
               hidden={active !== "notes"}
               aria-label={names.notes}
             >
-              <StudentNotes />
+              <StudentNotes courseId={params.get("course") || undefined} />
             </section>
           )}
           {visited.includes("gpa") && (

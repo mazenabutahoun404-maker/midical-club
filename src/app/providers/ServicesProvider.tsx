@@ -2,6 +2,8 @@ import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { MedClubServices } from "../../services/contracts";
 import { createLocalStudyService } from "../../services/study/local-study.service";
 import { unavailableStudyService } from "../../services/study/unavailable-study.service";
+import { createLocalExamService } from "../../services/exams/local-exam.service";
+import { unavailableExamService } from "../../services/exams/unavailable-exam.service";
 const Context = createContext<MedClubServices | null>(null);
 export function ServicesProvider({
   services,
@@ -13,6 +15,15 @@ export function ServicesProvider({
   const ready = useMemo(
     () => ({
       ...services,
+      exams:
+        services.exams ||
+        (services.contentSnapshot?.kind === "live"
+          ? unavailableExamService()
+          : createLocalExamService({
+              auth: services.auth,
+              governance: services.governance,
+              courses: services.academics.listCourses,
+            })),
       studyHub:
         services.studyHub ||
         (services.contentSnapshot?.kind === "live"

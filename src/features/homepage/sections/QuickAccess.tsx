@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { SiteContent } from "../../../types/content";
 import { useLocale } from "../../../app/providers/LocaleProvider";
@@ -7,37 +6,29 @@ import { Icon } from "../../../components/ui/Icon";
 export function QuickAccess({ site }: { site: SiteContent }) {
   const { t } = useLocale();
   return (
-    <div className="home-gateways">
+    <nav
+      className="home-study-shortcuts"
+      aria-label={t({ en: "Study shortcuts", ar: "اختصارات الدراسة" })}
+    >
       {site.pathways.map((item, index) => (
-        <div
-          className="home-gateway-wrap"
+        <AppLink
           key={item.id}
-          data-home-reveal="unfold"
-          style={
-            {
-              "--home-stagger": `${Math.min(index, 4) * 90}ms`,
-            } as CSSProperties
-          }
+          href={item.href}
+          className="home-study-shortcut"
+          data-home-reveal="rise"
+          data-home-step={index % 4}
+          data-shortcut-tone={index % 4}
         >
-          <AppLink href={item.href} className="home-gateway">
-            <div className="home-gateway-art" aria-hidden="true">
-              <span className="home-gateway-arch" />
-              <span className="home-gateway-emblem">
-                <Icon name={item.icon || "book"} />
-              </span>
-              <span className="home-gateway-orbit" />
-            </div>
-            <div className="home-gateway-caption">
-              <span aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <ArrowUpRight className="directional" size={21} />
-            </div>
-            <h3>{t(item.label)}</h3>
-            {item.description && <p>{t(item.description)}</p>}
-          </AppLink>
-        </div>
+          <span className="home-shortcut-icon" aria-hidden="true">
+            <Icon name={item.icon || "book"} />
+          </span>
+          <span className="home-shortcut-copy">
+            <strong>{t(item.label)}</strong>
+            {item.description && <small>{t(item.description)}</small>}
+          </span>
+          <ArrowUpRight className="directional" size={17} aria-hidden="true" />
+        </AppLink>
       ))}
-    </div>
+    </nav>
   );
 }

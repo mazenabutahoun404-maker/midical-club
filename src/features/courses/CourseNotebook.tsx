@@ -225,12 +225,23 @@ export function CourseNotebook({
     const revision = query.get("revision");
     incomingNote.current = location.search;
     if (!resource || !safeResourceUrl(resource.fileUrl) || !Number.isSafeInteger(requested) || requested < 1 || (revision && revision !== resource.updatedAt)) {
-      toast.error(t({ en: "The note's PDF page is unavailable or its file has changed. The note is still saved.", ar: "صفحة PDF المرتبطة غير متاحة أو تغيّر الملف. الملاحظة ما زالت محفوظة." })); return;
+      toast.error(t(query.get("resume") === "1" ? { en: "This study file is unavailable or has changed. Open the course materials to choose another.", ar: "ملف الدراسة غير متاح أو تغيّر. افتح مواد المساق لاختيار ملف آخر." } : { en: "The note's PDF page is unavailable or its file has changed. The note is still saved.", ar: "صفحة PDF المرتبطة غير متاحة أو تغيّر الملف. الملاحظة ما زالت محفوظة." })); return;
     }
     study.update((previous) => ({ ...previous, resources: { ...previous.resources, [resource.id]: { scroll: 0, seconds: previous.resources[resource.id]?.seconds || 0, page: requested } } }));
     open(resource, false);
-    tools?.openNote({ resourceId: resource.id, resourceRevision: resource.updatedAt, page: requested, x: .85, y: .1 }, course.id);
+    if (query.get("resume") !== "1") tools?.openNote({ resourceId: resource.id, resourceRevision: resource.updatedAt, page: requested, x: .85, y: .1 }, course.id);
   }, [location.search, resources, fileSourcesPending]);
+
+  const incomingSection = useRef("");
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const kind = query.get("section");
+    if (query.has("pdf") || !kind || fileSourcesPending || incomingSection.current === location.search) return;
+    if (ordered.some((section) => section.kind === kind)) {
+      incomingSection.current = location.search;
+      select(kind as CourseSectionKind, false);
+    }
+  }, [location.search, fileSourcesPending]);
 
   useEffect(() => {
     closePeek();

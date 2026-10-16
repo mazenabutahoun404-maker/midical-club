@@ -3,6 +3,9 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import type { MessageKey } from "../../constants/messages";
 import { involvementItems, involvedLabel } from "./involvement";
 const titles: [string, MessageKey][] = [
+  ["/my/exams", "exams"],
+  ["/admin/exams", "exams"],
+  ["/learn/electronic-exams", "exams"],
   ["/my/study/recall", "recallDesk"],
   ["/my/study/offline", "offlinePacks"],
   ["/my/study/rooms", "quietRooms"],

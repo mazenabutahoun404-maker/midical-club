@@ -1,181 +1,519 @@
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   ArrowUpRight,
   BookOpen,
   Bookmark,
-  Timer,
-  Sparkles,
+  CalendarClock,
+  ChevronRight,
+  Compass,
   FileText,
+  SlidersHorizontal,
+  Timer,
+  Brain,
 } from "lucide-react";
-import { useStudentProfile } from "../../hooks/useContent";
-import { useLibraryContent } from "../library/useLibraryContent";
+import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { useOverlays } from "../../app/providers/OverlayProvider";
 import { AppLink } from "../../components/navigation/AppLink";
 import { CourseCard } from "../../components/cards/CourseCard";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
-import { StudyOverview } from "./StudyOverview";
-import { StudyDeskLinks } from "../study-hub/StudyDeskPage";
+import { APP_TIMEZONE } from "../../constants/config";
+import { usePersonalHome } from "./usePersonalHome";
+import { useCampusGrowth } from "./useCampusGrowth";
+import { shortcutChoices, resourceResumeHref } from "./personal-home-model";
+import { HomeControls } from "./HomeControls";
+import { RevisionKit } from "./RevisionKit";
+import "./personal-home.css";
+const PersonalCampus = lazy(() => import("./PersonalCampus"));
+
 export default function StudentDashboard() {
-  const profile = useStudentProfile();
-  const library = useLibraryContent();
-  const { label, t } = useLocale();
-  const { openDetail } = useOverlays();
-  if (profile.isPending || library.isPending) return <LoadingState />;
-  if (profile.isError || library.isError)
+  const { snapshot } = useAuth();
+  return <PersonalHome key={snapshot.user?.id || "guest"} />;
+}
+function PersonalHome() {
+  const data = usePersonalHome(),
+    growth = useCampusGrowth(data);
+  const { t, label, locale } = useLocale();
+  const [control, setControl] = useState<"exam" | "shortcuts" | null>(null);
+  const [kitOpen, setKitOpen] = useState(false),
+    [kitCourse, setKitCourse] = useState("");
+  const examCourse = data.myCourses.find((c) => c.id === data.exam?.courseId);
+  const saved = data.workspace.state.savedIds
+    .slice()
+    .reverse()
+    .flatMap((id) => {
+      const resource = data.myResources.find((r) => r.id === id);
+      return resource ? [resource] : [];
+    })
+    .slice(0, 4);
+  const formatDate = (value: string) =>
+    new Intl.DateTimeFormat(locale === "ar" ? "ar-JO" : "en-GB", {
+      timeZone: APP_TIMEZONE,
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(value));
+  useEffect(() => {
+    if (!kitOpen) return;
+    const frame = requestAnimationFrame(() => {
+      document
+        .getElementById("revision-kit-heading")
+        ?.focus({ preventScroll: true });
+      document.getElementById("personal-revision-kit")?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+        block: "start",
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [kitOpen]);
+  function openKit(courseId?: string) {
+    setKitCourse(
+      data.myCourses.find((c) => c.id === courseId)?.id ||
+        examCourse?.id ||
+        data.resume?.course.id ||
+        data.myCourses[0]?.id ||
+        "",
+    );
+    setKitOpen(true);
+  }
+  if (data.criticalPending) return <LoadingState />;
+  if (data.criticalError)
     return (
       <ErrorState
         retry={() => {
-          void profile.refetch();
-          library.retry();
+          void data.profile.refetch();
+          void data.courses.refetch();
+          void data.resources.refetch();
+          data.workspace.retry();
         }}
       />
     );
-  const student = profile.data;
-  const courses = library.courses.filter((c) =>
-    student.courseIds.includes(c.id),
-  );
+  const student = data.profile.data!;
+  const firstName = t(student.name).trim().split(/\s+/)[0];
+  const minutes = data.exam
+    ? Math.ceil((Date.parse(data.exam.startsAt) - data.now) / 60_000)
+    : 0;
   return (
-    <div className="container personal-home">
-      <section className="personal-welcome">
-        <div>
-          <span className="personal-eyebrow">
-            <Sparkles size={14} />
-            {label("welcomeOwnSpace")}
-          </span>
-          <h1 tabIndex={-1} data-page-heading>
-            {label("personalHeadline")}
-            <span>{label("personalAccent")}</span>
-          </h1>
-          <p>{label("personalIntro")}</p>
-          <AppLink href="/my/learning" className="button button-primary">
-            {label("openMyLearning")}
-            <ArrowUpRight size={17} className="directional" />
-          </AppLink>
-        </div>
-        <div className="personal-orbit">
-          <i aria-hidden="true" />
-          <i aria-hidden="true" />
-          <div className="personal-avatar">{t(student.initials)}</div>
-          <div className="personal-name-tag">
-            <strong>{t(student.name)}</strong>
+    <div
+      className="container personal-home personal-home-next"
+      data-home-mode={data.examSoon ? "exam" : data.resume ? "resume" : "start"}
+    >
+      <section
+        className="personal-next-hero"
+        aria-labelledby="personal-next-heading"
+      >
+        <div className="personal-next-copy">
+          <div className="personal-home-greeting">
             <span>
-              {label("year")} {student.year} · {t(student.batch)}
+              {t({ en: "Welcome back", ar: "مرحباً بعودتك" })},{" "}
+              <strong>{firstName}</strong>
             </span>
+            <small>
+              {label("year")} {student.year} · {t(student.batch)}
+            </small>
           </div>
-          <span className="personal-sample-tag">{label("sampleProfile")}</span>
-        </div>
-      </section>
-      <div className="personal-stats">
-        <AppLink href="/my/learning">
-          <BookOpen size={21} />
-          <span>
-            <b>{courses.length}</b>
-            {label("myCourses")}
+          <span className="home-kicker">
+            {data.examSoon ? (
+              <CalendarClock size={17} />
+            ) : (
+              <Compass size={17} />
+            )}
+            {t(
+              data.examSoon
+                ? {
+                    en: "Keep your next exam close",
+                    ar: "امتحانك القادم بالقرب منك",
+                  }
+                : { en: "Your next step", ar: "خطوتك التالية" },
+            )}
           </span>
-          <ArrowUpRight size={16} className="directional" />
-        </AppLink>
-        <AppLink href="/my/library">
-          <Bookmark size={21} />
-          <span>
-            <b>{library.count}</b>
-            {label("savedShort")}
-          </span>
-          <ArrowUpRight size={16} className="directional" />
-        </AppLink>
-        <AppLink href="/my/focus">
-          <Timer size={21} />
-          <span>
-            <b>
-              {student.focusMinutes}
-              <small>{label("minutesShort")}</small>
-            </b>
-            {label("focusSession")}
-          </span>
-          <ArrowUpRight size={16} className="directional" />
-        </AppLink>
-      </div>
-      <StudyOverview />
-      <section className="personal-study-desk">
-        <div className="personal-section-heading">
-          <h2>{t({ en: "Your study desk", ar: "مكتب دراستك" })}</h2>
-          <AppLink href="/my/study" className="text-link">
-            {label("viewAll")}
-          </AppLink>
-        </div>
-        <StudyDeskLinks />
-      </section>
-      <div className="personal-dashboard-grid">
-        <section>
-          <div className="personal-section-heading">
-            <div>
-              <span className="eyebrow">{label("oneStepAtATime")}</span>
-              <h2>{label("myLearning")}</h2>
+          <h1 id="personal-next-heading" tabIndex={-1} data-page-heading>
+            {data.examSoon
+              ? t(data.exam!.title)
+              : data.resume
+                ? t({
+                    en: "Pick up where you left off.",
+                    ar: "أكمل من حيث توقفت.",
+                  })
+                : t({
+                    en: "Make room for your next chapter.",
+                    ar: "مساحة لفصلك القادم.",
+                  })}
+          </h1>
+          {data.examSoon ? (
+            <>
+              <p className="personal-next-description">
+                {t({
+                  en: "Your course materials, saved pages and notes — gathered for a quick review.",
+                  ar: "مواد مساقك وصفحاتك المحددة وملاحظاتك مجتمعة لمراجعة سريعة.",
+                })}
+              </p>
+              <div className="personal-exam-time">
+                <CalendarClock size={17} />
+                <time dateTime={data.exam!.startsAt}>
+                  {minutes <= 60
+                    ? t({
+                        en: `Starts in ${minutes} min`,
+                        ar: `يبدأ خلال ${minutes} دقيقة`,
+                      })
+                    : formatDate(data.exam!.startsAt)}
+                </time>
+                <small>{t({ en: "Amman time", ar: "بتوقيت عمّان" })}</small>
+              </div>
+            </>
+          ) : data.resume ? (
+            <div className="personal-resume-detail">
+              <BookOpen size={20} />
+              <span>
+                <strong>
+                  {data.resume.resource
+                    ? t(data.resume.resource.title)
+                    : t(data.resume.course.title)}
+                </strong>
+                <small>
+                  {t(data.resume.course.title)} ·{" "}
+                  {data.resume.resource && !data.resume.resource.fileUrl ? (
+                    t(data.resume.resource.format)
+                  ) : (
+                    <>
+                      {t({ en: "Page", ar: "صفحة" })} {data.resume.page}
+                    </>
+                  )}
+                </small>
+              </span>
             </div>
-            <AppLink href="/my/learning" className="text-link">
-              {label("viewAll")}
-              <ArrowUpRight size={16} className="directional" />
-            </AppLink>
-          </div>
-          <div className="personal-course-grid">
-            {courses.slice(0, 2).map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-            {courses.length === 0 && (
-              <p className="personal-empty">{label("myCoursesEmpty")}</p>
+          ) : (
+            <p className="personal-next-description">
+              {t({
+                en: "Start with your courses. Keep useful pages close, and let your own campus take shape as you study.",
+                ar: "ابدأ بمساقاتك واحتفظ بالصفحات المهمة بالقرب منك. يتطور حرمك مع دراستك.",
+              })}
+            </p>
+          )}
+          <div className="personal-next-actions">
+            {data.examSoon ? (
+              <button
+                type="button"
+                className="button button-primary personal-next-primary"
+                onClick={() => openKit()}
+              >
+                {t({ en: "Open my exam revision", ar: "فتح مراجعة امتحاني" })}
+                <ArrowUpRight className="directional" size={20} />
+              </button>
+            ) : data.resume ? (
+              <AppLink
+                className="button button-primary personal-next-primary"
+                href={data.resume.href}
+              >
+                {t({ en: "Resume studying", ar: "متابعة الدراسة" })}
+                <ArrowUpRight className="directional" size={20} />
+              </AppLink>
+            ) : (
+              <AppLink
+                href="/my/learning"
+                className="button button-primary personal-next-primary"
+              >
+                {t({ en: "Open my courses", ar: "فتح مساقاتي" })}
+                <ArrowUpRight className="directional" size={20} />
+              </AppLink>
+            )}
+            {!data.examSoon && (
+              <button
+                type="button"
+                className="personal-quick-revision"
+                onClick={() => openKit()}
+              >
+                {t({ en: "Quick revision", ar: "مراجعة سريعة" })}
+                <ChevronRight className="directional" size={16} />
+              </button>
             )}
           </div>
-        </section>
-        <section className="personal-focus-card">
-          <span className="personal-focus-icon">
-            <Timer size={27} />
+          <div className="personal-shortcut-heading">
+            <span>{t({ en: "Keep close", ar: "بالقرب منك" })}</span>
+            <button
+              type="button"
+              onClick={() => setControl("shortcuts")}
+              aria-label={t({
+                en: "Customize my shortcuts",
+                ar: "تخصيص اختصاراتي",
+              })}
+            >
+              <SlidersHorizontal size={15} />
+              {t({ en: "Customize", ar: "تخصيص" })}
+            </button>
+          </div>
+          <nav
+            className="personal-pinned-shortcuts"
+            aria-label={t({
+              en: "Your pinned shortcuts",
+              ar: "اختصاراتك المثبتة",
+            })}
+          >
+            {data.preferences.shortcuts.map((id) => {
+              const item = shortcutChoices.find((c) => c.id === id)!;
+              return (
+                <AppLink key={id} href={item.href} data-home-shortcut={id}>
+                  <span>{t(item.label)}</span>
+                  <ArrowUpRight className="directional" size={15} />
+                </AppLink>
+              );
+            })}
+          </nav>
+          <button
+            type="button"
+            className="personal-exam-edit"
+            onClick={() => setControl("exam")}
+          >
+            <CalendarClock size={15} />
+            {t(
+              data.preferences.exam
+                ? { en: "Edit my exam date", ar: "تعديل موعد امتحاني" }
+                : { en: "Add my next exam", ar: "إضافة امتحاني القادم" },
+            )}
+          </button>
+        </div>
+        <div className="personal-campus-region">
+          <div className="personal-campus-heading">
+            <span className="home-kicker">
+              {t({ en: "Your MedClub campus", ar: "حرم ميدكلب الخاص بك" })}
+            </span>
+            <small>
+              {t({ en: "Built by your journey", ar: "يتطور برحلتك" })}
+            </small>
+          </div>
+          <Suspense
+            fallback={
+              <div className="personal-campus-placeholder" aria-hidden="true" />
+            }
+          >
+            <PersonalCampus levels={growth.levels} quiet={data.examSoon} />
+          </Suspense>
+        </div>
+      </section>
+      {(!data.persistent || !growth.persistent) && (
+        <p className="home-device-note" role="status">
+          {t({
+            en: "Changes are available for this session. Device storage is unavailable.",
+            ar: "التغييرات متاحة لهذه الجلسة. التخزين على الجهاز غير متاح.",
+          })}
+        </p>
+      )}
+      {kitOpen && (
+        <RevisionKit
+          data={data}
+          selected={kitCourse}
+          setSelected={setKitCourse}
+          close={() => setKitOpen(false)}
+        />
+      )}
+      <section
+        className="personal-home-today"
+        aria-label={t({ en: "Your next few steps", ar: "خطواتك القادمة" })}
+      >
+        <div className="personal-next-up">
+          <header>
+            <div>
+              <span className="home-kicker">
+                {t({ en: "A little direction", ar: "خطوة واضحة" })}
+              </span>
+              <h2>{t({ en: "Up next", ar: "القادم" })}</h2>
+            </div>
+            <AppLink href="/my/calendar" className="text-link">
+              {t({ en: "Calendar", ar: "التقويم" })}
+              <ArrowUpRight className="directional" size={16} />
+            </AppLink>
+          </header>
+          {data.upcoming.length ? (
+            data.upcoming.map((item) => (
+              <div className="home-upcoming-item" key={item.id}>
+                <CalendarClock size={19} />
+                <span>
+                  <strong>{t(item.title)}</strong>
+                  <small>{formatDate(item.startsAt)}</small>
+                </span>
+                {item.kind === "exam" ? (
+                  <button
+                    type="button"
+                    onClick={() => openKit(item.courseId)}
+                    aria-label={t({
+                      en: "Open exam revision",
+                      ar: "فتح مراجعة الامتحان",
+                    })}
+                  >
+                    <ArrowUpRight className="directional" size={18} />
+                  </button>
+                ) : (
+                  <AppLink
+                    href="/my/calendar"
+                    aria-label={t({ en: "Open calendar", ar: "فتح التقويم" })}
+                  >
+                    <ArrowUpRight className="directional" size={18} />
+                  </AppLink>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="home-upcoming-empty">
+              <p>
+                {t({
+                  en: "A clear space for your next plan.",
+                  ar: "مساحة لخطتك القادمة.",
+                })}
+              </p>
+              <button
+                type="button"
+                className="text-link"
+                onClick={() => setControl("exam")}
+              >
+                {t({ en: "Add an exam date", ar: "إضافة موعد امتحان" })}
+              </button>
+              <AppLink className="text-link" href="/my/calendar">
+                {t({ en: "Plan a study session", ar: "تخطيط جلسة دراسة" })}
+              </AppLink>
+            </div>
+          )}
+        </div>
+        <div className="personal-home-recall">
+          <Brain size={29} />
+          <span className="home-kicker">
+            {t({ en: "Bring it back to mind", ar: "استرجع ما تعلمته" })}
           </span>
-          <span className="eyebrow">{label("aMomentForYou")}</span>
-          <h2>{label("focusInvitation")}</h2>
-          <p>{label("focusInvitationBody")}</p>
-          <AppLink href="/my/focus">
-            {label("start")}
-            <ArrowUpRight size={21} className="directional" />
+          <h2>
+            {data.cards.isSuccess && data.dueCards.length
+              ? t({
+                  en: `${data.dueCards.length} cards to revisit.`,
+                  ar: `${data.dueCards.length} بطاقة للمراجعة.`,
+                })
+              : t({
+                  en: "A little recall goes a long way.",
+                  ar: "مراجعة صغيرة تحدث فرقاً.",
+                })}
+          </h2>
+          <p>
+            {t({
+              en: "Your own questions. A focused review. Pick up the cards that are due when you have time.",
+              ar: "أسئلتك ومراجعة مركزة. عد إلى بطاقاتك المستحقة عندما يتاح لك الوقت.",
+            })}
+          </p>
+          <AppLink href="/my/study/recall" className="button button-secondary">
+            {t({ en: "Open recall", ar: "فتح المراجعة" })}
+            <ArrowUpRight className="directional" size={17} />
           </AppLink>
-        </section>
-      </div>
-      <section className="personal-saves">
-        <div className="personal-section-heading">
+        </div>
+      </section>
+      <section className="personal-home-books">
+        <header className="personal-home-section-heading">
           <div>
-            <span className="eyebrow">{label("keepClose")}</span>
-            <h2>{label("recentSaves")}</h2>
+            <span className="home-kicker">
+              {t({ en: "Your next chapters", ar: "فصولك القادمة" })}
+            </span>
+            <h2>{t({ en: "On your study shelf", ar: "على رف دراستك" })}</h2>
+          </div>
+          <AppLink href="/my/learning" className="text-link">
+            {label("viewAll")}
+            <ArrowUpRight className="directional" size={17} />
+          </AppLink>
+        </header>
+        <div className="personal-home-book-grid">
+          {data.myCourses.slice(0, 3).map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))}
+        </div>
+        {!data.myCourses.length && (
+          <p>
+            {t({
+              en: "Your assigned courses will appear here. Explore the learning catalogue meanwhile.",
+              ar: "ستظهر مساقاتك المخصصة هنا. يمكنك استكشاف دليل التعلم الآن.",
+            })}{" "}
+            <AppLink href="/learn" className="text-link">
+              {t({ en: "Explore courses", ar: "استكشاف المساقات" })}
+            </AppLink>
+          </p>
+        )}
+      </section>
+      <section className="personal-home-saved">
+        <header className="personal-home-section-heading">
+          <div>
+            <span className="home-kicker">
+              {t({ en: "Worth keeping close", ar: "تستحق أن تبقى قريبة" })}
+            </span>
+            <h2>
+              {t({
+                en: "Recently saved for studying",
+                ar: "محفوظات الدراسة الأخيرة",
+              })}
+            </h2>
           </div>
           <AppLink href="/my/library" className="text-link">
             {label("openLibrary")}
-            <ArrowUpRight size={16} className="directional" />
+            <ArrowUpRight className="directional" size={17} />
           </AppLink>
-        </div>
-        {library.items.length ? (
-          <div className="personal-saved-list">
-            {library.items.slice(0, 4).map((record) => (
-              <button key={record.item.id} onClick={() => openDetail(record)}>
-                <span className="saved-file-icon">
-                  <FileText size={20} />
-                </span>
+        </header>
+        <div className="personal-home-saved-grid">
+          {saved.map((resource) => {
+            const course = data.myCourses.find(
+              (c) => c.id === resource.courseId,
+            )!;
+            return (
+              <AppLink
+                className="personal-home-saved-item"
+                href={
+                  resource.fileUrl
+                    ? resourceResumeHref(course, resource)
+                    : `/my/library?course=${encodeURIComponent(course.id)}`
+                }
+                key={resource.id}
+              >
+                <FileText size={22} />
                 <span>
-                  <strong>{t(record.item.title)}</strong>
-                  <small>{label(record.kind)}</small>
+                  <strong>{t(resource.title)}</strong>
+                  <small>{t(course.title)}</small>
                 </span>
-                <ArrowUpRight size={19} className="directional" />
-              </button>
-            ))}
-          </div>
-        ) : (
-          <div className="personal-empty">
-            <Bookmark size={24} />
-            <p>{label("personalSavedEmpty")}</p>
-            <AppLink href="/my/learning" className="text-link">
-              {label("openMyLearning")}
-              <ArrowUpRight size={16} className="directional" />
-            </AppLink>
-          </div>
-        )}
+                <ArrowUpRight className="directional" size={16} />
+              </AppLink>
+            );
+          })}
+          {!saved.length && (
+            <div className="personal-saves-empty">
+              <Bookmark size={25} />
+              <p>
+                {t({
+                  en: "Save a useful summary or resource. It will be one step away here.",
+                  ar: "احفظ ملخصاً أو مصدراً مفيداً ليكون على بعد خطوة هنا.",
+                })}
+              </p>
+              <AppLink href="/my/library" className="text-link">
+                {label("openLibrary")}
+              </AppLink>
+            </div>
+          )}
+        </div>
       </section>
+      <footer className="personal-home-foot">
+        <span>
+          <BookOpen size={16} />
+          {data.reviewed.length}{" "}
+          {t({ en: "resources reviewed", ar: "مصادر تمت مراجعتها" })}
+        </span>
+        <AppLink href="/my/progress">
+          {t({ en: "See my study progress", ar: "عرض تقدم دراستي" })}
+          <ArrowUpRight className="directional" size={15} />
+        </AppLink>
+        <AppLink href="/my/focus">
+          <Timer size={16} />
+          {t({ en: "Make time to focus", ar: "وقت للتركيز" })}
+        </AppLink>
+      </footer>
+      {control && (
+        <HomeControls
+          data={data}
+          kind={control}
+          close={() => setControl(null)}
+        />
+      )}
     </div>
   );
 }

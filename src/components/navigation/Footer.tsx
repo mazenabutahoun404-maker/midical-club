@@ -1,3 +1,6 @@
+import { useLocation } from "react-router-dom";
+import { FooterScene, PoweredByOctagram } from "./FooterScene";
+import { footerBuildingForPath } from "./footer-scene";
 import { Heart } from "lucide-react";
 import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -5,9 +8,15 @@ import { Brand } from "./Brand";
 import { AppLink } from "./AppLink";
 export function Footer({ site }: { site: SiteContent }) {
   const { t, label } = useLocale();
+  const { pathname } = useLocation();
+  const building = footerBuildingForPath(pathname);
   return (
-    <footer className="footer">
-      <div className="container">
+    <footer
+      className="footer campus-scene-footer"
+      data-footer-building={building}
+    >
+      <div className="container campus-footer-content">
+        <FooterScene building={building} />
         <div className="footer-top">
           <div className="footer-brand">
             <Brand brand={site.brand} />
@@ -46,6 +55,7 @@ export function Footer({ site }: { site: SiteContent }) {
         <div className="footer-bottom">
           <span>{t(site.brand.copyright)}</span>
           <span>{label("footerPreview")}</span>
+          <PoweredByOctagram />
         </div>
       </div>
     </footer>

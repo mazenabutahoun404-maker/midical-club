@@ -1,0 +1,49 @@
+/* Keep the whole paper in view, centred in a quieter book frame. Zoom remains pannable. */
+html:root[dir]
+  body
+  .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-reading-surface
+  > .pdf-book-viewport {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  box-sizing: border-box;
+  background: color-mix(in srgb, var(--book-cover) 5%, var(--book-paper));
+}
+html:root[dir]
+  body
+  .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready
+  .pdf-book-viewport
+  > .pdf-pan-canvas {
+  flex: none;
+  margin-block: auto;
+}
+@media (max-width: 767px) {
+  html:root[dir]
+    body
+    .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready
+    .pdf-book-reading-surface[data-turn-layout="row"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 48px;
+    grid-template-areas: "viewport viewport" "previous next";
+    gap: 6px;
+  }
+  html:root[dir]
+    body
+    .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready
+    .pdf-book-reading-surface[data-turn-layout="row"]
+    > .page-hand-edge {
+    display: grid;
+    height: 44px;
+    min-height: 44px;
+    width: 72px;
+  }
+  html:root[dir]
+    body
+    .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready
+    .pdf-book-reading-surface
+    > .pdf-book-viewport {
+    height: 100%;
+    padding: 8px;
+  }
+}

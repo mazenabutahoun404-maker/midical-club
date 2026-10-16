@@ -4,7 +4,7 @@ import { LocationTitle } from "./LocationTitle";
 import { ArrowLeft, Radio, UserRound } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
-import { LanguageMenu } from "./LanguageMenu";
+import { HeaderNotes } from "./HeaderNotes";
 
 export function AdminHeader() {
   const { label } = useLocale();
@@ -32,7 +32,7 @@ export function AdminHeader() {
         <span className="admin-signal-label">{label("adminSignalLive")}</span>
       </span>
       <div className="admin-header-actions">
-        <LanguageMenu />
+        <HeaderNotes />
         <AppLink
           href="/my/profile"
           className="admin-operator profile-portal header-profile-priority space-portal-link"

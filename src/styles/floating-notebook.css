@@ -1,0 +1,147 @@
+.header-notes {
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+}
+.header-notes[aria-expanded="true"] {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.notes-glyph { display: inline-flex; align-items: center; justify-content: center; }
+.header-notes:is(:hover, :focus-visible) .notes-glyph-fold {
+  animation: notebook-corner-fold 500ms ease;
+  transform-origin: 14px 15px;
+}
+@keyframes notebook-corner-fold { 45% { transform: translate(-1px, -1px) rotate(-15deg); } }
+.floating-notebook {
+  position: fixed;
+  z-index: 80;
+  width: min(352px, calc(100vw - 16px));
+  max-height: calc(100dvh - 108px);
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 22px 22px 16px 16px;
+  box-shadow:
+    0 16px 48px #0002,
+    0 2px 5px #0001;
+  isolation: isolate;
+  animation: notebook-unfold 230ms ease both;
+}
+.floating-notebook[hidden] {
+  display: none !important;
+}
+@media print { .floating-notebook { display: none !important; } }
+.floating-notebook-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px 2px 12px;
+  flex: none;
+  border-bottom: 1px solid var(--border);
+}
+.floating-notebook-bar h2 {
+  font-size: 0.95rem;
+  margin: 0;
+  flex: 1;
+  outline: none;
+}
+.floating-notebook-bar button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 12px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+}
+.floating-notebook-bar button:is(:hover, :focus-visible) {
+  background: var(--muted);
+}
+.floating-notebook > .notebook-grip {
+  position: absolute;
+  inset-inline: auto;
+  left: 50%;
+  translate: -50% 0;
+  width: 88px;
+  top: -10px;
+  height: 22px;
+  display: grid;
+  place-items: start center;
+  padding: 5px;
+  border: 0;
+  border-radius: 12px;
+  color: var(--muted-foreground);
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+.notebook-grip > span {
+  width: 50px;
+  height: 4px;
+  background: currentColor;
+  border: 1px solid var(--card);
+  border-radius: 8px;
+  transition: width 180ms, color 180ms;
+}
+.notebook-grip:is(:hover, :focus-visible) { color: var(--primary); }
+.notebook-grip:is(:hover, :focus-visible) > span { width: 64px; }
+.notebook-grip:active { cursor: grabbing; }
+.floating-notebook-body {
+  overflow: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+  padding: 12px;
+  scrollbar-color: var(--primary) transparent;
+}
+.floating-notebook .student-notes {
+  min-width: 0;
+}
+.floating-notebook .student-note-editor input,
+.floating-notebook .student-note-editor textarea,
+.floating-notebook .student-note-editor select {
+  max-width: 100%;
+}
+.floating-notebook .note-attachment-fields {
+  grid-template-columns: 1fr;
+}
+.floating-notebook > footer {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  padding: 9px 16px;
+  border-top: 1px solid var(--border);
+  flex: none;
+}
+@keyframes notebook-unfold {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floating-notebook,
+  .header-notes svg, .notes-glyph-fold {
+    animation: none !important;
+  }
+}
+
+.floating-notebook .student-notes { gap: 10px; }
+.floating-notebook .student-notes-top { margin: 0; }
+.floating-notebook .student-notes-list { gap: 8px; }
+.floating-notebook .student-note-row { margin: 0; }
+.floating-notebook .student-note-open { padding: 10px; }
+.floating-notebook .student-note-open small { font-size: .67rem; overflow-wrap: anywhere; }
+.floating-notebook .student-note-editor { min-width: 0; }
+
+html body .floating-notebook .student-notes.unified-notes .student-note-row { margin: 0; }
+html body .floating-notebook .student-notes.unified-notes .student-note-copy { min-height: 72px; }
+html body .floating-notebook .student-notes.unified-notes .student-note-row[data-note-type="course"] .student-note-copy { min-height: 92px; }
+html body .floating-notebook .student-notes.unified-notes :is(.student-note-open, .student-note-text) { padding: 10px; }
+html body .floating-notebook .student-notes.unified-notes .student-note-copy { padding-inline-end: 38px; }

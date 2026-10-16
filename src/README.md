@@ -1,7 +1,6 @@
-# Current release: MedClub V0.13.43
+# Current release: MedClub V0.13.55
 
-Read [V0.13.43-STABLE-RESTORATION.md](./V0.13.41-AUTH-CAMPUS-PDF.md) for this release, integration instructions,
-verification and remaining limits. The V0.11 document below is retained as historical context.
+Read [V0.13.55-HOMEPAGE-STUDIO.md](./V0.13.55-HOMEPAGE-STUDIO.md) for the themed homepage redesign, image-free bookcase and section-specific scroll reveals. Previous application features remain included; obsolete homepage scene artwork has been removed.
 
 ---
 

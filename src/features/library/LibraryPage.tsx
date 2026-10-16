@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   Bookmark,
@@ -28,11 +29,12 @@ import {
 import { filterLibrary } from "./library-selectors";
 export default function LibraryPage() {
   const { label, t, locale } = useLocale();
+  const [params] = useSearchParams();
   const library = useLibraryContent();
   const workspace = useWorkspace();
   const [query, setQuery] = useState(""),
     [type, setType] = useState(""),
-    [courseId, setCourseId] = useState(""),
+    [courseId, setCourseId] = useState(params.get("course") || ""),
     [sort, setSort] = useState("saved");
   const [selected, setSelected] = useState<string | null>(null);
   const [action, setAction] = useState<CollectionAction | null>(null);

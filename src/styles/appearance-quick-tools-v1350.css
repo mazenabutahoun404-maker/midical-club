@@ -1,0 +1,172 @@
+.appearance-quick-anchor {
+  position: relative;
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+.appearance-quick-anchor[data-compact] {
+  display: inline-flex;
+  width: auto;
+  flex-shrink: 0;
+}
+.appearance-quick-anchor:not([data-compact]) .navigation-preferences {
+  padding-inline-end: 44px;
+}
+.appearance-quick-disclosure {
+  position: absolute;
+  inset-inline-end: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  color: inherit;
+  background: transparent;
+}
+.appearance-quick-disclosure:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.appearance-quick-tray {
+  position: fixed;
+  z-index: 190;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 184px;
+  height: 72px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  color: var(--foreground);
+  box-shadow: 0 8px 28px #0002;
+  backdrop-filter: blur(18px) saturate(130%);
+  animation: quick-tools-in 160ms ease-out both;
+}
+.appearance-quick-tray button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  background: var(--muted);
+  color: var(--foreground);
+  transition:
+    background 150ms,
+    transform 150ms;
+}
+.appearance-quick-tray button:not(:disabled):hover {
+  background: color-mix(in srgb, var(--primary) 15%, var(--card));
+  transform: translateY(-2px);
+}
+.appearance-quick-tray button:active {
+  transform: scale(0.94);
+}
+.appearance-quick-tray button:focus-visible,
+.appearance-quick-disclosure:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.appearance-quick-tray button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.quick-tool-lock {
+  position: absolute;
+  bottom: 4px;
+  inset-inline-end: 4px;
+}
+@keyframes quick-tools-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .appearance-quick-tray {
+    animation: none;
+  }
+  .appearance-quick-tray button {
+    transition: none;
+  }
+}
+.personal-setting-row > .appearance-quick-anchor {
+  width: auto;
+  margin-inline-start: auto;
+}
+@media (min-width: 768px) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    .appearance-quick-anchor,
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+    .desktop-navigation
+    .appearance-quick-anchor {
+    display: inline-flex;
+    width: 44px;
+    flex: 0 0 44px;
+    max-width: 100%;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    .appearance-quick-anchor
+    .navigation-preferences,
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+    .desktop-navigation
+    .appearance-quick-anchor
+    .navigation-preferences {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    .appearance-quick-anchor
+    :is(.navigation-preferences > span, .appearance-quick-disclosure),
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"][data-sidebar="collapsed"]
+    .desktop-navigation
+    .appearance-quick-anchor
+    :is(.navigation-preferences > span, .appearance-quick-disclosure) {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .personal-setting-row > .appearance-quick-anchor {
+    margin-inline-start: 54px;
+    max-width: calc(100% - 54px);
+  }
+}
+.appearance-quick-tray {
+  margin: 0;
+  right: auto;
+  bottom: auto;
+}

@@ -74,7 +74,7 @@ export function RouteEffects({ location }: { location: Location }) {
       /^\/learn\/clinical-sciences\/(fourth|fifth|sixth)-year$/.test(
         location.pathname,
       );
-    document.title = `${key ? label(key) : label(location.pathname.startsWith("/portfolio/") ? "campusPortfolio" : location.pathname.startsWith("/admin/builder/") ? "builderEditor" : location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/store/products/") ? "product" : location.pathname.startsWith("/recruitment/") ? "position" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
+    document.title = `${key ? label(key) : label(["/my/exams", "/admin/exams", "/learn/electronic-exams"].some(path => location.pathname === path || location.pathname.startsWith(path + "/")) ? "exams" : location.pathname.startsWith("/portfolio/") ? "campusPortfolio" : location.pathname.startsWith("/admin/builder/") ? "builderEditor" : location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/store/products/") ? "product" : location.pathname.startsWith("/recruitment/") ? "position" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
   }, [location.pathname, locale, label]);
   return null;
 }

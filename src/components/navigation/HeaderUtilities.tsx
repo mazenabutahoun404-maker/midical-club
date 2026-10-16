@@ -1,5 +1,5 @@
 import { HeaderNotifications } from "./HeaderNotifications";
-import { LanguageMenu } from "./LanguageMenu";
+import { HeaderNotes } from "./HeaderNotes";
 import { SearchGlyph } from "./SearchGlyph";
 import { useOverlays } from "../../app/providers/OverlayProvider";
 
@@ -26,7 +26,7 @@ export function HeaderUtilities({
         <SearchGlyph />
       </button>
       {showNotifications && <HeaderNotifications />}
-      <LanguageMenu />
+      <HeaderNotes />
     </>
   );
 }

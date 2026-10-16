@@ -1,0 +1,50 @@
+/* The outer binding follows the same block inset as the cover at every size. */
+html:root body .course-volume {
+  --volume-block-inset: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: var(--volume-block-inset);
+}
+html body .course-volume > .course-volume-spine {
+  inset-inline: auto;
+  inset-block: auto;
+  inset: var(--volume-block-inset) auto var(--volume-block-inset) 16px;
+  height: auto;
+}
+/* Physical construction must mirror with the cover hinge, not just the cover text. */
+html[dir="rtl"] body .course-volume > .course-volume-spine {
+  /* The spine writes vertically: inline insets would change its top/bottom. */
+  inset-inline: auto;
+  inset-block: auto;
+  inset: var(--volume-block-inset) 16px var(--volume-block-inset) auto;
+  border-radius: 0 5px 5px 0;
+  background: linear-gradient(
+    270deg,
+    var(--book-cover-deep),
+    var(--book-cover)
+  );
+  box-shadow:
+    inset 2px 0 #ffffff24,
+    inset -4px 0 #240a0a24;
+  transform: translateZ(5px);
+}
+html[dir="rtl"] body .course-volume > .course-volume-pages {
+  inset: 24px 28px 22px 10px;
+  border-radius: 14px 3px 4px 14px;
+  box-shadow:
+    -7px 5px 0 #c6ad88,
+    -10px 8px 16px #2b15182d;
+}
+html[dir="rtl"] body .course-volume > .course-volume-cover {
+  transform-origin: right center;
+  box-shadow:
+    inset -3px 0 #ffffff1c,
+    inset -10px 0 20px #210b101d,
+    -2px 4px 0 var(--book-cover-deep);
+}
+
+@media (max-width: 520px) {
+  html:root body .course-volume { --volume-block-inset: 10px; }
+  /* 292px outer minimum minus its two 10px padding edges. */
+  html body .course-volume > .course-volume-cover { min-height: 272px; }
+}

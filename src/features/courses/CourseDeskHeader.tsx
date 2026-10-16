@@ -13,7 +13,7 @@ import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { AppLink } from "../../components/navigation/AppLink";
 import { AppearanceSettings } from "../../components/navigation/AppearanceSettings";
-import { LanguageMenu } from "../../components/navigation/LanguageMenu";
+import { HeaderNotes } from "../../components/navigation/HeaderNotes";
 import { CourseShelf } from "./CourseShelf";
 import { CourseShelfControls, ShelfPaperControl } from "./ShelfPaperControl";
 import { useStudyCopy } from "./study-copy";
@@ -113,10 +113,8 @@ export function CourseDeskHeader({
         >
           <AppearanceSettings compact />
         </ShelfPaperControl>
-        <ShelfPaperControl
-          label={t({ en: "Change language", ar: "تغيير اللغة" })}
-        >
-          <LanguageMenu nativeTooltip={false} />
+        <ShelfPaperControl label={t({ en: "My notes", ar: "ملاحظاتي" })}>
+          <HeaderNotes hint={false} />
         </ShelfPaperControl>
         <ShelfPaperControl label={s("focus")}>
           <button

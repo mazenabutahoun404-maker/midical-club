@@ -7,7 +7,7 @@ import logo from "../../assets/brand/medclub-logo.png";
 import { useLocale } from "../providers/LocaleProvider";
 import { useAuth } from "../providers/AuthProvider";
 import { AppLink } from "../../components/navigation/AppLink";
-import { LanguageMenu } from "../../components/navigation/LanguageMenu";
+import { HeaderNotes } from "../../components/navigation/HeaderNotes";
 import { AuthCampus } from "../../features/auth/AuthCampus";
 import {
   AuthJourneyProvider,
@@ -79,7 +79,7 @@ function AuthPlanet() {
             <ArrowLeft size={16} className="directional" />
             <span>{label("authBackHome")}</span>
           </AppLink>
-          <LanguageMenu nativeTooltip={false} />
+          <HeaderNotes />
           <AppearanceSettings compact />
         </div>
       </header>

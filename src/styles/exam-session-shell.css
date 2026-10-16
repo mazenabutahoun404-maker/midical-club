@@ -1,0 +1,7 @@
+.app-shell[data-exam-studio] { display:block!important; min-height:100svh; padding:0!important; }
+.app-shell[data-exam-studio]>.app-content { margin:0!important; padding:0!important; width:100%!important; max-width:none!important; transform:none!important; transition:none!important; }
+.app-shell[data-exam-studio] #main { min-height:100svh; }
+.app-shell[data-exam-studio] .exam-platform { width:100%; max-width:none; margin:0; padding:0; }
+.app-shell[data-exam-studio] .exam-navigation,.app-shell[data-exam-studio] .exam-preview-note { display:none; }
+.app-shell[data-exam-studio] .personal-footnote { display:none; }
+.app-shell[data-exam-studio] .workspace-warning { margin:0 auto; }

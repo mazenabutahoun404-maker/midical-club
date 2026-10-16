@@ -33,7 +33,11 @@ import type {
   PdfRasterPool as RasterPool,
   PageRaster,
 } from "./pdf-engine";
-import { pdfViewGeometry, pdfFitZoom, MIN_PDF_ZOOM } from "./pdf-view-geometry";
+import {
+  pdfViewGeometry,
+  pdfFitPageZoom,
+  MIN_PDF_ZOOM,
+} from "./pdf-view-geometry";
 import { yieldPdfTask } from "./pdf-text-stream";
 import { nextSpread, spreadStart, type TurnDirection } from "./page-turn";
 import { TurnLeaf, usePageTurn } from "./usePageTurn";
@@ -62,9 +66,14 @@ function savedPageLayout(): "auto" | "single" {
 }
 
 const emptyMargins = {
-  owner: null, open: false, placing: false, panel: null, notes: [] as MarginNote[],
+  owner: null,
+  open: false,
+  placing: false,
+  panel: null,
+  notes: [] as MarginNote[],
   add: (_anchor: PageAnchor, _pageCount?: number) => {},
-  place: (_anchor: PageAnchor) => {}, toggle: () => {},
+  place: (_anchor: PageAnchor) => {},
+  toggle: () => {},
 };
 
 const PdfPage = memo(function PdfPage({
@@ -72,6 +81,7 @@ const PdfPage = memo(function PdfPage({
   number,
   width,
   rasterWidth,
+  blankAspectRatio = 1 / 1.414,
   selectable = true,
   allowText = true,
   query = "",
@@ -85,6 +95,7 @@ const PdfPage = memo(function PdfPage({
   number: number | null;
   width: number;
   rasterWidth: number;
+  blankAspectRatio?: number;
   selectable?: boolean;
   allowText?: boolean;
   query?: string;
@@ -97,7 +108,9 @@ const PdfPage = memo(function PdfPage({
   const { t } = useLocale();
   const [stickerId, setStickerId] = useState<string | null>(null);
   const stickerTrigger = useRef<HTMLButtonElement | null>(null);
-  const sticker = margins.find((note) => note.id === stickerId && note.anchor.page === number);
+  const sticker = margins.find(
+    (note) => note.id === stickerId && note.anchor.page === number,
+  );
   const canvas = useRef<HTMLCanvasElement>(null),
     text = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
@@ -109,7 +122,9 @@ const PdfPage = memo(function PdfPage({
   function highlight() {
     const value = queryRef.current.toLocaleLowerCase();
     text.current
-      ?.querySelectorAll<HTMLSpanElement>(value ? "span" : "[data-search-match]")
+      ?.querySelectorAll<HTMLSpanElement>(
+        value ? "span" : "[data-search-match]",
+      )
       .forEach((span) =>
         span.toggleAttribute(
           "data-search-match",
@@ -124,42 +139,59 @@ const PdfPage = memo(function PdfPage({
     if (!number) return;
     let cancelled = false;
     const paint = (raster: PageRaster) => {
-        if (cancelled || !canvas.current) return;
-        const target = canvas.current,
-          context = target.getContext("2d");
-        if (!context || !raster.canvas.width)
-          throw new Error("Page raster is unavailable");
-        target.width = raster.canvas.width;
-        target.height = raster.canvas.height;
-        context.drawImage(raster.canvas, 0, 0);
-        setRatio(raster.viewport.width / raster.viewport.height);
-        if (!cancelled) setStatus("ready");
+      if (cancelled || !canvas.current) return;
+      const target = canvas.current,
+        context = target.getContext("2d");
+      if (!context || !raster.canvas.width)
+        throw new Error("Page raster is unavailable");
+      target.width = raster.canvas.width;
+      target.height = raster.canvas.height;
+      context.drawImage(raster.canvas, 0, 0);
+      setRatio(raster.viewport.width / raster.viewport.height);
+      if (!cancelled) setStatus("ready");
     };
     const ready = pool.peekDisplay(number, rasterWidth, paperColors);
     if (ready) paint(ready);
     else {
       setStatus("loading");
-      void pool.getDisplay(number, rasterWidth, paperColors).then(paint)
-      .catch(() => {
-        if (!cancelled) setStatus("error");
-      });
+      void pool
+        .getDisplay(number, rasterWidth, paperColors)
+        .then(paint)
+        .catch(() => {
+          if (!cancelled) setStatus("error");
+        });
     }
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pool, number, rasterWidth, paperColors?.paper, paperColors?.ink]);
   useEffect(() => {
     if (!number || !selectable || !allowText || !text.current) return;
     let cancelled = false;
-    void pool.getTextLayer(number, rasterWidth).then((layer) => {
-      if (!cancelled && text.current) { text.current.replaceChildren(layer); highlight(); }
-    }).catch(() => {});
-    return () => { cancelled = true; };
+    void pool
+      .getTextLayer(number, rasterWidth)
+      .then((layer) => {
+        if (!cancelled && text.current) {
+          text.current.replaceChildren(layer);
+          highlight();
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, [pool, number, rasterWidth, selectable, allowText]);
   return (
     <div
       className="pdf-paper-page"
-      style={{ width, aspectRatio: ratio } as CSSProperties}
+      style={
+        {
+          width,
+          aspectRatio: number ? ratio : blankAspectRatio,
+        } as CSSProperties
+      }
       data-page-number={number || undefined}
-      data-page-status={status}
+      data-page-status={number ? status : "ready"}
       data-placing-note={placing || undefined}
       onPointerUp={(event) => {
         if (
@@ -196,7 +228,17 @@ const PdfPage = memo(function PdfPage({
       {number && (
         <>
           <canvas ref={canvas} aria-hidden="true" />
-          {selectable && <div ref={text} className="pdf-text-stage" style={{ width: rasterWidth, height: rasterWidth / ratio, transform: `scale(${width / rasterWidth})` }} />}
+          {selectable && (
+            <div
+              ref={text}
+              className="pdf-text-stage"
+              style={{
+                width: rasterWidth,
+                height: rasterWidth / ratio,
+                transform: `scale(${width / rasterWidth})`,
+              }}
+            />
+          )}
         </>
       )}
       {selectable &&
@@ -221,18 +263,53 @@ const PdfPage = memo(function PdfPage({
               onPointerDown={(e) => e.stopPropagation()}
               aria-expanded={stickerId === n.id}
               title={t({ en: "Show note", ar: "عرض الملاحظة" })}
-              onClick={(event) => { if (number) onActivate?.(number); stickerTrigger.current = event.currentTarget; setStickerId((id) => id === n.id ? null : n.id); }}
+              onClick={(event) => {
+                if (number) onActivate?.(number);
+                stickerTrigger.current = event.currentTarget;
+                setStickerId((id) => (id === n.id ? null : n.id));
+              }}
             >
               <MessageSquareText size={14} />
             </button>
           ))}
-      {selectable && sticker && <aside className="pdf-note-sticker" data-note-color={sticker.color}
-        style={{ left: `clamp(12px, calc(${sticker.anchor.x * 100}% - 120px), calc(100% - min(240px, 100% - 24px) - 12px))`, top: `clamp(12px, ${sticker.anchor.y * 100}%, calc(100% - 220px))` }}
-        aria-label={t({ en: "Page note", ar: "ملاحظة الصفحة" })}
-        onPointerDown={(event) => event.stopPropagation()} onKeyDown={(event) => { if (event.key === "Escape") { event.stopPropagation(); setStickerId(null); stickerTrigger.current?.focus(); } }}>
-        <header><strong>{t({ en: "Note", ar: "ملاحظة" })}</strong><button autoFocus type="button" aria-label={t({ en: "Close note", ar: "إغلاق الملاحظة" })} onClick={() => { setStickerId(null); stickerTrigger.current?.focus({ preventScroll: true }); }}><X size={15} /></button></header>
-        {sticker.anchor.quote && <blockquote>{sticker.anchor.quote}</blockquote>}<p>{sticker.body}</p>
-      </aside>}
+      {selectable && sticker && (
+        <aside
+          className="pdf-note-sticker"
+          data-note-color={sticker.color}
+          style={{
+            left: `clamp(12px, calc(${sticker.anchor.x * 100}% - 120px), calc(100% - min(240px, 100% - 24px) - 12px))`,
+            top: `clamp(12px, ${sticker.anchor.y * 100}%, calc(100% - 220px))`,
+          }}
+          aria-label={t({ en: "Page note", ar: "ملاحظة الصفحة" })}
+          onPointerDown={(event) => event.stopPropagation()}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.stopPropagation();
+              setStickerId(null);
+              stickerTrigger.current?.focus();
+            }
+          }}
+        >
+          <header>
+            <strong>{t({ en: "Note", ar: "ملاحظة" })}</strong>
+            <button
+              autoFocus
+              type="button"
+              aria-label={t({ en: "Close note", ar: "إغلاق الملاحظة" })}
+              onClick={() => {
+                setStickerId(null);
+                stickerTrigger.current?.focus({ preventScroll: true });
+              }}
+            >
+              <X size={15} />
+            </button>
+          </header>
+          {sticker.anchor.quote && (
+            <blockquote>{sticker.anchor.quote}</blockquote>
+          )}
+          <p>{sticker.body}</p>
+        </aside>
+      )}
       {status === "loading" && (
         <span className="pdf-page-loading">
           {t({ en: "Loading page…", ar: "جارٍ تحميل الصفحة…" })}
@@ -311,8 +388,12 @@ export function PdfBook({
   const viewportRef = useRef<HTMLDivElement>(null);
   const restoredScroll = useRef(false);
   const [panLimit, setPanLimit] = useState(0);
-  const [naturalWidth, setNaturalWidth] = useState(595.28 * 96 / 72);
-  const [fit, setFit] = useState(() => companion || window.innerWidth < 900);
+  const [naturalWidth, setNaturalWidth] = useState((595.28 * 96) / 72);
+  const [pageHeightRatio, setPageHeightRatio] = useState(1.414);
+  const [readingHeight, setReadingHeight] = useState(
+    Math.max(120, window.innerHeight - 220),
+  );
+  const [fit, setFit] = useState(true);
   position.current = onPage;
   const documentCount = useRef(onCount);
   documentCount.current = onCount;
@@ -321,7 +402,9 @@ export function PdfBook({
     [retry, setRetry] = useState(0);
   const [width, setWidth] = useState(Math.max(280, window.innerWidth - 80)),
     [zoom, setZoom] = useState(1);
-  const [readingWidth, setReadingWidth] = useState(Math.max(1, width - (width < 520 ? 0 : 104)));
+  const [readingWidth, setReadingWidth] = useState(
+    Math.max(1, width - (width < 520 ? 0 : 104)),
+  );
 
   const [page, setPage] = useState(Math.max(1, initialPage)),
     [pageDraft, setPageDraft] = useState(String(Math.max(1, initialPage)));
@@ -339,15 +422,18 @@ export function PdfBook({
   const searchToken = useRef(0),
     searchInput = useRef<HTMLInputElement>(null);
   const margins = marginNotes || emptyMargins;
-  const placeMargin = useCallback((number: number, x: number, y: number, quote?: string) =>
-    margins.place({
-      resourceId: item.id,
-      resourceRevision: item.updatedAt,
-      page: number,
-      x,
-      y,
-      quote,
-    }), [margins.place, item.id, item.updatedAt]);
+  const placeMargin = useCallback(
+    (number: number, x: number, y: number, quote?: string) =>
+      margins.place({
+        resourceId: item.id,
+        resourceRevision: item.updatedAt,
+        page: number,
+        x,
+        y,
+        quote,
+      }),
+    [margins.place, item.id, item.updatedAt],
+  );
   const marginProps = {
     margins: margins.notes,
     placing: margins.placing,
@@ -370,21 +456,63 @@ export function PdfBook({
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [optionsOpen, compactControls]);
   const first = spreadStart(Math.min(page, count), twoPages);
-  const effectiveZoom = fit ? pdfFitZoom(readingWidth, twoPages, naturalWidth) : zoom;
-  const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(readingWidth, twoPages, effectiveZoom, naturalWidth);
+  const effectiveZoom = fit
+    ? pdfFitPageZoom(
+        readingWidth,
+        readingHeight,
+        twoPages,
+        naturalWidth,
+        naturalWidth * pageHeightRatio,
+      )
+    : zoom;
+  const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(
+    readingWidth,
+    twoPages,
+    effectiveZoom,
+    naturalWidth,
+  );
   useEffect(() => {
     if (!pool) return;
     let active = true;
-    void pool.document.getPage(1).then((firstPage) => {
-      if (active) setNaturalWidth(firstPage.getViewport({ scale: 96 / 72 }).width);
-    }).catch(() => {});
-    return () => { active = false; };
+    void pool.document
+      .getPage(1)
+      .then((firstPage) => {
+        if (active)
+          setNaturalWidth(firstPage.getViewport({ scale: 96 / 72 }).width);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
   }, [pool]);
+  useEffect(() => {
+    if (!pool) return;
+    let active = true;
+    const numbers = twoPages && first < count ? [first, first + 1] : [first];
+    // PDF.js caches page metadata. This never opens another document or raster.
+    void Promise.all(numbers.map((number) => pool.document.getPage(number)))
+      .then((pages) => {
+        if (!active) return;
+        setPageHeightRatio(
+          Math.max(
+            ...pages.map((page) => {
+              const size = page.getViewport({ scale: 1 });
+              return size.height / size.width;
+            }),
+          ),
+        );
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [pool, first, twoPages, count]);
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
-    const measure = (viewportWidth: number) => {
+    const measure = (viewportWidth: number, viewportHeight: number) => {
       if (viewportWidth > 0) setReadingWidth(viewportWidth);
+      if (viewportHeight > 0) setReadingHeight(viewportHeight);
       const limit = pdfPanLimit(spreadWidth, viewportWidth);
       setPanLimit(limit);
       const offset = pdfPanOffset(viewport.scrollLeft, limit);
@@ -393,12 +521,23 @@ export function PdfBook({
     const observer =
       typeof ResizeObserver === "undefined"
         ? null
-        : new ResizeObserver((entries) => measure(entries[0].contentRect.width));
+        : new ResizeObserver((entries) =>
+            measure(
+              entries[0].contentRect.width,
+              entries[0].contentRect.height,
+            ),
+          );
     observer?.observe(viewport);
     // ResizeObserver supplies layout without a synchronous post-render width read.
     let frame = 0;
-    if (!observer) frame = requestAnimationFrame(() => measure(viewport.clientWidth));
-    return () => { observer?.disconnect(); cancelAnimationFrame(frame); };
+    if (!observer)
+      frame = requestAnimationFrame(() =>
+        measure(viewport.clientWidth, viewport.clientHeight),
+      );
+    return () => {
+      observer?.disconnect();
+      cancelAnimationFrame(frame);
+    };
   }, [spreadWidth, !!pool]);
   const canTurn = (direction: TurnDirection) =>
     !!pool && nextSpread(first, count, twoPages, direction) !== null;
@@ -423,8 +562,18 @@ export function PdfBook({
     turnPreparation.current++;
     preparing.current = false;
     setPreparingTurn(false);
-    return () => { turnPreparation.current++; preparing.current = false; };
-  }, [pool, first, rasterWidth, paperColors?.paper, paperColors?.ink, twoPages]);
+    return () => {
+      turnPreparation.current++;
+      preparing.current = false;
+    };
+  }, [
+    pool,
+    first,
+    rasterWidth,
+    paperColors?.paper,
+    paperColors?.ink,
+    twoPages,
+  ]);
   function requestTurn(direction: TurnDirection) {
     if (!pool || turn || preparing.current) return;
     const target = nextSpread(first, count, twoPages, direction);
@@ -432,28 +581,56 @@ export function PdfBook({
     const token = ++turnPreparation.current;
     preparing.current = true;
     setPreparingTurn(true);
-    const pages = twoPages && target + 1 <= count ? [target, target + 1] : [target];
+    const pages =
+      twoPages && target + 1 <= count ? [target, target + 1] : [target];
     // Keep the current spread on screen until all destination pixels are ready.
-    void Promise.all(pages.map((number) => pool.getDisplay(number, rasterWidth, paperColors))).then(() => {
-      if (token !== turnPreparation.current) return;
-      preparing.current = false;
-      setPreparingTurn(false);
-      turner.request(direction);
-    }).catch(() => {
-      if (token !== turnPreparation.current) return;
-      preparing.current = false;
-      setPreparingTurn(false);
-      toast.error(t({ en: "Could not prepare this page. Try again.", ar: "تعذّر تجهيز الصفحة. حاول مجدداً." }));
-    });
+    void Promise.all(
+      pages.map((number) => pool.getDisplay(number, rasterWidth, paperColors)),
+    )
+      .then(() => {
+        if (token !== turnPreparation.current) return;
+        preparing.current = false;
+        setPreparingTurn(false);
+        turner.request(direction);
+      })
+      .catch(() => {
+        if (token !== turnPreparation.current) return;
+        preparing.current = false;
+        setPreparingTurn(false);
+        toast.error(
+          t({
+            en: "Could not prepare this page. Try again.",
+            ar: "تعذّر تجهيز الصفحة. حاول مجدداً.",
+          }),
+        );
+      });
   }
   const handledNoteJump = useRef<number | null>(null);
   useEffect(() => {
     const request = tools?.noteJump;
-    if (turn || !pool || !request || handledNoteJump.current === request.token || request.anchor.resourceId !== item.id || request.anchor.resourceRevision !== item.updatedAt) return;
+    if (
+      turn ||
+      !pool ||
+      !request ||
+      handledNoteJump.current === request.token ||
+      request.anchor.resourceId !== item.id ||
+      request.anchor.resourceRevision !== item.updatedAt
+    )
+      return;
     handledNoteJump.current = request.token;
-    if (request.anchor.page > count) { toast.error(t({ en: "This PDF does not have the note's page. The note is still saved.", ar: "لا يحتوي PDF على صفحة الملاحظة. الملاحظة ما زالت محفوظة." })); return; }
+    if (request.anchor.page > count) {
+      toast.error(
+        t({
+          en: "This PDF does not have the note's page. The note is still saved.",
+          ar: "لا يحتوي PDF على صفحة الملاحظة. الملاحظة ما زالت محفوظة.",
+        }),
+      );
+      return;
+    }
     jump(request.anchor.page);
-    requestAnimationFrame(() => viewportRef.current?.focus({ preventScroll: true }));
+    requestAnimationFrame(() =>
+      viewportRef.current?.focus({ preventScroll: true }),
+    );
   }, [tools?.noteJump?.token, pool, !!turn]);
 
   const next = turn ? nextSpread(first, count, twoPages, turn.direction) : null;
@@ -504,9 +681,13 @@ export function PdfBook({
     void import("./pdf-engine")
       .then(async (engine) => {
         if (!active) return;
-        const opened = await engine.openPdf(url, (update, incorrect) => {
-          if (active) setPassword({ update, incorrect });
-        }, abort.signal);
+        const opened = await engine.openPdf(
+          url,
+          (update, incorrect) => {
+            if (active) setPassword({ update, incorrect });
+          },
+          abort.signal,
+        );
         task = opened.task;
         if (!active) {
           await task.destroy();
@@ -552,14 +733,19 @@ export function PdfBook({
     const observer =
       typeof ResizeObserver === "undefined"
         ? null
-        : new ResizeObserver((entries) => measure(entries[0].contentRect.width));
+        : new ResizeObserver((entries) =>
+            measure(entries[0].contentRect.width),
+          );
     observer?.observe(element);
     let frame = 0;
     const fallback = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => measure(element.clientWidth));
     };
-    if (!observer) { window.addEventListener("resize", fallback); fallback(); }
+    if (!observer) {
+      window.addEventListener("resize", fallback);
+      fallback();
+    }
     return () => {
       observer?.disconnect();
       window.removeEventListener("resize", fallback);
@@ -574,7 +760,13 @@ export function PdfBook({
   }, [page, pool]);
   useEffect(() => {
     if (!companion && pool)
-      tools?.setReader({ id: item.id, title: t(item.title), page, resource: item, pageCount: pool.document.numPages });
+      tools?.setReader({
+        id: item.id,
+        title: t(item.title),
+        page,
+        resource: item,
+        pageCount: pool.document.numPages,
+      });
   }, [page, pool, companion, item.id, item.title, t, tools?.setReader]);
   useEffect(() => {
     if (!pool) return;
@@ -582,8 +774,18 @@ export function PdfBook({
       ? [first, first + 1, first + 2, first + 3, first - 2, first - 1]
       : [first, first + 1, first - 1];
     for (const number of nearby.filter((value) => value >= 1 && value <= count))
-      void pool.getDisplay(number, rasterWidth, paperColors, true).catch(() => {});
-  }, [pool, first, twoPages, rasterWidth, count, paperColors?.paper, paperColors?.ink]);
+      void pool
+        .getDisplay(number, rasterWidth, paperColors, true)
+        .catch(() => {});
+  }, [
+    pool,
+    first,
+    twoPages,
+    rasterWidth,
+    count,
+    paperColors?.paper,
+    paperColors?.ink,
+  ]);
   function jump(number: number) {
     if (!pool || turn) return;
     setPage(Math.max(1, Math.min(count, Math.floor(number))));
@@ -603,9 +805,7 @@ export function PdfBook({
     try {
       for (let number = 1; number <= count; number++) {
         if (token !== searchToken.current) return;
-        const text = (
-          await pool.getText(number)
-        ).items
+        const text = (await pool.getText(number)).items
           .map((item) => item.str || "")
           .join(" ");
         const index = text
@@ -814,7 +1014,10 @@ export function PdfBook({
               className="notebook-icon-button"
               disabled={effectiveZoom <= MIN_PDF_ZOOM || !!turn}
               aria-label={t({ en: "Zoom out", ar: "تصغير" })}
-              onClick={() => { setFit(false); setZoom(Math.max(MIN_PDF_ZOOM, effectiveZoom - 0.25)); }}
+              onClick={() => {
+                setFit(false);
+                setZoom(Math.max(MIN_PDF_ZOOM, effectiveZoom - 0.25));
+              }}
             >
               <ZoomOut size={18} />
             </PdfToolButton>
@@ -826,7 +1029,10 @@ export function PdfBook({
                 en: "Reset PDF zoom",
                 ar: "إعادة ضبط تكبير PDF",
               })}
-              onClick={() => { setFit(false); setZoom(1); }}
+              onClick={() => {
+                setFit(false);
+                setZoom(1);
+              }}
             >
               {Math.round(effectiveZoom * 100)}%
             </PdfToolButton>
@@ -835,7 +1041,10 @@ export function PdfBook({
               className="notebook-icon-button"
               disabled={effectiveZoom >= 1.75 || !!turn}
               aria-label={t({ en: "Zoom in", ar: "تكبير" })}
-              onClick={() => { setFit(false); setZoom(Math.min(1.75, effectiveZoom + 0.25)); }}
+              onClick={() => {
+                setFit(false);
+                setZoom(Math.min(1.75, effectiveZoom + 0.25));
+              }}
             >
               <ZoomIn size={18} />
             </PdfToolButton>
@@ -843,7 +1052,10 @@ export function PdfBook({
               type="button"
               className="notebook-icon-button pdf-fit-toggle"
               disabled={!!turn}
-              aria-label={t({ en: "Fit PDF to reader", ar: "ملاءمة PDF مع مساحة القراءة" })}
+              aria-label={t({
+                en: "Fit PDF to reader",
+                ar: "ملاءمة PDF مع مساحة القراءة",
+              })}
               aria-pressed={fit}
               onClick={() => setFit(true)}
             >
@@ -899,7 +1111,18 @@ export function PdfBook({
                   en: "Add note to this PDF page",
                   ar: "إضافة ملاحظة لصفحة PDF الحالية",
                 })}
-                onClick={() => margins.add({ resourceId: item.id, resourceRevision: item.updatedAt, page, x: .85, y: .1 }, count)}
+                onClick={() =>
+                  margins.add(
+                    {
+                      resourceId: item.id,
+                      resourceRevision: item.updatedAt,
+                      page,
+                      x: 0.85,
+                      y: 0.1,
+                    },
+                    count,
+                  )
+                }
               >
                 <MessageSquareText size={18} />
                 <span className="pdf-control-label">
@@ -1106,14 +1329,22 @@ export function PdfBook({
           <div
             ref={viewportRef}
             className="pdf-book-viewport"
+            data-fit-page={fit || undefined}
             dir="ltr"
             data-pannable={panLimit > 1 || undefined}
             onScroll={(event) => {
               onScroll?.(event.currentTarget.scrollTop);
             }}
             tabIndex={0}
-            aria-description={t({ en: "Drag blank paper to pan. Hold Space or use the middle mouse button to pan over text.", ar: "اسحب المساحة الفارغة للتحريك. اضغط المسافة أو زر الفأرة الأوسط للتحريك فوق النص." })}
-            aria-label={t(twoPages ? { en: "PDF reading spread", ar: "صفحتا قراءة PDF" } : { en: "PDF reading page", ar: "صفحة قراءة PDF" })}
+            aria-description={t({
+              en: "Drag blank paper to pan. Hold Space or use the middle mouse button to pan over text.",
+              ar: "اسحب المساحة الفارغة للتحريك. اضغط المسافة أو زر الفأرة الأوسط للتحريك فوق النص.",
+            })}
+            aria-label={t(
+              twoPages
+                ? { en: "PDF reading spread", ar: "صفحتا قراءة PDF" }
+                : { en: "PDF reading page", ar: "صفحة قراءة PDF" },
+            )}
           >
             <div
               className="pdf-pan-canvas"
@@ -1147,6 +1378,7 @@ export function PdfBook({
                       paperColors={paperColors}
                       pool={pool}
                       number={right}
+                      blankAspectRatio={1 / pageHeightRatio}
                       width={paperWidth}
                       rasterWidth={rasterWidth}
                       allowText={!turn}

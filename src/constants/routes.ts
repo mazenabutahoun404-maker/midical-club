@@ -12,6 +12,8 @@ export const routes = {
   settings: "/my/settings",
   utilities: "/utilities",
   exams: "/learn/electronic-exams",
+  myExams: "/my/exams",
+  adminExams: "/admin/exams",
   store: "/store",
   events: "/events",
   opportunities: "/opportunities",

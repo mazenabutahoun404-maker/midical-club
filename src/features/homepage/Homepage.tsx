@@ -8,30 +8,31 @@ import { Hero } from "./sections/Hero";
 import { Announcement } from "./sections/Announcement";
 import { QuickAccess } from "./sections/QuickAccess";
 import { LatestResources } from "./sections/LatestResources";
-import { UpcomingEvents } from "./sections/UpcomingEvents";
-import { Opportunities } from "./sections/Opportunities";
+import { GetInvolved } from "./sections/GetInvolved";
 import { Journal } from "./sections/Journal";
 import { Community } from "./sections/Community";
 import { useHomeReveal } from "./useHomeReveal";
-import "./home-atlas.css";
+import "./home-studio-v1355.css";
 
 const registry = {
   pathways: QuickAccess,
   resources: LatestResources,
-  events: UpcomingEvents,
-  opportunities: Opportunities,
   journal: Journal,
 };
+type ParticipationSection = HomeSection & { type: "events" | "opportunities" };
+const participates = (s: HomeSection): s is ParticipationSection =>
+  s.type === "events" || s.type === "opportunities";
+
 function Section({
   section,
   site,
-  chapter,
+  participation,
 }: {
   section: HomeSection;
   site: SiteContent;
-  chapter: number;
+  participation: ParticipationSection[];
 }) {
-  const { label } = useLocale();
+  const { label, t } = useLocale();
   if (section.type === "announcement")
     return (
       <section
@@ -42,13 +43,35 @@ function Section({
         <Announcement site={site} />
       </section>
     );
+  if (section.type === "events" || section.type === "opportunities") {
+    if (section.id !== participation[0]?.id) return null;
+    return (
+      <section
+        id={section.id}
+        className="home-chapter home-involvement"
+        data-home-section="involvement"
+      >
+        <div className="home-chapter-heading" data-home-reveal="rise">
+          <SectionHeading
+            heading={site.headings.events}
+            href="/get-involved"
+            linkLabel={t({ en: "Explore all", ar: "استكشف المزيد" })}
+          />
+        </div>
+        <GetInvolved sections={participation} anchorId={section.id} />
+      </section>
+    );
+  }
   if (section.type === "community")
     return (
       <section
         id={section.id}
-        className="home-chapter home-community"
-        data-home-section={section.type}
+        className="home-chapter home-people"
+        data-home-section="community"
       >
+        <div className="home-chapter-heading" data-home-reveal="rise">
+          <SectionHeading heading={site.headings.community} />
+        </div>
         <Community site={site} />
       </section>
     );
@@ -56,38 +79,24 @@ function Section({
   const href =
     section.type === "resources"
       ? "/learn"
-      : section.type === "events"
-        ? "/events"
-        : section.type === "opportunities"
-          ? "/opportunities"
-          : section.type === "journal"
-            ? "/journal"
-            : undefined;
+      : section.type === "journal"
+        ? "/journal"
+        : undefined;
   return (
     <section
       id={section.id}
       className={`home-chapter home-${section.type}`}
       data-home-section={section.type}
     >
-      <div
-        className="home-chapter-heading"
-        data-home-reveal={section.type === "resources" ? "left" : "rise"}
-      >
-        <span className="home-chapter-number" aria-hidden="true">
-          {String(chapter).padStart(2, "0")}
-        </span>
+      <div className="home-chapter-heading" data-home-reveal="rise">
         <SectionHeading
           heading={site.headings[section.type]}
           href={href}
-          linkLabel={label(
-            section.type === "events"
-              ? "exploreAllEvents"
-              : section.type === "opportunities"
-                ? "exploreAllOpportunities"
-                : section.type === "journal"
-                  ? "allArticles"
-                  : "browse",
-          )}
+          linkLabel={
+            section.type === "resources"
+              ? t({ en: "All courses", ar: "جميع المساقات" })
+              : label("allArticles")
+          }
         />
       </div>
       <div className="home-chapter-content">
@@ -97,28 +106,26 @@ function Section({
   );
 }
 export default function Homepage() {
-  const { data: site } = useSiteContent();
-  const { dir } = useLocale();
+  const { data: site } = useSiteContent(),
+    { dir } = useLocale();
   const root = useRef<HTMLDivElement>(null);
   useHomeReveal(root, !!site);
   if (!site) return null;
   const sections = visibleSections(site.sections, new Date());
-  let chapter = 0;
+  const participation = sections.filter(participates);
   return (
-    <div className="home-atlas" dir={dir} ref={root}>
+    <div className="home-atlas home-focused home-studio" dir={dir} ref={root}>
       <Hero
         hero={site.hero}
         brand={site.brand}
-        nextSectionId={
-          sections.find((section) => section.type !== "announcement")?.id
-        }
+        nextSectionId={sections.find((s) => s.type !== "announcement")?.id}
       />
       {sections.map((section) => (
         <Section
           key={section.id}
           section={section}
           site={site}
-          chapter={section.type === "announcement" ? 0 : ++chapter}
+          participation={participation}
         />
       ))}
     </div>

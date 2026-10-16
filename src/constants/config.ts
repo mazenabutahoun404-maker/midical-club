@@ -1,4 +1,4 @@
-export const APP_VERSION = "0.13.43";
+export const APP_VERSION = "0.13.47";
 /** Stable demo calendar anchor; APIs can supply a server date later. */
 export const DEMO_TODAY = "2026-09-03";
 export const DEFAULT_LOCALE = "en" as const;

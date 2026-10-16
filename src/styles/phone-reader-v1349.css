@@ -1,0 +1,51 @@
+/* Page navigation already exists in the PDF toolbar. On phones its duplicate
+   bottom rail gives its space back to the document, including short screens. */
+@media (max-width:767px) {
+ html:root[dir] body .app-shell[data-study-environment="true"] .course-study-edition.container {
+  padding-block-end:max(4px,env(safe-area-inset-bottom));
+  max-height:100dvh;
+ }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] {
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr);
+  grid-template-areas:"viewport";
+  gap:0;
+ }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface[data-turn-layout="row"] > .page-hand-edge { display:none; }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading-surface > .pdf-book-viewport {
+  height:100%;
+  max-height:none;
+  min-height:0;
+  padding-block-end:0;
+  background:var(--book-paper);
+ }
+}
+
+@media (max-width:767px) {
+ html[data-study-route="true"] body { min-width:0; }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] {
+  display:flex;
+  flex-wrap:nowrap;
+  gap:0;
+  padding-inline:0;
+  padding-block:2px;
+  min-height:48px;
+ }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-page-jump {
+  flex:1 1 60px;
+  min-width:60px;
+  max-width:84px;
+  gap:2px;
+ }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-page-jump > span { display:inline; font-size:11px; }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] > .pdf-reader-options {
+  flex:0 0 44px;
+  width:44px;
+  margin:0;
+ }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-close-resource { margin:0; }
+}
+@media (max-width:279px) {
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-page-jump { min-width:44px; max-width:44px; }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-page-jump > span { display:none; }
+}

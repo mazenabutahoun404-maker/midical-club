@@ -5,6 +5,7 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "../navigation/AppLink";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { Icon } from "../ui/Icon";
+import "../../styles/course-volume-binding.css";
 export function CourseCard({ course: c }: { course: Course }) {
   const paths = useWorkspacePaths();
   const { t, label } = useLocale();

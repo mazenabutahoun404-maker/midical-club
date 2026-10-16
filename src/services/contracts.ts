@@ -45,6 +45,7 @@ import type {
   SearchFilters,
 } from "../types/content";
 export interface MedClubServices {
+  exams?: import("../types/exams").ExamService;
   studyHub?: import("../types/study-hub").StudyHubService;
   artwork?: import("../types/artwork").ArtworkService;
   /** Public lists are visible records. A sample source declares its fixed calendar anchor. */

@@ -70,8 +70,8 @@ export const siteContent: SiteContent = {
         id: "exams",
         label: t("Electronic Exams", "الامتحانات الإلكترونية"),
         description: t(
-          "The examination platform, in a later release.",
-          "منصة الامتحانات ضمن إصدار لاحق.",
+          "Practice questions, review explanations and build a focused exam session.",
+          "تدرب على الأسئلة وراجع الشرح وأنشئ جلسة مركزة.",
         ),
         href: routes.exams,
         icon: "exam",
@@ -186,44 +186,32 @@ export const siteContent: SiteContent = {
   },
   pathways: [
     {
-      id: "basic",
-      label: t("Basic Sciences", "العلوم الأساسية"),
-      description: t(
-        "Strong foundations. One course at a time.",
-        "أساس قوي، مساقاً بعد مساق.",
-      ),
-      href: routes.basic,
+      id: "courses",
+      label: t("Courses", "المساقات"),
+      description: t("Find your course", "اعثر على مساقك"),
+      href: routes.learn,
       icon: "book",
     },
     {
-      id: "clinical",
-      label: t("Clinical Sciences", "العلوم السريرية"),
-      description: t(
-        "From the classroom to your clinical years.",
-        "من قاعة المحاضرات إلى التدريب السريري.",
-      ),
-      href: routes.clinical,
-      icon: "stethoscope",
-    },
-    {
       id: "exams",
-      label: t("Electronic Exams", "الامتحانات الإلكترونية"),
-      description: t(
-        "Your examination hub, in a later release.",
-        "مركز الامتحانات ضمن إصدار لاحق.",
-      ),
+      label: t("Exams", "الامتحانات"),
+      description: t("Practice and recall", "تدرّب واستذكر"),
       href: routes.exams,
       icon: "exam",
     },
     {
       id: "tools",
       label: t("Study Tools", "أدوات الدراسة"),
-      description: t(
-        "Find your focus. Make your time count.",
-        "ركّز واستثمر وقتك.",
-      ),
+      description: t("Plan a focused session", "خطّط لجلسة مركّزة"),
       href: routes.utilities,
       icon: "timer",
+    },
+    {
+      id: "library",
+      label: t("Saved library", "المكتبة المحفوظة"),
+      description: t("Return to your saved items", "ارجع إلى محفوظاتك"),
+      href: routes.library,
+      icon: "library",
     },
   ],
   headings: {
@@ -232,35 +220,32 @@ export const siteContent: SiteContent = {
       title: t("From the club", "من النادي"),
     },
     pathways: {
-      eyebrow: t("Find your way", "اختر طريقك"),
-      title: t("Follow your curiosity.", "اتبع فضولك."),
+      eyebrow: t("Your study desk", "مكتبك الدراسي"),
+      title: t("Study shortcuts", "اختصارات الدراسة"),
     },
     resources: {
-      eyebrow: t("Less searching. More learning.", "بحث أقل. تعلّم أكثر."),
-      title: t("Your next great find.", "اكتشافك القادم."),
+      eyebrow: t("The student library", "مكتبة الطالب"),
+      title: t("Courses", "المساقات"),
     },
     events: {
-      eyebrow: t("Good things happen together", "معاً نصنع تجارب أفضل"),
-      title: t("Step out. Get involved.", "شارك. واكتشف المزيد."),
+      eyebrow: t("Beyond the classroom", "خارج قاعة المحاضرات"),
+      title: t("Get involved", "شارك"),
       description: t(
-        "A new skill. A fresh perspective. A chance to give back.",
-        "مهارة جديدة، ورؤية مختلفة، وفرصة للعطاء.",
+        "Events, opportunities and ways to contribute.",
+        "فعاليات وفرص ومسارات للمساهمة.",
       ),
     },
     opportunities: {
       eyebrow: t("Your next step", "خطوتك القادمة"),
-      title: t("Open a new door", "افتح باباً جديداً"),
+      title: t("Opportunities", "الفرص"),
     },
     journal: {
-      eyebrow: t("The medical journal", "المجلة الطبية"),
-      title: t("Ideas worth sharing", "أفكار تستحق المشاركة"),
+      eyebrow: t("Student writing", "كتابات الطلبة"),
+      title: t("Medical Journal", "المجلة الطبية"),
     },
     community: {
       eyebrow: t("This is your community", "هذا مجتمعك"),
-      title: t(
-        "Medicine is a journey.\nLet’s take it together.",
-        "الطب رحلة.\nلنخضها معاً.",
-      ),
+      title: t("Community & mentorship", "المجتمع والإرشاد"),
     },
   },
   sections: [
@@ -279,7 +264,7 @@ export const siteContent: SiteContent = {
     ),
     action: {
       id: "event",
-      label: t("Find your next club event", "اكتشف فعالية النادي القادمة"),
+      label: t("Explore the community", "استكشف المجتمع"),
       href: routes.community,
     },
   },

@@ -1,0 +1,229 @@
+/* The original full-width footer layout, with the scene inside its container. */
+html:root body .campus-scene-footer {
+  position: relative;
+  min-height: 0;
+  padding: 34px 0 14px;
+  color: var(--foreground);
+  background: var(--background);
+  border-color: var(--border);
+}
+html:root body .campus-footer-content {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-width: 0;
+  max-width: calc(100% - 32px);
+  padding-block: 16px 8px;
+}
+.campus-footer-scene {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  margin: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  mask-image: radial-gradient(
+    ellipse 90% 85% at 60% 50%,
+    #000 18%,
+    transparent 96%
+  );
+}
+.campus-footer-scene img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 48%;
+}
+.campus-footer-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--background) 94%, transparent),
+    color-mix(in srgb, var(--background) 78%, transparent) 42%,
+    color-mix(in srgb, var(--background) 70%, transparent) 75%,
+    color-mix(in srgb, var(--background) 85%, transparent)
+  );
+}
+html[dir="rtl"] .campus-footer-scene::after {
+  transform: scaleX(-1);
+}
+html:root body .campus-scene-footer .footer-top {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+}
+html:root body .campus-scene-footer .footer-top > div {
+  min-width: 0;
+}
+html:root body .campus-scene-footer .footer-brand {
+  grid-column: auto;
+}
+html:root body .campus-scene-footer .footer-brand .brand-title,
+html:root body .campus-scene-footer h2 {
+  color: var(--foreground);
+}
+html:root body .campus-scene-footer .footer-brand > p {
+  max-width: 340px;
+  color: var(--foreground);
+  opacity: 0.8;
+  font-size: 12px;
+}
+html:root body .campus-scene-footer .footer-links {
+  font-size: 12px;
+  gap: 0;
+}
+html:root body .campus-scene-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  width: fit-content;
+  max-width: 100%;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+html:root body .campus-scene-footer .footer-links a:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--foreground);
+}
+html:root body .campus-scene-footer .footer-bottom {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  margin-top: 28px;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+}
+html:root body .campus-scene-footer .footer-bottom > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.octagram-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  color: var(--foreground);
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.octagram-credit strong {
+  /* Coral, warm gold and teal sampled from the supplied mark.
+     Deeper shades keep the small wordmark readable on a light background. */
+  background: linear-gradient(110deg, #ac4929 5%, #80600e 48%, #23796f 92%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+html[data-theme="dark"] .octagram-credit strong {
+  background-image: linear-gradient(
+    110deg,
+    #f59a73 5%,
+    #edc76a 48%,
+    #71c1b1 92%
+  );
+}
+.octagram-credit > span {
+  transition: transform 150ms;
+}
+.octagram-credit:is(:hover, :focus-visible) > span {
+  transform: translate(2px, -2px);
+}
+.octagram-credit:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+html:root body .campus-personal-footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 0;
+  display: block;
+  padding: 22px 0 10px;
+  margin-block: 50px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+.campus-personal-footer-copy {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.campus-personal-footer-copy p {
+  margin-bottom: 4px;
+  color: var(--foreground);
+}
+@media (max-width: 767px) {
+  html:root body .campus-scene-footer {
+    padding-top: 24px;
+  }
+  html:root body .campus-scene-footer .footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+  }
+  html:root body .campus-scene-footer .footer-brand {
+    grid-column: 1/-1;
+  }
+  html:root body .campus-scene-footer .footer-top > div:nth-child(3) {
+    display: block;
+  }
+  .campus-footer-scene img {
+    object-position: center;
+  }
+  .campus-footer-scene::after {
+    background: color-mix(in srgb, var(--background) 80%, transparent);
+  }
+  html:root body .campus-scene-footer .footer-bottom {
+    align-items: flex-start;
+    gap: 4px;
+    margin-top: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .octagram-credit > span {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .campus-footer-scene {
+    display: none;
+  }
+  .octagram-credit,
+  .octagram-credit strong {
+    background: none;
+    color: LinkText;
+    -webkit-text-fill-color: LinkText;
+  }
+}

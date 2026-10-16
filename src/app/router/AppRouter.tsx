@@ -14,13 +14,19 @@ import { SpaceTransition } from "./SpaceTransition";
 import { AcademicTransition } from "./AcademicTransition";
 import { MedicalTransition } from "./MedicalTransition";
 import { isAdminPath, isPersonalPath } from "../../constants/routes";
-import { PlannedFeaturePage } from "../../components/feedback/PlannedFeaturePage";
 import { useLocale } from "../providers/LocaleProvider";
 import { ActionLink } from "../../components/ui/ActionLink";
 import { RequireAuth } from "./RequireAuth";
 import { CapabilityGate } from "./CapabilityGate";
 const StudyDeskPage = lazy(
   () => import("../../features/study-hub/StudyDeskPage"),
+);
+const ExamRoutes = lazy(() => import("../../features/exams/ExamRoutes"));
+const FloatingNotebook = lazy(
+  () => import("../../features/utilities/FloatingNotebook"),
+);
+const AdminExamsPage = lazy(
+  () => import("../../features/exams/AdminExamsPage"),
 );
 const RecallDeskPage = lazy(
   () => import("../../features/study-hub/RecallDeskPage"),
@@ -199,7 +205,7 @@ export function AppRouter() {
   const target = useLocation();
   const journey = useRouteJourney(target);
   const location = journey.location;
-  const { searchOpen, detail } = useOverlays();
+  const { searchOpen, detail, notesVisited } = useOverlays();
   const { label } = useLocale();
   const space = location.pathname.startsWith("/auth")
     ? "auth"
@@ -413,10 +419,7 @@ export function AppRouter() {
                   </AcademicTransition>
                 }
               />
-              <Route
-                path="learn/electronic-exams"
-                element={<PlannedFeaturePage titleKey="exams" />}
-              />
+              <Route path="learn/electronic-exams/*" element={<ExamRoutes />} />
               <Route
                 path="store"
                 element={
@@ -460,6 +463,7 @@ export function AppRouter() {
                   element={<Navigate to="/my" replace />}
                 />
                 <Route path="learning" element={<MyLearningPage />} />
+                <Route path="exams/*" element={<ExamRoutes />} />
                 <Route
                   path="progress"
                   element={<Navigate to="/my/learning?view=insights" replace />}
@@ -506,6 +510,14 @@ export function AppRouter() {
                 <Route path="*" element={<NotFound personal />} />
               </Route>
               <Route path="admin" element={<AdminLayout />}>
+                <Route
+                  path="exams"
+                  element={
+                    <CapabilityGate capability="content.review">
+                      <AdminExamsPage />
+                    </CapabilityGate>
+                  }
+                />
                 <Route
                   index
                   element={
@@ -609,6 +621,11 @@ export function AppRouter() {
         </SpaceTransition>
       </RouteJourneyContext.Provider>
       {searchOpen && <SearchDialog />}
+      {notesVisited && (
+        <Suspense fallback={null}>
+          <FloatingNotebook />
+        </Suspense>
+      )}
       {detail && (
         <Suspense
           fallback={

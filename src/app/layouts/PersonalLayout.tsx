@@ -1,5 +1,8 @@
+import { CampusFootnote } from "../../components/navigation/FooterScene";
 import { RouteViewport } from "../router/RouteJourney";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { isExamSessionPath } from "../../features/exams/session-layout";
+import "../../styles/exam-session-shell.css";
 import { useAppearance } from "../providers/AppearanceProvider";
 import { useLocale } from "../providers/LocaleProvider";
 import { useStudentProfile } from "../../hooks/useContent";
@@ -16,6 +19,31 @@ export function PersonalLayout() {
   const profile = useStudentProfile();
   const workspace = useWorkspace();
   const adaptive = useAdaptiveNavigation();
+  const { pathname } = useLocation();
+  if (isExamSessionPath(pathname))
+    return (
+      <div
+        className="app-shell personal-shell"
+        data-space="personal"
+        data-exam-studio="true"
+      >
+        <a className="skip-link" href="#main">
+          {label("skip")}
+        </a>
+        <div className="app-content">
+          <main id="main" tabIndex={-1}>
+            {!workspace.persistent && (
+              <p className="workspace-warning" role="status">
+                {label("sessionNotice")}
+              </p>
+            )}
+            <RouteViewport>
+              <Outlet />
+            </RouteViewport>
+          </main>
+        </div>
+      </div>
+    );
   return (
     <div
       className="app-shell personal-shell"
@@ -47,9 +75,7 @@ export function PersonalLayout() {
             <Outlet />
           </RouteViewport>
         </main>
-        <p className="personal-footnote container">
-          {label("personalFootnote")}
-        </p>
+        {!adaptive.studying && <CampusFootnote />}
       </div>
     </div>
   );

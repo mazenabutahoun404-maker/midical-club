@@ -11,6 +11,7 @@ import {
   HeartPulse,
   KeyRound,
   LayoutDashboard,
+  FileQuestion,
   Menu,
   PanelsTopLeft,
   ShieldCheck,
@@ -54,6 +55,7 @@ const operations: NavItem[] = [
     icon: FileSearch,
     capability: "content.review",
   },
+  { href: "/admin/exams", label: "exams", icon: FileQuestion, capability: "content.review" },
   {
     href: "/admin/builder",
     label: "builderNavigation",
@@ -245,6 +247,7 @@ export function AdminNavigation() {
             key={href}
             className={active(href) ? "active" : ""}
             aria-current={active(href) ? "page" : undefined}
+            aria-label={label(key)}
           >
             <MorphIcon
               to={
@@ -258,7 +261,7 @@ export function AdminNavigation() {
               size={20}
               className="admin-nav-icon"
             />
-            <span>{label(key)}</span>
+            <span className="dock-caption">{label(key)}</span>
           </AppLink>
         ))}
         <button
@@ -268,7 +271,7 @@ export function AdminNavigation() {
           onClick={() => setMoreOpen(true)}
         >
           <Menu size={20} aria-hidden="true" />
-          <span>{label("more")}</span>
+          <span className="dock-caption">{label("more")}</span>
           {pending > 0 && <b>{pending}</b>}
         </button>
       </nav>

@@ -10,6 +10,10 @@ import {
 import type { DetailRecord } from "../../types/content";
 import { useWorkspace } from "./WorkspaceProvider";
 interface OverlayContextValue {
+  notesOpen: boolean;
+  notesVisited: boolean;
+  toggleNotes: () => void;
+  hideNotes: () => void;
   searchOpen: boolean;
   detail: DetailRecord | null;
   openSearch: (event?: MouseEvent<HTMLElement>) => void;
@@ -27,6 +31,8 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     setDetail(null);
   }, [location.pathname]);
   const [searchOpen, setSearch] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [notesVisited, setNotesVisited] = useState(false);
   const [searchTrigger, setSearchTrigger] = useState<HTMLElement | null>(null);
   const [detail, setDetail] = useState<DetailRecord | null>(null);
   function openSearch(event?: MouseEvent<HTMLElement>) {
@@ -73,6 +79,13 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   return (
     <Context.Provider
       value={{
+        notesOpen,
+        notesVisited,
+        toggleNotes: () => {
+          setNotesVisited(true);
+          setNotesOpen((open) => !open);
+        },
+        hideNotes: () => setNotesOpen(false),
         searchOpen,
         searchTrigger,
         detail,

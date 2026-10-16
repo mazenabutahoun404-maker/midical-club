@@ -1,88 +1,81 @@
-import {
-  ArrowRight,
-  BookOpen,
-  Compass,
-  NotebookPen,
-  PenLine,
-  Users,
-  Video,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowUpRight, Compass, Users } from "lucide-react";
 import type { SiteContent } from "../../../types/content";
 import { useLocale } from "../../../app/providers/LocaleProvider";
+import { useMentors } from "../../../hooks/useContent";
 import { ActionLink } from "../../../components/ui/ActionLink";
 import { AppLink } from "../../../components/navigation/AppLink";
-import logo from "../../../assets/brand/medclub-logo.png";
-import { campusDestinations } from "../living-campus";
-const symbols: Record<string, LucideIcon> = {
-  learning: BookOpen,
-  media: Video,
-  community: Users,
-  mentorship: Compass,
-  contribution: PenLine,
-  journals: NotebookPen,
-};
-const points = [
-  [50, 12],
-  [86, 30],
-  [86, 70],
-  [50, 88],
-  [14, 70],
-  [14, 30],
-];
+import { LoadingState } from "../../../components/feedback/LoadingState";
+import { ErrorState } from "../../../components/feedback/ErrorState";
+import { mentorPath } from "../../../constants/routes";
 export function Community({ site }: { site: SiteContent }) {
-  const { t } = useLocale();
+  const { t } = useLocale(),
+    mentors = useMentors();
   return (
-    <div className="home-community-layout">
-      <div className="home-community-copy" data-home-reveal="left">
-        <span className="eyebrow">{t(site.headings.community.eyebrow)}</span>
-        <h2 className="preserve-lines">{t(site.headings.community.title)}</h2>
-        <p>{t(site.community.body)}</p>
-        <ActionLink href={site.community.action.href}>
-          {t(site.community.action.label)}
-          <ArrowRight className="directional" size={18} />
-        </ActionLink>
-      </div>
-      <nav
-        className="home-community-map"
-        data-home-reveal="orbit"
-        aria-label={t({
-          en: "Explore the community campus",
-          ar: "استكشف مجتمع الحرم",
-        })}
-      >
-        <svg viewBox="0 0 560 480" aria-hidden="true">
-          <ellipse cx="280" cy="240" rx="200" ry="174" />
-          {points.map(([x, y], index) => (
-            <path
-              key={index}
-              d={`M280 240 Q${index % 2 ? 280 : x * 5.6} ${y * 4.8} ${x * 5.6} ${y * 4.8}`}
-              pathLength={1}
-            />
-          ))}
-        </svg>
-        <span className="home-community-center" aria-hidden="true">
-          <img src={logo} alt="" width={64} height={64} />
-          <strong>MedClub</strong>
-        </span>
-        {campusDestinations.map((destination, index) => {
-          const Icon = symbols[destination.id];
-          return (
-            <AppLink
-              key={destination.id}
-              href={destination.href}
-              className="home-community-node"
-              style={{
-                left: `${points[index][0]}%`,
-                top: `${points[index][1]}%`,
-              }}
+    <div className="home-people-layout">
+      <div className="home-people-intro" data-home-reveal="rise">
+        <div className="home-community-emblem" aria-hidden="true">
+          <span className="home-community-ring" />
+          <span className="home-community-core">
+            <Users size={40} />
+          </span>
+          {mentors.data?.slice(0, 3).map((mentor, index) => (
+            <span
+              className="home-community-person"
+              data-person={index}
+              key={mentor.id}
             >
-              <Icon size={20} />
-              <span>{t(destination.label)}</span>
-            </AppLink>
-          );
-        })}
-      </nav>
+              {t(mentor.initials)}
+            </span>
+          ))}
+        </div>
+        <p>{t(site.community.body)}</p>
+        <div className="home-people-actions">
+          <ActionLink href={site.community.action.href}>
+            {t(site.community.action.label)}
+            <ArrowUpRight className="directional" size={17} />
+          </ActionLink>
+          <ActionLink href="/mentorship" variant="outline">
+            {t({ en: "Find a mentor", ar: "ابحث عن مرشد" })}
+            <Compass size={17} aria-hidden="true" />
+          </ActionLink>
+        </div>
+      </div>
+      <div className="home-mentor-directory" data-home-reveal="slide">
+        <h3>{t({ en: "Meet the mentors", ar: "تعرّف على المرشدين" })}</h3>
+        {mentors.isPending ? (
+          <LoadingState />
+        ) : mentors.isError ? (
+          <ErrorState retry={() => void mentors.refetch()} />
+        ) : mentors.data.length ? (
+          <ul>
+            {mentors.data.slice(0, 3).map((mentor, index) => (
+              <li key={mentor.id} data-mentor-step={index}>
+                <AppLink href={mentorPath(mentor.slug)}>
+                  <span className="home-mentor-initials" aria-hidden="true">
+                    {t(mentor.initials)}
+                  </span>
+                  <span className="home-mentor-name">
+                    <strong>{t(mentor.name)}</strong>
+                    <small>{t(mentor.specialty)}</small>
+                  </span>
+                  <ArrowUpRight
+                    className="directional"
+                    size={18}
+                    aria-hidden="true"
+                  />
+                </AppLink>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="home-quiet-state">
+            {t({
+              en: "Mentor profiles will appear here.",
+              ar: "ستظهر ملفات المرشدين هنا.",
+            })}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

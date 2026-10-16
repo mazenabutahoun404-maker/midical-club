@@ -1,6 +1,8 @@
 import { RouteViewport, RouteFooter } from "../router/RouteJourney";
 import { InvolvementNavigation } from "../../components/navigation/InvolvementNavigation";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { isExamSessionPath } from "../../features/exams/session-layout";
+import "../../styles/exam-session-shell.css";
 import { useSiteContent } from "../../hooks/useContent";
 import { useAppearance } from "../providers/AppearanceProvider";
 import { WorkspaceHeader } from "../../components/navigation/WorkspaceHeader";
@@ -19,6 +21,7 @@ export function PublicLayout() {
   const { navigation, sidebarCollapsed } = useAppearance();
   const adaptive = useAdaptiveNavigation();
   const { label } = useLocale();
+  const { pathname } = useLocation();
   if (site.isPending)
     return (
       <main id="main">
@@ -30,6 +33,21 @@ export function PublicLayout() {
       <main id="main">
         <ErrorState retry={() => void site.refetch()} />
       </main>
+    );
+  if (isExamSessionPath(pathname))
+    return (
+      <div className="app-shell" data-space="public" data-exam-studio="true">
+        <a className="skip-link" href="#main">
+          {label("skip")}
+        </a>
+        <div className="app-content">
+          <main id="main" tabIndex={-1}>
+            <RouteViewport>
+              <Outlet />
+            </RouteViewport>
+          </main>
+        </div>
+      </div>
     );
   return (
     <div
@@ -59,9 +77,11 @@ export function PublicLayout() {
             <Outlet />
           </RouteViewport>
         </main>
-        <RouteFooter>
-          <Footer site={site.data} />
-        </RouteFooter>
+        {!adaptive.studying && (
+          <RouteFooter>
+            <Footer site={site.data} />
+          </RouteFooter>
+        )}
       </div>
     </div>
   );
