@@ -1,13 +1,8 @@
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
-import { BookOpen, Search, Sparkles, Stethoscope } from "lucide-react";
-import {
-  useBatches,
-  useClinicalYears,
-  useCourses,
-  useResources,
-} from "../../hooks/useContent";
+import { BookOpen, Sparkles, Stethoscope } from "lucide-react";
+import { useBatches, useCourses } from "../../hooks/useContent";
+import { CourseDirectory } from "./CourseDirectory";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { useOverlays } from "../../app/providers/OverlayProvider";
 import { routes } from "../../constants/routes";
 import { AcademicPortalCard } from "../../components/cards/AcademicPortalCard";
 import { LoadingState } from "../../components/feedback/LoadingState";
@@ -15,12 +10,9 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 
 export default function LearnLandingPage() {
   const batches = useBatches(),
-    clinical = useClinicalYears(),
-    courses = useCourses(),
-    resources = useResources();
-  const { label } = useLocale();
-  const { openSearch } = useOverlays();
-  const queries = [batches, clinical, courses, resources];
+    courses = useCourses();
+  const { label, t } = useLocale();
+  const queries = [courses];
   if (queries.some((query) => query.isPending)) return <LoadingState />;
   if (queries.some((query) => query.isError))
     return (
@@ -28,88 +20,88 @@ export default function LearnLandingPage() {
         retry={() => queries.forEach((query) => void query.refetch())}
       />
     );
-  if (!batches.data || !clinical.data || !courses.data || !resources.data)
-    return null;
+  if (!courses.data) return null;
   return (
     <div className="container academic-gateway">
-      <section className="academic-gateway-hero artwork-academic-hero artwork-scene"><div className="artwork-hero-copy">
-        <span className="academic-kicker">
-          <Sparkles size={14} />
-          {label("choosePath")}
-        </span>
-        <h1 data-page-heading tabIndex={-1}>
-          {label("learnGatewayTitle")}
-        </h1>
-        <p>{label("learnGatewayBody")}</p>
-        <div className="academic-pulse" aria-label={label("academicPulse")}>
-          <span>
-            <b>{courses.data.length}</b>
-            {label("coursesCount")}
+      <section className="academic-gateway-hero artwork-academic-hero artwork-scene">
+        <div className="artwork-hero-copy">
+          <span className="academic-kicker">
+            <Sparkles size={14} />
+            {label("learnEyebrow")}
           </span>
-          <i />
-          <span>
-            <b>{resources.data.length}</b>
-            {label("resourcesCount")}
-          </span>
-          <i />
-          <span>
-            <b>{batches.data.length}</b>
-            {label("batchesCount")}
-          </span>
+          <h1 data-page-heading tabIndex={-1}>
+            {t({
+              en: "Your courses, one step away.",
+              ar: "مساقاتك على بُعد خطوة.",
+            })}
+          </h1>
+          <p>
+            {t({
+              en: "Search for a course and open it directly. Explore years and batches whenever you need them.",
+              ar: "ابحث عن المساق وافتحه مباشرة. تصفّح السنوات والدفعات متى احتجت إليها.",
+            })}
+          </p>
+          <div className="academic-pulse" aria-label={label("academicPulse")}>
+            <span>
+              <b>{courses.data.length}</b>
+              {label("coursesCount")}
+            </span>
+            <i />
+            <span>
+              <b>{batches.data?.length ?? "—"}</b>
+              {label("batchesCount")}
+            </span>
+          </div>
         </div>
-      </div><HeroArtwork section="learn" /></section>
-      <div className="academic-portals">
-        <AcademicPortalCard
-          href={routes.basic}
-          eyebrow={label("basicEyebrow")}
-          title={label("pathwayBasicTitle")}
-          description={label("basicPortalBody")}
-          action={label("enterBasic")}
-          tone="basic"
-        >
-          <span className="portal-orbit portal-orbit-basic" aria-hidden="true">
-            <BookOpen />
-            <i />
-            <i />
-            <i />
-          </span>
-        </AcademicPortalCard>
-        <AcademicPortalCard
-          href={routes.clinical}
-          eyebrow={label("clinicalEyebrow")}
-          title={label("pathwayClinicalTitle")}
-          description={label("clinicalPortalBody")}
-          action={label("enterClinical")}
-          tone="clinical"
-        >
-          <span
-            className="portal-orbit portal-orbit-clinical"
-            aria-hidden="true"
-          >
-            <Stethoscope />
-            <i />
-            <i />
-            <i />
-          </span>
-        </AcademicPortalCard>
-      </div>
-      <section className="academic-finder">
-        <span className="finder-icon">
-          <Search size={21} />
-        </span>
-        <div>
-          <span className="academic-kicker">{label("courseFinder")}</span>
-          <h2>{label("courseFinderBody")}</h2>
-        </div>
-        <button
-          className="button button-primary"
-          data-search-trigger
-          onClick={openSearch}
-        >
-          {label("findCourse")}
-          <Search size={17} />
-        </button>
+        <HeroArtwork section="learn" />
       </section>
+      <CourseDirectory courses={courses.data} />
+      <details className="learning-pathway-browse">
+        <summary>
+          {t({
+            en: "Browse pathways and batches",
+            ar: "تصفّح المسارات والدفعات",
+          })}
+        </summary>
+        <div className="academic-portals">
+          <AcademicPortalCard
+            href={routes.basic}
+            eyebrow={label("basicEyebrow")}
+            title={label("pathwayBasicTitle")}
+            description={label("basicPortalBody")}
+            action={label("enterBasic")}
+            tone="basic"
+          >
+            <span
+              className="portal-orbit portal-orbit-basic"
+              aria-hidden="true"
+            >
+              <BookOpen />
+              <i />
+              <i />
+              <i />
+            </span>
+          </AcademicPortalCard>
+          <AcademicPortalCard
+            href={routes.clinical}
+            eyebrow={label("clinicalEyebrow")}
+            title={label("pathwayClinicalTitle")}
+            description={label("clinicalPortalBody")}
+            action={label("enterClinical")}
+            tone="clinical"
+          >
+            <span
+              className="portal-orbit portal-orbit-clinical"
+              aria-hidden="true"
+            >
+              <Stethoscope />
+              <i />
+              <i />
+              <i />
+            </span>
+          </AcademicPortalCard>
+        </div>
+      </details>
     </div>
   );
 }

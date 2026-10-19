@@ -1,3 +1,4 @@
+import { MedicalMark } from "../../components/medical/MedicalMark";
 import { useRef } from "react";
 import type { SiteContent, HomeSection } from "../../types/content";
 import { useSiteContent } from "../../hooks/useContent";
@@ -52,6 +53,7 @@ function Section({
         data-home-section="involvement"
       >
         <div className="home-chapter-heading" data-home-reveal="rise">
+          <MedicalMark kind="neuron" />
           <SectionHeading
             heading={site.headings.events}
             href="/get-involved"
@@ -70,6 +72,7 @@ function Section({
         data-home-section="community"
       >
         <div className="home-chapter-heading" data-home-reveal="rise">
+          <MedicalMark kind="scope" />
           <SectionHeading heading={site.headings.community} />
         </div>
         <Community site={site} />
@@ -89,6 +92,15 @@ function Section({
       data-home-section={section.type}
     >
       <div className="home-chapter-heading" data-home-reveal="rise">
+        <MedicalMark
+          kind={
+            section.type === "resources"
+              ? "heart"
+              : section.type === "journal"
+                ? "molecule"
+                : "neuron"
+          }
+        />
         <SectionHeading
           heading={site.headings[section.type]}
           href={href}

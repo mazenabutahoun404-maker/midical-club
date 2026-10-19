@@ -22,6 +22,7 @@ import {
   SunMoon,
   File,
   Scan,
+  MoveHorizontal,
 } from "lucide-react";
 import { getAppearancePalette } from "../../app/providers/appearance-palettes";
 import { appearancePreviewColors } from "../../app/providers/appearance-preview-colors";
@@ -36,6 +37,8 @@ import type {
 import {
   pdfViewGeometry,
   pdfFitPageZoom,
+  pdfFitZoom,
+  MAX_PDF_ZOOM,
   MIN_PDF_ZOOM,
 } from "./pdf-view-geometry";
 import { yieldPdfTask } from "./pdf-text-stream";
@@ -43,6 +46,8 @@ import { nextSpread, spreadStart, type TurnDirection } from "./page-turn";
 import { TurnLeaf, usePageTurn } from "./usePageTurn";
 import { pdfPanLimit, pdfPanOffset } from "./pdf-pan";
 import { usePdfGrab } from "./usePdfGrab";
+import { usePdfTouchZoom } from "./usePdfTouchZoom";
+import "./pdf-mobile-reading.css";
 import type { usePdfMargins } from "../study-hub/PdfMarginNotes";
 import type { MarginNote, PageAnchor } from "../../types/study-hub";
 import { useStudyTools } from "./StudyTools";
@@ -195,6 +200,7 @@ const PdfPage = memo(function PdfPage({
       data-placing-note={placing || undefined}
       onPointerUp={(event) => {
         if (
+          event.currentTarget.closest("[data-pdf-pinching]") ||
           !placing ||
           !number ||
           !onPlace ||
@@ -393,7 +399,9 @@ export function PdfBook({
   const [readingHeight, setReadingHeight] = useState(
     Math.max(120, window.innerHeight - 220),
   );
-  const [fit, setFit] = useState(true);
+  const [fitMode, setFitMode] = useState<"auto" | "page" | "width" | null>(
+    "auto",
+  );
   position.current = onPage;
   const documentCount = useRef(onCount);
   documentCount.current = onCount;
@@ -456,15 +464,22 @@ export function PdfBook({
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [optionsOpen, compactControls]);
   const first = spreadStart(Math.min(page, count), twoPages);
-  const effectiveZoom = fit
-    ? pdfFitPageZoom(
-        readingWidth,
-        readingHeight,
-        twoPages,
-        naturalWidth,
-        naturalWidth * pageHeightRatio,
-      )
-    : zoom;
+  const effectiveFit =
+    fitMode === "auto" ? (compactControls ? "width" : "page") : fitMode;
+  const widthZoom = pdfFitZoom(readingWidth, twoPages, naturalWidth);
+  const minimumZoom = Math.min(MIN_PDF_ZOOM, widthZoom);
+  const effectiveZoom =
+    effectiveFit === "width"
+      ? widthZoom
+      : effectiveFit === "page"
+        ? pdfFitPageZoom(
+            readingWidth,
+            readingHeight,
+            twoPages,
+            naturalWidth,
+            naturalWidth * pageHeightRatio,
+          )
+        : zoom;
   const { paperWidth, rasterWidth, spreadWidth } = pdfViewGeometry(
     readingWidth,
     twoPages,
@@ -539,6 +554,13 @@ export function PdfBook({
       cancelAnimationFrame(frame);
     };
   }, [spreadWidth, !!pool]);
+  const changeZoom = useCallback(
+    (next: number) => {
+      setFitMode(null);
+      setZoom(Math.max(minimumZoom, Math.min(MAX_PDF_ZOOM, next)));
+    },
+    [minimumZoom],
+  );
   const canTurn = (direction: TurnDirection) =>
     !!pool && nextSpread(first, count, twoPages, direction) !== null;
   const turner = usePageTurn({
@@ -555,6 +577,14 @@ export function PdfBook({
   });
   const turn = turner.turn;
   usePdfGrab(viewportRef, !!pool && !turn, margins.placing);
+  usePdfTouchZoom(
+    viewportRef,
+    !!pool && !turn,
+    effectiveZoom,
+    minimumZoom,
+    MAX_PDF_ZOOM,
+    changeZoom,
+  );
   const turnPreparation = useRef(0);
   const preparing = useRef(false);
   const [preparingTurn, setPreparingTurn] = useState(false);
@@ -830,6 +860,58 @@ export function PdfBook({
     }
   }
   const bookmarked = tools?.state.bookmarks[item.id] || [];
+  const zoomControls = (
+    <div className="pdf-visible-zoom">
+      <PdfToolButton
+        type="button"
+        className="notebook-icon-button"
+        disabled={
+          !pool || effectiveZoom <= minimumZoom || !!turn || preparingTurn
+        }
+        aria-label={t({ en: "Zoom out", ar: "تصغير" })}
+        onClick={() => changeZoom(effectiveZoom / 1.25)}
+      >
+        <ZoomOut size={18} />
+      </PdfToolButton>
+      <PdfToolButton
+        type="button"
+        className="pdf-zoom-reset"
+        disabled={!pool || !!turn || preparingTurn}
+        aria-label={t({
+          en: "Reset PDF zoom to 100%",
+          ar: "إعادة تكبير PDF إلى ١٠٠٪",
+        })}
+        onClick={() => changeZoom(1)}
+      >
+        {Math.round(effectiveZoom * 100)}%
+      </PdfToolButton>
+      <PdfToolButton
+        type="button"
+        className="notebook-icon-button"
+        disabled={
+          !pool || effectiveZoom >= MAX_PDF_ZOOM || !!turn || preparingTurn
+        }
+        aria-label={t({ en: "Zoom in", ar: "تكبير" })}
+        onClick={() => changeZoom(effectiveZoom * 1.25)}
+      >
+        <ZoomIn size={18} />
+      </PdfToolButton>
+    </div>
+  );
+  const widthControl = (
+    <PdfToolButton
+      type="button"
+      className="notebook-icon-button pdf-fit-width"
+      disabled={!pool || !!turn || preparingTurn}
+      aria-label={t({ en: "Fit PDF to width", ar: "ملاءمة PDF مع العرض" })}
+      aria-pressed={effectiveFit === "width"}
+      onClick={() => setFitMode("width")}
+    >
+      <MoveHorizontal size={18} />
+      <span>{t({ en: "Fit width", ar: "ملء العرض" })}</span>
+    </PdfToolButton>
+  );
+
   return (
     <div
       ref={root}
@@ -1009,57 +1091,27 @@ export function PdfBook({
                 {t({ en: "Page colors", ar: "ألوان الصفحات" })}
               </span>
             </PdfToolButton>
-            <PdfToolButton
-              type="button"
-              className="notebook-icon-button"
-              disabled={effectiveZoom <= MIN_PDF_ZOOM || !!turn}
-              aria-label={t({ en: "Zoom out", ar: "تصغير" })}
-              onClick={() => {
-                setFit(false);
-                setZoom(Math.max(MIN_PDF_ZOOM, effectiveZoom - 0.25));
-              }}
-            >
-              <ZoomOut size={18} />
-            </PdfToolButton>
-            <PdfToolButton
-              type="button"
-              className="pdf-zoom-reset"
-              disabled={!!turn}
-              aria-label={t({
-                en: "Reset PDF zoom",
-                ar: "إعادة ضبط تكبير PDF",
-              })}
-              onClick={() => {
-                setFit(false);
-                setZoom(1);
-              }}
-            >
-              {Math.round(effectiveZoom * 100)}%
-            </PdfToolButton>
-            <PdfToolButton
-              type="button"
-              className="notebook-icon-button"
-              disabled={effectiveZoom >= 1.75 || !!turn}
-              aria-label={t({ en: "Zoom in", ar: "تكبير" })}
-              onClick={() => {
-                setFit(false);
-                setZoom(Math.min(1.75, effectiveZoom + 0.25));
-              }}
-            >
-              <ZoomIn size={18} />
-            </PdfToolButton>
+            {!compactControls && (
+              <>
+                {zoomControls}
+                {widthControl}
+              </>
+            )}
             <PdfToolButton
               type="button"
               className="notebook-icon-button pdf-fit-toggle"
-              disabled={!!turn}
+              disabled={!pool || !!turn}
               aria-label={t({
-                en: "Fit PDF to reader",
-                ar: "ملاءمة PDF مع مساحة القراءة",
+                en: "Fit whole PDF page",
+                ar: "عرض صفحة PDF كاملة",
               })}
-              aria-pressed={fit}
-              onClick={() => setFit(true)}
+              aria-pressed={effectiveFit === "page"}
+              onClick={() => setFitMode("page")}
             >
               <Scan size={18} />
+              <span className="pdf-control-label">
+                {t({ en: "Whole page", ar: "الصفحة كاملة" })}
+              </span>
             </PdfToolButton>
             <PdfToolButton
               type="button"
@@ -1198,6 +1250,19 @@ export function PdfBook({
           </PdfToolButton>
         )}
       </div>
+      {compactControls && (
+        <div
+          className="pdf-mobile-reading-controls"
+          role="group"
+          aria-label={t({
+            en: "PDF zoom controls. Pinch the page to zoom.",
+            ar: "أدوات تكبير PDF. استخدم إصبعين لتكبير الصفحة.",
+          })}
+        >
+          {zoomControls}
+          {widthControl}
+        </div>
+      )}
       {searchOpen && (
         <div className="pdf-file-search">
           <form
@@ -1329,7 +1394,8 @@ export function PdfBook({
           <div
             ref={viewportRef}
             className="pdf-book-viewport"
-            data-fit-page={fit || undefined}
+            data-fit-page={effectiveFit === "page" || undefined}
+            data-fit-width={effectiveFit === "width" || undefined}
             dir="ltr"
             data-pannable={panLimit > 1 || undefined}
             onScroll={(event) => {
@@ -1337,8 +1403,8 @@ export function PdfBook({
             }}
             tabIndex={0}
             aria-description={t({
-              en: "Drag blank paper to pan. Hold Space or use the middle mouse button to pan over text.",
-              ar: "اسحب المساحة الفارغة للتحريك. اضغط المسافة أو زر الفأرة الأوسط للتحريك فوق النص.",
+              en: "Pinch with two fingers to zoom. Swipe to pan, or use the zoom buttons. With a mouse, drag blank paper or hold Space over text.",
+              ar: "استخدم إصبعين للتكبير واسحب للتحريك، أو استخدم أزرار التكبير. بالفأرة اسحب المساحة الفارغة أو اضغط المسافة فوق النص.",
             })}
             aria-label={t(
               twoPages

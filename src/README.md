@@ -1,6 +1,6 @@
-# Current release: MedClub V0.13.55
+# Current release: MedClub V0.13.57
 
-Read [V0.13.55-HOMEPAGE-STUDIO.md](./V0.13.55-HOMEPAGE-STUDIO.md) for the themed homepage redesign, image-free bookcase and section-specific scroll reveals. Previous application features remain included; obsolete homepage scene artwork has been removed.
+Read [V0.13.57-LIVING-ANATOMY.md](./V0.13.57-LIVING-ANATOMY.md) for the medical auth scene, field-driven light paths, medical homepage details, and phone dock refinement. This complete source release includes V0.13.56’s three-building homepage, direct course access, mobile PDF zoom, pinned navigation defaults, and all earlier features.
 
 ---
 

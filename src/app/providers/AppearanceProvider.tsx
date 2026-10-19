@@ -33,7 +33,11 @@ const DEFAULTS: AppearancePreferences = {
 };
 const GUEST_KEY = "medclub.guest-appearance.v1";
 function readGuestMode(): "light" | "dark" {
-  try { return localStorage.getItem(GUEST_KEY) === "dark" ? "dark" : "light"; } catch { return "light"; }
+  try {
+    return localStorage.getItem(GUEST_KEY) === "dark" ? "dark" : "light";
+  } catch {
+    return "light";
+  }
 }
 const isColorMode = (value: unknown): value is ColorMode =>
   value === "light" || value === "dark" || value === "system";
@@ -84,9 +88,15 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
   const [accountPreferences, setPreferences] = useState(readPreferences);
   const [accountAvailable, setAccountAvailable] = useState(false);
   const [guestMode, setGuestMode] = useState(readGuestMode);
-  const preferences: AppearancePreferences = accountAvailable ? accountPreferences : {
-    navigation: "vertical", sidebarCollapsed: false, palette: "medclub", colorMode: guestMode,
-  };
+  const [guestSidebarCollapsed, setGuestSidebarCollapsed] = useState(false);
+  const preferences: AppearancePreferences = accountAvailable
+    ? accountPreferences
+    : {
+        navigation: "vertical",
+        sidebarCollapsed: guestSidebarCollapsed,
+        palette: "medclub",
+        colorMode: guestMode,
+      };
   const [persisted, setPersisted] = useState(true);
   const lastTheme = useRef<string | null>(null);
   const themeAnimations = useRef<Animation[]>([]);
@@ -101,10 +111,12 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
       : preferences.colorMode;
   useLayoutEffect(() => {
     const signature = `${preferences.palette}:${resolvedTheme}`;
-    const changed = lastTheme.current !== null && lastTheme.current !== signature;
-    const snapshots = changed && !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? captureThemeColors(document.documentElement)
-      : [];
+    const changed =
+      lastTheme.current !== null && lastTheme.current !== signature;
+    const snapshots =
+      changed && !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? captureThemeColors(document.documentElement)
+        : [];
     themeAnimations.current.forEach((animation) => animation.cancel());
     document.documentElement.dataset.theme = resolvedTheme;
     document.documentElement.dataset.palette = preferences.palette;
@@ -116,7 +128,8 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const stop = () => {
-      if (reduced.matches) themeAnimations.current.forEach((animation) => animation.cancel());
+      if (reduced.matches)
+        themeAnimations.current.forEach((animation) => animation.cancel());
     };
     reduced.addEventListener("change", stop);
     return () => {
@@ -135,7 +148,8 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
     const sync = (event: StorageEvent) => {
       if (event.key === STORAGE_KEYS.appearance || event.key === null)
         setPreferences(readPreferences());
-      if (event.key === GUEST_KEY || event.key === null) setGuestMode(readGuestMode());
+      if (event.key === GUEST_KEY || event.key === null)
+        setGuestMode(readGuestMode());
     };
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
@@ -143,11 +157,17 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => {
     function update(change: Partial<AppearancePreferences>) {
       if (!accountAvailable) {
+        if (typeof change.sidebarCollapsed === "boolean")
+          setGuestSidebarCollapsed(change.sidebarCollapsed);
         if (change.palette && change.palette !== "medclub") return;
         if (change.colorMode !== "light" && change.colorMode !== "dark") return;
         setGuestMode(change.colorMode);
-        try { localStorage.setItem(GUEST_KEY, change.colorMode); setPersisted(true); }
-        catch { setPersisted(false); }
+        try {
+          localStorage.setItem(GUEST_KEY, change.colorMode);
+          setPersisted(true);
+        } catch {
+          setPersisted(false);
+        }
         return;
       }
       const next = { ...accountPreferences, ...change };
@@ -184,7 +204,14 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
       setSidebarCollapsed: (sidebarCollapsed: boolean) =>
         update({ sidebarCollapsed }),
     };
-  }, [accountPreferences, accountAvailable, guestMode, persisted, resolvedTheme]);
+  }, [
+    accountPreferences,
+    accountAvailable,
+    guestMode,
+    guestSidebarCollapsed,
+    persisted,
+    resolvedTheme,
+  ]);
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useAppearance() {

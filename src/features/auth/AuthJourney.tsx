@@ -8,7 +8,13 @@ import {
   type ReactNode,
 } from "react";
 
+export type AuthFeedback = "idle" | "submitting" | "success" | "error";
+
 type Journey = {
+  feedback: AuthFeedback;
+  setFeedback: (value: AuthFeedback) => void;
+  focused: string | null;
+  setFocused: (value: string | null) => void;
   progress: string[];
   finalRestoration: boolean;
   finishRestoration: () => void;
@@ -19,6 +25,10 @@ type Journey = {
   stopWelcome: () => void;
 };
 const Context = createContext<Journey>({
+  feedback: "idle",
+  setFeedback: () => {},
+  focused: null,
+  setFocused: () => {},
   progress: [],
   finalRestoration: false,
   finishRestoration: () => {},
@@ -29,6 +39,8 @@ const Context = createContext<Journey>({
   stopWelcome: () => {},
 });
 export function AuthJourneyProvider({ children }: { children: ReactNode }) {
+  const [feedback, setFeedback] = useState<AuthFeedback>("idle");
+  const [focused, setFocused] = useState<string | null>(null);
   const [finalRestoration, setFinalRestoration] = useState(false);
   const finishRestoration = useCallback(() => setFinalRestoration(true), []);
   const [progress, setProgressState] = useState<string[]>([]);
@@ -36,13 +48,12 @@ export function AuthJourneyProvider({ children }: { children: ReactNode }) {
   const [welcoming, setWelcoming] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const resolve = useRef<(() => void) | null>(null);
-  const setProgress = useCallback(
-    (value: string[]) => {
-      if (value.length < 6) setFinalRestoration(false);
-      setProgressState((current) => current.join("|") === value.join("|") ? current : value);
-    },
-    [],
-  );
+  const setProgress = useCallback((value: string[]) => {
+    if (value.length < 6) setFinalRestoration(false);
+    setProgressState((current) =>
+      current.join("|") === value.join("|") ? current : value,
+    );
+  }, []);
   const stopWelcome = useCallback(() => {
     clearTimeout(timer.current);
     timer.current = undefined;
@@ -52,6 +63,7 @@ export function AuthJourneyProvider({ children }: { children: ReactNode }) {
   }, []);
   const startWelcome = useCallback(() => {
     stopWelcome();
+    setFeedback("success");
     if (
       document.hidden ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -61,7 +73,7 @@ export function AuthJourneyProvider({ children }: { children: ReactNode }) {
     setWelcomeToken((value) => value + 1);
     return new Promise<void>((done) => {
       resolve.current = done;
-      timer.current = setTimeout(stopWelcome, 900);
+      timer.current = setTimeout(stopWelcome, 420);
     });
   }, [stopWelcome]);
   useEffect(() => {
@@ -82,6 +94,10 @@ export function AuthJourneyProvider({ children }: { children: ReactNode }) {
   return (
     <Context.Provider
       value={{
+        feedback,
+        setFeedback,
+        focused,
+        setFocused,
         progress,
         setProgress,
         finalRestoration,

@@ -106,6 +106,21 @@
   user-select: none;
   unicode-bidi: plaintext;
 }
+.campus-hero[data-campus-map="three"] .campus-three-sign {
+  fill: #f3e3cc;
+}
+:root[data-theme="dark"]
+  .campus-hero[data-campus-map="three"]
+  .campus-three-sign {
+  fill: #d8b68c;
+}
+.campus-hero[data-campus-map="three"] .campus-building-label {
+  font-family: var(--font-arabic), sans-serif;
+  font-size: 23px;
+  fill: #642a25;
+  stroke: none;
+  paint-order: normal;
+}
 
 .campus-building[data-active="true"] .campus-building-hit {
   fill: transparent;

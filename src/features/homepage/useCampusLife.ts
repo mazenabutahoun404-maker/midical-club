@@ -7,6 +7,7 @@ export function useCampusLife(
   kind: "entrance" | "ambient" | "welcome",
   enabled = true,
   trigger = 0,
+  destinations: ReadonlyArray<{ id: string }> = campusDestinations,
 ) {
   const [lit, setLit] = useState<string | null>(null);
   const [revealed, setRevealed] = useState<string[]>([]);
@@ -52,7 +53,7 @@ export function useCampusLife(
     const tick = () => {
       timer = undefined;
       if (!allowed()) return;
-      if (cursor.current >= campusDestinations.length) {
+      if (cursor.current >= destinations.length) {
         cursor.current = 0;
         setLit(null);
         setRevealed([]);
@@ -68,7 +69,7 @@ export function useCampusLife(
         return;
       }
       if (cursor.current === 0) lastStart.current = Date.now();
-      const id = campusDestinations[cursor.current++].id;
+      const id = destinations[cursor.current++].id;
       setLit(id);
       setRunning(true);
       setRevealed((current) => [...current, id]);
@@ -115,6 +116,6 @@ export function useCampusLife(
       reduced.removeEventListener("change", sync);
       document.removeEventListener("visibilitychange", sync);
     };
-  }, [stage, kind, enabled, trigger]);
+  }, [stage, kind, enabled, trigger, destinations]);
   return { lit, revealed, running };
 }

@@ -11,22 +11,13 @@ import { useSiteContent } from "../../hooks/useContent";
 import { useAccess } from "../../admin/governance/useGovernance";
 import { publicMainItems } from "./involvement";
 import { personalNavigationItems } from "./personal-navigation-items";
+import { phoneDockPaths } from "./phone-destinations";
 import { MorphIcon } from "../ui/MorphIcon";
 import "../../styles/phone-menu-priority-v1353.css";
 
 type MenuItem = { href: string; label: string };
-const personalDock = new Set([
-  "/my",
-  "/my/learning",
-  "/my/exams",
-  "/my/profile",
-]);
-const publicDock = new Set([
-  "/",
-  "/learn",
-  "/learn/electronic-exams",
-  "/my/profile",
-]);
+const personalDock = new Set(phoneDockPaths(true));
+const publicDock = new Set(phoneDockPaths(false));
 
 /** More complements the daily dock with the current sidebar's main destinations. */
 export function MobileNavigation({
@@ -101,6 +92,11 @@ export function MobileNavigation({
               label: t(n.label),
             }))
           : []),
+        item(
+          "/learn/electronic-exams",
+          "Electronic exams",
+          "الامتحانات الإلكترونية",
+        ),
         item("/utilities", "Study tools", "أدوات الدراسة"),
       ];
   const sections = [...promoted, ...remaining];

@@ -1,0 +1,72 @@
+/* Clinical details complement the existing palettes and page architecture. */
+:root {
+  --medical-ink: var(--theme-primary-ink, var(--primary));
+  --medical-secondary: #40796c;
+  --medical-wash: color-mix(in srgb, var(--medical-secondary) 7%, var(--card));
+}
+[data-theme="dark"] {
+  --medical-secondary: #8ab8a5;
+}
+[data-palette="midnight"] {
+  --medical-secondary: #7eafc7;
+}
+[data-palette="espresso"] {
+  --medical-secondary: #9d8b66;
+}
+.medical-mark {
+  display: block;
+  width: 88px;
+  height: 88px;
+  color: var(--medical-ink);
+  pointer-events: none;
+}
+.medical-signature {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  color: var(--medical-ink);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-weight: 750;
+}
+[dir="rtl"] .medical-signature {
+  letter-spacing: 0;
+}
+.home-studio .home-chapter-heading {
+  position: relative;
+}
+.home-studio .home-chapter-heading > .medical-mark {
+  position: absolute;
+  inset-inline-end: 15%;
+  inset-block-start: -12px;
+  opacity: 0.2;
+}
+.home-atlas.home-studio .section-heading h2 {
+  font-family: "Manrope", "Noto Sans Arabic", sans-serif;
+  font-weight: 650;
+  font-size: clamp(30px, 3.3vw, 43px);
+  letter-spacing: -0.035em;
+}
+.home-studio[dir="rtl"] .section-heading h2 {
+  letter-spacing: 0;
+}
+.home-atlas.home-studio .home-community-core {
+  background: var(--medical-wash);
+}
+@media (max-width: 767px) {
+  .medical-signature {
+    font-size: 8px;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .home-studio .home-chapter-heading > .medical-mark {
+    width: 60px;
+    height: 60px;
+    inset-inline-end: 4%;
+    opacity: 0.12;
+  }
+  .home-studio .home-chapter-heading:has(.text-link) > .medical-mark {
+    display: none;
+  }
+}

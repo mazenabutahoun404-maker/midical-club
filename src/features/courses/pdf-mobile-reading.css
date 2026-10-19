@@ -1,0 +1,56 @@
+.pdf-book .pdf-visible-zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+  direction: ltr;
+}
+.pdf-book .pdf-mobile-reading-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  padding: 4px 8px;
+  border-block-end: 1px solid var(--book-rule, var(--border));
+  background: var(--book-paper, var(--card));
+  color: var(--book-ink, var(--foreground));
+}
+.pdf-book .pdf-mobile-reading-controls :is(button, .notebook-icon-button) {
+  min-height: 44px;
+  min-width: 44px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--book-rule, var(--border));
+  border-radius: 8px;
+  background: var(--book-paper, var(--card));
+  color: inherit;
+  cursor: pointer;
+}
+.pdf-book .pdf-fit-width {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding-inline: 10px;
+  width: auto;
+}
+.pdf-book .pdf-fit-width span {
+  font-size: 12px;
+  white-space: nowrap;
+}
+.pdf-book .pdf-fit-width[aria-pressed="true"] {
+  border-color: var(--book-action, var(--ring));
+  background: color-mix(in srgb, var(--book-cover) 12%, var(--book-paper));
+}
+.pdf-book .pdf-mobile-reading-controls .pdf-zoom-reset {
+  width: 55px;
+}
+.pdf-book .pdf-book-viewport[data-pdf-pinching="true"] {
+  user-select: none;
+}
+.pdf-book .pdf-book-viewport[data-pdf-pinching="true"] .pdf-pan-canvas {
+  will-change: transform;
+}

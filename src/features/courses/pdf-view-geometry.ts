@@ -7,10 +7,7 @@ export function pdfFitZoom(
   naturalWidth: number,
 ) {
   const available = (width - (twoPages ? 26 : 0) - 4) / (twoPages ? 2 : 1);
-  return Math.max(
-    MIN_PDF_ZOOM,
-    Math.min(1, available / Math.max(1, naturalWidth)),
-  );
+  return Math.max(0.01, Math.min(1, available / Math.max(1, naturalWidth)));
 }
 /** Fit the actual page proportions in both axes; short screens may need <25%. */
 export function pdfFitPageZoom(

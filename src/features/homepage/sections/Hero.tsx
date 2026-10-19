@@ -1,5 +1,5 @@
 import { useId, useRef, useState } from "react";
-import { ArrowDown, ArrowRight, Search } from "lucide-react";
+import { ArrowDown, ArrowRight, Search, Stethoscope } from "lucide-react";
 import {
   ArtworkEditor,
   usePageArtwork,
@@ -9,11 +9,12 @@ import { useAppearance } from "../../../app/providers/AppearanceProvider";
 import { useOverlays } from "../../../app/providers/OverlayProvider";
 import { AppLink } from "../../../components/navigation/AppLink";
 import type { SiteContent } from "../../../types/content";
-import campus from "../../../assets/home/living-campus-1672.webp";
-import campusSmall from "../../../assets/home/living-campus-960.webp";
-import campusNight from "../../../assets/home/living-campus-night-1672.webp";
-import campusNightSmall from "../../../assets/home/living-campus-night-960.webp";
-import { campusDestinations, type CampusDestination } from "../living-campus";
+import campus from "../../../assets/home/three-campus-day-1672.webp";
+import campusSmall from "../../../assets/home/three-campus-day-960.webp";
+import campusNight from "../../../assets/home/three-campus-night-1672.webp";
+import campusNightSmall from "../../../assets/home/three-campus-night-960.webp";
+import type { CampusDestination } from "../living-campus";
+import { homeCampusDestinations as campusDestinations } from "../home-campus";
 import { useCampusLife } from "../useCampusLife";
 import { CampusLights } from "../CampusLights";
 import "../living-campus.css";
@@ -46,6 +47,8 @@ export function Hero({
     stage,
     "entrance",
     mapped && loadedSource === imageSource,
+    0,
+    campusDestinations,
   );
   return (
     <section
@@ -53,12 +56,17 @@ export function Hero({
       aria-labelledby="home-welcome-heading"
       data-direction={dir}
       data-campus-lighting={night ? "night" : "day"}
+      data-campus-map="three"
       data-campus-running={life.running || undefined}
       data-custom-artwork={custom || undefined}
       data-artwork-failed={failed || undefined}
     >
       <div className="campus-hero-layout">
         <div className="campus-hero-copy" dir={dir}>
+          <span className="medical-signature">
+            <Stethoscope size={16} aria-hidden="true" />
+            {t({ en: "THE MEDICAL STUDENT COMMUNITY", ar: "مجتمع طلبة الطب" })}
+          </span>
           <span className="campus-wordmark" lang="en">
             {brand.name}
           </span>
@@ -130,7 +138,11 @@ export function Hero({
                     <stop offset="1" stopColor="var(--campus-path-color)" />
                   </linearGradient>
                 </defs>
-                <CampusLights lit={life.lit} revealed={life.revealed} />
+                <CampusLights
+                  lit={life.lit}
+                  revealed={life.revealed}
+                  destinations={campusDestinations}
+                />
                 <g className="campus-routes" aria-hidden="true">
                   {campusDestinations.map((destination) => (
                     <path
@@ -166,26 +178,39 @@ export function Hero({
                       vectorEffect="non-scaling-stroke"
                     />
                     {/* The scene mirrors in Arabic; counter-mirror only the labels so they stay readable. */}
-                    <g
-                      transform={
-                        dir === "rtl"
-                          ? `translate(${destination.labelX * 2} 0) scale(-1 1)`
-                          : undefined
-                      }
-                    >
-                      <text
-                        className="campus-building-label"
-                        x={destination.labelX}
-                        y={destination.labelY}
-                        transform={`rotate(${dir === "rtl" ? -destination.rotation : destination.rotation} ${destination.labelX} ${destination.labelY})`}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        aria-hidden="true"
-                        lang={dir === "rtl" ? "ar" : "en"}
+                    {dir === "rtl" && (
+                      <g
+                        transform={
+                          dir === "rtl"
+                            ? `translate(${destination.labelX * 2} 0) scale(-1 1)`
+                            : undefined
+                        }
                       >
-                        {t(destination.label)}
-                      </text>
-                    </g>
+                        <g
+                          transform={`rotate(${-destination.rotation} ${destination.labelX} ${destination.labelY})`}
+                        >
+                          <rect
+                            className="campus-three-sign"
+                            x={destination.labelX - destination.labelWidth / 2}
+                            y={destination.labelY - 17}
+                            width={destination.labelWidth}
+                            height={34}
+                            rx={2}
+                          />
+                          <text
+                            className="campus-building-label"
+                            x={destination.labelX}
+                            y={destination.labelY}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            aria-hidden="true"
+                            lang={dir === "rtl" ? "ar" : "en"}
+                          >
+                            {t(destination.label)}
+                          </text>
+                        </g>
+                      </g>
+                    )}
                   </AppLink>
                 ))}
               </svg>

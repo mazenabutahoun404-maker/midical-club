@@ -2,10 +2,10 @@ import { useLocation } from "react-router-dom";
 import { useAppearance } from "../../app/providers/AppearanceProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { footerBuildingForPath, type FooterBuilding } from "./footer-scene";
-import day from "../../assets/home/living-campus-1672.webp";
-import night from "../../assets/home/living-campus-night-1672.webp";
-import daySmall from "../../assets/home/living-campus-960.webp";
-import nightSmall from "../../assets/home/living-campus-night-960.webp";
+import day from "../../assets/home/three-campus-day-1672.webp";
+import night from "../../assets/home/three-campus-night-1672.webp";
+import daySmall from "../../assets/home/three-campus-day-960.webp";
+import nightSmall from "../../assets/home/three-campus-night-960.webp";
 import "../../styles/campus-footer-v1351.css";
 const assets = import.meta.glob<string>(
   "../../assets/campus-scenes-v1351/*.webp",

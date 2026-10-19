@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ArrowRight, Eye, EyeOff, KeyRound, Sparkles } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, KeyRound, Stethoscope } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -39,22 +39,26 @@ export default function SignInPage() {
     if (auth.isPending || welcoming) return;
     setError(null);
     if (!email.trim() || !password) {
+      journey.setFeedback("error");
       setError(label("requiredField"));
       return;
     }
     if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+      journey.setFeedback("error");
       setError(label("emailInvalid"));
       document.getElementById("auth-email")?.focus();
       return;
     }
     setWelcoming(true);
-    const welcome = journey.startWelcome();
+    journey.setFeedback("submitting");
     try {
       await auth.signIn({ email, password });
-      await welcome;
+      if (!mounted.current) return;
+      await journey.startWelcome();
       if (mounted.current) navigate(returnTo, { replace: true });
     } catch (caught) {
       journey.stopWelcome();
+      journey.setFeedback("error");
       if (mounted.current) setError(label(authErrorKey(caught)));
     } finally {
       if (mounted.current) setWelcoming(false);
@@ -65,7 +69,7 @@ export default function SignInPage() {
     <section className="auth-panel">
       <div className="auth-panel-heading">
         <p className="auth-eyebrow">
-          <Sparkles />
+          <Stethoscope />
           {label("signIn")}
         </p>
         <h2>{label("signInTitle")}</h2>
@@ -81,12 +85,17 @@ export default function SignInPage() {
           <span>{label("email")}</span>
           <input
             id="auth-email"
+            disabled={auth.isPending || welcoming}
             type="email"
             dir="ltr"
             inputMode="email"
             autoComplete="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              setEmail(event.target.value);
+              setError(null);
+              journey.setFeedback("idle");
+            }}
             required
             aria-describedby={error ? "signin-error" : undefined}
           />
@@ -96,11 +105,16 @@ export default function SignInPage() {
           <span className="auth-password-field">
             <input
               id="auth-password"
+              disabled={auth.isPending || welcoming}
               type={visible ? "text" : "password"}
               autoComplete="current-password"
               dir="ltr"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                setError(null);
+                journey.setFeedback("idle");
+              }}
               required
             />
             <button
@@ -118,6 +132,7 @@ export default function SignInPage() {
           <button
             type="button"
             className="auth-demo-fill"
+            disabled={auth.isPending || welcoming}
             onClick={() => {
               setEmail(PREVIEW_CREDENTIALS.email);
               setPassword(PREVIEW_CREDENTIALS.password);

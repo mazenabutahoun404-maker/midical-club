@@ -9,7 +9,7 @@ import { authErrorKey, safeReturnTo } from "../../lib/auth";
 import { routes } from "../../constants/routes";
 import { AuthenticatedState } from "./AuthenticatedState";
 import { useAuthJourney } from "./AuthJourney";
-import { campusDestinations } from "../homepage/living-campus";
+import { authMilestones, isEmailReady, isPasswordReady } from "./auth-progress";
 
 export default function RegisterPage() {
   const auth = useAuth();
@@ -35,16 +35,13 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [invalid, setInvalid] = useState<keyof typeof form | null>(null);
   const passwordReady = useMemo(
-    () =>
-      form.password.length >= 8 &&
-      /[A-Za-z]/.test(form.password) &&
-      /\d/.test(form.password),
+    () => isPasswordReady(form.password),
     [form.password],
   );
   const readyIds = useMemo(() => {
     const ready = [
       !!form.fullName.trim(),
-      /^\S+@\S+\.\S+$/.test(form.email.trim()),
+      isEmailReady(form.email),
       !!form.batch.trim(),
       form.year >= 1 && form.year <= 6,
       passwordReady,
@@ -58,9 +55,9 @@ export default function RegisterPage() {
       "password",
       "confirm",
     ] as const;
-    return campusDestinations
-      .filter((_, index) => ready[index] && touched[keys[index]])
-      .map((destination) => destination.id);
+    return authMilestones.filter(
+      (_, index) => ready[index] && touched[keys[index]],
+    );
   }, [form, touched, passwordReady]);
   useEffect(() => {
     const timer = setTimeout(() => journey.setProgress(readyIds), 180);
@@ -75,12 +72,14 @@ export default function RegisterPage() {
   }, [step]);
   if (auth.snapshot.status === "authenticated") return <AuthenticatedState />;
   const update = (key: keyof typeof form, value: string | number) => {
+    journey.setFeedback("idle");
     setForm((current) => ({ ...current, [key]: value }));
     setTouched((current) => ({ ...current, [key]: true }));
     setInvalid(null);
     setError(null);
   };
   const reject = (key: keyof typeof form, message: string, id: string) => {
+    journey.setFeedback("error");
     setInvalid(key);
     setError(message);
     document.getElementById(id)?.focus();
@@ -97,7 +96,7 @@ export default function RegisterPage() {
     setInvalid(null);
     if (!form.fullName.trim())
       return reject("fullName", label("requiredField"), "register-name");
-    if (!/^\S+@\S+\.\S+$/.test(form.email.trim()))
+    if (!isEmailReady(form.email))
       return reject("email", label("emailInvalid"), "register-email");
     if (!form.batch.trim())
       return reject("batch", label("requiredField"), "register-batch");
@@ -111,6 +110,7 @@ export default function RegisterPage() {
     if (form.password !== form.confirm)
       return reject("confirm", label("passwordMismatch"), "register-confirm");
     journey.finishRestoration();
+    journey.setFeedback("submitting");
     try {
       await auth.register({
         fullName: form.fullName,
@@ -123,6 +123,7 @@ export default function RegisterPage() {
         replace: true,
       });
     } catch (caught) {
+      journey.setFeedback("error");
       setError(label(authErrorKey(caught)));
     }
   };
@@ -178,6 +179,7 @@ export default function RegisterPage() {
               <span>{label("fullName")}</span>
               <input
                 id="register-name"
+                disabled={auth.isPending}
                 autoComplete="name"
                 value={form.fullName}
                 onChange={(event) => update("fullName", event.target.value)}
@@ -190,6 +192,7 @@ export default function RegisterPage() {
               <span>{label("email")}</span>
               <input
                 id="register-email"
+                disabled={auth.isPending}
                 type="email"
                 dir="ltr"
                 inputMode="email"
@@ -206,6 +209,7 @@ export default function RegisterPage() {
                 <span>{label("batchName")}</span>
                 <input
                   id="register-batch"
+                  disabled={auth.isPending}
                   value={form.batch}
                   onBlur={() =>
                     setTouched((current) => ({ ...current, batch: true }))
@@ -220,6 +224,7 @@ export default function RegisterPage() {
                 <span>{label("studyYear")}</span>
                 <select
                   id="register-year"
+                  disabled={auth.isPending}
                   value={form.year}
                   onBlur={() =>
                     setTouched((current) => ({ ...current, year: true }))
@@ -253,6 +258,7 @@ export default function RegisterPage() {
               <span className="auth-password-field">
                 <input
                   id="register-password"
+                  disabled={auth.isPending}
                   type={visible ? "text" : "password"}
                   dir="ltr"
                   autoComplete="new-password"
@@ -286,6 +292,7 @@ export default function RegisterPage() {
               <span>{label("confirmPassword")}</span>
               <input
                 id="register-confirm"
+                disabled={auth.isPending}
                 type={visible ? "text" : "password"}
                 dir="ltr"
                 autoComplete="new-password"
@@ -307,8 +314,14 @@ export default function RegisterPage() {
           type="submit"
           disabled={auth.isPending}
           className="button button-primary auth-submit"
-          onPointerEnter={() => { if (step === 1 && readyIds.length === 6) journey.finishRestoration(); }}
-          onFocus={() => { if (step === 1 && readyIds.length === 6) journey.finishRestoration(); }}
+          onPointerEnter={() => {
+            if (step === 1 && readyIds.length === 6)
+              journey.finishRestoration();
+          }}
+          onFocus={() => {
+            if (step === 1 && readyIds.length === 6)
+              journey.finishRestoration();
+          }}
         >
           {auth.isPending
             ? label("creatingAccount")

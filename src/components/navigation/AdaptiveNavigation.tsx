@@ -31,9 +31,9 @@ export function useAdaptiveNavigation() {
   const secondary = hasSectionNavigation(pathname);
   const [pinned, setPinned] = useState(() => {
     try {
-      return localStorage.getItem(pinKey) === "true";
+      return localStorage.getItem(pinKey) !== "false";
     } catch {
-      return false;
+      return true;
     }
   });
   const [hidden, setHidden] = useState(studying);
@@ -147,7 +147,8 @@ export function useAdaptiveNavigation() {
   }, [automatic, studying, reveal, retreat, locked]);
   useEffect(() => {
     const storage = (event: StorageEvent) => {
-      if (event.key === pinKey) setPinned(event.newValue === "true");
+      if (event.key === pinKey || event.key === null)
+        setPinned(event.newValue !== "false");
     };
     window.addEventListener("storage", storage);
     return () => window.removeEventListener("storage", storage);
