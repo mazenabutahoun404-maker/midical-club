@@ -1,0 +1,28 @@
+.medical-figure {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  flex: none;
+  pointer-events: none;
+  isolation: isolate;
+}
+.medical-figure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--anatomy-atlas);
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+.medical-figure[data-anatomy="lungs"]::before {
+  background-position: 100% 0;
+}
+.medical-figure[data-anatomy="brain"]::before {
+  background-position: 0 100%;
+}
+.medical-figure[data-anatomy="bone"]::before {
+  background-position: 100% 100%;
+}

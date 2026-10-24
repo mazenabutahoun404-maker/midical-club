@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { Popover } from "radix-ui";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,7 +11,12 @@ import { useResources } from "../../hooks/useContent";
 import type { StudentNotification } from "../../types/workspace";
 import { AppLink } from "./AppLink";
 import { useAuth } from "../../app/providers/AuthProvider";
-import { noticeNotificationArrival, animateNotificationBell, type NotificationArrivalState } from "./notification-arrival";
+import { signInPath } from "../../constants/routes";
+import {
+  noticeNotificationArrival,
+  animateNotificationBell,
+  type NotificationArrivalState,
+} from "./notification-arrival";
 
 function NotificationList({
   items,
@@ -81,41 +86,170 @@ function NotificationList({
   );
 }
 
-/** Bell opens by its trigger in every workspace; entering My Room is an explicit action. */
-export function HeaderNotifications() {
-  const { label, t, dir } = useLocale();
-  const notifications = useNotifications();
-  const { snapshot } = useAuth();
-  const accountId = snapshot.status === "authenticated" ? snapshot.user?.id || null : null;
-  const arrival = useRef<NotificationArrivalState | null>(null);
+function useBellMotion() {
   const bell = useRef<HTMLSpanElement>(null);
   const bellAnimation = useRef<Animation | null>(null);
   const ringBell = useCallback((action: "hover" | "click" | "arrival") => {
-    if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    if (
+      document.hidden ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
       return;
     bellAnimation.current?.cancel();
     bellAnimation.current = animateNotificationBell(bell.current, action);
   }, []);
-  const notificationKey = JSON.stringify(notifications.items.map((item) => item.id));
-  const ready = !notifications.isPending && !notifications.isError;
-  useEffect(() => {
-    const previous = arrival.current;
-    const result = noticeNotificationArrival(previous, accountId, JSON.parse(notificationKey) as string[], ready);
-    arrival.current = result.state;
-    if (previous?.accountId !== accountId) {
-      bellAnimation.current?.cancel();
-    }
-    if (result.arrived) ringBell("arrival");
-  }, [accountId, notificationKey, ready, ringBell]);
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const stop = () => { if (reduced.matches) bellAnimation.current?.cancel(); };
+    const stop = () => {
+      if (reduced.matches) bellAnimation.current?.cancel();
+    };
     reduced.addEventListener("change", stop);
     return () => {
       reduced.removeEventListener("change", stop);
       bellAnimation.current?.cancel();
     };
   }, []);
+  return { bell, ringBell, bellAnimation };
+}
+function BellIcon() {
+  const gradient = `bell-gold-${useId().replace(/:/g, "")}`;
+  return (
+    <svg
+      className="notification-bell-icon"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill={`url(#${gradient})`}
+      stroke={`url(#${gradient})`}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <defs>
+        <linearGradient
+          id={gradient}
+          x1="5"
+          y1="3"
+          x2="19"
+          y2="19"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#aab1ba" />
+          <stop offset=".38" stopColor="#727a85" />
+          <stop offset=".7" stopColor="#d3ad3c" />
+          <stop offset="1" stopColor="#ffe079" />
+        </linearGradient>
+      </defs>
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+      <path className="notification-bell-clapper" d="M10 21h4" fill="none" />
+      <g className="notification-bell-waves" fill="none">
+        <path d="M2 5 1 8M22 5l1 3" />
+      </g>
+    </svg>
+  );
+}
+
+/** Guest bells never mount account queries. */
+export function HeaderNotifications() {
+  const { snapshot } = useAuth();
+  return snapshot.status === "authenticated" ? (
+    <AccountNotifications />
+  ) : (
+    <GuestNotifications />
+  );
+}
+function GuestNotifications() {
+  const { t, label, dir } = useLocale(),
+    { key } = useLocation();
+  const [open, setOpen] = useState(false);
+  const { bell, ringBell } = useBellMotion();
+  useEffect(() => setOpen(false), [key]);
+  return (
+    <Popover.Root open={open} onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button
+          type="button"
+          className="workspace-icon notification-bell"
+          aria-label={label("notifications")}
+          onMouseEnter={() => ringBell("hover")}
+          onClick={() => ringBell("click")}
+          onFocus={(event) => {
+            if (event.currentTarget.matches(":focus-visible"))
+              ringBell("hover");
+          }}
+        >
+          <span
+            ref={bell}
+            className="notification-bell-motion"
+            aria-hidden="true"
+          >
+            <BellIcon />
+          </span>
+        </button>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          className="notification-preview notification-guest"
+          dir={dir}
+          side="bottom"
+          align="end"
+          sideOffset={8}
+          collisionPadding={10}
+          aria-label={label("notifications")}
+        >
+          <header>
+            <h2>{label("notifications")}</h2>
+            <Popover.Close aria-label={label("close")}>
+              <X size={18} />
+            </Popover.Close>
+          </header>
+          <p>
+            {t({
+              en: "Sign in to start receiving course updates, reminders and community notifications.",
+              ar: "سجّل الدخول لتصلك مستجدات المساقات والتذكيرات وإشعارات المجتمع.",
+            })}
+          </p>
+          <AppLink
+            href={signInPath("/my/notifications")}
+            className="notification-preview-all"
+            onClick={() => setOpen(false)}
+          >
+            {label("signIn")}
+            <ArrowUpRight size={16} className="directional" />
+          </AppLink>
+          <Popover.Arrow className="notification-preview-arrow" />
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+  );
+}
+
+function AccountNotifications() {
+  const { label, t, dir } = useLocale();
+  const notifications = useNotifications();
+  const { snapshot } = useAuth();
+  const accountId =
+    snapshot.status === "authenticated" ? snapshot.user?.id || null : null;
+  const arrival = useRef<NotificationArrivalState | null>(null);
+  const { bell, ringBell, bellAnimation } = useBellMotion();
+  const notificationKey = JSON.stringify(
+    notifications.items.map((item) => item.id),
+  );
+  const ready = !notifications.isPending && !notifications.isError;
+  useEffect(() => {
+    const previous = arrival.current;
+    const result = noticeNotificationArrival(
+      previous,
+      accountId,
+      JSON.parse(notificationKey) as string[],
+      ready,
+    );
+    arrival.current = result.state;
+    if (previous?.accountId !== accountId) {
+      bellAnimation.current?.cancel();
+    }
+    if (result.arrived) ringBell("arrival");
+  }, [accountId, notificationKey, ready, ringBell]);
   const [open, setOpen] = useState(false);
   const { key } = useLocation();
   useEffect(() => setOpen(false), [key]);
@@ -131,18 +265,18 @@ export function HeaderNotifications() {
           className="workspace-icon notification-bell"
           aria-label={label("notifications")}
           onMouseEnter={() => ringBell("hover")}
-          onPointerDown={() => ringBell("click")}
           onFocus={(event) => {
-            if (event.currentTarget.matches(":focus-visible")) ringBell("hover");
+            if (event.currentTarget.matches(":focus-visible"))
+              ringBell("hover");
           }}
           onClick={() => ringBell("click")}
         >
-          <span ref={bell} className="notification-bell-motion" aria-hidden="true">
-            <svg className="notification-bell-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
-              <path className="notification-bell-clapper" d="M10 21h4" />
-              <g className="notification-bell-waves"><path d="M2 5 1 8M22 5l1 3" /></g>
-            </svg>
+          <span
+            ref={bell}
+            className="notification-bell-motion"
+            aria-hidden="true"
+          >
+            <BellIcon />
           </span>
           {unread > 0 && (
             <span

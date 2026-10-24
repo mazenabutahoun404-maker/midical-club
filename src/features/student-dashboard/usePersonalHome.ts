@@ -132,12 +132,12 @@ export function usePersonalHome() {
     academic.data || [],
     myCourses,
     now,
-    services.contentSnapshot?.kind === "live",
+    services.contentSnapshot?.kind !== "sample",
   );
   const examSoon =
     !!exam && Date.parse(exam.startsAt) - now <= 24 * 60 * 60_000;
   const upcoming = [
-    ...(services.contentSnapshot?.kind === "live" ? academic.data || [] : []),
+    ...(services.contentSnapshot?.kind !== "sample" ? academic.data || [] : []),
     ...workspace.state.studyEntries.map((e) => ({
       id: e.id,
       title: { en: e.title, ar: e.title },
@@ -171,6 +171,7 @@ export function usePersonalHome() {
     exam,
     examSoon,
     upcoming,
+    calendarPending: academic.isPending,
     cards,
     claims,
     rooms,

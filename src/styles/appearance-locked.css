@@ -6,7 +6,7 @@
 }
 .appearance-theme-locked small {
   display: block;
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
   color: var(--muted-foreground);
   margin-block-start: 3px;
 }
@@ -29,7 +29,7 @@
   min-width: 150px;
 }
 .appearance-unlock-callout p {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   margin-block: 4px 0;
   color: var(--muted-foreground);
 }

@@ -68,7 +68,7 @@
   font-size: 17px;
 }
 .app-shell .shell-brand-caption small {
-  font-size: 7px;
+  font-size: max(var(--readable-small, .875rem), 7px);
 }
 .app-shell[data-sidebar="collapsed"] .sidebar-expanded-logo {
   display: none;

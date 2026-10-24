@@ -80,9 +80,11 @@ const stages = [
 export default function PersonalCampus({
   levels,
   quiet,
+  hero = false,
 }: {
   levels: CampusLevels;
   quiet: boolean;
+  hero?: boolean;
 }) {
   const { t, dir } = useLocale(),
     { resolvedTheme } = useAppearance();
@@ -107,6 +109,8 @@ export default function PersonalCampus({
     <div
       className="personal-campus"
       data-direction={dir}
+      data-presentation={hero ? "hero" : "section"}
+      data-failed={failed || undefined}
       data-campus-lighting={dark ? "night" : "day"}
       ref={stage}
     >
@@ -118,7 +122,8 @@ export default function PersonalCampus({
             height={941}
             alt=""
             decoding="async"
-            fetchPriority="low"
+            fetchPriority={quiet ? "low" : "high"}
+            loading={quiet ? "lazy" : "eager"}
             onLoad={() => {
               setLoaded(source);
               setFailed(false);

@@ -157,7 +157,7 @@
     box-shadow: inset 0 0 0 1px var(--ring);
   }
   .appearance-theme-groups .appearance-palette-option strong {
-    font-size: 0.82rem;
+    font-size: max(var(--readable-small, .875rem), 0.82rem);
   }
   .theme-preview-scene {
     border-radius: 8px;

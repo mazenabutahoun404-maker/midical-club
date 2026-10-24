@@ -15,6 +15,7 @@ import {
 } from "../../app/providers/appearance-choices";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { UtilityGlyph } from "./UtilityGlyph";
+import { NavigationControls, useNavigationState } from "./AdaptiveNavigation";
 import "../../styles/appearance-quick-tools-v1350.css";
 
 export function AppearanceQuickTools({
@@ -27,6 +28,12 @@ export function AppearanceQuickTools({
   onOpenPanel: boolean;
 }) {
   const { t, locale, setLocale, dir } = useLocale();
+  const navState = useNavigationState();
+  const navigationAvailable =
+    !!navState &&
+    !navState.focus &&
+    !navState.studying &&
+    window.matchMedia("(min-width: 768px)").matches;
   const {
     navigation,
     setNavigation,
@@ -56,7 +63,11 @@ export function AppearanceQuickTools({
     const trigger = anchor.current?.querySelector("button");
     if (!trigger) return;
     const r = trigger.getBoundingClientRect();
-    const width = 184,
+    const width = navigationAvailable
+        ? window.matchMedia("(any-pointer: coarse)").matches
+          ? 288
+          : 272
+        : 184,
       height = 72;
     setPosition({
       left: Math.max(
@@ -149,10 +160,11 @@ export function AppearanceQuickTools({
       ref={anchor}
       className="appearance-quick-anchor"
       data-compact={compact || undefined}
+      data-quick-open={open || undefined}
       onPointerEnter={(e) => {
         clear();
         if (e.pointerType === "mouse" && !onOpenPanel)
-          timer.current = setTimeout(() => reveal(), 1000);
+          timer.current = setTimeout(() => reveal(), 420);
       }}
       onPointerLeave={scheduleClose}
       onPointerDown={(e) => {
@@ -224,6 +236,7 @@ export function AppearanceQuickTools({
             ref={tray}
             id={id}
             className="appearance-quick-tray"
+            data-navigation-tools={navigationAvailable || undefined}
             popover="manual"
             role="group"
             dir={dir}
@@ -314,6 +327,14 @@ export function AppearanceQuickTools({
                 <LockKeyhole className="quick-tool-lock" size={11} />
               )}
             </button>
+            {navigationAvailable && (
+              <NavigationControls
+                onHide={() => {
+                  dismiss();
+                  navState?.hide();
+                }}
+              />
+            )}
             <span className="sr-only" role="status">
               {message}
             </span>

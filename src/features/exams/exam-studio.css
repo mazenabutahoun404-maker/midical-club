@@ -47,7 +47,7 @@
 }
 .studio-brand-name {
   color: var(--muted-foreground);
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   letter-spacing: 0.05em;
 }
 .studio-topbar h1 {
@@ -76,7 +76,7 @@
 }
 .studio-exam-frame .studio-exit {
   min-height: 44px;
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   border-radius: 13px;
   padding-inline: 14px;
 }
@@ -94,7 +94,7 @@
   margin-bottom: 10px;
 }
 .studio-section-label {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   color: var(--muted-foreground);
 }
 .studio-strip-actions {
@@ -112,7 +112,7 @@
   background: transparent;
   color: var(--foreground);
   padding: 8px 11px;
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .studio-strip-actions :is(button, summary):is(:hover, :focus-visible) {
   background: var(--muted);
@@ -146,7 +146,7 @@
   margin-block: 0 18px;
   grid-template-columns: auto minmax(60px, 1fr) auto;
   gap: 16px;
-  font-size: 0.73rem;
+  font-size: max(var(--readable-small, .875rem), 0.73rem);
 }
 .studio-exam-frame .exam-session-grid {
   display: block;
@@ -170,7 +170,7 @@
 }
 .studio-exam-frame .exam-question-panel > header > strong {
   color: var(--muted-foreground);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   font-weight: 500;
 }
 .studio-exam-frame .exam-flag-button {
@@ -179,7 +179,7 @@
   padding: 6px 9px;
   border-radius: 10px;
   background: transparent;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .studio-exam-frame .exam-flag-button[aria-pressed="true"] {
   color: var(--foreground);
@@ -204,7 +204,7 @@
 }
 .studio-exam-frame .exam-reading-tools button {
   min-height: 36px;
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   padding: 4px 7px;
 }
 .studio-exam-frame .exam-choice {
@@ -233,7 +233,7 @@
   min-width: 32px;
   height: 32px;
   border-radius: 9px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .studio-exam-frame .exam-eliminate {
   opacity: 0.5;
@@ -249,7 +249,7 @@
   gap: 7px;
 }
 .studio-exam-frame .exam-confidence > span {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   flex: 1 1 110px;
 }
 .studio-exam-frame .exam-confidence small {
@@ -259,7 +259,7 @@
   border-radius: 9px;
   padding: 6px 12px;
   min-height: 40px;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .studio-exam-frame .exam-answer-confirm {
   margin: 14px 0;
@@ -293,7 +293,7 @@
   gap: 12px;
   flex-wrap: wrap;
   padding: 16px 8px;
-  font-size: 0.66rem;
+  font-size: max(var(--readable-small, .875rem), 0.66rem);
   color: var(--muted-foreground);
 }
 .studio-recall,
@@ -315,7 +315,7 @@
 .studio-recall .exam-recall-progress {
   width: min(100%, 660px);
   margin: 0 auto 18px;
-  font-size: 0.74rem;
+  font-size: max(var(--readable-small, .875rem), 0.74rem);
   gap: 14px;
 }
 .studio-recall .exam-recall-progress > svg {
@@ -333,7 +333,7 @@
 .studio-recall .recall-grades button,
 .studio-personal-recall .recall-grades button {
   min-height: 54px;
-  font-size: 0.83rem;
+  font-size: max(var(--readable-small, .875rem), 0.83rem);
   border-radius: 12px;
 }
 .studio-recall .exam-reasoning {
@@ -352,7 +352,7 @@
 .studio-personal-recall .study-hub-actions label {
   display: grid;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   color: var(--muted-foreground);
 }
 .studio-personal-recall .study-hub-actions select {
@@ -369,7 +369,7 @@
   top: 80px;
 }
 .studio-personal-recall .recall-help {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   margin: 12px 0 0;
 }
 .studio-personal-recall .study-record-list {
@@ -404,7 +404,7 @@
   }
   .studio-exam-frame .studio-exit {
     padding-inline: 10px;
-    font-size: 0.72rem;
+    font-size: max(var(--readable-small, .875rem), 0.72rem);
   }
   .studio-workspace {
     width: calc(100% - 24px);
@@ -438,7 +438,7 @@
     margin-top: 20px;
   }
   .studio-recall-exit {
-    font-size: 0.75rem;
+    font-size: max(var(--readable-small, .875rem), 0.75rem);
     gap: 5px;
   }
   .studio-personal-recall .studio-topbar {

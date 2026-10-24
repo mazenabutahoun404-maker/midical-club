@@ -118,7 +118,7 @@ html:root body .offline-pdf-dialog .pdf-pan-canvas {
     padding-bottom: max(4px, env(safe-area-inset-bottom)) !important;
   }
   .offline-pdf-titlebar strong {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
 }
 @media (prefers-reduced-motion: reduce) {

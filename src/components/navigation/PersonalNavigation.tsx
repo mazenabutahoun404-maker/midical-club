@@ -1,8 +1,9 @@
 import { isPersonalActivityPath } from "./personal-activities";
 import { NavigationSelection } from "./NavigationSelection";
-import { AppearanceSettings } from "./AppearanceSettings";
+
 import { NotebookFittings } from "./NotebookFittings";
-import { NavigationControls } from "./AdaptiveNavigation";
+import { RailBrand, RailSettings, RailProfile } from "./RailFurniture";
+import { SidebarToggle } from "./SidebarToggle";
 import { useLocation } from "react-router-dom";
 import { ShieldCheck, ArrowUpRight, Layers2 } from "lucide-react";
 import { personalNavigationItems } from "./personal-navigation-items";
@@ -10,7 +11,7 @@ import { PhoneNavigation } from "./PhoneNavigation";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
 import { NavigationHint } from "./NavigationHint";
-import { SidebarToggle } from "./SidebarToggle";
+
 import { useNavigationScrollCues } from "../../hooks/useNavigationScrollCues";
 import { useAccess } from "../../admin/governance/useGovernance";
 import { MorphIcon } from "../ui/MorphIcon";
@@ -37,18 +38,13 @@ export function PersonalNavigation() {
             : pathname === href || pathname.startsWith(href + "/");
   return (
     <>
+      <RailBrand title={label("my")} caption={label("ownCorner")} />
       <aside
         className="desktop-navigation personal-navigation"
         aria-label={label("personalNavigation")}
       >
         <NotebookFittings axis="rail" />
-        <div className="shell-brand">
-          <SidebarToggle controls="personal-sidebar-links" />
-          <span className="shell-brand-caption">
-            <strong>{label("my")}</strong>
-            <small>{label("ownCorner")}</small>
-          </span>
-        </div>
+        <SidebarToggle controls="personal-sidebar-links" />
         <div
           className="navigation-scroll-frame"
           data-scroll-before={scrollCues.before || undefined}
@@ -89,42 +85,34 @@ export function PersonalNavigation() {
             </nav>
           </div>
         </div>
-        <div className="personal-nav-footer">
-          <AppearanceSettings />
-          <div className="navigation-version navigation-controls-row">
-            <span className="navigation-status-copy">
-              <span className="status-dot" />
-              {label("previewShort")}
-            </span>
-            <div className="navigation-controls-slot">
-              <NavigationControls />
-            </div>
-          </div>
+        <div className="personal-nav-footer rail-footer">
+          <RailSettings />
+          {canOpenAdmin && (
+            <NavigationHint label={label("governancePortalTitle")}>
+              <AppLink
+                href="/admin"
+                className="personal-admin-portal control-room-portal space-portal-link"
+                aria-label={label("governancePortalTitle")}
+              >
+                <MorphIcon
+                  icon={ShieldCheck}
+                  size={19}
+                  className="personal-admin-portal-icon"
+                />
+                <span className="control-room-copy">
+                  <small>{label("governancePriority")}</small>
+                  <strong>{label("governancePortalTitle")}</strong>
+                </span>
+                <ArrowUpRight
+                  size={16}
+                  className="directional"
+                  aria-hidden="true"
+                />
+              </AppLink>
+            </NavigationHint>
+          )}
+          <RailProfile />
         </div>
-        {canOpenAdmin && (
-          <NavigationHint label={label("governancePortalTitle")}>
-            <AppLink
-              href="/admin"
-              className="personal-admin-portal control-room-portal space-portal-link"
-              aria-label={label("governancePortalTitle")}
-            >
-              <MorphIcon
-                icon={ShieldCheck}
-                size={19}
-                className="personal-admin-portal-icon"
-              />
-              <span className="control-room-copy">
-                <small>{label("governancePriority")}</small>
-                <strong>{label("governancePortalTitle")}</strong>
-              </span>
-              <ArrowUpRight
-                size={16}
-                className="directional"
-                aria-hidden="true"
-              />
-            </AppLink>
-          </NavigationHint>
-        )}
       </aside>
       <PhoneNavigation personal />
     </>

@@ -15,18 +15,18 @@ import {
   normalizeStudyTools,
   timerRemaining,
 } from "../courses/study-tools-state";
-import { Checkbox } from "../../components/ui/checkbox";
+import { StudyPreparation } from "./StudyPreparation";
 import "../../styles/study-tools-desk.css";
 
 type Tool = "timer" | "notes" | "gpa";
 function Desk({
   duration,
   title,
-  description,
+  checklist,
 }: {
   duration: number;
   title: string;
-  description: string;
+  checklist: string[];
 }) {
   const { snapshot } = useAuth();
   const userId =
@@ -37,7 +37,7 @@ function Desk({
       storageKey={`medclub:study-tools:${userId}:v1`}
       duration={duration}
       title={title}
-      description={description}
+      checklist={checklist}
     />
   );
 }
@@ -45,17 +45,19 @@ function DeskSession({
   storageKey,
   duration,
   title,
-  description,
+  checklist,
 }: {
   storageKey: string;
   duration: number;
   title: string;
-  description: string;
+  checklist: string[];
 }) {
   const { t } = useLocale();
+  const stage = useRef<HTMLDivElement>(null);
   const [params] = useSearchParams();
   const requested = params.get("tool");
-  const initialTool: Tool = requested === "notes" || requested === "gpa" ? requested : "timer";
+  const initialTool: Tool =
+    requested === "notes" || requested === "gpa" ? requested : "timer";
   const [active, setActive] = useState<Tool>(initialTool),
     [visited, setVisited] = useState<Tool[]>([initialTool]);
   const [timer, setTimer] = useState(() => {
@@ -147,15 +149,48 @@ function DeskSession({
           <h1 tabIndex={-1} data-page-heading>
             {title}
           </h1>
-          <p>{description}</p>
-          <small>
-            {t({
-              en: "Choose a tool below. Your timer keeps running while you write.",
-              ar: "اختر أداة بالأسفل. يستمر المؤقّت أثناء الكتابة.",
-            })}
-          </small>
+          <StudyPreparation
+            items={checklist}
+            running={timer.startedAt !== null}
+            onStart={() => {
+              select("timer");
+              const time = Date.now();
+              setNow(time);
+              if (timer.startedAt === null) {
+                setTimer((previous) => ({
+                  ...previous,
+                  mode: "focus",
+                  phase: "focus",
+                  remaining:
+                    previous.phase === "focus" && previous.remaining > 0
+                      ? previous.remaining
+                      : previous.minutes * 60,
+                  startedAt: time,
+                }));
+                setNoticeToken((value) => value + 1);
+                setNotice(t({ en: "Timer started", ar: "بدأ المؤقّت" }));
+              }
+              requestAnimationFrame(() => {
+                stage.current?.focus({ preventScroll: true });
+                stage.current?.scrollIntoView({
+                  block: "nearest",
+                  behavior: window.matchMedia(
+                    "(prefers-reduced-motion: reduce)",
+                  ).matches
+                    ? "instant"
+                    : "smooth",
+                });
+              });
+            }}
+          />
         </header>
-        <div className="study-tool-stage" data-active-tool={active}>
+        <div
+          className="study-tool-stage"
+          data-active-tool={active}
+          ref={stage}
+          tabIndex={-1}
+          aria-label={names[active]}
+        >
           <section
             id="tool-stage-timer"
             className="study-tool-scene"
@@ -262,8 +297,7 @@ export default function StudyToolsPage({
   durationSeconds?: number;
 }) {
   const query = useSiteContent(),
-    { t, label } = useLocale();
-  const [checked, setChecked] = useState<number[]>([]);
+    { t } = useLocale();
   if (query.isPending) return <LoadingState />;
   if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
   if (!query.data) return null;
@@ -277,30 +311,8 @@ export default function StudyToolsPage({
       <Desk
         duration={duration}
         title={t(data.study.title)}
-        description={t(data.study.description)}
+        checklist={data.study.checklist.map((item) => t(item))}
       />
-      <section className="study-desk-checklist">
-        <h2>{label("before")}</h2>
-        <div className="study-checklist">
-          {data.study.checklist.map((item, index) => (
-            <label key={index}>
-              <Checkbox
-                checked={checked.includes(index)}
-                onCheckedChange={(value) =>
-                  setChecked((previous) =>
-                    value === true
-                      ? [...previous, index]
-                      : previous.filter((i) => i !== index),
-                  )
-                }
-              />
-              <span className={checked.includes(index) ? "completed-task" : ""}>
-                {t(item)}
-              </span>
-            </label>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

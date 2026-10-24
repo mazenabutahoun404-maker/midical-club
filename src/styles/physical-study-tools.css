@@ -47,7 +47,7 @@
 .study-timer-durations label {
   display: grid;
   gap: 5px;
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .study-timer-durations input {
   min-width: 0;
@@ -62,7 +62,7 @@
 .study-focus-timer .study-timer-phase-label {
   margin: 0;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .study-focus-timer > .study-alarm-clock {
   display: block;

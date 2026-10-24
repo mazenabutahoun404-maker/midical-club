@@ -75,7 +75,7 @@ html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-page-jump {
   min-width: 76px;
   max-width: 100px;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 html:root
   body
@@ -148,7 +148,7 @@ html:root
 }
 html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-zoom-reset {
   width: 60px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 html:root
   body
@@ -209,7 +209,7 @@ html:root
   display: block;
   grid-column: 1 / -1;
   padding: 4px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 html:root
   body
@@ -239,7 +239,7 @@ html:root
   .pdf-book-toolbar[data-compact="true"]
   .pdf-control-label {
   display: inline;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   text-align: start;
 }
 html:root

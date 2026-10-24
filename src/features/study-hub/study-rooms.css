@@ -23,7 +23,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   margin-block: 10px 18px;
   color: var(--muted-foreground);
 }
@@ -62,7 +62,7 @@
   text-align: center;
 }
 .room-seats .room-open-seat strong {
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .room-seats article {
   transition:

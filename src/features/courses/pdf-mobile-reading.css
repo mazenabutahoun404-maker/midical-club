@@ -38,7 +38,7 @@
   width: auto;
 }
 .pdf-book .pdf-fit-width span {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   white-space: nowrap;
 }
 .pdf-book .pdf-fit-width[aria-pressed="true"] {

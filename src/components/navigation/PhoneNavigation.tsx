@@ -23,7 +23,7 @@ export function PhoneNavigation({
     auth = useAuth();
   const signedIn = auth.snapshot.status === "authenticated";
   const [home, learn, community] = phoneDockPaths(personal);
-  const profile = signedIn ? "/my/profile" : signInPath("/my/profile");
+  const profile = signedIn ? "/my" : signInPath("/my");
   const active =
     pathname === home && !hash
       ? 0
@@ -159,8 +159,8 @@ export function PhoneNavigation({
             key={i}
             draggable={false}
             href={item.href}
+            state={i === 4 ? { welcome: true } : undefined}
             data-dock-destination={i}
-            data-library-destination={i === 4 && signedIn ? "" : undefined}
             className={active === i ? "active" : ""}
             aria-label={item.name}
             aria-current={active === i ? "page" : undefined}

@@ -19,7 +19,7 @@
 .appearance-theme-groups .appearance-palette-option {
   min-height: 72px;
   padding: 10px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .appearance-theme-groups .appearance-palette-option > span:has(strong) {
   flex: 1;
@@ -61,7 +61,7 @@
   place-items: center;
   background: var(--card);
   color: var(--foreground);
-  font-size: 0.55rem;
+  font-size: max(var(--readable-small, .875rem), 0.55rem);
 }
 .appearance-palettes:last-child .appearance-palette-grid {
   grid-template-columns: minmax(0, 1fr);
@@ -97,7 +97,7 @@
 }
 .theme-preview > header strong {
   flex: 1;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .theme-preview button {
   min-width: 32px;
@@ -158,7 +158,7 @@
   display: block;
   margin-block-start: 8px;
   color: var(--muted-foreground);
-  font-size: 0.67rem;
+  font-size: max(var(--readable-small, .875rem), 0.67rem);
   line-height: 1.6;
 }
 @media (max-width: 700px) {
@@ -190,7 +190,7 @@
   .appearance-theme-groups .appearance-palette-option {
     padding: 8px;
     gap: 6px;
-    font-size: 0.72rem;
+    font-size: max(var(--readable-small, .875rem), 0.72rem);
   }
   .theme-choice-swatches {
     flex-basis: 25px;

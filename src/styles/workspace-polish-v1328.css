@@ -114,7 +114,7 @@ html:root body .personal-navigation .personal-admin-portal small {
   display: none;
 }
 html:root body .personal-navigation .personal-admin-portal strong {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 html:root body .app-shell[data-sidebar="collapsed"] .personal-admin-portal {
   padding: 0;
@@ -205,11 +205,11 @@ html:root
   border-radius: 10px;
 }
 .appearance-workspace-options strong {
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
 }
 .appearance-workspace-options small {
   display: block;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--muted-foreground);
   margin-top: 4px;
 }
@@ -235,7 +235,7 @@ html:root
   border: 0;
   border-radius: 7px;
   background: transparent;
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
 }
 .my-learning-views button[aria-pressed="true"] {
   background: var(--primary);
@@ -306,16 +306,16 @@ html:root
   min-width: 0;
 }
 .notification-preview-list strong {
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
   overflow-wrap: anywhere;
 }
 .notification-preview-list button span span {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.5;
   color: var(--muted-foreground);
 }
 .notification-preview-list time {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   color: var(--muted-foreground);
 }
 .notification-preview-dot {
@@ -335,7 +335,7 @@ html:root
   padding: 14px;
   min-height: 44px;
   color: var(--primary);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 .notification-preview-empty {
   padding: 20px 14px;
@@ -454,12 +454,12 @@ html:root
   margin: 0 0 6px;
 }
 .pack-download-editor .pdf-import-copy p {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.5;
 }
 .pack-download-editor .pdf-import-copy small,
 .pack-download-editor .pdf-import-boundary {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--muted-foreground);
 }
 @media (max-width: 700px) {

@@ -1,4 +1,4 @@
-import { ArtworkEditor } from "../../components/data-display/HeroArtwork";
+import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { Sparkles } from "lucide-react";
 import { useBatches } from "../../hooks/useContent";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -14,37 +14,34 @@ export default function BasicSciencesPage() {
   if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
   return (
     <div className="container basic-sciences-page batch-atrium">
-      <header className="academic-page-hero basic-page-hero"><ArtworkEditor section="batch-gate" />
-        <span className="academic-kicker">
-          <Sparkles size={14} />
-          {label("basicEyebrow")}
-        </span>
-        <h1 data-page-heading tabIndex={-1}>
-          {label("basicTitle")}
-        </h1>
-        <p>{label("basicBody")}</p>
-        <div className="batch-atrium-mark" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <b>MEDCLUB</b>
-        </div>
-        <div className="batch-atrium-stats">
-          <span>
-            <b>{query.data.length}</b>
-            {label("batchesCount")}
+      <header className="academic-page-hero basic-page-hero batch-gateway-hero">
+        <div className="batch-gateway-copy">
+          <span className="academic-kicker">
+            <Sparkles size={14} />
+            {label("basicEyebrow")}
           </span>
-          <span>
-            <b>
-              {
-                query.data.filter((batch) =>
-                  batch.terms.some((term) => term.current),
-                ).length
-              }
-            </b>
-            {t({ en: "Current semesters", ar: "الفصول الحالية" })}
-          </span>
+          <h1 data-page-heading tabIndex={-1}>
+            {label("basicTitle")}
+          </h1>
+          <p>{label("basicBody")}</p>
+          <div className="batch-atrium-stats">
+            <span>
+              <b>{query.data.length}</b>
+              {label("batchesCount")}
+            </span>
+            <span>
+              <b>
+                {
+                  query.data.filter((batch) =>
+                    batch.terms.some((term) => term.current),
+                  ).length
+                }
+              </b>
+              {t({ en: "Current semesters", ar: "الفصول الحالية" })}
+            </span>
+          </div>
         </div>
+        <HeroArtwork section="batch-gate" />
       </header>
       <section aria-labelledby="batch-heading">
         <div className="academic-section-heading">

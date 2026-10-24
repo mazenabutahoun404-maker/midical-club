@@ -96,11 +96,11 @@ html:root
 }
 .resource-facts dt {
   color: var(--book-muted);
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .resource-facts dd {
   margin: 3px 0 0;
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .resource-facts ul {
   padding-inline-start: 20px;

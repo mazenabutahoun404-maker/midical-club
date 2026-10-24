@@ -56,7 +56,7 @@
   min-height: 32px;
   margin-block: 12px;
   color: var(--foreground);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .study-desk-notice span {
   display: inline-flex;
@@ -140,13 +140,13 @@
     justify-items: center;
     text-align: center;
     padding: 12px 6px;
-    font-size: 0.78rem;
+    font-size: max(var(--readable-small, .875rem), 0.78rem);
   }
   .study-desk-tools button svg {
     grid-row: auto;
   }
   .study-desk-tools button small {
-    font-size: 0.68rem;
+    font-size: max(var(--readable-small, .875rem), 0.68rem);
   }
   .study-desk-checklist .study-checklist {
     grid-template-columns: minmax(0, 1fr);

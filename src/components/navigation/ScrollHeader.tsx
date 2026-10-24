@@ -4,6 +4,7 @@ import { useOverlays } from "../../app/providers/OverlayProvider";
 import { RouteJourneyContext } from "../../app/router/RouteJourney";
 import { advanceHeaderScroll, initialHeaderScroll } from "./header-scroll";
 import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
+import { NotebookFittings } from "./NotebookFittings";
 
 /** Only the header leaf transforms. The sidebar and page remain fixed to their own geometry. */
 export function ScrollHeader({
@@ -106,6 +107,7 @@ export function ScrollHeader({
         setHidden(false);
       }}
     >
+      <NotebookFittings axis="header" />
       {children}
     </header>
   );

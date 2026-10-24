@@ -4,8 +4,6 @@ import {
   BookOpen,
   Bookmark,
   CalendarClock,
-  ChevronRight,
-  Compass,
   FileText,
   SlidersHorizontal,
   Timer,
@@ -18,11 +16,15 @@ import { CourseCard } from "../../components/cards/CourseCard";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { APP_TIMEZONE } from "../../constants/config";
+import { personalCoursePath } from "../../constants/routes";
 import { usePersonalHome } from "./usePersonalHome";
 import { useCampusGrowth } from "./useCampusGrowth";
 import { shortcutChoices, resourceResumeHref } from "./personal-home-model";
 import { HomeControls } from "./HomeControls";
 import { RevisionKit } from "./RevisionKit";
+import { PersonalWelcomeHero } from "./PersonalWelcomeHero";
+import { VitalWelcome } from "../../components/medical/VitalWelcome";
+import { AccountSettingsButton } from "../../components/navigation/AccountSettingsButton";
 import "./personal-home.css";
 const PersonalCampus = lazy(() => import("./PersonalCampus"));
 
@@ -96,54 +98,78 @@ function PersonalHome() {
   const minutes = data.exam
     ? Math.ceil((Date.parse(data.exam.startsAt) - data.now) / 60_000)
     : 0;
+  const campus = (
+    <div className="personal-campus-region">
+      <div className="personal-campus-heading">
+        <span className="home-kicker">
+          {t({ en: "Your MedClub campus", ar: "حرم ميدكلب الخاص بك" })}
+        </span>
+        <small>{t({ en: "Built by your journey", ar: "يتطور برحلتك" })}</small>
+      </div>
+      <Suspense
+        fallback={
+          <div className="personal-campus-placeholder" aria-hidden="true" />
+        }
+      >
+        <PersonalCampus levels={growth.levels} quiet={!!data.exam} />
+      </Suspense>
+    </div>
+  );
   return (
     <div
       className="container personal-home personal-home-next"
-      data-home-mode={data.examSoon ? "exam" : data.resume ? "resume" : "start"}
+      data-has-upcoming-exam={!!data.exam || undefined}
+      data-home-mode={data.exam ? "exam" : data.resume ? "resume" : "start"}
     >
+      {!data.exam && !data.calendarPending && (
+        <PersonalWelcomeHero
+          firstName={firstName}
+          levels={growth.levels}
+          resumeHref={data.resume?.href}
+          openRevision={() => openKit()}
+        />
+      )}
       <section
         className="personal-next-hero"
+        data-exam-priority={data.examSoon || undefined}
         aria-labelledby="personal-next-heading"
       >
         <div className="personal-next-copy">
-          <div className="personal-home-greeting">
-            <span>
-              {t({ en: "Welcome back", ar: "مرحباً بعودتك" })},{" "}
-              <strong>{firstName}</strong>
-            </span>
-            <small>
-              {label("year")} {student.year} · {t(student.batch)}
-            </small>
-          </div>
-          <span className="home-kicker">
-            {data.examSoon ? (
-              <CalendarClock size={17} />
-            ) : (
-              <Compass size={17} />
-            )}
-            {t(
-              data.examSoon
-                ? {
-                    en: "Keep your next exam close",
-                    ar: "امتحانك القادم بالقرب منك",
-                  }
-                : { en: "Your next step", ar: "خطوتك التالية" },
-            )}
-          </span>
-          <h1 id="personal-next-heading" tabIndex={-1} data-page-heading>
-            {data.examSoon
-              ? t(data.exam!.title)
-              : data.resume
-                ? t({
-                    en: "Pick up where you left off.",
-                    ar: "أكمل من حيث توقفت.",
-                  })
-                : t({
-                    en: "Make room for your next chapter.",
-                    ar: "مساحة لفصلك القادم.",
-                  })}
-          </h1>
-          {data.examSoon ? (
+          {data.exam ? (
+            <>
+              <div className="personal-home-greeting">
+                <span>
+                  {t({ en: "Welcome back", ar: "مرحباً بعودتك" })},{" "}
+                  <strong>{firstName}</strong>
+                </span>
+                <small>
+                  {label("year")} {student.year} · {t(student.batch)}
+                </small>
+                <AccountSettingsButton />
+              </div>
+              <span className="home-kicker">
+                <CalendarClock size={17} />
+                {t({
+                  en: "Keep your next exam close",
+                  ar: "امتحانك القادم بالقرب منك",
+                })}
+              </span>
+              <h1 id="personal-next-heading" tabIndex={-1} data-page-heading>
+                <VitalWelcome
+                  identity="personal-exam-welcome"
+                  lines={[{ text: t(data.exam!.title) }]}
+                />
+              </h1>
+            </>
+          ) : (
+            <h2 id="personal-next-heading" className="personal-resume-heading">
+              {t({
+                en: "Keep your next step close",
+                ar: "خطوتك التالية بالقرب منك",
+              })}
+            </h2>
+          )}
+          {data.exam ? (
             <>
               <p className="personal-next-description">
                 {t({
@@ -193,8 +219,8 @@ function PersonalHome() {
               })}
             </p>
           )}
-          <div className="personal-next-actions">
-            {data.examSoon ? (
+          {data.exam && (
+            <div className="personal-next-actions">
               <button
                 type="button"
                 className="button button-primary personal-next-primary"
@@ -203,34 +229,84 @@ function PersonalHome() {
                 {t({ en: "Open my exam revision", ar: "فتح مراجعة امتحاني" })}
                 <ArrowUpRight className="directional" size={20} />
               </button>
-            ) : data.resume ? (
+            </div>
+          )}
+          {data.exam && (
+            <nav
+              className="personal-exam-quicklinks"
+              aria-label={t({
+                en: "Quick exam revision",
+                ar: "مراجعة سريعة للامتحان",
+              })}
+            >
               <AppLink
-                className="button button-primary personal-next-primary"
-                href={data.resume.href}
+                href={
+                  examCourse
+                    ? `${personalCoursePath(examCourse.slug)}?section=summary`
+                    : "/my/learning"
+                }
               >
-                {t({ en: "Resume studying", ar: "متابعة الدراسة" })}
-                <ArrowUpRight className="directional" size={20} />
+                <BookOpen size={22} />
+                <span>
+                  <strong>
+                    {t({ en: "Course materials", ar: "مواد المساق" })}
+                  </strong>
+                  <small>
+                    {t({
+                      en: "Go straight to your summaries",
+                      ar: "انتقل مباشرة إلى ملخصاتك",
+                    })}
+                  </small>
+                </span>
+                <ArrowUpRight size={17} className="directional" />
               </AppLink>
-            ) : (
-              <AppLink
-                href="/my/learning"
-                className="button button-primary personal-next-primary"
-              >
-                {t({ en: "Open my courses", ar: "فتح مساقاتي" })}
-                <ArrowUpRight className="directional" size={20} />
-              </AppLink>
-            )}
-            {!data.examSoon && (
-              <button
-                type="button"
-                className="personal-quick-revision"
-                onClick={() => openKit()}
-              >
-                {t({ en: "Quick revision", ar: "مراجعة سريعة" })}
-                <ChevronRight className="directional" size={16} />
+              <button type="button" onClick={() => openKit()}>
+                <Bookmark size={22} />
+                <span>
+                  <strong>
+                    {t({ en: "Saved pages & notes", ar: "الصفحات والملاحظات" })}
+                  </strong>
+                  <small>
+                    {t({
+                      en: "Your course revision kit",
+                      ar: "حقيبة مراجعة مساقك",
+                    })}
+                  </small>
+                </span>
+                <ArrowUpRight size={17} className="directional" />
               </button>
-            )}
-          </div>
+              <AppLink href="/my/study/recall">
+                <Brain size={22} />
+                <span>
+                  <strong>
+                    {t({ en: "Recall cards", ar: "بطاقات المراجعة" })}
+                  </strong>
+                  <small>
+                    {t({
+                      en: "Bring key ideas back to mind",
+                      ar: "استرجع الأفكار الأساسية",
+                    })}
+                  </small>
+                </span>
+                <ArrowUpRight size={17} className="directional" />
+              </AppLink>
+              <AppLink href="/my/exams">
+                <FileText size={22} />
+                <span>
+                  <strong>
+                    {t({ en: "Exam practice", ar: "تدريب الامتحانات" })}
+                  </strong>
+                  <small>
+                    {t({
+                      en: "Put your knowledge to the test",
+                      ar: "اختبر ما تعلمته",
+                    })}
+                  </small>
+                </span>
+                <ArrowUpRight size={17} className="directional" />
+              </AppLink>
+            </nav>
+          )}
           <div className="personal-shortcut-heading">
             <span>{t({ en: "Keep close", ar: "بالقرب منك" })}</span>
             <button
@@ -255,7 +331,12 @@ function PersonalHome() {
             {data.preferences.shortcuts.map((id) => {
               const item = shortcutChoices.find((c) => c.id === id)!;
               return (
-                <AppLink key={id} href={item.href} data-home-shortcut={id}>
+                <AppLink
+                  key={id}
+                  href={item.href}
+                  data-home-shortcut={id}
+                  className="paper-card"
+                >
                   <span>{t(item.label)}</span>
                   <ArrowUpRight className="directional" size={15} />
                 </AppLink>
@@ -274,23 +355,6 @@ function PersonalHome() {
                 : { en: "Add my next exam", ar: "إضافة امتحاني القادم" },
             )}
           </button>
-        </div>
-        <div className="personal-campus-region">
-          <div className="personal-campus-heading">
-            <span className="home-kicker">
-              {t({ en: "Your MedClub campus", ar: "حرم ميدكلب الخاص بك" })}
-            </span>
-            <small>
-              {t({ en: "Built by your journey", ar: "يتطور برحلتك" })}
-            </small>
-          </div>
-          <Suspense
-            fallback={
-              <div className="personal-campus-placeholder" aria-hidden="true" />
-            }
-          >
-            <PersonalCampus levels={growth.levels} quiet={data.examSoon} />
-          </Suspense>
         </div>
       </section>
       {(!data.persistent || !growth.persistent) && (
@@ -507,6 +571,17 @@ function PersonalHome() {
           {t({ en: "Make time to focus", ar: "وقت للتركيز" })}
         </AppLink>
       </footer>
+      {data.exam && (
+        <section
+          className="personal-campus-finale"
+          aria-label={t({
+            en: "Your MedClub campus",
+            ar: "حرم ميدكلب الخاص بك",
+          })}
+        >
+          {campus}
+        </section>
+      )}
       {control && (
         <HomeControls
           data={data}

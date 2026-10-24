@@ -28,9 +28,9 @@
 .launch-front text { fill:var(--foreground); font:90px Georgia,serif; }
 .launch-seal { fill:var(--primary); }.launch-check{stroke:var(--primary-foreground);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .launch-stars { stroke:var(--exam-gold); stroke-width:2; fill:none; }
-.exam-launch-caption { font-size:.73rem; color:var(--muted-foreground); letter-spacing:.08em; margin-top:10px; }
+.exam-launch-caption { font-size:max(var(--readable-small, .875rem), .73rem); color:var(--muted-foreground); letter-spacing:.08em; margin-top:10px; }
 .exam-platform .exam-hero-ledger h2 { font-size:1.25rem; margin:4px 0; }
-.exam-platform .exam-hero-ledger p { font-size:.8rem; }
+.exam-platform .exam-hero-ledger p { font-size:max(var(--readable-small, .875rem), .8rem); }
 .exam-platform .exam-hero-ledger .button { margin-top:10px; }
 .exam-platform .exam-intent-actions { gap:16px; margin:24px 0 50px; }
 .exam-platform .exam-intent-actions > * { --intent:var(--exam-gold); min-height:156px; padding:26px 54px 24px 24px; padding-inline:24px 54px; border-radius:24px; border-color:color-mix(in srgb,var(--intent) 35%,var(--border)); background:radial-gradient(circle at 100% 100%,color-mix(in srgb,var(--intent) 20%,transparent),transparent 65%),color-mix(in srgb,var(--intent) 7%,var(--card)); box-shadow:0 5px 0 color-mix(in srgb,var(--intent) 12%,var(--border)); overflow:hidden; }
@@ -38,7 +38,7 @@
 .exam-platform .exam-intent-actions > [data-intent="exam"] { --intent:var(--exam-violet); }
 .exam-platform .exam-intent-actions > *::before { content:""; position:absolute; width:95px; height:95px; border:1px solid color-mix(in srgb,var(--intent) 25%,transparent); border-radius:28px; inset-inline-end:-30px; bottom:-40px; rotate:30deg; pointer-events:none; }
 .exam-platform .exam-intent-actions strong { font-size:1.1rem; line-height:1.4; font-weight:650; color:var(--foreground); }
-.exam-platform .exam-intent-actions span { font-size:.78rem; max-width:27ch; line-height:1.7; }
+.exam-platform .exam-intent-actions span { font-size:max(var(--readable-small, .875rem), .78rem); max-width:27ch; line-height:1.7; }
 .exam-platform .exam-intent-actions > * > svg { color:var(--foreground); padding:7px; width:34px; height:34px; background:color-mix(in srgb,var(--intent) 17%,var(--card)); border-radius:11px; top:22px; }
 .exam-platform .exam-intent-actions > :is(:hover,:focus-visible) { border-color:var(--intent); transform:translateY(-5px); }
 .exam-platform .exam-subject-card { --subject-ink:var(--primary); position:relative; padding:24px; border-radius:8px 26px 26px 8px; border:1px solid var(--border); border-inline-start:6px solid var(--subject-ink); background:linear-gradient(135deg,color-mix(in srgb,var(--subject-ink) 7%,var(--card)),var(--card)); box-shadow:4px 4px 0 var(--muted); transition:transform 180ms,border-color 180ms; }
@@ -114,12 +114,12 @@
  .studio-exam-frame .exam-question-panel { padding:18px 14px; border-radius:20px; }
  .studio-exam-frame .exam-question-panel > header { gap:8px; }
  .studio-question-index { width:38px;height:40px;font-size:22px;border-radius:12px 12px 4px 12px; }
- .studio-exam-frame .exam-question-panel > header > strong { font-size:.68rem; }
- .studio-exam-frame .exam-flag-button { padding-inline:6px; font-size:.67rem; }
+ .studio-exam-frame .exam-question-panel > header > strong { font-size:max(var(--readable-small, .875rem), .68rem); }
+ .studio-exam-frame .exam-flag-button { padding-inline:6px; font-size:max(var(--readable-small, .875rem), .67rem); }
  .studio-exam-frame .exam-choice { padding:12px; font-size:.92rem; gap:10px; }
  .studio-exam-frame .exam-choice-letter { width:30px;min-width:30px;height:34px; }
  .studio-exam-frame .exam-question-navigation { gap:8px; }
- .studio-exam-frame .exam-question-navigation .button { padding-inline:12px; font-size:.75rem; }
+ .studio-exam-frame .exam-question-navigation .button { padding-inline:12px; font-size:max(var(--readable-small, .875rem), .75rem); }
 }
 @media (prefers-reduced-motion:reduce) {
  .exam-platform *,.studio-personal-recall * { scroll-behavior:auto!important; }
@@ -159,6 +159,6 @@
 
 @container exam-lobby (max-width:600px) {
  .exam-platform .exam-hub-hero h1 { margin-block:16px; }
- .exam-platform .exam-hub-hero > div > p { font-size:.81rem; line-height:1.65; }
+ .exam-platform .exam-hub-hero > div > p { font-size:max(var(--readable-small, .875rem), .81rem); line-height:1.65; }
  .exam-platform .exam-hero-actions { margin-top:18px; }
 }

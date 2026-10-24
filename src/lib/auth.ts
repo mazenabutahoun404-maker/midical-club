@@ -16,6 +16,7 @@ export function authErrorKey(error: unknown) {
   const keys = {
     "invalid-credentials": "invalidCredentials",
     "email-in-use": "emailInUse",
+    "university-number-invalid": "universityNumberInvalid",
     "invalid-code": "invalidCode",
     "verification-missing": "verificationMissing",
   } as const;

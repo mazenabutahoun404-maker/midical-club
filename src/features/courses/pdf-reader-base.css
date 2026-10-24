@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .pdf-page-jump input {
   width: 56px;
@@ -40,7 +40,7 @@
 .pdf-zoom-reset {
   background: transparent;
   border: 0;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   padding: 6px;
   min-width: 42px;
   color: var(--book-ink);
@@ -48,7 +48,7 @@
 .pdf-bookmark-list {
   position: relative;
   margin-inline-start: auto;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .pdf-bookmark-list summary {
   padding: 6px 8px;
@@ -165,7 +165,7 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   color: #67574b;
   background: #fffaf3;
   text-align: center;
@@ -225,7 +225,7 @@
   min-height: 44px;
 }
 .pdf-file-search p {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   margin: 10px 0 0;
 }
 .pdf-file-search ol {
@@ -245,7 +245,7 @@
   border: 0;
   border-bottom: 1px solid var(--book-line);
   color: var(--book-ink);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   cursor: pointer;
 }
 .pdf-file-search li b {

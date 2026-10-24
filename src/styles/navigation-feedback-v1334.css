@@ -37,7 +37,7 @@ html:root[data-palette][data-theme] body .app-shell[data-navigation="vertical"][
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   transition: opacity 120ms ease;
 }
 html:root[data-palette][data-theme] body .app-shell[data-navigation] .desktop-navigation .navigation-controls-row .navigation-controls-slot,

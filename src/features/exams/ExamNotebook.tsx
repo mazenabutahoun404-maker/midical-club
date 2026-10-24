@@ -67,65 +67,58 @@ export default function ExamNotebook({
   return (
     <>
       <ExamHeading
-        eyebrow={t({
-          en: "Keep useful questions close",
-          ar: "احتفظ بالأسئلة المفيدة بالقرب منك",
-        })}
+        eyebrow=""
         title={t(
           review
-            ? { en: "Read. Connect. Understand.", ar: "اقرأ واربط وافهم." }
+            ? { en: "Review questions", ar: "مراجعة الأسئلة" }
             : wrong
-              ? {
-                  en: "Give a missed question\nanother chance.",
-                  ar: "امنح السؤال الذي أخطأت فيه\nفرصة أخرى.",
-                }
-              : { en: "Your question notebook.", ar: "دفتر أسئلتك." },
+              ? { en: "Revisit mistakes", ar: "مراجعة الأخطاء" }
+              : { en: "Saved questions", ar: "الأسئلة المحفوظة" },
         )}
-        body={t(
+        body={
           wrong
-            ? {
-                en: "Questions missed in your finished sessions appear here. Review their reasoning at your own pace.",
-                ar: "تظهر هنا الأسئلة التي أخطأت فيها في جلساتك المكتملة. راجع أسبابها بالوقت المناسب لك.",
-              }
-            : {
-                en: "Browse a few questions at a time, and open explanations when you need them.",
-                ar: "تصفح عدداً قليلاً من الأسئلة وافتح الشرح عندما تحتاجه.",
-              },
-        )}
+            ? t({
+                en: "Questions missed in your completed sessions appear here.",
+                ar: "تظهر هنا الأسئلة التي أخطأت فيها في جلساتك المكتملة.",
+              })
+            : undefined
+        }
       />
-      <div className="exam-filters">
-        <input
-          aria-label={t({ en: "Filter questions", ar: "ترشيح الأسئلة" })}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t({ en: "Find a question", ar: "ابحث عن سؤال" })}
-        />
-        <select
-          aria-label={t({ en: "Course filter", ar: "مرشح المساق" })}
-          value={course}
-          onChange={(e) => {
-            setCourse(e.target.value);
-            setPage(0);
-          }}
-        >
-          <option value="">
-            {t({ en: "All courses", ar: "كل المساقات" })}
-          </option>
-          {catalog.data?.courses.map((c) => (
-            <option key={c.id} value={c.id}>
-              {t(c.title)}
-            </option>
-          ))}
-        </select>
-        <label className="exam-check">
+      {(total > 0 || !!query || !!course || loading || failed) && (
+        <div className="exam-filters">
           <input
-            type="checkbox"
-            checked={reveal}
-            onChange={(e) => setReveal(e.target.checked)}
+            aria-label={t({ en: "Filter questions", ar: "ترشيح الأسئلة" })}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t({ en: "Find a question", ar: "ابحث عن سؤال" })}
           />
-          <span>{t({ en: "Show answers", ar: "عرض الإجابات" })}</span>
-        </label>
-      </div>
+          <select
+            aria-label={t({ en: "Course filter", ar: "مرشح المساق" })}
+            value={course}
+            onChange={(e) => {
+              setCourse(e.target.value);
+              setPage(0);
+            }}
+          >
+            <option value="">
+              {t({ en: "All courses", ar: "كل المساقات" })}
+            </option>
+            {catalog.data?.courses.map((c) => (
+              <option key={c.id} value={c.id}>
+                {t(c.title)}
+              </option>
+            ))}
+          </select>
+          <label className="exam-check">
+            <input
+              type="checkbox"
+              checked={reveal}
+              onChange={(e) => setReveal(e.target.checked)}
+            />
+            <span>{t({ en: "Show answers", ar: "عرض الإجابات" })}</span>
+          </label>
+        </div>
+      )}
       {loading ? (
         <LoadingState />
       ) : failed ? (

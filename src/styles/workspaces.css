@@ -128,19 +128,19 @@
     .mega-menu
     .mega-link
     b {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   [data-navigation="vertical"][data-sidebar="collapsed"]
     .mega-menu
     .mega-link
     p {
     display: block;
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
     line-height: 1.7;
     color: var(--tone-ink-muted, #92775f);
   }
   [data-navigation="vertical"][data-sidebar="collapsed"] .mega-menu .eyebrow {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [data-navigation="vertical"][data-sidebar="collapsed"] .mega-menu .mega-link {
     padding: 10px 7px;
@@ -215,7 +215,7 @@
   font-weight: 800;
 }
 .personal-brand small {
-  font-size: 7px;
+  font-size: max(var(--readable-small, .875rem), 7px);
   letter-spacing: 0.09em;
   color: var(--tone-ink-soft, #c4a798);
   line-height: 1.6;
@@ -262,7 +262,7 @@
   height: 36px;
   flex: none;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   font-weight: 750;
   background: #b48370;
   color: var(--tone-ink-fcefdc, #fff3df);
@@ -274,11 +274,11 @@
   gap: 4px;
 }
 .personal-sidebar-footer strong {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 650;
 }
 .personal-sidebar-footer > div > span {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   color: var(--tone-ink-soft, #b49583);
 }
 .personal-header {
@@ -295,7 +295,7 @@
   padding: 9px 13px;
   border: 1px solid var(--tone-line-5b4a3f75, #d8c6b875);
   border-radius: 999px;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 700;
   color: var(--tone-ink-muted, #8b6b59);
   background: var(--tone-surface-2d252080, #f8f0e980);
@@ -311,7 +311,7 @@
   align-items: center;
   gap: 7px;
   color: var(--tone-ink-soft, #a38b7c);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   letter-spacing: 0.1em;
   font-weight: 700;
 }
@@ -324,7 +324,7 @@
 .personal-footnote {
   margin-top: 65px;
   padding: 22px 0 10px;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   color: var(--tone-ink-soft, #9a8171);
   border-top: 1px solid var(--tone-line-boundary, #dfd0c4);
 }
@@ -382,7 +382,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   letter-spacing: 0.12em;
   font-weight: 750;
   color: var(--tone-ink-soft, #a67f69);
@@ -399,7 +399,7 @@
   color: var(--tone-ink-e0bbaa, #b67465);
 }
 .personal-welcome p {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.95;
   color: var(--tone-ink-muted, #967867);
   max-width: 340px;
@@ -410,7 +410,7 @@
   color: var(--tone-ink-fcecde, #fff0e2);
   border-color: var(--tone-line-71493a, #774538);
   box-shadow: 0 6px 14px #77453817;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   min-height: 44px;
 }
 .personal-orbit {
@@ -470,7 +470,7 @@
   color: var(--tone-ink-muted, #886452);
 }
 .personal-name-tag > span {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--tone-ink-soft, #a18572);
 }
 .personal-sample-tag {
@@ -482,7 +482,7 @@
   border-radius: 999px;
   padding: 6px 11px;
   transform: rotate(8deg);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   color: var(--tone-ink-muted, #a68061);
 }
 .personal-stats {
@@ -516,7 +516,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   color: var(--tone-ink-muted, #9b7b64);
 }
 .personal-stats b {
@@ -527,7 +527,7 @@
   color: var(--tone-ink-muted, #805740);
 }
 .personal-stats b small {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   margin-inline-start: 5px;
   font-weight: 600;
   letter-spacing: 0;
@@ -550,7 +550,7 @@
   margin-bottom: 19px;
 }
 .personal-section-heading .eyebrow {
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   letter-spacing: 0.1em;
   color: var(--tone-ink-soft, #af886a);
   margin-bottom: 7px;
@@ -564,7 +564,7 @@
   color: var(--tone-ink-muted, #6b4733);
 }
 .personal-section-heading > .text-link {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   color: var(--tone-ink-muted, #927053);
   white-space: nowrap;
   gap: 7px;
@@ -586,7 +586,7 @@
   height: 44px;
 }
 .personal-course-grid .course-top .tag {
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
 }
 .personal-course-grid .course-body {
   padding: 20px 13px 16px;
@@ -596,12 +596,12 @@
   line-height: 1.4;
 }
 .personal-course-grid .course-body p {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   min-height: 70px;
   line-height: 1.9;
 }
 .personal-course-grid .course-body .text-link {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 .personal-focus-card {
   position: relative;
@@ -650,7 +650,7 @@
 }
 .personal-focus-card .eyebrow {
   color: var(--tone-ink-coral, #d1ad8c);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   letter-spacing: 0.1em;
 }
 .personal-focus-card h2 {
@@ -662,7 +662,7 @@
   margin: 13px 0 17px;
 }
 .personal-focus-card p {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.8;
   color: var(--tone-ink-amber, #ddbea2);
   max-width: 240px;
@@ -671,7 +671,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 700;
   color: var(--tone-ink-f6dfc4, #f8debf);
   border-top: 1px solid var(--tone-line-5b4a3f33, #d4a78033);
@@ -717,14 +717,14 @@
 }
 .personal-saved-list strong {
   display: block;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.7;
   color: var(--tone-ink-muted, #8a6447);
   font-weight: 700;
 }
 .personal-saved-list small {
   display: block;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   color: var(--tone-ink-soft, #ac896a);
   margin-top: 3px;
 }
@@ -741,14 +741,14 @@
   border: 1px dashed var(--tone-line-boundary, #d8bea7);
   border-radius: 22px;
   color: var(--tone-ink-muted, #a07c5a);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.9;
 }
 .personal-empty p {
   flex: 1;
 }
 .personal-empty > .text-link {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   white-space: nowrap;
   color: var(--tone-ink-muted, #946b46);
 }
@@ -786,18 +786,18 @@
   border-radius: 999px;
   background: var(--tone-surface-amber, #efdfce);
   color: var(--tone-ink-muted, #ac805c);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   margin-top: 9px;
 }
 .profile-identity > p {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.9;
   color: var(--tone-ink-muted, #a28164);
   max-width: 285px;
   margin: 22px 0;
 }
 .profile-identity .button {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   margin-top: 4px;
   background: #8d5d42;
 }
@@ -832,23 +832,23 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   color: var(--tone-ink-muted, #9e7958);
 }
 .profile-details dd {
   margin: 0;
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
   color: var(--tone-ink-coral, #825a37);
   font-weight: 700;
 }
 .profile-details > p {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.9;
   color: var(--tone-ink-muted, #a3815f);
   margin-bottom: 24px;
 }
 .profile-details > .text-link {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--tone-ink-coral, #8c6541);
 }
 .personal-settings {
@@ -885,7 +885,7 @@
   font-weight: 750;
 }
 .personal-setting-row p {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.9;
   color: var(--tone-ink-soft, #a98764);
   margin-top: 6px;
@@ -896,7 +896,7 @@
   padding: 10px 15px;
   border: 1px solid var(--tone-line-boundary, #dcc5a9);
   background: var(--tone-surface-amber, #f9eddf);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--tone-ink-muted, #9b744d);
   min-width: 0;
   flex: none;
@@ -940,7 +940,7 @@
   transform: translateX(-17px);
 }
 .personal-setting-notice {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--tone-ink-muted, #9d7b57);
   padding: 10px 5px;
 }
@@ -971,7 +971,7 @@
 }
 [data-navigation="horizontal"] .personal-navigation .navigation-item {
   min-height: 40px;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   color: var(--tone-ink-e3cebd, #dec8b5);
   padding: 9px 12px;
 }
@@ -1005,7 +1005,7 @@
     font-size: 16px;
   }
   .personal-brand small {
-    font-size: 6px;
+    font-size: max(var(--readable-small, .875rem), 6px);
   }
   .personal-brand-mark {
     width: 34px;
@@ -1013,7 +1013,7 @@
     border-radius: 13px;
   }
   .personal-navigation .navigation-item {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
     min-height: 45px;
   }
   .personal-header-mark {
@@ -1029,7 +1029,7 @@
     font-size: 49px;
   }
   .personal-welcome p {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-orbit {
     min-height: 250px;
@@ -1049,15 +1049,15 @@
     border-width: 7px;
   }
   .personal-name-tag strong {
-    font-size: 13px;
+    font-size: max(var(--readable-small, .875rem), 13px);
   }
   .personal-sample-tag {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
     top: 25px;
     right: -4px;
   }
   .personal-name-tag > span {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   .personal-stats {
     gap: 12px;
@@ -1071,7 +1071,7 @@
     font-size: 26px;
   }
   .personal-stats > a > span {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-stats > a > svg:first-child {
     width: 19px;
@@ -1087,7 +1087,7 @@
     font-size: 19px;
   }
   .personal-course-grid .course-body p {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
     min-height: 45px;
   }
   .personal-focus-card {
@@ -1108,7 +1108,7 @@
   }
   .personal-focus-card p {
     max-width: 65%;
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   .personal-focus-card > a {
     max-width: 70%;
@@ -1125,7 +1125,7 @@
     padding: 16px;
   }
   .personal-saved-list strong {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .saved-file-icon {
     width: 33px;
@@ -1150,7 +1150,7 @@
   }
   .personal-setting-row .navigation-preferences {
     padding: 10px;
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [data-navigation="horizontal"] .personal-navigation {
     gap: 20px;
@@ -1159,7 +1159,7 @@
     font-size: 16px;
   }
   [data-navigation="horizontal"] .personal-navigation .navigation-item {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
     padding: 8px;
   }
   .personal-learning-grid {
@@ -1171,7 +1171,7 @@
     font-size: 14px;
   }
   .personal-brand small {
-    font-size: 6px;
+    font-size: max(var(--readable-small, .875rem), 6px);
   }
   .personal-brand-mark {
     width: 31px;
@@ -1185,11 +1185,11 @@
     font-size: 40px;
   }
   .personal-welcome p {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
     max-width: 260px;
   }
   .personal-eyebrow {
-    font-size: 7px;
+    font-size: max(var(--readable-small, .875rem), 7px);
     letter-spacing: 0.07em;
   }
   .personal-orbit > i {
@@ -1206,15 +1206,15 @@
     font-size: 38px;
   }
   .personal-name-tag strong {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   .personal-name-tag > span {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-sample-tag {
     top: 30px;
     right: 0;
-    font-size: 7px;
+    font-size: max(var(--readable-small, .875rem), 7px);
   }
   .personal-stats > a {
     padding: 17px 13px;
@@ -1224,7 +1224,7 @@
     display: none;
   }
   .personal-stats > a > span {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-stats b {
     font-size: 24px;
@@ -1275,7 +1275,7 @@
     display: none;
   }
   .back-to-medclub {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
     padding: 8px 11px;
     gap: 6px;
   }
@@ -1304,16 +1304,16 @@
     margin-block: 20px 17px;
   }
   .personal-welcome p {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     max-width: 360px;
   }
   .personal-eyebrow {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   .personal-welcome .button {
     margin-top: 22px;
     min-height: 45px;
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-orbit {
     min-height: 245px;
@@ -1340,12 +1340,12 @@
     font-size: 14px;
   }
   .personal-name-tag > span {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-sample-tag {
     top: 11px;
     right: 24px;
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-stats {
     gap: 9px;
@@ -1360,7 +1360,7 @@
     border-radius: 19px;
   }
   .personal-stats > a > span {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-stats b {
     font-size: 28px;
@@ -1373,7 +1373,7 @@
     height: 20px;
   }
   .personal-stats b small {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-dashboard-grid {
     grid-template-columns: 1fr;
@@ -1383,10 +1383,10 @@
     font-size: 24px;
   }
   .personal-section-heading .eyebrow {
-    font-size: 7px;
+    font-size: max(var(--readable-small, .875rem), 7px);
   }
   .personal-section-heading > .text-link {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   .personal-course-grid {
     grid-template-columns: 1fr;
@@ -1397,14 +1397,14 @@
     padding: 23px;
   }
   .personal-course-grid .course-top .course-code {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .personal-course-grid .course-top > .lucide {
     width: 65px;
     height: 65px;
   }
   .personal-course-grid .course-top .tag {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   .personal-course-grid .course-body {
     padding: 23px 18px 18px;
@@ -1413,11 +1413,11 @@
     font-size: 21px;
   }
   .personal-course-grid .course-body p {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     min-height: 0;
   }
   .personal-course-grid .course-body .text-link {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-focus-card {
     margin-top: 0;
@@ -1431,11 +1431,11 @@
     font-size: 32px;
   }
   .personal-focus-card p {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     max-width: 290px;
   }
   .personal-focus-card > a {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     margin-top: 23px;
   }
   .personal-saves {
@@ -1449,15 +1449,15 @@
     padding: 17px;
   }
   .personal-saved-list strong {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   .personal-saved-list small {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   .personal-empty {
     flex-wrap: wrap;
     padding: 24px;
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     gap: 13px;
   }
   .personal-empty > p {
@@ -1470,7 +1470,7 @@
   }
   .personal-footnote {
     margin-top: 43px;
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
     padding: 20px 0 12px;
     line-height: 1.9;
   }
@@ -1486,7 +1486,7 @@
     font-size: 27px;
   }
   .profile-identity p {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   .profile-details {
     padding: 29px;
@@ -1495,13 +1495,13 @@
     font-size: 24px;
   }
   .profile-details dt {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .profile-details dd {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   .profile-details > p {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-setting-row {
     flex-wrap: wrap;
@@ -1518,7 +1518,7 @@
     font-size: 15px;
   }
   .personal-setting-row p {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-setting-row > div {
     min-width: calc(100% - 62px);
@@ -1526,17 +1526,17 @@
   .personal-setting-row > .navigation-preferences {
     margin-inline-start: 54px;
     min-height: 39px;
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .personal-setting-row > .language-button,
   .personal-setting-row > .sidebar-setting-switch {
     margin-inline-start: 54px;
   }
   .personal-setting-notice {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   .personal-phone-navigation > a {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   .personal-learning-grid {
     grid-template-columns: 1fr;
@@ -1559,7 +1559,7 @@
   line-height: 1.5;
 }
 [dir="rtl"] .personal-brand small {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .personal-welcome h1 {
   font-size: clamp(36px, 3.9vw, 65px);
@@ -1567,7 +1567,7 @@
   line-height: 1.6;
 }
 [dir="rtl"] .personal-eyebrow {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 [dir="rtl"] .personal-welcome p {
   line-height: 2;
@@ -1595,42 +1595,42 @@
   letter-spacing: 0;
 }
 [dir="rtl"] .back-to-medclub {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .personal-stats > a > span {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .personal-focus-card .eyebrow {
   letter-spacing: 0;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 [dir="rtl"] .personal-course-grid .course-body h2 {
   font-size: 17px;
 }
 [dir="rtl"] .personal-course-grid .course-body p {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .personal-sidebar-footer strong {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 [dir="rtl"] .personal-header-mark {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   [dir="rtl"] .personal-brand strong {
     font-size: 15px;
   }
   [dir="rtl"] .personal-brand small {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   [dir="rtl"] .personal-welcome h1 {
     font-size: 37px;
   }
   [dir="rtl"] .personal-welcome p {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   [dir="rtl"] .personal-navigation .navigation-item {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   [dir="rtl"] .personal-focus-card h2 {
     font-size: 28px;
@@ -1639,7 +1639,7 @@
     [data-navigation="horizontal"]
     .personal-navigation
     .navigation-item {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
 }
 @media (max-width: 767px) {
@@ -1648,19 +1648,19 @@
     line-height: 1.65;
   }
   [dir="rtl"] .personal-eyebrow {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .personal-sample-tag {
     left: 22px;
   }
   [dir="rtl"] .back-to-medclub {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .personal-course-grid .course-body h2 {
     font-size: 21px;
   }
   [dir="rtl"] .personal-phone-navigation > a {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .personal-section-heading h2 {
     font-size: 25px;

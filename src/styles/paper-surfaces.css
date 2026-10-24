@@ -1,0 +1,28 @@
+/* Shared paper depth for primary destinations, not every content container. */
+:root {
+  --paper-depth: 4px;
+}
+.paper-card {
+  --paper-underlay: color-mix(in srgb, var(--primary) 7%, var(--card));
+  --paper-edge: color-mix(in srgb, var(--primary) 9%, var(--border));
+  --paper-shadow:
+    0 var(--paper-depth) 0 var(--paper-underlay),
+    0 calc(var(--paper-depth) + 1px) 0 var(--paper-edge);
+  --paper-shadow-raised:
+    0 calc(var(--paper-depth) + 2px) 0 var(--paper-underlay),
+    0 calc(var(--paper-depth) + 3px) 0 var(--paper-edge);
+  box-shadow: var(--paper-shadow);
+}
+.paper-card:is(:hover, :focus-visible) {
+  box-shadow: var(--paper-shadow-raised);
+}
+.paper-card:active {
+  box-shadow: 0 2px 0 var(--paper-underlay);
+}
+@media (forced-colors: active) {
+  .paper-card,
+  .paper-card:is(:hover, :focus-visible, :active) {
+    box-shadow: none;
+    border-color: ButtonText;
+  }
+}

@@ -10,7 +10,8 @@ import { UtilityGlyph } from "./UtilityGlyph";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { NavigationHint } from "./NavigationHint";
 import { Check, LockKeyhole, SlidersHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { NavigationControls, useNavigationState } from "./AdaptiveNavigation";
 import { useLocation } from "react-router-dom";
 import { Modal } from "../ui/Modal";
 import { AppLink } from "./AppLink";
@@ -22,6 +23,8 @@ import {
 } from "../../app/providers/AppearanceProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
+  const navState = useNavigationState();
+  const hideNavigationOnClose = useRef(false);
   const paths = useWorkspacePaths();
   const {
     accountAvailable,
@@ -60,7 +63,7 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
   return (
     <>
       <AppearanceQuickTools compact={compact} onOpenPanel={open}>
-        <NavigationHint label={label("appearance")}>
+        <NavigationHint label={label("appearance")} side="top">
           <button
             className={
               compact
@@ -69,8 +72,8 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
             }
             aria-label={label("appearance")}
             aria-description={t({
-              en: "Hover for one second, hold on touch, or press Arrow Up for quick tools.",
-              ar: "مرّر لثانية، أو اضغط مطولاً باللمس، أو اضغط السهم للأعلى للأدوات السريعة.",
+              en: "Hover, hold on touch, or press Arrow Up for quick tools.",
+              ar: "مرّر، أو اضغط مطولاً باللمس، أو اضغط السهم للأعلى للأدوات السريعة.",
             })}
             aria-haspopup="dialog"
             aria-expanded={open}
@@ -106,6 +109,18 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
         }
         className={`appearance-dialog${accountAvailable ? "" : " appearance-dialog-guest"}`}
         onAfterClose={() => {
+          // Close native modality before hiding, so its restored focus cannot reopen the rail.
+          if (hideNavigationOnClose.current) {
+            hideNavigationOnClose.current = false;
+            navState?.hide();
+            return;
+          }
+          if (navState?.manualHidden) {
+            navState.suppressHandleFocus.current = true;
+            navState.handle.current?.focus({ preventScroll: true });
+            navState.suppressHandleFocus.current = false;
+            return;
+          }
           // Switching orientation can hide the trigger that originally opened this dialog.
           if (
             !paths.personal &&
@@ -348,12 +363,15 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
             </div>
           )}
         </div>
-        <section className="appearance-language-row">
-          <strong>{label("language")}</strong>
-          <LanguageMenu />
-        </section>
-        {accountAvailable && (
-          <>
+        <div
+          className="appearance-preference-row"
+          data-account={accountAvailable}
+        >
+          <section className="appearance-language-row">
+            <strong>{label("language")}</strong>
+            <LanguageMenu />
+          </section>
+          {accountAvailable && (
             <section
               className="appearance-workspace-options"
               aria-label={t({
@@ -364,7 +382,6 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
               <div>
                 <span>
                   <strong>{label("sidebarSize")}</strong>
-                  <small>{label("sidebarSizeBody")}</small>
                 </span>
                 <button
                   className="sidebar-setting-switch"
@@ -377,6 +394,25 @@ export function AppearanceSettings({ compact = false }: { compact?: boolean }) {
                 </button>
               </div>
             </section>
+          )}
+        </div>
+        {navState && !navState.studying && !navState.focus && (
+          <section className="appearance-navigation-controls">
+            <strong>
+              {t({ en: "Navigation controls", ar: "التحكم بالتنقل" })}
+            </strong>
+            <NavigationControls
+              variant="settings"
+              onHide={() => {
+                hideNavigationOnClose.current = true;
+                setOpen(false);
+                closePreview();
+              }}
+            />
+          </section>
+        )}
+        {accountAvailable && (
+          <>
             <fieldset className="layout-options">
               <legend>{label("desktopNavigation")}</legend>
               {(["vertical", "horizontal"] as NavigationLayout[]).map(

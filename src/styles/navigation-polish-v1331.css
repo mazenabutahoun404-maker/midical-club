@@ -62,7 +62,7 @@ html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-port
   width: 30px;
   height: 30px;
   border-radius: 9px;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 800;
   line-height: 1;
 }
@@ -80,11 +80,11 @@ html:root[data-palette][data-theme] body .app-shell .scroll-header .profile-port
   color: inherit;
 }
 .profile-portal-copy strong {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   font-weight: 750;
 }
 .profile-portal-copy small {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 
 /* Match the old profile position, with a centered icon and a flexible title column. */
@@ -114,7 +114,7 @@ html:root[data-palette][data-theme] body .control-room-portal small {
   display: none;
 }
 html:root[data-palette][data-theme] body .control-room-portal strong {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.35;
   font-weight: 750;
   white-space: normal;

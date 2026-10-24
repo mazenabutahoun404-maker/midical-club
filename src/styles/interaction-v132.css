@@ -219,11 +219,11 @@
   transform: translateZ(5px) rotate(180deg);
 }
 .course-volume-spine b {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   letter-spacing: 0.08em;
 }
 .course-volume-spine small {
-  font-size: 0.54rem;
+  font-size: max(var(--readable-small, .875rem), 0.54rem);
   letter-spacing: 0.13em;
   opacity: 0.75;
 }
@@ -273,7 +273,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-size: 0.74rem;
+  font-size: max(var(--readable-small, .875rem), 0.74rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -314,7 +314,7 @@
 }
 .course-volume-copy small {
   color: var(--tone-ink-fcefe0b8, #fff4e4b8);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   letter-spacing: 0.04em;
 }
 .course-volume-copy h2 {
@@ -328,7 +328,7 @@
   display: -webkit-box;
   margin: 0;
   color: var(--tone-ink-fcf2e8c9, #fff8efc9);
-  font-size: 0.86rem;
+  font-size: max(var(--readable-small, .875rem), 0.86rem);
   line-height: 1.5;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -344,7 +344,7 @@
   border-top: 1px solid var(--tone-line-5b4a3f2f, #ffffff2f);
   color: var(--tone-ink-fcf8f4, #fff);
   font-weight: 750;
-  font-size: 0.83rem;
+  font-size: max(var(--readable-small, .875rem), 0.83rem);
 }
 .course-volume-ribbon {
   position: absolute;
@@ -374,7 +374,7 @@
   inset: 34px 50px 34px 18px;
 }
 .course-volume-inside small {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   color: var(--tone-ink-muted, #7c6651);
 }
 .course-volume-inside strong {
@@ -484,12 +484,12 @@
     opacity 180ms ease;
 }
 .layered-card-sheet b {
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
 }
 .layered-card-sheet small {
   max-width: 62%;
   text-align: end;
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
 }
 .layered-discovery-card
   :is(
@@ -680,7 +680,7 @@
 .pdf-import-paper b {
   position: absolute;
   bottom: 4px;
-  font-size: 0.55rem;
+  font-size: max(var(--readable-small, .875rem), 0.55rem);
   letter-spacing: 0.08em;
 }
 .pdf-import-check,
@@ -735,13 +735,13 @@
   display: block;
   margin-top: 6px;
   color: var(--book-muted);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .pdf-import-boundary {
   grid-column: 2 / -1;
   margin: -7px 0 0;
   color: var(--book-muted);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .pdf-import-service-error {
   margin: 0 0 18px;
@@ -813,7 +813,7 @@
   border: 1px solid var(--book-rule);
   border-radius: 10px;
   background: var(--book-paper);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
 }
 .notebook-current-course {
   margin-inline-end: auto;

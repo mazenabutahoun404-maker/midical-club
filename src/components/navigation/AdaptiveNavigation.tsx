@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useSectionNavOffset } from "./useSectionNavOffset";
 import { useLocation } from "react-router-dom";
 import { ChevronRight, Menu, Pin, PinOff, X } from "lucide-react";
 import { advanceHeaderScroll, initialHeaderScroll } from "./header-scroll";
@@ -53,7 +54,9 @@ export function useAdaptiveNavigation() {
     () =>
       hovering.current ||
       !!root.current?.contains(document.activeElement) ||
-      !!document.querySelector('dialog[open], [role="dialog"], [role="menu"]'),
+      !!document.querySelector(
+        'dialog[open], [role="dialog"], [role="menu"], .appearance-quick-tray',
+      ),
     [],
   );
   const reveal = useCallback(
@@ -206,12 +209,34 @@ const NavigationContext = createContext<ReturnType<
   typeof useAdaptiveNavigation
 > | null>(null);
 
-export function NavigationControls() {
-  const state = useContext(NavigationContext);
-  const s = useStudyCopy();
-  if (!state) return null;
+export function NavigationProvider({
+  state,
+  children,
+}: {
+  state: ReturnType<typeof useAdaptiveNavigation>;
+  children: ReactNode;
+}) {
   return (
-    <div className="navigation-reveal-actions">
+    <NavigationContext.Provider value={state}>
+      {children}
+    </NavigationContext.Provider>
+  );
+}
+
+export const useNavigationState = () => useContext(NavigationContext);
+
+export function NavigationControls({
+  variant = "compact",
+  onHide,
+}: {
+  variant?: "compact" | "settings";
+  onHide?: () => void;
+}) {
+  const state = useNavigationState();
+  const s = useStudyCopy();
+  if (!state || state.studying || state.focus) return null;
+  return (
+    <div className={`navigation-actions navigation-actions-${variant}`}>
       <button
         type="button"
         aria-pressed={state.pinned}
@@ -220,14 +245,18 @@ export function NavigationControls() {
         onClick={state.togglePin}
       >
         {state.pinned ? <PinOff size={15} /> : <Pin size={15} />}
+        {variant === "settings" && (
+          <span>{s(state.pinned ? "unpin" : "pin")}</span>
+        )}
       </button>
       <button
         type="button"
         aria-label={s("collapse")}
         title={s("collapse")}
-        onClick={state.hide}
+        onClick={onHide || state.hide}
       >
         <X size={15} />
+        {variant === "settings" && <span>{s("collapse")}</span>}
       </button>
     </div>
   );
@@ -242,12 +271,13 @@ export function AdaptiveNavigation({
   state: ReturnType<typeof useAdaptiveNavigation>;
   personal?: boolean;
 }) {
+  useSectionNavOffset(state.root, state.studying);
   const s = useStudyCopy();
   const id = useId();
   if (state.studying) return null;
   if (!state.enabled) return <>{children}</>;
   return (
-    <NavigationContext.Provider value={state}>
+    <>
       {!state.focus && (
         <div
           className="adaptive-navigation-controls"
@@ -307,6 +337,6 @@ export function AdaptiveNavigation({
       >
         {children}
       </div>
-    </NavigationContext.Provider>
+    </>
   );
 }

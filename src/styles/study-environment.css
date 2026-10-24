@@ -149,7 +149,7 @@ html:root
   background: transparent;
 }
 .study-environment .notebook-index-heading {
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
   margin-bottom: 6px;
   padding: 8px 0;
   color: var(--book-muted);
@@ -172,10 +172,10 @@ html:root
   gap: 8px;
 }
 .study-environment .notebook-bookmark-top b {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .study-environment .notebook-bookmark-top small {
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
   margin-inline-start: auto;
 }
 .study-environment .notebook-bookmark-number {
@@ -202,7 +202,7 @@ html:root
 }
 .study-environment .study-reader-heading h3 {
   max-width: 65ch;
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
 }
 .study-environment .study-reader-actions {
   padding-inline: 8px;
@@ -261,7 +261,7 @@ html:root
     inset 0 0 0 1px #ffffff30;
 }
 .study-opening-cover span {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   letter-spacing: 0.12em;
 }
 .study-opening-cover strong {
@@ -324,7 +324,7 @@ html:root
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .pdf-page-jump input {
   width: 56px;
@@ -345,7 +345,7 @@ html:root
 .pdf-zoom-reset {
   background: transparent;
   border: 0;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   padding: 6px;
   min-width: 42px;
   color: var(--book-ink);
@@ -353,7 +353,7 @@ html:root
 .pdf-bookmark-list {
   position: relative;
   margin-inline-start: auto;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .pdf-bookmark-list summary {
   padding: 6px 8px;
@@ -457,7 +457,7 @@ html:root
   display: grid;
   place-items: center;
   padding: 24px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   color: #67574b;
   background: #fffaf3;
   text-align: center;
@@ -517,7 +517,7 @@ html:root
   min-height: 44px;
 }
 .pdf-file-search p {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   margin: 10px 0 0;
 }
 .pdf-file-search ol {
@@ -537,7 +537,7 @@ html:root
   border: 0;
   border-bottom: 1px solid var(--book-line);
   color: var(--book-ink);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   cursor: pointer;
 }
 .pdf-file-search li b {
@@ -773,7 +773,7 @@ html:root
   gap: 10px;
 }
 .study-tools-panel :is(label, small) {
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .study-tools-panel label {
   display: flex;
@@ -828,7 +828,7 @@ html:root
 }
 .study-focus-timer p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .study-private-notes textarea {
   resize: vertical;
@@ -849,7 +849,7 @@ html:root
   background: transparent;
   border: 0;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   min-height: 44px;
 }
 @media (hover: none), (pointer: coarse) {
@@ -881,7 +881,7 @@ html:root
     background: var(--book-tab);
     border: 0;
     border-bottom: 1px solid var(--book-rule);
-    font-size: 0.8rem;
+    font-size: max(var(--readable-small, .875rem), 0.8rem);
     cursor: pointer;
   }
   .study-environment .notebook-bookmarks {
@@ -934,10 +934,10 @@ html:root
     font-size: 0.88rem;
   }
   .study-environment .notebook-current-course span {
-    font-size: 0.6rem;
+    font-size: max(var(--readable-small, .875rem), 0.6rem);
   }
   .study-environment .study-notebook .notebook-back-courses {
-    font-size: 0.7rem;
+    font-size: max(var(--readable-small, .875rem), 0.7rem);
   }
   .study-environment .notebook-object {
     padding: 3px;
@@ -967,7 +967,7 @@ html:root
   }
   .pdf-zoom-reset {
     min-width: 36px;
-    font-size: 0.65rem;
+    font-size: max(var(--readable-small, .875rem), 0.65rem);
   }
   .pdf-bookmark-list {
     flex: 1 0 100%;

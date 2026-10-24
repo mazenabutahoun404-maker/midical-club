@@ -31,16 +31,10 @@ export default function ExamSearch() {
   return (
     <>
       <ExamHeading
-        eyebrow={t({
-          en: "Less hunting. More understanding.",
-          ar: "بحث أقل وفهم أكثر",
-        })}
-        title={t({
-          en: "Find the question\nyou came for.",
-          ar: "ابحث عن السؤال\nالذي تحتاجه.",
-        })}
+        eyebrow=""
+        title={t({ en: "Search questions", ar: "البحث في الأسئلة" })}
         body={t({
-          en: "Search question text, chapters or lecturer names. Your language can be English or Arabic.",
+          en: "Search question text, chapters or lecturer names.",
           ar: "ابحث في نص السؤال أو الفصل أو اسم المحاضر بالعربية أو الإنجليزية.",
         })}
       />

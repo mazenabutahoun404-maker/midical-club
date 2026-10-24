@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   min-height: 0;
 }
 .student-notes-receipt:empty {
@@ -87,7 +87,7 @@
 }
 .student-note-open p {
   margin: 5px 0;
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -154,7 +154,7 @@
 .course-publisher-notes label {
   display: grid;
   gap: 6px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .course-publisher-notes textarea {
   width: 100%;
@@ -173,7 +173,7 @@
 }
 .publisher-note-empty {
   color: var(--book-muted);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .course-private-notes {
   border-block-start: 1px solid var(--book-rule);

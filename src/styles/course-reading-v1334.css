@@ -75,20 +75,20 @@ html:root body .pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-reading
   background: var(--note-color, #ffdf98);
   color: #30261d;
   box-shadow: 0 3px 12px #0002;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.5;
   animation: pdf-note-open 160ms ease-out;
 }
 .pdf-note-sticker > header { position: sticky; top: 0; background: var(--note-color, #ffdf98); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .pdf-note-sticker > header button { display: grid; place-items: center; width: 32px; min-width: 32px; height: 32px; border: 1px solid #30261d66; border-radius: 8px; background: transparent; color: inherit; }
 .pdf-note-sticker :is(p, blockquote) { margin-block: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-.pdf-note-sticker blockquote { font-size: 11px; padding-inline-start: 6px; border-inline-start: 2px solid currentColor; }
+.pdf-note-sticker blockquote { font-size: max(var(--readable-small, .875rem), 11px); padding-inline-start: 6px; border-inline-start: 2px solid currentColor; }
 .pdf-note-sticker :focus-visible { outline: 2px solid #30261d; outline-offset: 2px; }
 @keyframes pdf-note-open { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: none; } }
 .notebook-empty-section { display: grid; justify-items: center; align-content: center; gap: 12px; min-height: 320px; padding: 32px 20px; text-align: center; color: var(--book-ink); }
 .notebook-empty-section svg { max-width: 85%; height: auto; }
 .notebook-empty-section strong { font-size: 1rem; }
-.notebook-empty-section p { max-width: 300px; color: var(--book-muted); font-size: .85rem; line-height: 1.6; }
+.notebook-empty-section p { max-width: 300px; color: var(--book-muted); font-size: max(var(--readable-small, .875rem), .85rem); line-height: 1.6; }
 .empty-book-cover { fill: var(--book-cover); opacity: .18; }
 .empty-book-paper { fill: var(--book-paper); stroke: var(--book-rule); stroke-width: 1.4; }
 .empty-book-fold { fill: none; stroke: var(--book-rule); stroke-width: 1.4; }

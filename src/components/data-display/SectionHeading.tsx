@@ -6,18 +6,20 @@ export function SectionHeading({
   heading,
   href,
   linkLabel,
+  concise = false,
 }: {
   heading: Heading;
   href?: string;
   linkLabel?: string;
+  concise?: boolean;
 }) {
   const { t } = useLocale();
   return (
     <div className="section-heading">
       <div>
-        <div className="eyebrow">{t(heading.eyebrow)}</div>
+        {!concise && <div className="eyebrow">{t(heading.eyebrow)}</div>}
         <h2>{t(heading.title)}</h2>
-        {heading.description && <p>{t(heading.description)}</p>}
+        {!concise && heading.description && <p>{t(heading.description)}</p>}
       </div>
       {href && (
         <AppLink href={href} className="text-link">

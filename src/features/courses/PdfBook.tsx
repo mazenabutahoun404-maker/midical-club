@@ -399,9 +399,7 @@ export function PdfBook({
   const [readingHeight, setReadingHeight] = useState(
     Math.max(120, window.innerHeight - 220),
   );
-  const [fitMode, setFitMode] = useState<"auto" | "page" | "width" | null>(
-    "auto",
-  );
+  const [fitMode, setFitMode] = useState<"page" | "width" | null>("width");
   position.current = onPage;
   const documentCount = useRef(onCount);
   documentCount.current = onCount;
@@ -464,8 +462,7 @@ export function PdfBook({
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [optionsOpen, compactControls]);
   const first = spreadStart(Math.min(page, count), twoPages);
-  const effectiveFit =
-    fitMode === "auto" ? (compactControls ? "width" : "page") : fitMode;
+  const effectiveFit = fitMode;
   const widthZoom = pdfFitZoom(readingWidth, twoPages, naturalWidth);
   const minimumZoom = Math.min(MIN_PDF_ZOOM, widthZoom);
   const effectiveZoom =
@@ -707,6 +704,8 @@ export function PdfBook({
       rasters: RasterPool | undefined;
     setError(false);
     setPool(null);
+    setFitMode("width");
+    setZoom(1);
     setPassword(null);
     void import("./pdf-engine")
       .then(async (engine) => {
@@ -898,17 +897,33 @@ export function PdfBook({
       </PdfToolButton>
     </div>
   );
-  const widthControl = (
+  const fitControl = (
     <PdfToolButton
       type="button"
-      className="notebook-icon-button pdf-fit-width"
+      className="notebook-icon-button pdf-fit-width pdf-fit-toggle"
       disabled={!pool || !!turn || preparingTurn}
-      aria-label={t({ en: "Fit PDF to width", ar: "ملاءمة PDF مع العرض" })}
-      aria-pressed={effectiveFit === "width"}
-      onClick={() => setFitMode("width")}
+      aria-label={t(
+        effectiveFit === "width"
+          ? { en: "Fit whole PDF page", ar: "عرض صفحة PDF كاملة" }
+          : { en: "Fit PDF to width", ar: "ملاءمة PDF مع العرض" },
+      )}
+      data-fit-mode={effectiveFit || "manual"}
+      onClick={() => setFitMode(effectiveFit === "width" ? "page" : "width")}
     >
-      <MoveHorizontal size={18} />
-      <span>{t({ en: "Fit width", ar: "ملء العرض" })}</span>
+      {effectiveFit === "page" ? (
+        <Scan size={18} />
+      ) : (
+        <MoveHorizontal size={18} />
+      )}
+      <span>
+        {t(
+          effectiveFit === "page"
+            ? { en: "Whole page", ar: "الصفحة كاملة" }
+            : effectiveFit === "width"
+              ? { en: "Fit width", ar: "ملء العرض" }
+              : { en: "Fit", ar: "ملاءمة" },
+        )}
+      </span>
     </PdfToolButton>
   );
 
@@ -1094,25 +1109,9 @@ export function PdfBook({
             {!compactControls && (
               <>
                 {zoomControls}
-                {widthControl}
+                {fitControl}
               </>
             )}
-            <PdfToolButton
-              type="button"
-              className="notebook-icon-button pdf-fit-toggle"
-              disabled={!pool || !!turn}
-              aria-label={t({
-                en: "Fit whole PDF page",
-                ar: "عرض صفحة PDF كاملة",
-              })}
-              aria-pressed={effectiveFit === "page"}
-              onClick={() => setFitMode("page")}
-            >
-              <Scan size={18} />
-              <span className="pdf-control-label">
-                {t({ en: "Whole page", ar: "الصفحة كاملة" })}
-              </span>
-            </PdfToolButton>
             <PdfToolButton
               type="button"
               className="notebook-icon-button pdf-find-toggle"
@@ -1260,7 +1259,7 @@ export function PdfBook({
           })}
         >
           {zoomControls}
-          {widthControl}
+          {fitControl}
         </div>
       )}
       {searchOpen && (

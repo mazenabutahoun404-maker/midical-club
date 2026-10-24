@@ -1,7 +1,8 @@
 import { NavigationSelection } from "./NavigationSelection";
 import { NotebookFittings } from "./NotebookFittings";
 import { FileSearch, FileCheck, BadgeCheck, ShieldPlus } from "lucide-react";
-import { NavigationControls } from "./AdaptiveNavigation";
+import { RailBrand, RailSettings, RailProfile } from "./RailFurniture";
+import { SidebarToggle } from "./SidebarToggle";
 import { useEffect, useState } from "react";
 import {
   Activity,
@@ -31,7 +32,7 @@ import { Modal } from "../ui/Modal";
 import { AppLink } from "./AppLink";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { NavigationHint } from "./NavigationHint";
-import { SidebarToggle } from "./SidebarToggle";
+
 import { MorphIcon } from "../ui/MorphIcon";
 
 type NavItem = {
@@ -55,7 +56,12 @@ const operations: NavItem[] = [
     icon: FileSearch,
     capability: "content.review",
   },
-  { href: "/admin/exams", label: "exams", icon: FileQuestion, capability: "content.review" },
+  {
+    href: "/admin/exams",
+    label: "exams",
+    icon: FileQuestion,
+    capability: "content.review",
+  },
   {
     href: "/admin/builder",
     label: "builderNavigation",
@@ -186,18 +192,13 @@ export function AdminNavigation() {
   ];
   return (
     <>
+      <RailBrand title={label("admin")} caption={label("adminControlRoom")} />
       <aside
         className="desktop-navigation admin-navigation"
         aria-label={label("adminNavigation")}
       >
         <NotebookFittings axis="rail" />
-        <div className="shell-brand">
-          <SidebarToggle controls="admin-sidebar-links" />
-          <span className="shell-brand-caption">
-            <strong>{label("admin")}</strong>
-            <small>{label("adminControlRoom")}</small>
-          </span>
-        </div>
+        <SidebarToggle controls="admin-sidebar-links" />
         <div
           className="navigation-scroll-frame"
           data-scroll-before={scrollCues.before || undefined}
@@ -228,12 +229,9 @@ export function AdminNavigation() {
             </nav>
           </div>
         </div>
-        <div className="admin-nav-footer">
-          <AppearanceSettings />
-          <div className="navigation-version navigation-controls-row">
-            <span className="navigation-status-copy"><span className="status-dot" />{label("insightsPreviewShort")}</span>
-            <div className="navigation-controls-slot"><NavigationControls /></div>
-          </div>
+        <div className="admin-nav-footer rail-footer">
+          <RailSettings />
+          <RailProfile />
         </div>
       </aside>
       <nav
@@ -311,7 +309,7 @@ export function AdminNavigation() {
           ))}
           <AppLink
             className="admin-mobile-exit"
-            href="/my/profile"
+            href="/my"
             onClick={() => setMoreOpen(false)}
           >
             {label("governanceBackPersonal")}

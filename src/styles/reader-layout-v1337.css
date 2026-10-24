@@ -136,6 +136,64 @@ html:root body .course-study-edition .study-environment .study-notebook .course-
   }
   html:root body .course-study-edition .study-environment .study-notebook .course-header-material > .shelf-header-outline path { fill: transparent; }
 }
+/* Appearance is nested in QuickTools; it needs the same leather treatment
+   as the direct shelf buttons, including its hover/focus states. */
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-header-material
+  .shelf-paper-control
+  .appearance-quick-anchor[data-compact] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-header-material
+  .shelf-paper-control
+  .appearance-quick-anchor
+  > .appearance-shortcut,
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-header-material
+  .shelf-paper-control
+  .appearance-quick-anchor
+  > .appearance-shortcut:is(:hover, :focus-visible, :active) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--book-ink);
+  box-shadow: none;
+}
+html:root
+  body
+  .course-study-edition
+  .study-environment
+  .study-notebook
+  .course-header-material
+  .appearance-shortcut:focus-visible {
+  outline-color: var(--book-ink);
+}
 @media (prefers-reduced-motion: reduce) {
   .notebook-section-turn-button { transition: none; }
 }

@@ -8,6 +8,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { authMilestones } from "./auth-progress";
+
 export type AuthFeedback = "idle" | "submitting" | "success" | "error";
 
 type Journey = {
@@ -49,7 +51,7 @@ export function AuthJourneyProvider({ children }: { children: ReactNode }) {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const resolve = useRef<(() => void) | null>(null);
   const setProgress = useCallback((value: string[]) => {
-    if (value.length < 6) setFinalRestoration(false);
+    if (value.length < authMilestones.length) setFinalRestoration(false);
     setProgressState((current) =>
       current.join("|") === value.join("|") ? current : value,
     );

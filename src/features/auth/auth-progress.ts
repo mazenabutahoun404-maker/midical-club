@@ -1,5 +1,6 @@
 export const authMilestones = [
   "fullName",
+  "universityNumber",
   "email",
   "batch",
   "year",
@@ -11,3 +12,8 @@ export const isEmailReady = (value: string) =>
   /^\S+@\S+\.\S+$/.test(value.trim());
 export const isPasswordReady = (value: string) =>
   value.length >= 8 && /[A-Za-z]/.test(value) && /\d/.test(value);
+
+export {
+  normalizeUniversityNumber,
+  isUniversityNumberReady,
+} from "../../lib/university-number";

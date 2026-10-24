@@ -80,7 +80,7 @@ html body .app-shell:has(.scroll-header[data-header-hidden="true"])::before {
     min-height: 32px;
     height: 32px;
     padding: 0 4px;
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
     white-space: nowrap;
     overflow: hidden;
     transition: opacity 130ms ease;

@@ -50,47 +50,49 @@ export default function ExamHistory() {
   }
   return (
     <>
-      <ExamHeading
-        eyebrow={t({
-          en: "Your personal practice record",
-          ar: "سجل تدريبك الشخصي",
-        })}
-        title={t({
-          en: "Pick up a session.\nReflect on the last one.",
-          ar: "تابع جلسة.\nوراجع ما أنجزته.",
-        })}
-      />
-      <div
-        className="exam-filter-tabs"
-        aria-label={t({ en: "Attempt status", ar: "حالة المحاولة" })}
-      >
-        {["active", "finished", "all"].map((value) => (
-          <button
-            key={value}
-            type="button"
-            aria-pressed={filter === value}
-            onClick={() => {
-              setFilter(value);
-              setLimit(20);
-            }}
-          >
-            {t({
-              en:
-                value === "active"
-                  ? "In progress"
-                  : value === "finished"
-                    ? "Finished"
-                    : "All attempts",
-              ar:
-                value === "active"
-                  ? "جارية"
-                  : value === "finished"
-                    ? "مكتملة"
-                    : "كل المحاولات",
-            })}
-          </button>
-        ))}
-      </div>
+      {attempts.data?.length ? (
+        <ExamHeading
+          eyebrow=""
+          title={t({ en: "My attempts", ar: "محاولاتي" })}
+        />
+      ) : (
+        <h1 className="sr-only" data-page-heading tabIndex={-1}>
+          {t({ en: "My attempts", ar: "محاولاتي" })}
+        </h1>
+      )}
+      {!!attempts.data?.length && (
+        <div
+          className="exam-filter-tabs"
+          aria-label={t({ en: "Attempt status", ar: "حالة المحاولة" })}
+        >
+          {["active", "finished", "all"].map((value) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={filter === value}
+              onClick={() => {
+                setFilter(value);
+                setLimit(20);
+              }}
+            >
+              {t({
+                en:
+                  value === "active"
+                    ? "In progress"
+                    : value === "finished"
+                      ? "Finished"
+                      : "All attempts",
+                ar:
+                  value === "active"
+                    ? "جارية"
+                    : value === "finished"
+                      ? "مكتملة"
+                      : "كل المحاولات",
+              })}
+            </button>
+          ))}
+        </div>
+      )}
       {attempts.isPending ? (
         <LoadingState />
       ) : attempts.isError ? (
@@ -185,14 +187,22 @@ export default function ExamHistory() {
       ) : (
         <ExamEmpty
           title={t({
-            en: "A fresh page in your practice record",
-            ar: "صفحة جديدة في سجل تدريبك",
+            en: attempts.data?.length
+              ? "No attempts in this category"
+              : "No attempts yet",
+            ar: attempts.data?.length
+              ? "لا توجد محاولات في هذه الفئة"
+              : "لا توجد محاولات بعد",
           })}
           body={t({
-            en: "Your sessions will appear here when you start a question set.",
-            ar: "تظهر جلساتك هنا عندما تبدأ مجموعة أسئلة.",
+            en: attempts.data?.length
+              ? "Choose another status to see your saved sessions."
+              : "Start a question set to build your practice record.",
+            ar: attempts.data?.length
+              ? "اختر حالة أخرى لعرض جلساتك المحفوظة."
+              : "ابدأ مجموعة أسئلة لبناء سجل تدريبك.",
           })}
-          href={base}
+          href={attempts.data?.length ? undefined : base}
           action={t({ en: "Choose a course", ar: "اختيار مساق" })}
         />
       )}

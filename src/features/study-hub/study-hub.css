@@ -64,11 +64,11 @@
 .study-desk-card > span {
   margin-block-start: auto;
   color: var(--foreground);
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
   font-weight: 700;
 }
 .study-source-note {
-  font-size: 0.84rem;
+  font-size: max(var(--readable-small, .875rem), 0.84rem);
   line-height: 1.6;
   color: var(--foreground);
   padding-block: 8px;
@@ -151,7 +151,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 0.84rem;
+  font-size: max(var(--readable-small, .875rem), 0.84rem);
 }
 .study-metrics b {
   color: var(--foreground);
@@ -179,7 +179,7 @@
   flex-wrap: wrap;
 }
 .study-editor small {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   line-height: 1.6;
 }
 .recall-stage {
@@ -251,7 +251,7 @@
   overflow-wrap: anywhere;
 }
 .study-record-list small {
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .study-empty {
   display: flex;
@@ -284,7 +284,7 @@
   height: 8px;
 }
 .pack-progress span {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .offline-reader {
   position: fixed;
@@ -362,7 +362,7 @@
   margin-block-start: auto;
 }
 .study-status {
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
   font-weight: 700;
   padding: 5px 9px;
   border: 1px solid var(--border);
@@ -409,7 +409,7 @@
   white-space: nowrap;
 }
 .quiet-room-tabs small {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .quiet-room-tabs [aria-pressed="true"] {
   border-color: var(--primary) !important;
@@ -471,12 +471,12 @@
   line-height: 1.1;
 }
 .room-clock span {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   text-align: center;
   max-width: 170px;
 }
 .room-clock small {
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .room-seats {
   display: grid;
@@ -508,7 +508,7 @@
 }
 .room-seats p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
@@ -516,7 +516,7 @@
   font-size: 0.9rem;
 }
 .room-seats small {
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   color: var(--foreground);
 }
 .room-seats [data-present="true"] {
@@ -524,7 +524,7 @@
 }
 .room-invite {
   word-break: break-all;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .pdf-book {
   position: relative;
@@ -610,7 +610,7 @@
   border-inline-start: 2px solid var(--primary);
   padding-inline-start: 10px;
   margin: 8px 0;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   white-space: pre-wrap;
 }
 .margin-note-list article {
@@ -681,7 +681,7 @@
     gap: 10px;
   }
   .study-metrics span {
-    font-size: 0.75rem;
+    font-size: max(var(--readable-small, .875rem), 0.75rem);
   }
   .offline-reader {
     inset: 8px;

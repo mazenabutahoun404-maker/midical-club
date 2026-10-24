@@ -50,7 +50,7 @@ html:root
   background: var(--book-paper);
   color: var(--book-ink);
   box-shadow: 0 2px 8px #0002;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .pdf-pan-control input {
   width: 100%;

@@ -144,12 +144,9 @@ export const siteContent: SiteContent = {
   },
   hero: {
     eyebrow: t("YOUR NEXT CHAPTER STARTS HERE", "هنا تبدأ مرحلتك القادمة"),
-    title: t("Learn beyond.", "تعلّم بلا حدود."),
-    accent: t("Belong anywhere.", "انتمِ أينما كنت."),
-    description: t(
-      "A global home for medical students.",
-      "بيت عالمي لطلبة الطب.",
-    ),
+    title: t("Find your", "ابدأ رحلتك"),
+    accent: t("rhythm.", "بنبضٍ جديد."),
+    description: t("Learn together. Go further.", "نتعلّم معاً. ونصل أبعد."),
     primary: {
       id: "learn",
       label: t("Explore MedClub", "اكتشف ميدكلب"),

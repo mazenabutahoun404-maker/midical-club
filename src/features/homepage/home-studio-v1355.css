@@ -62,7 +62,7 @@ html[data-theme="light"] .home-studio {
 }
 .home-studio .eyebrow {
   color: var(--home-brand);
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
   font-weight: 650;
   letter-spacing: 0.055em;
 }
@@ -104,7 +104,7 @@ html[data-theme="light"] .home-studio {
   width: fit-content;
   min-height: 44px;
   color: var(--home-brand);
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   font-weight: 650;
 }
 .home-studio .section-heading > .text-link {
@@ -153,7 +153,7 @@ html[data-theme="light"] .home-studio {
   align-items: center;
   gap: 8px;
   flex: none;
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
   color: var(--home-brand);
 }
 .home-studio .home-signal p {
@@ -165,7 +165,7 @@ html[data-theme="light"] .home-studio {
 .home-studio .home-signal p > span {
   display: block;
   color: var(--home-muted);
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   font-weight: 400;
   margin-top: 4px;
 }
@@ -195,7 +195,7 @@ html[data-theme="light"] .home-studio {
   border-radius: 0 22px 22px 22px;
   background: var(--shortcut-tint);
   color: var(--foreground);
-  box-shadow: 0 4px 0 color-mix(in srgb, var(--primary) 6%, transparent);
+  box-shadow: var(--paper-shadow);
   transition:
     translate 200ms ease,
     box-shadow 200ms ease;
@@ -226,7 +226,7 @@ html[data-theme="light"] .home-studio {
 }
 .home-studio .home-study-shortcut:is(:hover, :focus-visible) {
   translate: 0 -5px;
-  box-shadow: 0 9px 0 color-mix(in srgb, var(--primary) 8%, transparent);
+  box-shadow: var(--paper-shadow-raised);
 }
 .home-studio .home-study-shortcut:active {
   translate: 0 -1px;
@@ -265,7 +265,7 @@ html[data-theme="light"] .home-studio {
 }
 .home-studio .home-shortcut-copy small {
   display: block;
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   line-height: 1.6;
   margin-top: 6px;
   color: var(--home-muted);
@@ -315,7 +315,7 @@ html[data-theme="light"] .home-studio {
   padding: 10px 22px;
   min-height: 38px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
 }
 .home-studio
   .home-library-toolbar
@@ -333,7 +333,7 @@ html[data-theme="light"] .home-studio {
 .home-studio .home-library-browse > span {
   margin-inline-end: 10px;
   color: var(--home-muted);
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
 }
 .home-studio .home-library-browse button {
   display: grid;
@@ -396,7 +396,7 @@ html[data-theme="light"] .home-studio {
   gap: 18px;
   padding: 10px 38px 22px;
   color: var(--home-brand);
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
 }
 .home-studio .home-bookcase-heading > span:first-child {
   display: inline-flex;
@@ -463,7 +463,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   height: 26px;
 }
 .home-studio .home-library-volume .course-volume-classification {
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
   gap: 8px;
 }
 .home-studio .home-library-volume .course-volume-copy h2 {
@@ -480,13 +480,13 @@ html body .home-studio .home-library-volume .course-volume-cover {
   margin: 8px 0;
 }
 .home-studio .home-library-volume .course-volume-copy p {
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   line-height: 1.6;
 }
 .home-studio .home-library-volume .course-volume-action {
   margin-top: 14px;
   padding-top: 10px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
 }
 .home-studio .home-bookcase-ledge {
   position: absolute;
@@ -564,7 +564,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   font-weight: 700;
 }
 .home-studio .home-subsection-heading .text-link {
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
   font-weight: 500;
 }
 .home-studio .home-featured-event {
@@ -610,7 +610,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     serif;
 }
 .home-studio .home-featured-date > span {
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
   color: var(--home-on-solid-muted);
 }
 .home-studio .home-ticket-mark {
@@ -627,7 +627,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   align-items: center;
   gap: 7px;
   margin-bottom: 20px;
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
   font-weight: 600;
   color: var(--home-gold);
   letter-spacing: 0.04em;
@@ -640,7 +640,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
 }
 .home-studio .home-featured-event .eyebrow {
   color: var(--home-on-solid-muted);
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
 }
 .home-studio .home-featured-event .event-status {
   padding: 4px 8px;
@@ -648,7 +648,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   border-radius: 999px;
   color: var(--home-on-solid);
   background: #fff1;
-  font-size: 9px;
+  font-size: max(var(--readable-small, 0.875rem), 9px);
 }
 .home-studio .home-featured-event h4 {
   margin: 16px 0 12px;
@@ -661,7 +661,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   text-wrap: balance;
 }
 .home-studio .home-featured-event-copy > p {
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
   line-height: 1.8;
   color: var(--home-on-solid-muted);
 }
@@ -669,7 +669,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   display: grid;
   gap: 9px;
   margin: 20px 0;
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
   line-height: 1.6;
   color: var(--home-on-solid-muted);
 }
@@ -692,7 +692,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
 }
 .home-studio .home-row-actions .text-link {
   color: var(--home-on-solid);
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
 }
 .home-studio .home-featured-event .save-button {
   color: var(--home-on-solid);
@@ -736,7 +736,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     serif;
 }
 .home-studio .home-upcoming-event > time small {
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
 }
 .home-studio .home-upcoming-event h4 {
   font-size: 14px;
@@ -750,7 +750,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
 .home-studio .home-upcoming-event p {
   margin-top: 4px;
   color: var(--home-muted);
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
   line-height: 1.6;
 }
 .home-studio .home-openings-list {
@@ -804,7 +804,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
 }
 .home-studio .home-opening-top .eyebrow {
   color: var(--home-muted);
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
   font-weight: 500;
 }
 .home-studio .home-opening .save-button {
@@ -824,7 +824,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   text-wrap: balance;
 }
 .home-studio .home-opening > p {
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
   line-height: 1.6;
   color: var(--home-muted);
 }
@@ -841,14 +841,14 @@ html body .home-studio .home-library-volume .course-volume-cover {
   flex-wrap: wrap;
   gap: 5px;
   align-items: center;
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
 }
 .home-studio .home-opening-bottom small {
   color: var(--home-muted);
   font-size: inherit;
 }
 .home-studio .home-opening-bottom .text-link {
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
 }
 .home-studio .home-opening-status {
   display: inline-flex;
@@ -859,7 +859,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--home-muted);
-  font-size: 9px;
+  font-size: max(var(--readable-small, 0.875rem), 9px);
   line-height: 1.2;
 }
 .home-studio .home-opening-status::before {
@@ -933,7 +933,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   flex-wrap: wrap;
   align-items: center;
   gap: 9px;
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
   line-height: 1.6;
   color: var(--home-muted);
 }
@@ -962,7 +962,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   gap: 8px 16px;
   margin: 24px 0 14px;
   color: var(--home-muted);
-  font-size: 11px;
+  font-size: max(var(--readable-small, 0.875rem), 11px);
 }
 .home-studio .home-leading-story > .text-link {
   min-height: 44px;
@@ -1012,7 +1012,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   border-top: 0;
 }
 .home-studio .home-small-story .eyebrow {
-  font-size: 10px;
+  font-size: max(var(--readable-small, 0.875rem), 10px);
   font-weight: 500;
   color: var(--home-muted);
 }
@@ -1026,7 +1026,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
 }
 .home-studio .home-small-story p {
   color: var(--home-muted);
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
   line-height: 1.8;
 }
 .home-studio .home-small-story .text-link {
@@ -1099,7 +1099,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   border-radius: 50%;
   color: var(--home-brand);
   background: var(--card);
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   font-weight: 700;
 }
 .home-studio .home-community-person[data-person="0"] {
@@ -1139,7 +1139,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   padding: 11px 17px;
   gap: 8px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
 }
 .home-studio .home-mentor-directory {
   min-width: 0;
@@ -1201,7 +1201,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
   border-radius: 15px;
   background: var(--home-solid);
   color: var(--home-on-solid);
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
 }
 .home-studio .home-mentor-directory li:nth-child(2) .home-mentor-initials {
   color: var(--accent-foreground);
@@ -1224,13 +1224,13 @@ html body .home-studio .home-library-volume .course-volume-cover {
 .home-studio .home-mentor-name small {
   display: block;
   margin-top: 5px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   line-height: 1.5;
   color: var(--home-muted);
 }
 .home-studio .home-quiet-state {
   padding: 20px 0;
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
   line-height: 1.8;
   color: var(--home-muted);
 }
@@ -1400,11 +1400,11 @@ html body .home-studio .home-library-volume .course-volume-cover {
     font-size: 34px;
   }
   .home-studio .section-heading p {
-    font-size: 13px;
+    font-size: max(var(--readable-small, 0.875rem), 13px);
   }
   .home-studio .section-heading > .text-link {
     padding: 8px 14px;
-    font-size: 11px;
+    font-size: max(var(--readable-small, 0.875rem), 11px);
   }
   .home-studio .home-signal {
     padding: 14px;
@@ -1415,7 +1415,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     display: none;
   }
   .home-studio .home-signal p {
-    font-size: 13px;
+    font-size: max(var(--readable-small, 0.875rem), 13px);
   }
   .home-studio .home-signal .text-link {
     margin-inline-start: auto;
@@ -1446,7 +1446,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     font-size: 14px;
   }
   .home-studio .home-shortcut-copy small {
-    font-size: 12px;
+    font-size: max(var(--readable-small, 0.875rem), 12px);
   }
   .home-studio .home-study-shortcut > svg {
     position: absolute;
@@ -1466,13 +1466,13 @@ html body .home-studio .home-library-volume .course-volume-cover {
   }
   .home-studio .home-library-toolbar [data-slot="tabs-trigger"] {
     padding-inline: 17px;
-    font-size: 12px;
+    font-size: max(var(--readable-small, 0.875rem), 12px);
   }
   .home-studio .home-library-browse {
     margin-inline-start: auto;
   }
   .home-studio .home-library-browse > span {
-    font-size: 11px;
+    font-size: max(var(--readable-small, 0.875rem), 11px);
   }
   .home-studio .home-wood-desk {
     margin: 0;
@@ -1490,7 +1490,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     padding: 8px 25px 12px;
     flex-wrap: wrap;
     gap: 6px 12px;
-    font-size: 10px;
+    font-size: max(var(--readable-small, 0.875rem), 10px);
     text-align: center;
   }
   .home-studio .home-bookcase-heading > span + span {
@@ -1522,7 +1522,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     font-size: 17px;
   }
   .home-studio .home-subsection-heading .text-link {
-    font-size: 10px;
+    font-size: max(var(--readable-small, 0.875rem), 10px);
     gap: 5px;
   }
   .home-studio .home-featured-event {
@@ -1540,7 +1540,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     font-size: 39px;
   }
   .home-studio .home-featured-date > span {
-    font-size: 11px;
+    font-size: max(var(--readable-small, 0.875rem), 11px);
   }
   .home-studio .home-featured-event-copy {
     padding: 24px 20px;
@@ -1549,10 +1549,10 @@ html body .home-studio .home-library-volume .course-volume-cover {
     font-size: 27px;
   }
   .home-studio .home-featured-event-copy > p {
-    font-size: 13px;
+    font-size: max(var(--readable-small, 0.875rem), 13px);
   }
   .home-studio .home-event-facts {
-    font-size: 11px;
+    font-size: max(var(--readable-small, 0.875rem), 11px);
   }
   .home-studio .home-opening h4 {
     font-size: 24px;
@@ -1569,7 +1569,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     font-size: 32px;
   }
   .home-studio .home-leading-story > p {
-    font-size: 13px;
+    font-size: max(var(--readable-small, 0.875rem), 13px);
   }
   .home-studio .home-story-cover-top {
     gap: 10px;
@@ -1629,7 +1629,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     flex-wrap: wrap;
   }
   .home-studio .home-row-actions .text-link {
-    font-size: 11px;
+    font-size: max(var(--readable-small, 0.875rem), 11px);
   }
   .home-studio .home-bookcase-heading {
     flex-direction: column;
@@ -1653,7 +1653,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     -webkit-line-clamp: 1;
   }
   .home-studio .home-library-volume .course-volume-action {
-    font-size: 11px;
+    font-size: max(var(--readable-small, 0.875rem), 11px);
   }
   .home-studio .home-upcoming-event {
     grid-template-columns: 44px minmax(0, 1fr) 44px;
@@ -1703,7 +1703,7 @@ html body .home-studio .home-library-volume .course-volume-cover {
     transform-origin: right center;
   }
   .home-studio .home-mentor-name strong {
-    font-size: 13px;
+    font-size: max(var(--readable-small, 0.875rem), 13px);
   }
   .home-studio .home-mentor-initials {
     width: 38px;

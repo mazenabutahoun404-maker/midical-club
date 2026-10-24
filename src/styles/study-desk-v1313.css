@@ -45,7 +45,7 @@ html:root body .app-shell[data-study-environment="true"] main {
   font-size: 1rem;
 }
 .course-study-edition .study-environment .notebook-current-course span {
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
 }
 .course-study-edition .study-environment .notebook-object,
 .course-study-edition
@@ -380,17 +380,17 @@ html:root body .app-shell[data-study-environment="true"] main {
   box-shadow: none;
 }
 .course-study-edition .study-environment .notebook-peek h3 {
-  font-size: 0.86rem;
+  font-size: max(var(--readable-small, .875rem), 0.86rem);
 }
 .course-study-edition .study-environment .notebook-peek p {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   line-height: 1.5;
 }
 .course-study-edition .study-environment .notebook-peek li {
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
 }
 .course-study-edition .study-environment .notebook-peek .notebook-button {
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   min-height: 40px;
 }
 @keyframes section-preview-arrive {
@@ -539,7 +539,7 @@ html:root body .app-shell[data-study-environment="true"] main {
   overflow: hidden;
   background: var(--book-paper);
   color: var(--book-ink);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .section-next-content:has(.section-pdf-preview) {
   padding: 0;
@@ -594,7 +594,7 @@ html:root body .app-shell[data-study-environment="true"] main {
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   color: #554137;
   background: #fffaf4;
 }
@@ -730,13 +730,13 @@ html[dir="rtl"] .course-study-edition .study-environment .notebook-peek {
     display: none;
   }
   .course-study-edition .study-environment .notebook-current-course h1 {
-    font-size: 0.83rem;
+    font-size: max(var(--readable-small, .875rem), 0.83rem);
   }
   .course-study-edition .study-environment .notebook-current-course svg {
     display: none;
   }
   .course-study-edition .study-environment .notebook-back-courses {
-    font-size: 0.65rem;
+    font-size: max(var(--readable-small, .875rem), 0.65rem);
     gap: 4px;
   }
   .course-study-edition .study-environment .notebook-object,
@@ -812,18 +812,18 @@ html[dir="rtl"] .course-study-edition .study-environment .notebook-peek {
     .study-environment
     .pdf-book-toolbar
     .pdf-bookmark-list {
-    font-size: 0.63rem;
+    font-size: max(var(--readable-small, .875rem), 0.63rem);
   }
   .course-study-edition .study-environment .study-reader-actions {
-    font-size: 0.65rem;
+    font-size: max(var(--readable-small, .875rem), 0.65rem);
     gap: 4px;
   }
   .course-study-edition .study-environment .study-review-button {
-    font-size: 0.63rem;
+    font-size: max(var(--readable-small, .875rem), 0.63rem);
     padding: 5px;
   }
   .course-study-edition .study-environment .study-reader-heading h3 {
-    font-size: 0.72rem;
+    font-size: max(var(--readable-small, .875rem), 0.72rem);
   }
   .course-study-edition
     .study-environment
@@ -866,7 +866,7 @@ html[dir="rtl"] .course-study-edition .study-environment .notebook-peek {
     height: calc(100% - 42px);
   }
   .course-study-edition .study-environment .notebook-companion-picker {
-    font-size: 0.65rem;
+    font-size: max(var(--readable-small, .875rem), 0.65rem);
   }
   .course-study-edition .study-environment .notebook-width-control {
     display: none;
@@ -1017,5 +1017,5 @@ html[dir="rtl"] .course-study-edition .study-environment .notebook-peek {
   .notebook-index[data-expanded="true"]
   .notebook-index-heading {
   padding-inline-end: 24px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }

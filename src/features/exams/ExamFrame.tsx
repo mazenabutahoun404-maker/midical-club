@@ -1,3 +1,4 @@
+import { EmptyScene } from "../../components/feedback/EmptyScene";
 import { useState, type ReactNode } from "react";
 import { Modal } from "../../components/ui/Modal";
 import {
@@ -151,7 +152,7 @@ export function ExamHeading({
   return (
     <header className="exam-page-heading">
       <div>
-        <span className="exam-kicker">{eyebrow}</span>
+        {eyebrow && <span className="exam-kicker">{eyebrow}</span>}
         <Heading
           data-page-heading={heading === "h1" ? "" : undefined}
           tabIndex={-1}
@@ -177,7 +178,7 @@ export function ExamEmpty({
 }) {
   return (
     <div className="exam-empty">
-      <BookOpen size={38} strokeWidth={1} />
+      <EmptyScene />
       <h2>{title}</h2>
       <p>{body}</p>
       {href && (

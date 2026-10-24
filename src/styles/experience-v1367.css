@@ -1,0 +1,78 @@
+/* The name is a greeting; account settings have their own quiet, recognisable control. */
+.personal-welcome-utilities {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 8px 14px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.app-shell .campus-hero .personal-welcome-utilities .personal-welcome-greeting {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.account-settings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 7px;
+  min-height: 40px;
+  padding: 4px 9px 4px 4px;
+  padding-inline: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border));
+  border-radius: 12px 18px 18px 12px;
+  background: color-mix(in srgb, var(--primary) 5%, var(--card));
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.25;
+  transition:
+    border-color 160ms,
+    background 160ms,
+    box-shadow 160ms;
+}
+.account-settings-mark {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 8px 11px 11px 8px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.account-settings-button:is(:hover, :focus-visible) {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, var(--card));
+  box-shadow: 0 3px 12px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+.personal-home-greeting:has(.account-settings-button) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 16px;
+  align-items: center;
+}
+.personal-home-greeting > .account-settings-button {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+.personal-home-greeting > :is(span, small) {
+  grid-column: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+  .personal-welcome-utilities {
+    justify-content: center;
+    gap: 8px 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .account-settings-button {
+    transition: none;
+  }
+}

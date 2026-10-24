@@ -20,7 +20,7 @@
   box-shadow:
     0 8px 22px #0003,
     inset 0 0 0 1px var(--flight-cover);
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   line-height: 1.5;
 }
 .action-flight-paper::before {

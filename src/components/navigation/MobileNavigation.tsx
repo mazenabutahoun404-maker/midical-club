@@ -101,6 +101,9 @@ export function MobileNavigation({
       ];
   const sections = [...promoted, ...remaining];
   const workspace: MenuItem[] = [
+    ...(signedIn
+      ? [item("/my/profile", "Account settings", "إعدادات الحساب")]
+      : []),
     ...(personal
       ? [item("/", "MedClub home", "رئيسية مدكلوب")]
       : signedIn

@@ -39,7 +39,7 @@
   letter-spacing: -0.035em;
 }
 .shell-brand-caption small {
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   letter-spacing: 0.07em;
   opacity: 0.7;
 }
@@ -89,7 +89,7 @@
   align-items: center;
   gap: 10px;
   color: var(--shell-ink);
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
 }
 .shell-location strong {
   overflow: hidden;
@@ -205,7 +205,7 @@
   border: 1px solid transparent;
   border-radius: 13px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   font-weight: 700;
 }
 .involvement-navigation a:is(:hover, :focus-visible) {
@@ -564,10 +564,10 @@
     font-size: 16px;
   }
   .shell-brand-caption small {
-    font-size: 7px;
+    font-size: max(var(--readable-small, .875rem), 7px);
   }
   .shell-location {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     gap: 7px;
   }
   .shell-location-parent {
@@ -608,7 +608,7 @@
   }
   .shell-location {
     color: var(--foreground);
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
     gap: 8px;
   }
   .shell-location-parent,
@@ -641,7 +641,7 @@
     padding-top: 12px;
   }
   .involvement-navigation a {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
     padding-inline: 12px;
   }
   .search-modal[open] {
@@ -736,7 +736,7 @@
     border-radius: 10px;
     background: var(--shell-surface);
     color: var(--shell-ink);
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
 }
 @media (min-width: 768px) {

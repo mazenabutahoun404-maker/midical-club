@@ -1,4 +1,4 @@
-import { BookOpen } from "lucide-react";
+import { EmptyScene } from "./EmptyScene";
 import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from "../ui/empty";
 import { ActionLink } from "../ui/ActionLink";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -16,7 +16,7 @@ export function EmptyState({
   const { label } = useLocale();
   return (
     <Empty className="empty-state">
-      <BookOpen aria-hidden="true" />
+      <EmptyScene />
       <EmptyHeader>
         <EmptyTitle>{title || label("emptyTitle")}</EmptyTitle>
         <EmptyDescription>{description || label("emptyBody")}</EmptyDescription>

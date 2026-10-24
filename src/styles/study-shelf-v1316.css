@@ -94,7 +94,7 @@ html:root
   .course-shelf-caption {
   padding-top: 5px;
   gap: 5px;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 html:root
   body
@@ -327,7 +327,7 @@ html:root
   background: var(--book-ink);
   color: var(--book-paper);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 18px;
   box-shadow: 0 3px 10px #25141820;
   z-index: 8;
@@ -759,7 +759,7 @@ html:root
   .pdf-book-toolbar[data-compact="true"]
   .pdf-bookmark-list
   summary {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   padding: 4px;
 }
 @media (max-width: 900px) {
@@ -847,7 +847,7 @@ html:root
     .shelf-control-caption {
     display: block;
     color: var(--book-muted);
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
     line-height: 16px;
     text-align: center;
     max-width: 100%;
@@ -900,7 +900,7 @@ html:root
     .course-shelf-caption
     strong {
     max-width: 100%;
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   html:root
     body
@@ -1042,7 +1042,7 @@ html:root
     height: 44px;
     gap: 4px;
     padding: 0;
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   html:root
     body
@@ -1228,7 +1228,7 @@ html:root
   .pdf-options-label {
   display: block;
   grid-column: 1 / -1;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 18px;
 }
 html:root
@@ -1254,7 +1254,7 @@ html:root
   .pdf-book-toolbar[data-compact="true"]
   .pdf-control-label {
   display: inline;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   text-align: start;
 }
 @media (max-height: 600px) {

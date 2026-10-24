@@ -1,0 +1,120 @@
+.empty-scene {
+  width: 216px;
+  max-width: 65%;
+  margin-inline: auto;
+}
+.empty-scene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.empty-scene-shadow {
+  fill: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.empty-scene-aura {
+  fill: color-mix(in srgb, var(--primary) 7%, transparent);
+}
+.empty-scene-teal {
+  fill: color-mix(in srgb, #3b9d99 78%, var(--primary));
+}
+.empty-scene-gold {
+  fill: color-mix(in srgb, #e8b75b 85%, var(--primary));
+}
+.empty-scene-paper {
+  fill: var(--card);
+  stroke: color-mix(in srgb, var(--primary) 28%, var(--border));
+  stroke-width: 1.5;
+}
+.empty-scene-paper-line {
+  stroke: #fff;
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.empty-scene-rule {
+  stroke: color-mix(in srgb, var(--foreground) 35%, var(--border));
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.empty-scene-pulse {
+  stroke: var(--primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.empty-scene-fold {
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+.empty-scene-spark {
+  stroke: var(--medical-secondary, #3b9d99);
+  fill: color-mix(in srgb, var(--primary) 50%, #e8b75b);
+  stroke-width: 2;
+  stroke-linecap: round;
+  animation: empty-spark 3.8s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+.empty-scene-float {
+  animation: empty-float 3.8s ease-in-out infinite alternate;
+}
+.empty-scene[data-visible="false"] * {
+  animation-play-state: paused;
+}
+@keyframes empty-float {
+  from {
+    transform: translateY(1px);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+@keyframes empty-spark {
+  from {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 0.95;
+    transform: scale(1.03);
+  }
+}
+.empty-state .empty-scene {
+  margin-block-end: 10px;
+}
+.exam-platform .exam-empty:has(.empty-scene) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 350px;
+  gap: 14px;
+  padding: 32px 20px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      ellipse at 50% 10%,
+      color-mix(in srgb, var(--primary) 5%, transparent),
+      transparent 65%
+    ),
+    var(--card);
+}
+.exam-platform .exam-empty .empty-scene {
+  margin-block-end: 0;
+}
+.exam-platform .exam-empty:has(.empty-scene) h2 {
+  font-size: clamp(22px, 3vw, 28px);
+  line-height: 1.35;
+  color: var(--foreground);
+}
+.exam-platform .exam-empty:has(.empty-scene) p {
+  max-width: 48ch;
+  font-size: 16px;
+  line-height: 1.6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .empty-scene * {
+    animation: none !important;
+  }
+}

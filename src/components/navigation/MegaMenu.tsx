@@ -3,22 +3,26 @@ import type { SiteContent } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "./AppLink";
 import { Icon } from "../ui/Icon";
-import type { PointerEventHandler } from "react";
-export function MegaMenu({
-  navigation,
-  onNavigate,
-  onPointerEnter,
-  onPointerLeave,
-}: {
-  navigation: SiteContent["navigation"];
-  onNavigate: () => void;
-  onPointerEnter?: PointerEventHandler<HTMLDivElement>;
-  onPointerLeave?: PointerEventHandler<HTMLDivElement>;
-}) {
+import { forwardRef, type PointerEventHandler } from "react";
+export const MegaMenu = forwardRef<
+  HTMLDivElement,
+  {
+    navigation: SiteContent["navigation"];
+    onNavigate: () => void;
+    onPointerEnter?: PointerEventHandler<HTMLDivElement>;
+    onPointerLeave?: PointerEventHandler<HTMLDivElement>;
+    floating?: boolean;
+  }
+>(function MegaMenu(
+  { navigation, onNavigate, onPointerEnter, onPointerLeave, floating = false },
+  ref,
+) {
   const { t, label } = useLocale();
   return (
     <div
-      className="mega-menu"
+      ref={ref}
+      className={`mega-menu${floating ? " learn-subpanel" : ""}`}
+      popover={floating ? "manual" : undefined}
       id="learn-menu"
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
@@ -33,6 +37,7 @@ export function MegaMenu({
               <AppLink
                 key={item.id}
                 className="mega-link"
+                data-learn-destination={item.id}
                 href={item.href}
                 onClick={onNavigate}
               >
@@ -56,4 +61,4 @@ export function MegaMenu({
       </div>
     </div>
   );
-}
+});

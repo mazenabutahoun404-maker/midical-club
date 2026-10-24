@@ -186,7 +186,7 @@ html:root
   strong {
   max-width: 100%;
   width: 100%;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 html:root
   body
@@ -597,7 +597,7 @@ html:root
   visibility: visible;
   opacity: 0.7;
   white-space: nowrap;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 18px;
   transition: opacity 180ms ease;
 }
@@ -1003,7 +1003,7 @@ html:root
   border: 1px solid var(--book-rule);
   border-radius: 4px;
   padding: 2px 4px;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 html:root
   body
@@ -1169,7 +1169,7 @@ html:root
     .shelf-controls-content
     .shelf-control-caption {
     display: block;
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
     line-height: 16px;
     color: var(--book-muted);
     text-align: center;
@@ -1225,7 +1225,7 @@ html:root
     .course-shelf-caption
     strong {
     width: auto;
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   html:root
     body

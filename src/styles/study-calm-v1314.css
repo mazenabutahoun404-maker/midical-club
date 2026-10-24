@@ -199,7 +199,7 @@ html:root
   .study-notebook
   .notebook-bookmark-top
   b {
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -362,7 +362,7 @@ html:root
   gap: 3px;
   width: 56px;
   height: 46px;
-  font-size: 0.63rem;
+  font-size: max(var(--readable-small, .875rem), 0.63rem);
   line-height: 1;
 }
 html:root
@@ -394,7 +394,7 @@ html:root
 .study-pdf-tools {
   display: grid;
   gap: 10px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   line-height: 1.5;
 }
 .study-pdf-tools p {

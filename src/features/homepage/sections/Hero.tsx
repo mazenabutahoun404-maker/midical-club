@@ -1,5 +1,5 @@
 import { useId, useRef, useState } from "react";
-import { ArrowDown, ArrowRight, Search, Stethoscope } from "lucide-react";
+import { ArrowDown, ArrowRight, Search } from "lucide-react";
 import {
   ArtworkEditor,
   usePageArtwork,
@@ -13,16 +13,21 @@ import campus from "../../../assets/home/three-campus-day-1672.webp";
 import campusSmall from "../../../assets/home/three-campus-day-960.webp";
 import campusNight from "../../../assets/home/three-campus-night-1672.webp";
 import campusNightSmall from "../../../assets/home/three-campus-night-960.webp";
+import campusArabic from "../../../assets/home/three-campus-ar-day-1672.webp";
+import campusArabicSmall from "../../../assets/home/three-campus-ar-day-960.webp";
+import campusArabicNight from "../../../assets/home/three-campus-ar-night-1672.webp";
+import campusArabicNightSmall from "../../../assets/home/three-campus-ar-night-960.webp";
 import type { CampusDestination } from "../living-campus";
 import { homeCampusDestinations as campusDestinations } from "../home-campus";
+import { useHeroArrival } from "../useHeroArrival";
 import { useCampusLife } from "../useCampusLife";
 import { CampusLights } from "../CampusLights";
+import { VitalWelcome } from "../../../components/medical/VitalWelcome";
 import "../living-campus.css";
 
 /** Real links share the artwork's coordinates, including the responsive crop. */
 export function Hero({
   hero,
-  brand,
   nextSectionId,
 }: {
   hero: SiteContent["hero"];
@@ -37,22 +42,58 @@ export function Hero({
   const [failedSource, setFailedSource] = useState<string | null>(null);
   const [loadedSource, setLoadedSource] = useState<string | null>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLElement>(null);
   const id = useId().replace(/:/g, "");
   const custom = !!artwork.data;
   const night = resolvedTheme === "dark";
-  const imageSource = artwork.data?.dataUrl || (night ? campusNight : campus);
+  const sceneImage =
+    dir === "rtl"
+      ? night
+        ? campusArabicNight
+        : campusArabic
+      : night
+        ? campusNight
+        : campus;
+  const sceneSmall =
+    dir === "rtl"
+      ? night
+        ? campusArabicNightSmall
+        : campusArabicSmall
+      : night
+        ? campusNightSmall
+        : campusSmall;
+  const imageSource = artwork.data?.dataUrl || sceneImage;
   const failed = failedSource === imageSource;
   const mapped = !custom && !failed;
+  // Existing saved copies of the former stock text adopt the shorter welcome.
+  // Authored/custom headings keep their content.
+  const rawTitle = t(hero.title).replace(/\n/g, " ");
+  const rawAccent = t(hero.accent);
+  const title = ["Learn beyond.", "تعلّم بلا حدود."].includes(rawTitle)
+    ? t({ en: "Find your", ar: "ابدأ رحلتك" })
+    : rawTitle;
+  const accent = ["Belong anywhere.", "انتمِ أينما كنت."].includes(rawAccent)
+    ? t({ en: "rhythm.", ar: "بنبضٍ جديد." })
+    : rawAccent;
+  const rawDescription = t(hero.description);
+  const description = [
+    "A global home for medical students.",
+    "بيت عالمي لطلبة الطب.",
+  ].includes(rawDescription)
+    ? t({ en: "Learn together. Go further.", ar: "نتعلّم معاً. ونصل أبعد." })
+    : rawDescription;
+  const entered = useHeroArrival(root, loadedSource === imageSource || failed);
   const life = useCampusLife(
     stage,
     "entrance",
-    mapped && loadedSource === imageSource,
+    entered && mapped && loadedSource === imageSource,
     0,
     campusDestinations,
   );
   return (
     <section
       className="campus-hero"
+      ref={root}
       aria-labelledby="home-welcome-heading"
       data-direction={dir}
       data-campus-lighting={night ? "night" : "day"}
@@ -63,18 +104,16 @@ export function Hero({
     >
       <div className="campus-hero-layout">
         <div className="campus-hero-copy" dir={dir}>
-          <span className="medical-signature">
-            <Stethoscope size={16} aria-hidden="true" />
-            {t({ en: "THE MEDICAL STUDENT COMMUNITY", ar: "مجتمع طلبة الطب" })}
-          </span>
-          <span className="campus-wordmark" lang="en">
-            {brand.name}
-          </span>
           <h1 id="home-welcome-heading" data-page-heading tabIndex={-1}>
-            <span>{t(hero.title).replace(/\n/g, " ")}</span>
-            <span className="campus-hero-accent">{t(hero.accent)}</span>
+            <VitalWelcome
+              identity="public-welcome"
+              lines={[
+                { text: title },
+                { text: accent, className: "campus-hero-accent" },
+              ]}
+            />
           </h1>
-          <p>{t(hero.description)}</p>
+          <p>{description}</p>
           <div className="campus-hero-actions">
             <AppLink href={hero.primary.href} className="campus-primary-action">
               {t(hero.primary.label)}
@@ -93,7 +132,7 @@ export function Hero({
             <picture className="campus-picture">
               {!custom && (
                 <source
-                  srcSet={`${night ? campusNightSmall : campusSmall} 960w, ${night ? campusNight : campus} 1672w`}
+                  srcSet={`${sceneSmall} 960w, ${sceneImage} 1672w`}
                   sizes="(max-width: 900px) 145vw, 100vw"
                 />
               )}
@@ -189,14 +228,6 @@ export function Hero({
                         <g
                           transform={`rotate(${-destination.rotation} ${destination.labelX} ${destination.labelY})`}
                         >
-                          <rect
-                            className="campus-three-sign"
-                            x={destination.labelX - destination.labelWidth / 2}
-                            y={destination.labelY - 17}
-                            width={destination.labelWidth}
-                            height={34}
-                            rx={2}
-                          />
                           <text
                             className="campus-building-label"
                             x={destination.labelX}

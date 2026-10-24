@@ -26,7 +26,7 @@
   align-items: center;
   gap: 8px;
   color: var(--tone-ink-muted, #9b5b4d);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -72,7 +72,7 @@
 .academic-page-hero > p {
   max-width: 640px;
   color: var(--tone-ink-muted, #806b60);
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
   line-height: 1.95;
 }
 .academic-pulse {
@@ -81,7 +81,7 @@
   gap: 15px;
   margin-top: 34px;
   color: var(--tone-ink-muted, #95796c);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -186,7 +186,7 @@
   margin-top: 18px;
   max-width: 370px;
   color: var(--tone-ink-eddacf, #ecd8ce);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 1.85;
 }
 .portal-action {
@@ -199,7 +199,7 @@
   padding-top: 25px;
   border-top: 1px solid var(--tone-line-5b4a3f20, #ffffff20);
   color: var(--tone-ink-fcf2e8, #fff8ef);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 750;
 }
 .portal-action svg {
@@ -402,7 +402,7 @@
 }
 .academic-section-heading > span {
   color: var(--tone-ink-muted, #a46455);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 800;
 }
 .academic-section-heading h2 {
@@ -414,7 +414,7 @@
 .academic-section-heading small {
   display: block;
   color: var(--tone-ink-soft, #a38372);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   margin-bottom: 3px;
 }
 .academic-section-heading > i {
@@ -479,7 +479,7 @@
   right: 25px;
   top: 21px;
   color: var(--tone-ink-soft, #b9a79c);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 800;
 }
 .passport-stamp {
@@ -504,7 +504,7 @@
 }
 .passport-stamp > span {
   z-index: 1;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 800;
   color: var(--batch-color);
 }
@@ -520,7 +520,7 @@
 }
 .passport-copy > em {
   color: var(--batch-color);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   font-style: normal;
   font-weight: 750;
 }
@@ -528,7 +528,7 @@
   margin-top: 15px;
   min-height: 63px;
   color: var(--tone-ink-muted, #826d62);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   line-height: 1.85;
 }
 .passport-term {
@@ -550,12 +550,12 @@
 }
 .passport-term small {
   color: var(--tone-ink-soft, #a08779);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
   letter-spacing: 0.09em;
 }
 .passport-term b {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .passport-action {
   position: relative;
@@ -566,7 +566,7 @@
   margin-top: auto;
   padding-top: 20px;
   color: var(--batch-color);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 800;
 }
 .passport-action svg {
@@ -626,7 +626,7 @@
   margin-top: 17px;
   max-width: 560px;
   color: var(--tone-ink-muted, #816b5f);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.9;
 }
 .batch-progress-seal {
@@ -656,7 +656,7 @@
   flex-direction: column;
   text-align: center;
   color: var(--tone-ink-muted, #937162);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
 }
 .batch-progress-seal b {
   color: var(--tone-ink-coral, #854438);
@@ -683,7 +683,7 @@
   align-items: center;
   gap: 7px;
   color: var(--tone-ink-muted, #927768);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -710,7 +710,7 @@
   padding: 8px 17px;
   border-radius: 999px;
   color: var(--tone-ink-muted, #8b7164);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 750;
 }
 .batch-view-switch a[aria-current="page"] {
@@ -749,11 +749,11 @@
   flex-direction: row;
   align-items: center;
   color: var(--tone-ink-muted, #957668);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 .archive-term summary small {
   color: var(--tone-ink-soft, #9c8274);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 .archive-term summary b {
   color: var(--tone-ink-muted, #60443a);
@@ -840,7 +840,7 @@
 }
 .clinical-year-copy small {
   color: var(--tone-ink-soft, #a17b6c);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -853,7 +853,7 @@
 .clinical-year-copy > span {
   margin-top: 13px;
   color: var(--tone-ink-muted, #816b60);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   line-height: 1.8;
 }
 .clinical-year-card:hover .clinical-year-copy small,
@@ -870,11 +870,11 @@
 }
 .clinical-year-focus small {
   color: var(--tone-ink-soft, #a38678);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
 }
 .clinical-year-focus b {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .clinical-year-card:hover .clinical-year-focus {
   border-color: var(--tone-line-5b4a3f24, #ffffff24);
@@ -889,7 +889,7 @@
   margin-top: auto;
   padding-top: 20px;
   color: var(--tone-ink-d7ad9e, #9b4b41);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 800;
 }
 .clinical-year-card:hover .clinical-year-action {
@@ -935,7 +935,7 @@
 .clinical-year-hero p {
   max-width: 590px;
   color: var(--tone-ink-soft, #d5c1b6);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.9;
 }
 .clinical-year-hero .academic-kicker {
@@ -953,7 +953,7 @@
 .clinical-year-hero aside small {
   display: block;
   color: var(--tone-ink-soft, #caa99b);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -985,7 +985,7 @@
   padding: 18px;
   background: var(--tone-surface-raised, #fff9f4);
   color: var(--tone-ink-muted, #72564b);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .clinical-focus-strip > span:first-child {
   color: var(--tone-ink-fcefe4, #fff4e9);
@@ -993,7 +993,7 @@
 }
 .clinical-focus-strip i {
   color: var(--tone-ink-soft, #a67f6f);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   font-style: normal;
 }
 .course-atlas {
@@ -1049,7 +1049,7 @@
 .course-atlas-title p {
   max-width: 650px;
   color: var(--tone-ink-muted, #7c675c);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.9;
 }
 .course-atlas-meta {
@@ -1071,13 +1071,13 @@
 }
 .course-atlas-meta dt {
   color: var(--tone-ink-muted, #987a6a);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 .course-atlas-meta dd {
   color: var(--tone-ink-muted, #6b463b);
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
   font-weight: 800;
 }
 .course-atlas-orbit {
@@ -1171,13 +1171,13 @@
   gap: 9px;
 }
 .course-section-rail button b {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .course-section-rail button small {
   display: block;
   margin: 5px 0 0 26px;
   color: var(--tone-ink-soft, #ad9487);
-  font-size: 7px;
+  font-size: max(var(--readable-small, .875rem), 7px);
 }
 .course-section-rail button:hover {
   background: var(--tone-surface-coral, #f0e2d9);
@@ -1217,7 +1217,7 @@
   margin-top: 8px;
   max-width: 550px;
   color: var(--tone-ink-muted, #8a7367);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   line-height: 1.8;
 }
 .section-count {
@@ -1231,7 +1231,7 @@
   border-radius: 50%;
   color: var(--tone-ink-muted, #9a7564);
   background: var(--tone-surface-coral, #f2e3da);
-  font-size: 7px;
+  font-size: max(var(--readable-small, .875rem), 7px);
   text-align: center;
 }
 .section-count b {
@@ -1254,7 +1254,7 @@
   color: var(--tone-ink-d8ae9e, #9c4d42);
 }
 .overview-note p {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   line-height: 1.85;
 }
 .course-overview-panel section {
@@ -1275,12 +1275,12 @@
   border: 1px solid var(--tone-line-boundary, #ebded5);
   border-radius: 18px;
   color: var(--tone-ink-muted, #71574c);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   line-height: 1.7;
 }
 .course-overview-panel li span {
   color: var(--tone-ink-soft, #ae7a68);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   font-weight: 800;
 }
 .course-material-grid {
@@ -1298,7 +1298,7 @@
 }
 .course-context-card > strong small {
   color: var(--tone-ink-muted, #9b7c6d);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -1311,17 +1311,17 @@
 }
 .course-context-card > div span {
   color: var(--tone-ink-soft, #9d8274);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
 }
 .course-context-card > div b {
   color: var(--tone-ink-muted, #65493e);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 .course-context-card p {
   margin: 15px 0;
   color: var(--tone-ink-muted, #8b7569);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   line-height: 1.8;
 }
 .course-context-card > a {
@@ -1329,7 +1329,7 @@
   align-items: center;
   justify-content: space-between;
   color: var(--course-accent);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 800;
 }
 .resource-audience {
@@ -1341,7 +1341,7 @@
   display: block;
   margin-top: 7px;
   color: var(--tone-ink-soft, #a38d80);
-  font-size: 7px;
+  font-size: max(var(--readable-small, .875rem), 7px);
 }
 
 @media (max-width: 1199px) {
@@ -1469,7 +1469,7 @@
   }
   .academic-gateway-hero > p,
   .academic-page-hero > p {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .academic-pulse {
     gap: 10px;
@@ -1487,7 +1487,7 @@
     font-size: 36px;
   }
   .portal-copy > span:last-child {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   .portal-orbit {
     width: 125px;
@@ -1510,7 +1510,7 @@
     width: 100%;
   }
   .academic-finder h2 {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   .academic-page-hero {
     min-height: 355px;
@@ -1567,7 +1567,7 @@
     align-items: flex-start;
   }
   .archive-term summary > span:last-child {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   .archive-term .course-grid {
     padding: 8px 16px 18px;
@@ -1625,7 +1625,7 @@
     font-size: 27px;
   }
   .course-section-heading p {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   .section-count {
     width: 62px;

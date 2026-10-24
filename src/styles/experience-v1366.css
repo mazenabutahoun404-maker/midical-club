@@ -1,0 +1,362 @@
+/* V0.13.66 — physical arrival, then an ECG that becomes the real glyphs. */
+html:root
+  body
+  .app-shell[data-shell-enter]:not([data-nav-hidden])
+  .desktop-navigation {
+  transform-origin: 0 42%;
+  will-change: transform;
+  animation: rail-balance-v1366 2100ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+html[dir="rtl"]:root body .app-shell[data-shell-enter] .desktop-navigation {
+  transform-origin: 100% 42%;
+}
+html:root
+  body
+  .app-shell[data-shell-enter]
+  .utility-header:not([data-header-hidden]),
+html:root
+  body
+  .app-shell[data-shell-enter][data-navigation="horizontal"]:not(
+    [data-nav-hidden]
+  )
+  .desktop-navigation {
+  transform-origin: 50% 0;
+  will-change: transform;
+  animation: header-balance-v1366 1960ms 120ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+html:root body .app-shell[data-shell-enter] .phone-navigation {
+  transform-origin: 50% 100%;
+  animation: dock-balance-v1366 1900ms 140ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+.app-shell[data-shell-enter] .notebook-fittings i {
+  animation: binding-settle-v1366 850ms 1150ms ease-out both;
+}
+@keyframes rail-balance-v1366 {
+  0% {
+    opacity: 0;
+    transform: perspective(1400px) translateX(calc(var(--arrival-sign) * 46px))
+      rotateY(calc(var(--arrival-sign) * 108deg))
+      rotateZ(calc(var(--arrival-sign) * 3deg));
+  }
+  12% {
+    opacity: 0.9;
+    transform: perspective(1400px) translateX(calc(var(--arrival-sign) * 25px))
+      rotateY(calc(var(--arrival-sign) * 90deg))
+      rotateZ(calc(var(--arrival-sign) * 2deg));
+  }
+  30% {
+    opacity: 1;
+    transform: perspective(1400px) translateX(0)
+      rotateY(calc(var(--arrival-sign) * 43deg)) rotateZ(0deg);
+  }
+  46% {
+    transform: perspective(1400px) rotateY(calc(var(--arrival-sign) * -21deg))
+      rotateZ(calc(var(--arrival-sign) * -1.8deg));
+  }
+  61% {
+    transform: perspective(1400px) rotateY(calc(var(--arrival-sign) * 12deg))
+      rotateZ(calc(var(--arrival-sign) * 1.1deg));
+  }
+  74% {
+    transform: perspective(1400px) rotateY(calc(var(--arrival-sign) * -6deg))
+      rotateZ(calc(var(--arrival-sign) * -0.55deg));
+  }
+  85% {
+    transform: perspective(1400px) rotateY(calc(var(--arrival-sign) * 2.7deg))
+      rotateZ(calc(var(--arrival-sign) * 0.25deg));
+  }
+  94% {
+    transform: perspective(1400px) rotateY(calc(var(--arrival-sign) * -1deg))
+      rotateZ(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0deg) rotateZ(0deg);
+  }
+}
+@keyframes header-balance-v1366 {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) translateY(-18px) rotateX(-108deg);
+  }
+  14% {
+    opacity: 1;
+    transform: perspective(1000px) translateY(-8px) rotateX(-88deg);
+  }
+  40% {
+    transform: perspective(1000px) translateY(0) rotateX(24deg) rotateZ(0.9deg);
+  }
+  57% {
+    transform: perspective(1000px) rotateX(-13deg) rotateZ(-0.6deg);
+  }
+  72% {
+    transform: perspective(1000px) rotateX(7deg) rotateZ(0.3deg);
+  }
+  84% {
+    transform: perspective(1000px) rotateX(-3.3deg) rotateZ(-0.15deg);
+  }
+  93% {
+    transform: perspective(1000px) rotateX(1.2deg) rotateZ(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) rotateZ(0deg);
+  }
+}
+@keyframes dock-balance-v1366 {
+  0% {
+    opacity: 0;
+    transform: perspective(900px) rotateX(105deg) translateY(16px);
+  }
+  36% {
+    opacity: 1;
+    transform: perspective(900px) rotateX(-18deg) translateY(0);
+  }
+  56% {
+    transform: perspective(900px) rotateX(10deg);
+  }
+  73% {
+    transform: perspective(900px) rotateX(-5deg);
+  }
+  88% {
+    transform: perspective(900px) rotateX(1.8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0deg);
+  }
+}
+@keyframes binding-settle-v1366 {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: 7deg;
+  }
+  52% {
+    rotate: -4deg;
+  }
+  78% {
+    rotate: 1.5deg;
+  }
+}
+
+.app-shell .campus-hero .campus-hero-copy {
+  font-family: Manrope, "Noto Sans Arabic", sans-serif;
+}
+.app-shell .campus-hero .campus-hero-copy h1 {
+  font-family: Manrope, "Noto Sans Arabic", sans-serif;
+  font-weight: 750;
+  font-size: clamp(32px, 4.35cqw, 78px);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+.app-shell .campus-hero[data-direction="rtl"] .campus-hero-copy h1 {
+  line-height: 1.65;
+  font-weight: 650;
+}
+.app-shell .campus-hero .campus-hero-copy > p:not(.personal-welcome-greeting) {
+  font:
+    450 clamp(14px, 1.45cqw, 22px)/1.65 Manrope,
+    "Noto Sans Arabic",
+    sans-serif;
+  margin-block: 18px 24px;
+  max-width: 30ch;
+}
+.app-shell .campus-hero .campus-hero-actions {
+  gap: 7px;
+}
+.app-shell .campus-hero .campus-primary-action {
+  font-family: inherit;
+  font-size: clamp(15px, 1.45cqw, 23px);
+}
+.app-shell .campus-hero .campus-secondary-action {
+  font-family: inherit;
+  font-size: clamp(14px, 1.25cqw, 20px);
+}
+.app-shell .campus-hero .personal-welcome-greeting {
+  margin-block: 0 16px;
+  font:
+    500 clamp(13px, 1.25cqw, 18px)/1.6 Manrope,
+    "Noto Sans Arabic",
+    sans-serif;
+  color: var(--muted-foreground);
+}
+.vital-line {
+  line-height: inherit;
+}
+.vital-line-ink {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+}
+.vital-native {
+  display: inline-block;
+  white-space: normal;
+}
+.vital-baseline {
+  display: inline-block;
+  vertical-align: baseline;
+  width: 0;
+  height: 0;
+}
+.vital-morph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.vital-welcome:not([data-vital-enter]) .vital-morph {
+  display: none;
+}
+.vital-morph-contour {
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill-rule: evenodd;
+}
+.vital-carrier {
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.vital-pulse-head {
+  fill: currentColor;
+  opacity: 0;
+}
+.vital-welcome[data-vital-enter] .vital-native {
+  opacity: 0;
+}
+.vital-welcome[data-vital-phase="preparing"] .vital-morph {
+  visibility: hidden;
+}
+.vital-welcome[data-vital-phase="morph"] .vital-morph-contour {
+  animation: vital-contour-forms 80ms var(--contour-delay) linear both;
+}
+.vital-welcome[data-vital-phase="morph"]
+  .vital-line:not([data-vital-drawing])
+  .vital-native {
+  opacity: 1;
+  clip-path: none;
+  animation: none;
+}
+.vital-welcome[data-vital-phase="morph"] .vital-native {
+  animation: vital-ink-follows 1400ms
+    calc(1020ms + var(--vital-line-index) * 320ms) linear both;
+}
+[dir="rtl"] .vital-welcome[data-vital-phase="morph"] .vital-native {
+  animation-name: vital-ink-follows-rtl;
+}
+.vital-welcome[data-vital-phase="morph"] .vital-morph {
+  animation: vital-outline-lands 420ms
+    calc(2000ms + var(--vital-line-index) * 320ms) ease both;
+}
+.vital-welcome[data-vital-phase="morph"] .vital-carrier {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: vital-carrier-starts 450ms var(--vital-wave-delay) linear both;
+}
+@keyframes vital-carrier-starts {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes vital-contour-forms {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes vital-ink-follows {
+  from {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes vital-ink-follows-rtl {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes vital-outline-lands {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.app-shell
+  .campus-hero-copy:has(.vital-welcome[data-vital-enter])
+  > p:not(.personal-welcome-greeting) {
+  animation: vital-support-enter 560ms 1400ms ease both;
+}
+.app-shell
+  .campus-hero-copy:has(.vital-welcome[data-vital-enter])
+  > .campus-hero-actions {
+  animation: vital-support-enter 560ms 1650ms ease both;
+}
+@container (max-width:900px) {
+  .app-shell .campus-hero .campus-hero-copy {
+    padding-block: 26px 20px;
+  }
+  .app-shell .campus-hero .campus-hero-copy h1 {
+    font-size: clamp(33px, 7.8cqw, 54px);
+  }
+  .app-shell
+    .campus-hero
+    .campus-hero-copy
+    > p:not(.personal-welcome-greeting) {
+    margin: 14px auto 20px;
+  }
+}
+@media (max-width: 767px) {
+  .rail-brand strong {
+    font-size: 13px;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root
+    body
+    .app-shell[data-shell-enter]
+    :is(.desktop-navigation, .utility-header, .phone-navigation),
+  .app-shell[data-shell-enter] .notebook-fittings i {
+    animation: none !important;
+    will-change: auto;
+  }
+  .vital-welcome .vital-native {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .vital-morph {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .vital-morph {
+    display: none;
+  }
+  .vital-welcome .vital-native {
+    opacity: 1 !important;
+  }
+}

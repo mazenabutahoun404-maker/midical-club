@@ -39,7 +39,7 @@
   gap: 6px;
   min-height: 36px;
   padding: 7px 10px;
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--card);
@@ -96,7 +96,7 @@
 .hero-artwork-modal form > label {
   display: grid;
   gap: 7px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   font-weight: 600;
 }
 .hero-artwork-modal form > div {
@@ -130,7 +130,7 @@
   transform: translateY(-2px);
 }
 .hero-artwork-upload input {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   max-width: 100%;
   min-height: 44px;
 }
@@ -142,7 +142,7 @@
 }
 .hero-artwork-modal p[role="alert"] {
   color: var(--destructive);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .batch-atrium .batch-passport.batch-gate {
   padding: 210px 24px 24px;
@@ -188,7 +188,7 @@
   color: var(--foreground);
   padding: 4px 9px;
   border-radius: 5px;
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   z-index: 2;
 }
 .batch-atrium .batch-passport.batch-gate .passport-stamp {
@@ -241,7 +241,7 @@ html.dark .batch-gate-image img {
     max-height: 210px;
   }
   .hero-artwork-edit {
-    font-size: 0.65rem;
+    font-size: max(var(--readable-small, .875rem), 0.65rem);
     min-height: 38px;
     padding: 7px;
   }

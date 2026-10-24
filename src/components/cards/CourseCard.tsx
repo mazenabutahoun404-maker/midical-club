@@ -1,3 +1,4 @@
+import { MedicalFigure } from "../medical/MedicalFigure";
 import { bookMaterial } from "../../features/courses/book-material";
 import { ArrowRight } from "lucide-react";
 import type { Course } from "../../types/content";
@@ -6,7 +7,13 @@ import { AppLink } from "../navigation/AppLink";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { Icon } from "../ui/Icon";
 import "../../styles/course-volume-binding.css";
-export function CourseCard({ course: c }: { course: Course }) {
+export function CourseCard({
+  course: c,
+  tabIndex,
+}: {
+  course: Course;
+  tabIndex?: number;
+}) {
   const paths = useWorkspacePaths();
   const { t, label } = useLocale();
   return (
@@ -15,6 +22,7 @@ export function CourseCard({ course: c }: { course: Course }) {
       href={paths.course(c.slug)}
       data-leather={bookMaterial(c.id)}
       data-course-volume
+      tabIndex={tabIndex}
     >
       <span className="course-volume-shadow" aria-hidden="true" />
       <span className="course-volume-pages" aria-hidden="true" />
@@ -42,7 +50,11 @@ export function CourseCard({ course: c }: { course: Course }) {
           </span>
         </header>
         <span className="course-volume-emblem" aria-hidden="true">
-          <Icon name={c.icon} />
+          {c.icon === "heart" || c.icon === "brain" || c.icon === "bone" ? (
+            <MedicalFigure kind={c.icon} />
+          ) : (
+            <Icon name={c.icon} />
+          )}
           <i />
         </span>
         <div className="course-volume-copy">

@@ -1,6 +1,6 @@
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { ArrowRight, BookOpen, SlidersHorizontal, X } from "lucide-react";
+import { ArrowRight, ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import type { Course, Track } from "../../types/content";
 import { useBatches } from "../../hooks/useContent";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -24,6 +24,10 @@ export function CourseDirectory({
   const auth = useAuth();
   const batches = useBatches();
   const [params, setParams] = useSearchParams();
+  const latestParams = useRef(params);
+  useEffect(() => {
+    latestParams.current = params;
+  }, [params]);
   const search = (params.get("q") || "").slice(0, 200);
   const track =
     fixedTrack ||
@@ -33,7 +37,9 @@ export function CourseDirectory({
   const year = params.get("year") || "";
   const batch = params.get("batch") || "";
   const [limit, setLimit] = useState(12);
+  const [showFilters, setShowFilters] = useState(false);
   const heading = useId();
+  const filtersId = `${heading}-filters`;
   useEffect(() => setLimit(12), [search, track, year, batch]);
   const years = [
     ...new Set(
@@ -58,17 +64,23 @@ export function CourseDirectory({
       ),
     [courses, track, year, batch, selectedBatch, search],
   );
+  // Keep fast consecutive edits on the latest requested query, even while the
+  // route view is committing the preceding search or reset.
+  const updateParams = (
+    edit: (next: URLSearchParams) => void,
+    replace = false,
+  ) => {
+    const next = new URLSearchParams(latestParams.current);
+    edit(next);
+    latestParams.current = next;
+    setParams(next, { replace, preventScrollReset: true });
+  };
   const change = (key: string, value: string) =>
-    setParams(
-      (previous) => {
-        const next = new URLSearchParams(previous);
-        if (value && value !== "all") next.set(key, value);
-        else next.delete(key);
-        if (key === "track") next.delete("year");
-        return next;
-      },
-      { replace: key === "q", preventScrollReset: true },
-    );
+    updateParams((next) => {
+      if (value && value !== "all") next.set(key, value);
+      else next.delete(key);
+      if (key === "track") next.delete("year");
+    }, key === "q");
   const filtered = !!(
     search ||
     year ||
@@ -76,34 +88,16 @@ export function CourseDirectory({
     (!fixedTrack && track !== "all")
   );
   const reset = () =>
-    setParams(
-      (previous) => {
-        const next = new URLSearchParams(previous);
-        for (const key of ["q", "track", "year", "batch"]) next.delete(key);
-        return next;
-      },
-      { preventScrollReset: true },
-    );
+    updateParams((next) => {
+      for (const key of ["q", "track", "year", "batch"]) next.delete(key);
+    });
   return (
     <section className="course-directory" aria-labelledby={heading}>
       <div className="course-directory-heading">
         <div>
-          <span className="academic-kicker">
-            <BookOpen size={16} aria-hidden="true" />
-            {t({ en: "Straight to your course", ar: "إلى مساقك مباشرة" })}
-          </span>
           <h2 id={heading}>
-            {t({
-              en: "Find it. Open it. Start studying.",
-              ar: "ابحث وافتح وابدأ الدراسة.",
-            })}
+            {t({ en: "Course library", ar: "مكتبة المساقات" })}
           </h2>
-          <p>
-            {t({
-              en: "Search by course name or code. Year and batch are optional filters.",
-              ar: "ابحث باسم المساق أو رمزه. السنة والدفعة فلاتر اختيارية.",
-            })}
-          </p>
         </div>
         {auth.snapshot.status === "authenticated" && (
           <AppLink className="text-link" href="/my/learning">
@@ -121,93 +115,107 @@ export function CourseDirectory({
             ar: "ابحث باسم المساق أو رمزه",
           })}
         />
-        <div className="course-directory-filters">
-          {!fixedTrack && (
-            <SelectField
-              label={t({ en: "Pathway", ar: "المسار" })}
-              value={track}
-              onChange={(event) => change("track", event.target.value)}
-            >
-              <option value="all">{label("allCourses")}</option>
-              <option value="basic">{label("basic")}</option>
-              <option value="clinical">{label("clinical")}</option>
-            </SelectField>
+        <button
+          type="button"
+          className="course-directory-filter-toggle"
+          aria-expanded={showFilters}
+          aria-controls={filtersId}
+          onClick={() => setShowFilters((value) => !value)}
+        >
+          <SlidersHorizontal size={17} aria-hidden="true" />
+          <span>{t({ en: "Filters", ar: "الفلاتر" })}</span>
+          {filtered && (
+            <i aria-label={t({ en: "Filters applied", ar: "فلاتر مفعّلة" })} />
           )}
-          <SelectField
-            label={label("year")}
-            value={year}
-            onChange={(event) => change("year", event.target.value)}
-          >
-            <option value="">
-              {t({ en: "All years", ar: "جميع السنوات" })}
-            </option>
-            {year && !years.includes(Number(year)) && (
-              <option value={year}>
-                {t({ en: "Selected year", ar: "السنة المحددة" })}
-              </option>
+          <ChevronDown size={15} aria-hidden="true" />
+        </button>
+        <div
+          id={filtersId}
+          hidden={!showFilters}
+          className="course-directory-filter-panel"
+        >
+          <div className="course-directory-filters">
+            {!fixedTrack && (
+              <SelectField
+                label={t({ en: "Pathway", ar: "المسار" })}
+                value={track}
+                onChange={(event) => change("track", event.target.value)}
+              >
+                <option value="all">{label("allCourses")}</option>
+                <option value="basic">{label("basic")}</option>
+                <option value="clinical">{label("clinical")}</option>
+              </SelectField>
             )}
-            {years.map((value) => (
-              <option key={value} value={String(value)}>
-                {label("year")} {value}
+            <SelectField
+              label={label("year")}
+              value={year}
+              onChange={(event) => change("year", event.target.value)}
+            >
+              <option value="">
+                {t({ en: "All years", ar: "جميع السنوات" })}
               </option>
-            ))}
-          </SelectField>
-          <SelectField
-            label={t({ en: "Batch (optional)", ar: "الدفعة (اختياري)" })}
-            value={batch}
-            disabled={batches.isPending || batches.isError}
-            onChange={(event) => change("batch", event.target.value)}
-          >
-            <option value="">
-              {t({ en: "All batches", ar: "جميع الدفعات" })}
-            </option>
-            {batch && !selectedBatch && (
-              <option value={batch}>
-                {t({ en: "Selected batch", ar: "الدفعة المحددة" })}
+              {year && !years.includes(Number(year)) && (
+                <option value={year}>
+                  {t({ en: "Selected year", ar: "السنة المحددة" })}
+                </option>
+              )}
+              {years.map((value) => (
+                <option key={value} value={String(value)}>
+                  {label("year")} {value}
+                </option>
+              ))}
+            </SelectField>
+            <SelectField
+              label={t({ en: "Batch (optional)", ar: "الدفعة (اختياري)" })}
+              value={batch}
+              disabled={batches.isPending || batches.isError}
+              onChange={(event) => change("batch", event.target.value)}
+            >
+              <option value="">
+                {t({ en: "All batches", ar: "جميع الدفعات" })}
               </option>
-            )}
-            {batches.data?.map((value) => (
-              <option key={value.id} value={value.id}>
-                {t(value.name)}
-              </option>
-            ))}
-          </SelectField>
+              {batch && !selectedBatch && (
+                <option value={batch}>
+                  {t({ en: "Selected batch", ar: "الدفعة المحددة" })}
+                </option>
+              )}
+              {batches.data?.map((value) => (
+                <option key={value.id} value={value.id}>
+                  {t(value.name)}
+                </option>
+              ))}
+            </SelectField>
+          </div>
+          {batches.isError && (
+            <p className="course-directory-filter-error">
+              {t({
+                en: "The batch filter is unavailable. All courses can still be searched.",
+                ar: "فلتر الدفعات غير متاح. لا يزال بإمكانك البحث في المساقات.",
+              })}
+              <button type="button" onClick={() => void batches.refetch()}>
+                {label("retry")}
+              </button>
+            </p>
+          )}
         </div>
-        {batches.isError && (
-          <p className="course-directory-filter-error">
-            {t({
-              en: "The batch filter is unavailable. All courses can still be searched.",
-              ar: "فلتر الدفعات غير متاح. لا يزال بإمكانك البحث في المساقات.",
-            })}
-            <button type="button" onClick={() => void batches.refetch()}>
-              {label("retry")}
-            </button>
-          </p>
-        )}
       </div>
       <div className="course-directory-result-bar">
         <p role="status" aria-live="polite">
           {records.length} {t({ en: "courses", ar: "مساقاً" })}
         </p>
-        {filtered ? (
-          <button type="button" onClick={reset}>
-            <X size={15} aria-hidden="true" />
-            {t({ en: "Clear filters", ar: "مسح الفلاتر" })}
-          </button>
-        ) : (
-          <span>
-            <SlidersHorizontal size={14} aria-hidden="true" />
-            {t({
-              en: "No batch selection required",
-              ar: "لا يلزم اختيار دفعة",
-            })}
-          </span>
-        )}
+        <div className="course-directory-view-actions">
+          {filtered && (
+            <button type="button" onClick={reset}>
+              <X size={15} aria-hidden="true" />
+              {t({ en: "Clear filters", ar: "مسح الفلاتر" })}
+            </button>
+          )}
+        </div>
       </div>
       {records.length ? (
         <div className="course-directory-grid">
           {records.slice(0, limit).map((course) => (
-            <CourseCard key={course.id} course={course} />
+            <CourseCard course={course} key={course.id} />
           ))}
         </div>
       ) : (

@@ -18,21 +18,23 @@
   line-height: 1.4;
 }
 .course-directory-heading p {
-  font-size: 13px;
+  font-size: max(var(--readable-small, 0.875rem), 13px);
   line-height: 1.8;
   color: var(--muted-foreground);
 }
 .course-directory-controls {
-  padding: 20px;
-  background: var(--card);
-  border: 1px solid var(--input);
-  border-radius: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
 }
 .course-directory-controls .catalog-search {
   width: 100%;
   max-width: none;
   background: var(--background);
   border: 1px solid var(--input);
+  min-height: 48px;
+  padding: 0 14px;
 }
 .course-directory-controls .catalog-search input {
   min-height: 46px;
@@ -42,7 +44,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
-  margin-top: 16px;
+  margin-top: 0;
 }
 .course-directory-filters .workspace-field {
   min-width: 0;
@@ -59,7 +61,7 @@
   align-items: center;
   gap: 14px;
   padding-block: 17px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
 }
 .course-directory-result-bar :is(button, span) {
   display: inline-flex;
@@ -96,32 +98,136 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, 0.875rem), 12px);
   color: var(--muted-foreground);
   margin-top: 12px;
 }
-.learning-pathway-browse {
-  margin-block: 40px;
-  border-block-start: 1px solid var(--border);
-  padding-top: 20px;
-}
-.learning-pathway-browse > summary {
-  width: fit-content;
-  min-height: 44px;
+.course-directory-filter-toggle {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.875rem;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
 }
-.learning-pathway-browse .academic-portals {
-  margin-top: 20px;
+.course-directory-filter-toggle > svg:last-child {
+  transition: transform 180ms ease;
+}
+.course-directory-filter-toggle[aria-expanded="true"] > svg:last-child {
+  transform: rotate(180deg);
+}
+.course-directory-filter-toggle > i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--theme-primary-ink, var(--primary));
+}
+.course-directory-filter-panel {
+  grid-column: 1 / -1;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+}
+.course-directory-filter-panel[hidden] {
+  display: none;
+}
+.course-directory-filter-toggle:is(:hover, [aria-expanded="true"]) {
+  border-color: var(--theme-primary-ink, var(--primary));
+}
+.course-directory-filter-toggle:focus-visible,
+.learning-pathway:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+.learning-pathway-frame {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-block: 24px 8px;
+  padding: 8px;
+  border-block: 1px solid var(--border);
+  border-radius: 28px 8px;
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--primary) 4%, transparent),
+    transparent
+  );
+}
+.learning-pathway {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 14px;
+  min-height: 78px;
+  min-width: 0;
+  padding: 14px 20px;
+  border: 1px solid color-mix(in srgb, var(--pathway-ink) 26%, var(--border));
+  border-radius: 20px 6px 20px 6px;
+  background: color-mix(in srgb, var(--pathway-ink) 5%, var(--card));
+  color: var(--pathway-ink);
+  text-decoration: none;
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+.learning-pathway-basic {
+  --pathway-ink: #775035;
+}
+:root[data-theme="dark"] .learning-pathway-basic {
+  --pathway-ink: #dfb994;
+}
+.learning-pathway-clinical {
+  --pathway-ink: var(--theme-primary-ink, var(--primary));
+}
+.learning-pathway > span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.learning-pathway strong {
+  font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
+  line-height: 1.4;
+}
+.learning-pathway small {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.learning-pathway:is(:hover, :focus-visible) {
+  transform: translateY(-2px);
+  border-color: var(--pathway-ink);
+}
+html:root body .container.academic-gateway .academic-gateway-hero {
+  min-height: 270px;
+  padding-block: 28px;
+}
+html:root body .container.academic-gateway .academic-gateway-hero h1 {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  max-width: 17ch;
+}
+@media (min-width: 768px) {
+  html:root
+    body
+    .container.academic-gateway
+    .academic-gateway-hero
+    .medical-figure {
+    max-width: 270px;
+    margin-inline: auto;
+  }
 }
 @media (max-width: 767px) {
   .course-directory-heading {
     flex-wrap: wrap;
     gap: 12px;
-  }
-  .course-directory-controls {
-    padding: 16px;
   }
   .course-directory-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -136,5 +242,60 @@
   }
   .course-directory-result-bar span {
     line-height: 1.6;
+  }
+  .learning-pathway-frame {
+    gap: 8px;
+    padding: 6px 0;
+    margin-top: 18px;
+  }
+  .learning-pathway {
+    min-height: 88px;
+    grid-template-columns: 21px minmax(0, 1fr);
+    padding: 12px 10px;
+    gap: 8px;
+    border-radius: 16px 5px;
+  }
+  .learning-pathway > svg:last-child {
+    display: none;
+  }
+  .learning-pathway > svg:first-child {
+    width: 21px;
+  }
+  .learning-pathway small {
+    font-size: 0.75rem;
+  }
+  .course-directory-filter-toggle {
+    padding-inline: 12px;
+  }
+  .course-directory-filter-toggle > svg:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learning-pathway,
+  .course-directory-filter-toggle > svg:last-child {
+    transition: none;
+  }
+  .learning-pathway:is(:hover, :focus-visible) {
+    transform: none;
+  }
+}
+
+.course-directory-view-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+}
+/* Every cover and title is visible before interaction. */
+.course-directory-grid .course-volume-copy h2 {
+  line-height: 1.4;
+}
+@media (hover: hover) {
+  html body .course-directory-grid .course-volume:hover .course-volume-cover {
+    transform: none;
   }
 }

@@ -77,7 +77,7 @@
   padding: 7px 13px 7px 9px;
   border-radius: 999px;
   color: var(--tone-ink-muted, #7f6961);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
   font-weight: 720;
   transition:
     color 180ms ease,
@@ -205,7 +205,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
   font-weight: 760;
 }
 .monitor-head span {
@@ -275,7 +275,7 @@
   border: 1px solid var(--tone-line-5b4a3f12, #ffffff12);
   border-radius: 15px;
   color: var(--tone-ink-soft, #bca198);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .monitor-stats b {
   color: var(--tone-ink-fcefe3, #fff3e8);
@@ -474,7 +474,7 @@
 .community-results {
   margin: 20px 5px 13px;
   color: var(--tone-ink-muted, #8c746b);
-  font-size: 0.82rem !important;
+  font-size: max(var(--readable-small, .875rem), 0.82rem) !important;
 }
 .community-results strong {
   color: var(--tone-ink-coral, #7f2026);
@@ -524,7 +524,7 @@
   align-items: center;
   gap: 7px;
   color: var(--tone-ink-muted, #806b64);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .activity-kind-icon {
   position: relative;
@@ -577,7 +577,7 @@
 .activity-impact span {
   flex: none;
   color: var(--tone-ink-coral, #9b302e);
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -659,7 +659,7 @@
   left: 50%;
   transform: translateX(-50%);
   color: var(--tone-ink-soft, #ad938c);
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   letter-spacing: 0.15em;
 }
 .journal-story-grid {
@@ -729,7 +729,7 @@
   gap: 12px 18px;
   margin-top: 24px;
   color: var(--tone-ink-muted, #806b64);
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .journal-story-meta span {
   display: flex;
@@ -755,7 +755,7 @@
   border-radius: 999px;
   background: var(--tone-surface-coral, #f1e7e1);
   color: var(--tone-ink-muted, #81665e);
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   font-weight: 700;
 }
 .media-page-intro {
@@ -854,13 +854,13 @@
 .media-story-copy p {
   margin-top: 4px;
   color: var(--tone-ink-muted, #78635d);
-  font-size: 0.83rem;
+  font-size: max(var(--readable-small, .875rem), 0.83rem);
 }
 .media-story-copy time {
   display: block;
   margin-top: 14px;
   color: var(--tone-ink-muted, #947c74);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .leadership-page-intro {
   background: linear-gradient(
@@ -950,7 +950,7 @@
   border-radius: 18px 18px 27px 18px;
   color: var(--tone-ink-fcf8f4, white);
   background: linear-gradient(145deg, #a03337, #71302b);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   font-weight: 780;
 }
 .executive-member h3 {
@@ -960,12 +960,12 @@
 .executive-member p {
   margin-top: 9px;
   color: var(--tone-ink-muted, #78625b);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
 }
 .executive-member p b {
   display: block;
   color: var(--tone-ink-coral, #9b3b36);
-  font-size: 0.67rem;
+  font-size: max(var(--readable-small, .875rem), 0.67rem);
 }
 .member-signal {
   position: absolute;
@@ -1017,7 +1017,7 @@
 .past-bodies details > p {
   padding: 0 0 20px 146px;
   color: var(--tone-ink-muted, #79645d);
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .recognition-intro {
   display: grid;
@@ -1081,7 +1081,7 @@
   top: 20px;
   inset-inline-end: 22px;
   color: var(--tone-ink-soft, #bba69e);
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   letter-spacing: 0.15em;
 }
 .recognition-monogram {
@@ -1104,13 +1104,13 @@
 .recognition-card p {
   margin-top: 18px;
   color: var(--tone-ink-muted, #705b54);
-  font-size: 0.84rem;
+  font-size: max(var(--readable-small, .875rem), 0.84rem);
 }
 .recognition-card p b {
   display: block;
   margin-bottom: 4px;
   color: var(--tone-ink-coral, #9b302f);
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
@@ -1245,7 +1245,7 @@
 .club-values p {
   margin-top: 8px;
   color: var(--tone-ink-muted, #79645d);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
 }
 .journal-back {
   display: inline-flex;
@@ -1253,7 +1253,7 @@
   gap: 9px;
   margin: 8px 0 24px;
   color: var(--tone-ink-coral, #822129);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
   font-weight: 750;
 }
 .journal-article-header {
@@ -1298,7 +1298,7 @@
   padding: 10px 13px;
   border-inline-end: 1px solid var(--tone-line-boundary, #eadfd8);
   color: var(--tone-ink-muted, #735f58);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
 }
 .journal-byline > span:last-child {
   border: 0;
@@ -1309,7 +1309,7 @@
 }
 .journal-byline b {
   color: var(--tone-ink-coral, #9a322f);
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -1391,7 +1391,7 @@
 .editorial-note p {
   margin: 4px 0 0;
   color: var(--tone-ink-muted, #735b54);
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .more-journal {
   margin-top: 70px;
@@ -1421,7 +1421,7 @@
 }
 .more-journal a span {
   color: var(--tone-ink-coral, #9b3936);
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1443,7 +1443,7 @@
   gap: 9px 14px;
   margin-bottom: 18px;
   color: var(--tone-ink-muted, #806b64);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
 }
 .article-detail-meta > span:not(.tag) {
   display: inline-flex;
@@ -1686,7 +1686,7 @@
     display: none;
   }
   .community-portals strong {
-    font-size: 0.78rem;
+    font-size: max(var(--readable-small, .875rem), 0.78rem);
   }
   .community-callout {
     align-items: stretch;

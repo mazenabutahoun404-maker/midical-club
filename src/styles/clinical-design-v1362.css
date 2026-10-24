@@ -1,0 +1,363 @@
+/* A shared medical material system, used by navigation, page art, cards and forms. */
+:root {
+  --clinical-red: #aa3448;
+  --clinical-teal: #236f68;
+  --clinical-bone: #f8f4ec;
+  --medical-secondary: #236f68;
+  --clinical-surface: color-mix(
+    in srgb,
+    var(--medical-secondary) 5%,
+    var(--card)
+  );
+}
+:root[data-theme="dark"] {
+  --clinical-red: #e18a94;
+  --clinical-teal: #8dc1b6;
+  --medical-secondary: #8dc1b6;
+}
+:root[data-palette="medclub"][data-theme="light"] {
+  --background: #f3f7f5;
+  --foreground: #253b38;
+  --card: #ffffff;
+  --card-foreground: #253b38;
+  --popover: #ffffff;
+  --popover-foreground: #253b38;
+  --muted: #eaf1ee;
+  --muted-foreground: #526a64;
+  --secondary: #eaf1ee;
+  --secondary-foreground: #253b38;
+  --accent: #e1eee8;
+  --accent-foreground: #244e43;
+  --border: #d3dfd9;
+  --input: #718e80;
+  --tone-surface-raised: #ffffff;
+  --tone-surface-inset: #edf4f0;
+  --tone-ink-strong: #253b38;
+  --tone-ink-muted: #526a64;
+  --tone-ink-soft: #60766f;
+  --tone-line-boundary: #d3dfd9;
+}
+:root[data-palette="medclub"][data-theme="dark"] {
+  --background: #151f23;
+  --foreground: #edf5f1;
+  --card: #1e2c30;
+  --card-foreground: #edf5f1;
+  --popover: #1e2c30;
+  --popover-foreground: #edf5f1;
+  --muted: #293b40;
+  --muted-foreground: #b4c8c1;
+  --secondary: #293b40;
+  --secondary-foreground: #edf5f1;
+  --accent: #2c4642;
+  --accent-foreground: #d5f1e5;
+  --border: #3b5355;
+  --input: #718e8a;
+  --tone-surface-raised: #1e2c30;
+  --tone-surface-inset: #293b40;
+  --tone-ink-strong: #edf5f1;
+  --tone-ink-muted: #b4c8c1;
+  --tone-ink-soft: #a9bfb6;
+  --tone-line-boundary: #3b5355;
+}
+/* Navigation keeps each workspace's existing brown/wine surface. */
+.app-shell .scroll-header {
+  border-block-end-color: color-mix(
+    in srgb,
+    var(--medical-secondary) 25%,
+    var(--shell-line, var(--border))
+  );
+}
+.app-shell .desktop-navigation .shell-brand-caption {
+  position: relative;
+}
+.app-shell .desktop-navigation .shell-brand-caption::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 12px;
+  margin-top: 4px;
+  background: currentColor;
+  opacity: 0.55;
+  clip-path: polygon(
+    0 48%,
+    22% 48%,
+    30% 21%,
+    40% 81%,
+    50% 4%,
+    60% 96%,
+    70% 42%,
+    77% 48%,
+    100% 48%,
+    100% 58%,
+    74% 58%,
+    70% 54%,
+    60% 100%,
+    50% 33%,
+    40% 100%,
+    30% 48%,
+    26% 58%,
+    0 58%
+  );
+}
+.app-shell[data-sidebar="collapsed"] .shell-brand-caption::after,
+.app-shell[data-navigation="horizontal"] .shell-brand-caption::after {
+  display: none;
+}
+.app-shell:not([data-study-environment="true"]):not([data-exam-studio="true"])
+  .app-content {
+  background-image: radial-gradient(
+    ellipse at 100% 10%,
+    color-mix(in srgb, var(--medical-secondary) 3%, transparent),
+    transparent 45%
+  );
+}
+:is(
+  .resource-card,
+  .event-card,
+  .opportunity,
+  .mentorship-card,
+  .workspace-panel,
+  .student-panel,
+  .exam-collection-card
+) {
+  border-color: var(--border);
+  box-shadow: 0 12px 28px -26px
+    color-mix(in srgb, var(--foreground) 30%, transparent);
+}
+:is(.resource-card, .mentorship-card, .exam-collection-card):hover {
+  border-color: color-mix(in srgb, var(--medical-secondary) 45%, var(--border));
+}
+:is(.catalog-search, .workspace-field):focus-within {
+  outline-color: var(--medical-secondary);
+}
+.section-heading .text-link {
+  min-height: 44px;
+}
+.home-atlas.home-studio .home-chapter-heading {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+.home-atlas.home-studio .home-chapter-heading > .medical-mark {
+  position: relative;
+  width: 66px;
+  height: 66px;
+  inset: auto;
+  opacity: 1;
+  margin: 0;
+}
+.home-atlas.home-studio .home-chapter-heading .section-heading {
+  min-width: 0;
+}
+.home-atlas.home-studio .home-community-core {
+  background: var(--clinical-surface);
+}
+.course-volume-emblem:has(.medical-figure) {
+  width: 84px;
+  height: 84px;
+  background: transparent;
+  box-shadow: none;
+}
+.course-volume-emblem > .medical-figure {
+  width: 100%;
+  height: 100%;
+}
+.course-volume-emblem:has(.medical-figure) > i {
+  display: none;
+}
+.exam-launch-art {
+  position: relative;
+}
+.exam-launch-art > .exam-launch-anatomy {
+  position: absolute;
+  width: 37%;
+  inset-inline-start: 32%;
+  top: 25%;
+}
+/* Anatomical artwork is part of the header composition, with clear space for copy. */
+html:root body .hero-artwork[data-medical-art] {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 270px;
+  overflow: visible;
+}
+html:root body .hero-artwork[data-medical-art]::before,
+html:root body .hero-artwork[data-medical-art]::after {
+  content: none;
+}
+.clinical-hero-object {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 270px;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+.clinical-hero-object .medical-figure {
+  width: min(85%, 340px);
+  z-index: 1;
+  filter: drop-shadow(0 16px 14px #00000012);
+}
+.clinical-hero-disc {
+  position: absolute;
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--medical-secondary) 13%, transparent),
+    transparent 68%
+  );
+  z-index: 0;
+}
+.clinical-hero-cross {
+  position: absolute;
+  right: 10%;
+  top: 12%;
+  width: 26px;
+  height: 26px;
+  color: var(--medical-secondary);
+  opacity: 0.65;
+}
+.clinical-hero-cross::before,
+.clinical-hero-cross::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  border-radius: 3px;
+}
+.clinical-hero-cross::before {
+  width: 6px;
+  height: 26px;
+  left: 10px;
+}
+.clinical-hero-cross::after {
+  width: 26px;
+  height: 6px;
+  top: 10px;
+}
+html:root
+  body
+  .container
+  .artwork-scene:has(> .hero-artwork[data-medical-art]) {
+  background: var(--clinical-surface);
+  border-radius: 26px;
+  border: 1px solid var(--border);
+}
+html:root body .container .artwork-scene > .hero-artwork[data-medical-art] {
+  position: relative;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  z-index: 0;
+}
+html:root
+  body
+  .container
+  .artwork-scene
+  > .hero-artwork[data-medical-art]
+  .clinical-hero-object {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: 100%;
+}
+html:root
+  body
+  .container
+  .artwork-scene:has(> .hero-artwork[data-medical-art])
+  > div::before {
+  content: none;
+}
+html:root
+  body
+  .container
+  .artwork-scene:has(> .hero-artwork[data-medical-art])
+  .artwork-hero-copy {
+  grid-column: 1;
+}
+html:root
+  body
+  .container
+  .artwork-scene:has(> .hero-artwork[data-medical-art])
+  > .community-hero-side {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+@media (max-width: 767px) {
+  .home-atlas.home-studio .home-chapter-heading {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .home-atlas.home-studio .home-chapter-heading > .medical-mark,
+  .home-atlas.home-studio
+    .home-chapter-heading:has(.text-link)
+    > .medical-mark {
+    display: block;
+    width: 48px;
+    height: 48px;
+  }
+  html:root
+    body
+    .container
+    .artwork-scene:has(> .hero-artwork[data-medical-art]) {
+    padding: 24px 20px;
+    min-height: 270px;
+  }
+  html:root
+    body
+    .container
+    .artwork-scene
+    > .hero-artwork[data-medical-art]
+    .clinical-hero-object {
+    min-height: 0;
+    height: 100%;
+  }
+  html:root body .container .artwork-scene > .hero-artwork[data-medical-art] {
+    position: absolute;
+    inset-inline-end: 12px;
+    inset-inline-start: auto;
+    top: 38px;
+    width: 112px;
+    height: 112px;
+  }
+  html:root
+    body
+    .container
+    .artwork-scene:has(> .hero-artwork[data-medical-art])
+    > div:not(.community-hero-side)
+    > h1 {
+    padding-inline-end: 104px;
+    min-height: 110px;
+  }
+  html:root
+    body
+    .container
+    .artwork-scene:has(> .hero-artwork[data-medical-art])
+    > div:not(.community-hero-side)
+    > :is(.eyebrow, .academic-kicker) {
+    max-width: calc(100% - 104px);
+  }
+  .clinical-hero-cross {
+    display: none;
+  }
+}
+@media (prefers-contrast: more) {
+  .clinical-hero-object .medical-figure {
+    opacity: 0.75;
+  }
+}
+@media (forced-colors: active) {
+  .clinical-hero-disc,
+  .clinical-hero-cross,
+  .shell-brand-caption::after {
+    display: none;
+  }
+}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Eye, EyeOff, KeyRound, Stethoscope } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "../../components/navigation/AppLink";
@@ -24,6 +24,9 @@ export default function SignInPage() {
   }, []);
   const { label } = useLocale();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const activePath = useRef(pathname);
+  activePath.current = pathname;
   const [search] = useSearchParams();
   const returnTo = safeReturnTo(search.get("returnTo"));
   const [email, setEmail] = useState("");
@@ -53,10 +56,12 @@ export default function SignInPage() {
     journey.setFeedback("submitting");
     try {
       await auth.signIn({ email, password });
-      if (!mounted.current) return;
+      if (!mounted.current || activePath.current !== routes.signIn) return;
       await journey.startWelcome();
-      if (mounted.current) navigate(returnTo, { replace: true });
+      if (mounted.current && activePath.current === routes.signIn)
+        navigate(returnTo, { replace: true });
     } catch (caught) {
+      if (activePath.current !== routes.signIn) return;
       journey.stopWelcome();
       journey.setFeedback("error");
       if (mounted.current) setError(label(authErrorKey(caught)));

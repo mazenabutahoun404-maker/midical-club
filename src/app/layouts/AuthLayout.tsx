@@ -1,20 +1,20 @@
 import { useEffect, useRef } from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import { ArrowLeft, Stethoscope } from "lucide-react";
-import { RouteViewport } from "../router/RouteJourney";
+import { useLocation } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { AppearanceSettings } from "../../components/navigation/AppearanceSettings";
-import logo from "../../assets/brand/medclub-logo.png";
 import { useLocale } from "../providers/LocaleProvider";
 import { useAuth } from "../providers/AuthProvider";
 import { AppLink } from "../../components/navigation/AppLink";
-import { HeaderNotes } from "../../components/navigation/HeaderNotes";
 import {
   AuthJourneyProvider,
   useAuthJourney,
 } from "../../features/auth/AuthJourney";
-import { AnatomyScene } from "../../features/auth/anatomy/AnatomyScene";
+import { XrayChest } from "../../features/auth/xray/XrayChest";
+import { AuthElevator } from "../../features/auth/xray/AuthElevator";
 import { authMilestones } from "../../features/auth/auth-progress";
 import "../../features/auth/auth-lab.css";
+import "../../features/auth/xray/auth-xray-v1363.css";
+import "../../features/auth/xray/auth-xray-v1366.css";
 
 function AuthLab() {
   const { label, t, dir } = useLocale();
@@ -65,7 +65,7 @@ function AuthLab() {
   }, []);
   return (
     <div
-      className="auth-shell auth-lab"
+      className="auth-shell auth-lab auth-xray-shell"
       ref={root}
       dir={dir}
       data-auth-mode={
@@ -77,69 +77,28 @@ function AuthLab() {
         {label("skip")}
       </a>
       <header className="auth-topbar">
-        <AppLink
-          href="/"
-          className="auth-brand"
-          aria-label={label("authBackHome")}
-        >
-          <img src={logo} alt="" width={42} height={42} />
-          <span>
-            <strong>MedClub</strong>
-            <small>
-              {t({
-                en: "The medical student community",
-                ar: "مجتمع طلبة الطب",
-              })}
-            </small>
-          </span>
-        </AppLink>
         <div className="auth-top-actions">
-          <AppLink href="/" className="auth-home-link">
+          <AppLink
+            href="/"
+            className="auth-home-link"
+            aria-label={label("authBackHome")}
+          >
             <ArrowLeft size={16} className="directional" />
             <span>{label("authBackHome")}</span>
           </AppLink>
-          <HeaderNotes />
           <AppearanceSettings compact />
         </div>
       </header>
       <main id="main" className="auth-main" tabIndex={-1}>
-        <section className="auth-lab-visual" aria-labelledby="auth-lab-title">
-          <div className="auth-lab-copy">
-            <p className="auth-lab-kicker">
-              <Stethoscope size={16} aria-hidden="true" />
-              {t({ en: "A LIFE IN MEDICINE", ar: "رحلة في عالم الطب" })}
-            </p>
-            <h1 id="auth-lab-title">
-              {t(
-                registering
-                  ? {
-                      en: "Your journey.\nComing to life.",
-                      ar: "رحلتك..\nتنبض بالحياة.",
-                    }
-                  : {
-                      en: "At the heart\nof your journey.",
-                      ar: "في قلب\nرحلتك الطبية.",
-                    },
-              )}
-            </h1>
-            <p>
-              {t(
-                registering
-                  ? {
-                      en: "Build your space, one detail at a time.",
-                      ar: "ابنِ مساحتك، خطوة بخطوة.",
-                    }
-                  : {
-                      en: "Learn, connect, and become the doctor you want to be.",
-                      ar: "تعلّم وتواصل واصنع مستقبلك في الطب.",
-                    },
-              )}
-            </p>
-          </div>
-          <AnatomyScene registering={registering} verifying={verifying} />
-        </section>
+        <h1 className="sr-only">
+          {t({
+            en: "MedClub medical student account",
+            ar: "حساب ميدكلب لطلبة الطب",
+          })}
+        </h1>
+        <XrayChest registering={registering || verifying} />
         <div
-          className="auth-panel-frame"
+          className="auth-xray-form-host"
           onFocusCapture={(event) => {
             const target = event.target;
             if (
@@ -153,11 +112,7 @@ function AuthLab() {
               journey.setFocused(null);
           }}
         >
-          <div className="auth-form-surface">
-            <RouteViewport>
-              <Outlet />
-            </RouteViewport>
-          </div>
+          <AuthElevator root={root} />
         </div>
       </main>
       <footer className="auth-lab-footer">

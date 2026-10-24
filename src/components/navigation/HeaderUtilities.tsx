@@ -1,32 +1,34 @@
 import { HeaderNotifications } from "./HeaderNotifications";
 import { HeaderNotes } from "./HeaderNotes";
 import { SearchGlyph } from "./SearchGlyph";
+import { MobileNavigation } from "./MobileNavigation";
 import { useOverlays } from "../../app/providers/OverlayProvider";
 
-/** Shared order keeps public and personal utility controls in the same positions. */
+/** The same visible search, notes and bell in each workspace. */
 export function HeaderUtilities({
   searchLabel,
-  showNotifications = true,
-  searchClassName = "workspace-icon",
+  more = true,
 }: {
   searchLabel: string;
-  showNotifications?: boolean;
-  searchClassName?: string;
+  more?: boolean;
 }) {
   const { openSearch } = useOverlays();
   return (
     <>
       <button
         type="button"
-        className={searchClassName}
+        className="header-search-bar"
         data-search-trigger
         onClick={openSearch}
         aria-label={searchLabel}
+        aria-haspopup="dialog"
       >
         <SearchGlyph />
+        <span>{searchLabel}</span>
       </button>
-      {showNotifications && <HeaderNotifications />}
       <HeaderNotes />
+      <HeaderNotifications />
+      {more && <MobileNavigation />}
     </>
   );
 }

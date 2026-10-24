@@ -104,7 +104,7 @@
 .theme-session-note {
   padding: 8px;
   max-width: 220px;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [data-study-focus="true"] .route-footer {
   display: none;

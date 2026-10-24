@@ -1,3 +1,7 @@
+import {
+  normalizeUniversityNumber,
+  isUniversityNumberReady,
+} from "../lib/university-number";
 import { STORAGE_KEYS } from "../constants/config";
 import { student } from "../data/mock/student";
 import type {
@@ -54,6 +58,7 @@ const profileFromRegistration = (input: RegisterInput): StudentProfile => {
     .join("");
   return {
     id: `student-${crypto.randomUUID?.() || Date.now().toString(36)}`,
+    universityNumber: normalizeUniversityNumber(input.universityNumber),
     name: text(input.fullName),
     initials: text(initials || "MC"),
     program: { en: "Medicine", ar: "الطب" },
@@ -181,6 +186,8 @@ export function createLocalAuthService(): AuthService {
       return write(state);
     },
     register: async (input: RegisterInput) => {
+      if (!isUniversityNumberReady(input.universityNumber || ""))
+        throw new Error("university-number-invalid");
       const state = read();
       const email = normalizedEmail(input.email);
       if (

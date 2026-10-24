@@ -1,0 +1,301 @@
+/* Dedicated control classes keep old 44px icon rules out of the settings panel. */
+.navigation-actions {
+  min-width: 0;
+}
+html body .appearance-navigation-controls {
+  min-width: 0;
+  margin-block: 18px;
+  padding-block: 16px;
+  border-block: 1px solid var(--border);
+}
+.appearance-navigation-controls > strong {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.9375rem;
+}
+html body .appearance-navigation-controls .navigation-actions-settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 10px;
+  width: 100%;
+}
+html
+  body
+  .appearance-navigation-controls
+  .navigation-actions-settings
+  > button {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 12px 16px;
+  border: 1px solid var(--glass-line, var(--border));
+  border-radius: 12px;
+  background: var(--glass-surface, var(--card));
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: start;
+  cursor: pointer;
+}
+.navigation-actions-settings > button > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+html
+  body
+  .appearance-navigation-controls
+  .navigation-actions-settings
+  > button:is(:hover, [aria-pressed="true"]) {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+  background: var(--glass-accent, var(--accent));
+}
+.navigation-actions > button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.appearance-quick-tray[data-navigation-tools] {
+  width: 272px;
+  max-width: calc(100vw - 16px);
+}
+.appearance-quick-tray .navigation-actions-compact {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: 4px;
+  padding-inline-start: 8px;
+  border-inline-start: 1px solid var(--border);
+}
+.appearance-quick-tray .navigation-actions-compact > button {
+  width: 36px;
+  min-width: 36px;
+  height: 44px;
+  border-radius: 12px;
+}
+.appearance-quick-tray
+  .navigation-actions-compact
+  > button[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--ring) 55%, var(--border));
+  background: color-mix(in srgb, var(--primary) 12%, var(--card));
+}
+
+@media (any-pointer: coarse) {
+  .appearance-quick-tray[data-navigation-tools] {
+    width: 288px;
+  }
+  .appearance-quick-tray .navigation-actions-compact > button {
+    width: 44px;
+    min-width: 44px;
+  }
+}
+@media (min-width: 768px) {
+  /* Size the rail to its contents; long menus still scroll within the viewport. */
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation {
+    height: fit-content;
+    min-height: 0;
+    max-height: calc(100dvh - 104px);
+    bottom: auto;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    > .navigation-scroll-frame {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    .navigation-scroll {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scroll-padding-block: 6px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    .rail-footer {
+    flex: none;
+    height: auto;
+    min-height: 0;
+    margin: 8px 0 0;
+    padding: 8px 0 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation][data-sidebar]
+    .rail-settings {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0;
+    min-width: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation][data-sidebar]
+    .rail-settings
+    > .appearance-quick-anchor {
+    flex: none;
+    width: 100%;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation][data-sidebar]
+    .rail-collapse-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 100%;
+    height: 0;
+    min-width: 0;
+    overflow: clip;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      height 160ms ease,
+      opacity 120ms ease;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"][data-sidebar]
+    .desktop-navigation:is(
+      :hover,
+      :focus-within,
+      :has(.appearance-quick-anchor[data-quick-open])
+    )
+    .rail-collapse-slot {
+    height: 32px;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation][data-sidebar]
+    .rail-collapse-slot
+    .sidebar-toggle {
+    position: relative;
+    inset: auto;
+    flex: none;
+    width: 30px;
+    height: 30px;
+    min-height: 30px;
+    margin: 0;
+    border-radius: 8px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"][data-sidebar]
+    .rail-collapse-slot {
+    display: none;
+  }
+  /* The full brand lockup sits over the expanded rail, within the same column. */
+  .app-shell[data-navigation="vertical"][data-sidebar="expanded"] .rail-brand {
+    width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 10px;
+    padding-inline: 12px;
+    box-sizing: border-box;
+  }
+  .app-shell[data-navigation="vertical"][data-sidebar="expanded"]
+    .rail-brand
+    strong {
+    font-size: clamp(15px, calc(var(--sidebar-width) * 0.085), 21px);
+  }
+  .app-shell[data-navigation="vertical"][data-sidebar="expanded"]
+    .rail-brand
+    small {
+    font-size: clamp(10px, calc(var(--sidebar-width) * 0.05), 12px);
+    line-height: 1.35;
+  }
+}
+/* On a short landscape screen, scroll the whole rail instead of crushing the links. */
+@media (min-width: 768px) and (max-height: 480px) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation {
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    > .navigation-scroll-frame {
+    flex: none;
+    overflow: visible;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    .navigation-scroll {
+    flex: none;
+    overflow: visible;
+  }
+}
+@media (max-width: 767px) {
+  html body .appearance-navigation-controls {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation][data-sidebar]
+    .rail-collapse-slot {
+    transition: none;
+  }
+}
+
+/* Fade the night plate into the actual palette, preserving every architectural pixel. */
+:root[data-theme="dark"] .personal-welcome-hero.campus-hero {
+  background: transparent;
+}
+:root[data-theme="dark"] .personal-welcome-hero .personal-welcome-scene {
+  mask-image:
+    linear-gradient(90deg, transparent, #000 30%, #000 94%, transparent),
+    linear-gradient(0deg, transparent, #000 12%, #000 89%, transparent);
+  mask-composite: intersect;
+}
+:root[data-theme="dark"]
+  .personal-welcome-hero[data-direction="rtl"]
+  .personal-welcome-scene {
+  mask-image:
+    linear-gradient(270deg, transparent, #000 30%, #000 94%, transparent),
+    linear-gradient(0deg, transparent, #000 12%, #000 89%, transparent);
+}
+@container (max-width: 900px) {
+  :root[data-theme="dark"]
+    .personal-welcome-hero[data-direction]
+    .personal-welcome-scene {
+    mask-image:
+      linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent),
+      linear-gradient(0deg, transparent, #000 10%, #000 89%, transparent);
+  }
+}

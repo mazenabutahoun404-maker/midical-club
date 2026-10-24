@@ -16,7 +16,7 @@
 .recall-editor-dialog .study-editor label {
   display: grid;
   gap: 8px;
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
   font-weight: 600;
   color: var(--foreground);
 }

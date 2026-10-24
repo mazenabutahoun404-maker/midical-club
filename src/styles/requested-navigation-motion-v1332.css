@@ -183,14 +183,14 @@ html:root[data-palette][data-theme] body .app-shell .scroll-header.admin-header 
   }
   html:root[data-palette][data-theme] body .app-shell .admin-header .admin-live-chip {
     max-width: 112px;
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
     padding-inline: 6px;
   }
 }
 @media (max-width: 420px) {
   html:root[data-palette][data-theme] body .app-shell .admin-header .admin-live-chip {
     max-width: 88px;
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
     gap: 4px;
   }
 }

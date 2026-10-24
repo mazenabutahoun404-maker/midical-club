@@ -1,0 +1,193 @@
+.home-course-preview {
+  min-width: 0;
+  width: 100%;
+}
+.home-course-scene {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
+  background: radial-gradient(
+    ellipse at 50% 78%,
+    color-mix(in srgb, var(--primary) 6%, transparent),
+    transparent 64%
+  );
+}
+.home-book-spring {
+  --spring-x: 0px;
+  --spring-y: 0px;
+  --spring-scale: 1;
+  position: absolute;
+  z-index: 2;
+  width: 304px;
+  height: 426px;
+  margin-left: -152px;
+  margin-top: -213px;
+  transform: translate3d(var(--spring-x), var(--spring-y), 0)
+    scale(var(--spring-scale));
+  transform-origin: center;
+}
+.home-book-spring[data-focused] {
+  z-index: 8;
+}
+.home-book-arrival {
+  rotate: var(--book-angle, 0deg);
+  height: 100%;
+}
+.home-book-hover {
+  height: 100%;
+}
+.home-book-hover {
+  animation: home-book-buoyancy 7s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.home-book-spring:nth-of-type(3) .home-book-hover {
+  animation-delay: -2s;
+}
+.home-book-spring:nth-of-type(4) .home-book-hover {
+  animation-delay: -4s;
+}
+.home-course-scene[data-running]:not([data-reduced-motion])
+  .home-book-spring
+  .home-book-hover {
+  animation-play-state: running;
+}
+html body .home-course-scene .course-volume,
+html body .home-course-scene .course-volume:hover {
+  --volume-block-inset: 18px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding-block: var(--volume-block-inset);
+  padding-inline: 30px 17px;
+  transform: none;
+  box-shadow: none;
+}
+html[dir="rtl"] body .home-course-scene .course-volume {
+  padding-inline: 30px 17px;
+}
+html body .home-course-scene .course-volume > .course-volume-cover,
+html body .home-course-scene .course-volume:hover > .course-volume-cover {
+  height: 100%;
+  min-height: 0;
+  padding: 22px 20px;
+  transform: none;
+  box-shadow:
+    inset 3px 0 #ffffff1c,
+    inset 10px 0 20px #210b101d,
+    2px 4px 0 var(--book-cover-deep);
+}
+html body .home-course-scene .course-volume-shadow {
+  display: none;
+}
+html[dir="rtl"] body .home-course-scene .course-volume > .course-volume-cover {
+  box-shadow:
+    inset -3px 0 #ffffff1c,
+    inset -10px 0 20px #210b101d,
+    -2px 4px 0 var(--book-cover-deep);
+}
+html body .home-course-scene .course-volume-pages,
+html body .home-course-scene .course-volume:hover .course-volume-pages {
+  transform: translateZ(-10px);
+}
+.home-course-scene .course-volume-copy h2 {
+  font-size: 1.625rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.home-course-scene .course-volume-copy p,
+.home-course-scene .course-volume-action {
+  display: none;
+}
+.home-course-scene .course-volume-copy small {
+  letter-spacing: 0;
+  font-size: 1.125rem;
+}
+.home-course-scene .course-volume-classification {
+  font-size: 1.125rem;
+}
+.home-book-orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.home-book-particle {
+  --spring-x: 0px;
+  --spring-y: 0px;
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--medical-secondary, var(--primary));
+  opacity: 0.35;
+  transform: translate3d(var(--spring-x), var(--spring-y), 0) rotate(-12deg);
+}
+.home-book-particle:nth-child(3n) {
+  color: var(--primary);
+  rotate: 24deg;
+}
+.home-course-scene[data-book-count="1"],
+.home-course-scene[data-book-count="2"],
+.home-course-scene[data-book-count="3"],
+.home-course-scene[data-book-count="4"] {
+  height: 560px;
+}
+.home-books-touch {
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+  padding: 18px 10px 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 10px;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.home-book-touch {
+  flex: 0 0 min(304px, calc(100vw - 68px));
+  width: min(304px, calc(100vw - 68px));
+  scroll-snap-align: start;
+}
+.home-book-touch:first-child {
+  margin-inline-start: auto;
+}
+.home-book-touch:last-child {
+  margin-inline-end: auto;
+}
+.home-book-touch .course-volume-copy p {
+  display: none;
+}
+@keyframes home-book-buoyancy {
+  from {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-book-hover {
+    animation: none;
+    transition: none;
+  }
+}
+
+.home-book-spring .course-volume:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-book-arrival {
+    rotate: 0deg;
+  }
+}

@@ -9,7 +9,7 @@
 .gpa-calculator label {
   display: grid;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   font-weight: 600;
   min-width: 0;
 }
@@ -80,7 +80,7 @@
 .student-notes small,
 .gpa-calculator small,
 .student-tool-empty {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   line-height: 1.6;
   color: var(--muted-foreground);
 }
@@ -93,7 +93,7 @@
   color: var(--foreground);
 }
 .student-tool-sign-in p {
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
   line-height: 1.6;
   max-width: 35ch;
 }
@@ -107,7 +107,7 @@
   margin: 0;
 }
 .gpa-calculator p {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   line-height: 1.6;
 }
 .gpa-rows {
@@ -124,7 +124,7 @@
   min-width: 0;
 }
 .gpa-row legend {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   padding: 0 4px;
 }
 .gpa-row > label:first-of-type {
@@ -138,14 +138,14 @@
   display: flex;
   align-items: center;
   grid-column: 1/3;
-  font-size: 0.67rem;
+  font-size: max(var(--readable-small, .875rem), 0.67rem);
 }
 .gpa-exclude input {
   width: 18px;
   min-height: 18px;
 }
 .gpa-prior {
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   display: grid;
   gap: 10px;
 }
@@ -162,7 +162,7 @@
 .gpa-results span {
   display: grid;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   background: var(--secondary);
   padding: 12px;
   border-radius: 8px;

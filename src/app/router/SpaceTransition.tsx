@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocale } from "../providers/LocaleProvider";
+import { arrivalPlayed } from "../../lib/arrival";
 
 type Space = "personal" | "public" | "auth" | "admin";
 
@@ -17,6 +18,8 @@ export function SpaceTransition({
   const { label } = useLocale();
   const from = previous.current;
   const crossing = from !== space;
+  const entering =
+    crossing && !reduced && !arrivalPlayed("shell") && !arrivalPlayed("chest");
   useEffect(() => {
     previous.current = space;
   }, [space]);
@@ -33,13 +36,13 @@ export function SpaceTransition({
       key={space}
       className={`space-transition space-transition-${space}`}
       data-workspace={space}
-      data-arriving={crossing || undefined}
-      initial={crossing && !reduced ? { opacity: 0.08 } : false}
+      data-arriving={entering || undefined}
+      initial={entering ? { opacity: 0.08 } : false}
       animate={{ opacity: 1 }}
       transition={{ duration: reduced ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
-      {crossing && !reduced && (
+      {entering && (
         <motion.div
           className="space-flight-gate"
           data-from={from}

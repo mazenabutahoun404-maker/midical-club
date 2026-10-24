@@ -70,7 +70,7 @@
 }
 .welcome-copy span {
   color: var(--tone-ink-muted, #7c5a4d);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 @keyframes welcome-orbit {
   to {
@@ -314,7 +314,7 @@
   bottom: 40px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 @keyframes constellation-float {
   50% {
@@ -416,7 +416,7 @@
   border-radius: 18px;
   background: transparent;
   color: var(--tone-ink-muted, #725647);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   font-weight: 760;
   transition:
     background 180ms,
@@ -442,7 +442,7 @@
   border-radius: 99px;
   background: var(--tone-surface-coral, #ead9cc);
   color: var(--tone-ink-muted, #704d3d);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .alive-tabs button[aria-pressed="true"] b {
   background: #fff8ed1f;
@@ -512,7 +512,7 @@
   flex-direction: column;
   gap: 4px;
   color: var(--tone-ink-muted, #775d4d);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 760;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -528,7 +528,7 @@
 .discovery-filter-row select {
   width: 100%;
   padding: 8px 12px;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 650;
   text-transform: none;
   letter-spacing: 0;
@@ -546,14 +546,14 @@
   outline: 0;
   background: transparent;
   color: var(--tone-ink-strong, #533a2e);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   text-transform: none;
   letter-spacing: 0;
 }
 .results-line {
   margin: 0 5px 18px;
   color: var(--tone-ink-muted, #7a6254);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 .results-line strong {
   color: var(--tone-ink-coral, #8f2238);
@@ -617,7 +617,7 @@
   color: var(--tone-ink-coral, #7d2835);
 }
 .ticket-date span {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -630,7 +630,7 @@
 .ticket-date small {
   margin-top: 8px;
   color: var(--tone-ink-muted, #825847);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .ticket-body {
   display: flex;
@@ -650,7 +650,7 @@
   border-radius: 99px;
   background: var(--tone-surface-coral, #efe3d7);
   color: var(--tone-ink-muted, #795344);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 800;
 }
 .event-status[data-status="open"] {
@@ -673,7 +673,7 @@
 }
 .ticket-body > p {
   color: var(--tone-ink-muted, #7a6052);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.75;
 }
 .ticket-facts {
@@ -682,7 +682,7 @@
   gap: 7px 15px;
   margin-top: 18px;
   color: var(--tone-ink-muted, #795c4c);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .ticket-facts span {
   display: flex;
@@ -766,7 +766,7 @@
   border-radius: 0 0 0 22px;
   color: var(--tone-ink-fcf2e7, #fff7ee);
   background: #82303a;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -786,7 +786,7 @@
   border-radius: 16px 16px 24px 16px;
   color: var(--tone-ink-fcf2e8, #fff8ef);
   background: linear-gradient(145deg, #a04447, #722936);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 900;
   letter-spacing: 0.08em;
   box-shadow: 0 10px 24px #7c293529;
@@ -809,7 +809,7 @@
 .opportunity-explorer > p {
   margin-top: 9px;
   color: var(--tone-ink-muted, #765b4c);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.8;
 }
 .opportunity-tags {
@@ -825,14 +825,14 @@
   border-radius: 99px;
   background: var(--tone-surface-raised, #fffaf3);
   color: var(--tone-ink-muted, #78503e);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 750;
 }
 .opportunity-facts {
   display: grid;
   gap: 8px;
   color: var(--tone-ink-muted, #775c4d);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .opportunity-facts span {
   display: flex;
@@ -858,16 +858,16 @@
   display: grid;
 }
 .opportunity-deadline small {
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 .opportunity-deadline strong {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 .opportunity-deadline > b {
   margin-inline-start: auto;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 .opportunity-open {
   position: absolute;
@@ -895,7 +895,7 @@
   gap: 7px;
   margin: 22px 0;
   color: var(--tone-ink-muted, #7c5a49);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   font-weight: 750;
 }
 .event-detail-page,
@@ -946,7 +946,7 @@
 .opportunity-detail-hero p {
   max-width: 640px;
   color: var(--tone-ink-eed9cd, #edd6cb);
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
   line-height: 1.9;
 }
 .event-detail-facts {
@@ -955,7 +955,7 @@
   gap: 10px 22px;
   margin-top: 28px;
   color: var(--tone-ink-f2dfd2, #f2ded2);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 .event-detail-facts span {
   display: flex;
@@ -995,7 +995,7 @@
 }
 .event-pass > span {
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   font-weight: 800;
   letter-spacing: 0.14em;
 }
@@ -1055,12 +1055,12 @@
 }
 .event-agenda-panel li span {
   color: var(--tone-ink-daaca1, #a4454a);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   font-weight: 800;
 }
 .event-agenda-panel li strong {
   color: var(--tone-ink-muted, #654638);
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
 }
 .event-registration-panel {
   display: grid;
@@ -1078,13 +1078,13 @@
 }
 .event-registration-panel small {
   color: var(--tone-ink-muted, #92705d);
-  font-size: 8px;
+  font-size: max(var(--readable-small, .875rem), 8px);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 .event-registration-panel strong {
   color: var(--tone-ink-strong, #59372d);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 .registration-action {
   display: grid;
@@ -1175,7 +1175,7 @@
 }
 .deadline-orbit small {
   margin-top: 20px;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -1186,7 +1186,7 @@
 }
 .deadline-orbit strong {
   color: var(--tone-ink-coral, #f2b69b);
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 .opportunity-story-card {
   border-radius: 32px 70px 32px 32px;
@@ -1203,11 +1203,11 @@
 }
 .opportunity-detail-fact small {
   color: var(--tone-ink-muted, #967261);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 .opportunity-detail-fact strong {
   color: var(--tone-ink-strong, #5b3c31);
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 .opportunity-action-card {
   display: grid;
@@ -1221,7 +1221,7 @@
 }
 .opportunity-action-card > p {
   color: var(--tone-ink-muted, #755446);
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.8;
 }
 .opportunity-action-card .save-button {
@@ -1254,7 +1254,7 @@
   border-radius: 99px;
   background: #2f6e4a;
   color: var(--tone-ink-fcf8f4, #fff);
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.08em;

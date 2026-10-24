@@ -1,0 +1,107 @@
+/* V0.13.64 — restore physical bindings and full-width destination geometry. */
+.app-shell {
+  position: relative;
+}
+html:root[data-palette][data-theme] body .app-shell .utility-header {
+  overflow: visible;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell
+  .utility-header
+  > .fittings-header {
+  display: block;
+  z-index: 3;
+}
+@media (min-width: 768px) {
+  .app-shell[data-navigation="horizontal"] .rail-brand {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    :is(
+      .navigation-scroll-frame,
+      .navigation-scroll,
+      .navigation-primary,
+      .learn-disclosure
+    ) {
+    width: 100%;
+    min-width: 0;
+    align-self: stretch;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    .navigation-primary {
+    align-items: stretch;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    :is(.navigation-scroll-frame, .navigation-scroll) {
+    padding-inline: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    .navigation-item {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    border-radius: 13px;
+    box-sizing: border-box;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .navigation-scroll
+    > .navigation-travelling-selection {
+    border-radius: 13px;
+  }
+}
+/* Notification emphasis belongs to the glyph; the utility surface stays neutral. */
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .utility-header
+  .notification-bell {
+  color: inherit;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .utility-header
+  .notification-bell:is(:hover, :focus-visible, [data-state="open"]) {
+  color: inherit;
+  background: color-mix(in srgb, var(--shell-ink) 9%, transparent);
+  border: 0;
+  box-shadow: none;
+}
+.notification-bell .notification-badge {
+  background: #ffdb65;
+  color: #211c0d;
+  border-color: #29251b;
+}
+@media (forced-colors: active) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation]
+    .utility-header
+    .notification-bell {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+  .notification-bell-icon path {
+    fill: none;
+    stroke: ButtonText;
+  }
+}

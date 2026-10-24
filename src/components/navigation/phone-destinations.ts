@@ -3,5 +3,5 @@ export const phoneDockPaths = (personal: boolean) => [
   personal ? "/my" : "/",
   personal ? "/my/learning" : "/learn",
   "/community",
-  "/my/profile",
+  "/my",
 ];

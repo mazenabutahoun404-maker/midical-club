@@ -4,12 +4,12 @@ export const appearancePalettes = [
     id: "medclub",
     title: { en: "MedClub", ar: "النادي الطبي" },
     description: {
-      en: "Soft neutrals with MedClub red",
-      ar: "ألوان محايدة هادئة مع أحمر النادي الطبي",
+      en: "Clinical white, surgical teal and MedClub red",
+      ar: "أبيض طبي وفيروزي هادئ مع أحمر النادي الطبي",
     },
-    swatches: ["#a50f15", "#f5f5f2", "#202326"],
-    darkPaper: "#292d30",
-    darkInk: "#e4e7e5",
+    swatches: ["#a50f15", "#f3f7f5", "#151f23"],
+    darkPaper: "#1e2c30",
+    darkInk: "#edf5f1",
     preferred: null,
   },
   {
@@ -72,7 +72,10 @@ export const appearancePalettes = [
   {
     id: "sage",
     title: { en: "Sage", ar: "المريمية" },
-    description: { en: "Soft sage and olive accents", ar: "درجات المريمية الهادئة ولمسات زيتونية" },
+    description: {
+      en: "Soft sage and olive accents",
+      ar: "درجات المريمية الهادئة ولمسات زيتونية",
+    },
     swatches: ["#f3f5ef", "#232b25", "#a8c79b"],
     darkPaper: "#2e3830",
     darkInk: "#e3eadf",
@@ -81,7 +84,10 @@ export const appearancePalettes = [
   {
     id: "midnight",
     title: { en: "Midnight", ar: "منتصف الليل" },
-    description: { en: "Deep navy with quiet gold accents", ar: "كحلي عميق ولمسات ذهبية هادئة" },
+    description: {
+      en: "Deep navy with quiet gold accents",
+      ar: "كحلي عميق ولمسات ذهبية هادئة",
+    },
     swatches: ["#f1f3f8", "#202a3c", "#d7bc7a"],
     darkPaper: "#29374d",
     darkInk: "#e3e8f3",
@@ -90,7 +96,10 @@ export const appearancePalettes = [
   {
     id: "espresso",
     title: { en: "Espresso", ar: "إسبريسو" },
-    description: { en: "Warm coffee, cream and copper", ar: "درجات القهوة الدافئة والكريمي والنحاسي" },
+    description: {
+      en: "Warm coffee, cream and copper",
+      ar: "درجات القهوة الدافئة والكريمي والنحاسي",
+    },
     swatches: ["#f5f0ea", "#2b2320", "#d7b394"],
     darkPaper: "#372d28",
     darkInk: "#efe5d9",

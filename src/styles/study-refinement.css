@@ -203,7 +203,7 @@ html:root
   .study-notebook
   .study-reader-heading
   h3 {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   line-height: 1.4;
   white-space: nowrap;
   overflow: hidden;
@@ -304,7 +304,7 @@ html:root
 .study-timer-durations label {
   display: grid;
   gap: 4px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .study-timer-durations input {
   width: 100%;
@@ -321,7 +321,7 @@ html:root
   color: var(--primary-foreground);
 }
 .study-timer-phase-label {
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   color: var(--book-muted);
 }
 .study-timer-action-ring {
@@ -346,7 +346,7 @@ html:root
   border: 1px solid var(--primary);
   border-radius: 5px;
   padding: 8px;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
 }
 .study-timer-complete-note button {
   border: 0;

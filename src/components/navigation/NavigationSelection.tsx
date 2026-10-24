@@ -19,7 +19,17 @@ export function selectionBox(
     y += node.offsetTop;
     node = node.offsetParent as HTMLElement | null;
   }
-  return { x, y, width: target.offsetWidth, height: target.offsetHeight };
+  const box = { x, y, width: target.offsetWidth, height: target.offsetHeight };
+  // A vertical destination owns the whole link lane, including icon-only rails.
+  // Use layout offsets rather than transformed screen bounds during a fold.
+  if (
+    host.classList.contains("navigation-scroll") &&
+    host.closest('.app-shell[data-navigation="vertical"]')
+  ) {
+    box.x = 0;
+    box.width = host.clientWidth;
+  }
+  return box;
 }
 
 export function NavigationSelection() {

@@ -152,7 +152,7 @@
   border: 1px solid var(--tone-line-5b4a3f3b, #ee8c773b);
   border-radius: 999px;
   background: #1d0d12b8;
-  font-size: 0.63rem;
+  font-size: max(var(--readable-small, .875rem), 0.63rem);
   font-weight: 800;
   letter-spacing: 0.12em;
 }
@@ -220,7 +220,7 @@
 }
 .governance-metrics small {
   color: var(--tone-ink-muted, #765f5c);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   font-weight: 700;
 }
 
@@ -504,7 +504,7 @@
 .governance-user-scroll small {
   overflow: hidden;
   opacity: 0.72;
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -517,7 +517,7 @@
   color: var(--tone-ink-fcf8f4, #fff);
   border-radius: 16px 16px 16px 6px;
   background: linear-gradient(145deg, #a83333, #693044);
-  font-size: 0.74rem;
+  font-size: max(var(--readable-small, .875rem), 0.74rem);
   font-weight: 850;
 }
 .governance-user-inspector {
@@ -544,7 +544,7 @@
 .governance-user-inspector header p {
   margin: 0 0 8px;
   color: var(--tone-ink-muted, #806864);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
 }
 .governance-founder-seal {
   color: var(--tone-ink-coral, #a52227);
@@ -557,7 +557,7 @@
   color: var(--tone-ink-muted, #5c4b45);
   border-radius: 999px;
   background: var(--tone-surface-inset, #e9e2dc);
-  font-size: 0.64rem;
+  font-size: max(var(--readable-small, .875rem), 0.64rem);
   font-weight: 800;
   letter-spacing: 0.04em;
 }
@@ -582,7 +582,7 @@
   gap: 7px;
   margin: 17px 0 25px;
   color: var(--tone-ink-muted, #846c66);
-  font-size: 0.74rem;
+  font-size: max(var(--readable-small, .875rem), 0.74rem);
 }
 .governance-identity-grid {
   display: grid;
@@ -600,7 +600,7 @@
   gap: 9px;
   margin: 0 0 14px;
   color: var(--tone-ink-strong, #4b292c);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   letter-spacing: 0.035em;
   text-transform: uppercase;
 }
@@ -612,7 +612,7 @@
 .governance-chip-list > span {
   padding: 7px 10px;
   border-radius: 10px 10px 10px 4px;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   font-weight: 750;
 }
 .governance-chip-list > span[data-kind="role"] {
@@ -630,7 +630,7 @@
 }
 .governance-membership span {
   color: var(--tone-ink-muted, #715b56);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .governance-membership small {
   grid-column: 2;
@@ -649,7 +649,7 @@
   border: 1px solid var(--tone-line-boundary, #e5c2ba);
   border-radius: 16px 16px 16px 6px;
   background: var(--tone-surface-coral, #f8e8e1);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
   font-weight: 700;
 }
 .governance-inspector-actions {
@@ -678,7 +678,7 @@
   display: grid;
   gap: 7px;
   color: var(--tone-ink-strong, #533638);
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   font-weight: 750;
 }
 .governance-request-form select,
@@ -741,7 +741,7 @@
   align-items: center;
   gap: 4px;
   opacity: 0.7;
-  font-size: 0.67rem;
+  font-size: max(var(--readable-small, .875rem), 0.67rem);
 }
 .governance-role-glyph {
   display: grid;
@@ -781,7 +781,7 @@
   color: var(--tone-ink-coral, #8e2429);
   border-radius: 999px;
   background: var(--tone-surface-coral, #f3ddda);
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   font-weight: 800;
 }
 .governance-capability-groups {
@@ -799,7 +799,7 @@
 .governance-capability-groups h3 {
   margin: 2px 4px 12px;
   color: var(--tone-ink-muted, #7f4f44);
-  font-size: 0.67rem;
+  font-size: max(var(--readable-small, .875rem), 0.67rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -850,7 +850,7 @@
 }
 .governance-capability-groups button small {
   color: var(--tone-ink-muted, #806a64);
-  font-size: 0.66rem;
+  font-size: max(var(--readable-small, .875rem), 0.66rem);
   line-height: 1.4;
 }
 .governance-capability-groups em {
@@ -858,7 +858,7 @@
   align-items: center;
   gap: 4px;
   color: var(--tone-ink-coral, #9b2a2d);
-  font-size: 0.58rem;
+  font-size: max(var(--readable-small, .875rem), 0.58rem);
   font-style: normal;
   font-weight: 800;
   white-space: nowrap;
@@ -877,7 +877,7 @@
   align-items: center;
   gap: 7px;
   color: var(--tone-ink-muted, #7b5e58);
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   font-weight: 750;
 }
 .governance-approval-list {
@@ -937,14 +937,14 @@
 }
 .governance-approval-card dt {
   color: var(--tone-ink-muted, #8b706a);
-  font-size: 0.61rem;
+  font-size: max(var(--readable-small, .875rem), 0.61rem);
   font-weight: 750;
   text-transform: uppercase;
 }
 .governance-approval-card dd {
   margin: 4px 0 0;
   color: var(--tone-ink-strong, #43282b);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   font-weight: 700;
 }
 .governance-role-delta {
@@ -962,12 +962,12 @@
   border: 1px solid var(--tone-line-boundary, #eadbd4);
   border-radius: 14px 14px 14px 5px;
   background: var(--tone-surface-raised, #fffdf9);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
 }
 .governance-role-delta small {
   position: absolute;
   top: 0;
-  font-size: 0.58rem;
+  font-size: max(var(--readable-small, .875rem), 0.58rem);
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -987,7 +987,7 @@
   border-inline-start: 3px solid var(--tone-line-boundary, #c16c55);
   border-radius: 0 12px 12px 0;
   background: var(--tone-surface-raised, #faf1eb);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 [dir="rtl"] .governance-approval-card blockquote {
   border-radius: 12px 0 0 12px;
@@ -1009,7 +1009,7 @@
   color: var(--tone-ink-muted, #896f68);
   border: 1px dashed var(--tone-line-boundary, #d9c7be);
   border-radius: 13px;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   font-weight: 800;
 }
 .governance-approval-chain > span > svg,
@@ -1030,7 +1030,7 @@
 }
 .governance-approval-chain small {
   overflow: hidden;
-  font-size: 0.61rem;
+  font-size: max(var(--readable-small, .875rem), 0.61rem);
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1089,7 +1089,7 @@
   color: var(--tone-ink-strong, #521319);
   border-radius: 8px;
   background: var(--tone-surface-coral, #ffb4a4);
-  font-size: 0.62rem;
+  font-size: max(var(--readable-small, .875rem), 0.62rem);
 }
 [data-navigation="vertical"][data-sidebar="collapsed"]
   .admin-navigation
@@ -1116,7 +1116,7 @@
   top: -4px;
   min-width: 17px;
   height: 17px;
-  font-size: 0.52rem;
+  font-size: max(var(--readable-small, .875rem), 0.52rem);
 }
 [data-navigation="vertical"][data-sidebar="collapsed"]
   .admin-navigation
@@ -1139,7 +1139,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  font-size: 0.62rem;
+  font-size: max(var(--readable-small, .875rem), 0.62rem);
   cursor: pointer;
 }
 .admin-phone-navigation > button.active {
@@ -1157,7 +1157,7 @@
   color: var(--tone-ink-strong, #4b1117);
   border-radius: 50%;
   background: var(--tone-surface-coral, #ffad9d);
-  font-size: 0.55rem;
+  font-size: max(var(--readable-small, .875rem), 0.55rem);
 }
 .admin-mobile-menu-modal {
   width: min(520px, calc(100vw - 26px));
@@ -1188,7 +1188,7 @@
   place-items: center;
   border-radius: 8px;
   background: var(--tone-surface-coral, #e9b09f);
-  font-size: 0.65rem;
+  font-size: max(var(--readable-small, .875rem), 0.65rem);
 }
 .admin-mobile-more-links .admin-mobile-exit {
   grid-template-columns: 1fr;
@@ -1224,13 +1224,13 @@
 }
 .personal-admin-portal small {
   color: var(--tone-ink-coral, #f3b4a2);
-  font-size: 0.49rem;
+  font-size: max(var(--readable-small, .875rem), 0.49rem);
   font-weight: 850;
   letter-spacing: 0.1em;
 }
 .personal-admin-portal strong {
   overflow: hidden;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1276,7 +1276,7 @@
 }
 .personal-mobile-admin-portal small {
   color: var(--tone-ink-coral, #f1b4a4);
-  font-size: 0.52rem;
+  font-size: max(var(--readable-small, .875rem), 0.52rem);
   letter-spacing: 0.09em;
 }
 
@@ -1404,7 +1404,7 @@
   position: absolute;
   bottom: clamp(34px, 8vh, 80px);
   color: var(--tone-ink-f6dacf, #f8d8ce);
-  font-size: 0.66rem;
+  font-size: max(var(--readable-small, .875rem), 0.66rem);
   font-weight: 850;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -1457,7 +1457,7 @@
 }
 .admin-governance-command small {
   color: var(--tone-ink-coral, #ef9d89);
-  font-size: 0.57rem;
+  font-size: max(var(--readable-small, .875rem), 0.57rem);
   font-weight: 850;
   letter-spacing: 0.12em;
 }
@@ -1467,7 +1467,7 @@
 .admin-governance-command em {
   overflow: hidden;
   color: var(--tone-ink-e4c9c0, #dfc1b9);
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;

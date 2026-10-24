@@ -1,0 +1,365 @@
+:root {
+  --readable-small: 0.875rem;
+}
+@theme {
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+}
+@media (max-width: 767px) {
+  html:root
+    body
+    :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    font-size: max(1rem, 1em);
+  }
+}
+/* Books retain their natural width on an open shelf, without a framed desk. */
+.home-atlas.home-studio .home-resources {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  overflow: visible;
+}
+.home-atlas.home-studio .home-resources > .home-chapter-heading {
+  margin-inline: 0;
+}
+.home-atlas.home-studio .home-open-library {
+  position: relative;
+  min-width: 0;
+  background: transparent;
+}
+.home-atlas.home-studio .home-open-library .home-course-shelf {
+  padding: 18px 10px 22px;
+  gap: 24px;
+}
+.home-atlas.home-studio .home-open-library .home-library-browse {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-inline: 10px;
+}
+.home-atlas.home-studio .home-open-library .course-volume-copy p {
+  display: none;
+}
+/* Sticky offsets follow the actual main bar, rather than a fixed estimate. */
+@media (min-width: 768px) {
+  html:root
+    body
+    .app-shell.app-shell[data-navigation="horizontal"]
+    :is(
+      .community-navigation,
+      .mentorship-navigation,
+      .store-navigation,
+      .recruitment-navigation,
+      .involvement-navigation,
+      .exam-navigation,
+      .journal-navigation
+    ) {
+    top: var(
+      --measured-section-top,
+      calc(var(--shell-top) + var(--shell-gap) + 4px)
+    );
+    transition: top 180ms ease;
+  }
+}
+/* Quick tools add a wrapper: center that wrapper as well as the trigger. */
+@media (min-width: 768px) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation]
+    .desktop-navigation
+    :is(.navigation-bottom, .admin-nav-footer, .personal-nav-footer)
+    > .appearance-quick-anchor:not([data-compact]) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"][data-sidebar="expanded"]
+    .desktop-navigation
+    .appearance-quick-anchor
+    .navigation-preferences {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding-inline: 38px;
+    gap: 9px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .desktop-navigation
+    .appearance-quick-anchor
+    .navigation-preferences
+    > .utility-glyph {
+    flex: none;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"][data-sidebar="expanded"]
+    .desktop-navigation
+    .appearance-quick-disclosure {
+    inset-inline-end: 3px;
+    top: 50%;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell:is([data-navigation="horizontal"], [data-sidebar="collapsed"])
+    .desktop-navigation
+    :is(.navigation-bottom, .admin-nav-footer, .personal-nav-footer)
+    > .appearance-quick-anchor:not([data-compact]) {
+    flex: 0 0 44px;
+    width: 44px;
+    margin-inline: auto;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell:is([data-navigation="horizontal"], [data-sidebar="collapsed"])
+    .desktop-navigation
+    .appearance-quick-anchor
+    .navigation-preferences {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0;
+    margin: 0;
+  }
+}
+.appearance-dialog .appearance-preference-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-block: 18px;
+}
+.appearance-dialog .appearance-preference-row[data-account="false"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.appearance-dialog
+  .appearance-preference-row
+  :is(.appearance-language-row, .appearance-workspace-options) {
+  margin: 0;
+  padding: 12px;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+}
+.appearance-dialog .appearance-preference-row .appearance-language-row,
+.appearance-dialog
+  .appearance-preference-row
+  .appearance-workspace-options
+  > div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 44px;
+}
+.appearance-dialog
+  .appearance-preference-row
+  .appearance-workspace-options
+  > div {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.appearance-dialog .appearance-preference-row strong {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.appearance-dialog .appearance-preference-row button {
+  flex-shrink: 0;
+}
+/* Every tool uses one fixed viewport; long notes scroll inside it. */
+.study-tools-page .study-tools-hero {
+  align-items: start;
+}
+.study-tools-page .study-tool-stage {
+  position: relative;
+  height: clamp(540px, 70svh, 680px);
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+}
+.study-tools-page .study-tool-scene {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+.study-tools-page .study-tool-scene > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.study-tools-page .study-tool-stage:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.study-preparation {
+  margin-top: 24px;
+}
+.study-preparation header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.study-preparation h2 {
+  font-size: 22px;
+  line-height: 1.35;
+}
+.study-preparation header > span {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+.study-preparation-progress {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--border);
+  margin-bottom: 16px;
+}
+.study-preparation-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  border-radius: inherit;
+  transition: width 240ms ease;
+}
+.study-preparation-items {
+  display: grid;
+  gap: 9px;
+}
+.study-preparation-items label {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  min-height: 54px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  background: var(--card);
+  transition:
+    background 160ms,
+    border-color 160ms;
+}
+.study-preparation-items label > span {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.study-preparation-items [data-checked="true"] {
+  background: color-mix(in srgb, var(--primary) 7%, var(--card));
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+}
+.study-preparation-tick {
+  color: var(--primary);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 160ms,
+    transform 200ms;
+}
+.study-preparation-items [data-checked="true"] .study-preparation-tick {
+  opacity: 1;
+  transform: scale(1);
+}
+.study-preparation-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.study-preparation-actions .button {
+  min-height: 46px;
+}
+.study-preparation-reset {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: var(--card);
+}
+@media (max-width: 767px) {
+  .study-tools-page .study-tool-stage {
+    height: clamp(440px, 72svh, 640px);
+    width: 100%;
+  }
+  .study-tools-page .study-tool-scene {
+    padding: 12px;
+  }
+  .study-tools-page .study-desk-tools small {
+    display: none;
+  }
+  .appearance-dialog .appearance-preference-row {
+    gap: 8px;
+  }
+  .appearance-dialog
+    .appearance-preference-row
+    :is(.appearance-language-row, .appearance-workspace-options) {
+    padding: 9px;
+  }
+  .appearance-dialog
+    .appearance-preference-row
+    .appearance-workspace-options
+    > div {
+    flex-wrap: wrap;
+  }
+  .pdf-book .pdf-mobile-reading-controls {
+    flex-wrap: nowrap;
+    gap: 4px;
+    padding-inline: 4px;
+  }
+  .pdf-book .pdf-mobile-reading-controls .pdf-fit-toggle {
+    min-width: 44px;
+    padding-inline: 8px;
+  }
+  .pdf-book .pdf-mobile-reading-controls .pdf-fit-toggle span {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .study-preparation :is(*, *::before, *::after) {
+    transition: none;
+  }
+  html:root
+    body
+    .app-shell.app-shell[data-navigation="horizontal"]
+    :is(
+      .community-navigation,
+      .mentorship-navigation,
+      .store-navigation,
+      .recruitment-navigation,
+      .involvement-navigation,
+      .exam-navigation,
+      .journal-navigation
+    ) {
+    transition: none;
+  }
+}

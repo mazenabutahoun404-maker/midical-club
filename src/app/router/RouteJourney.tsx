@@ -22,6 +22,17 @@ export function courseDeskFamily(path: string) {
   if (/^\/my\/learning\/[^/]+\/?$/.test(path)) return "personal";
   return null;
 }
+/** Current semester and archive share one batch workspace and scroll position. */
+export function batchViewFamily(path: string) {
+  return (
+    path
+      .match(
+        /^\/learn\/basic-sciences\/batches\/[^/]+(?:\/(?:current|archive))?\/?$/,
+      )?.[0]
+      .replace(/\/(?:current|archive)\/?$/, "")
+      .replace(/\/$/, "") ?? null
+  );
+}
 export const RouteJourneyContext = createContext<{
   phase: Phase;
   ready: (location: Location) => void;
@@ -50,10 +61,17 @@ export function useRouteJourney(target: Location) {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   useEffect(() => {
     const main = document.getElementById("main");
-    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver((entries) => {
-      const entry = entries[0];
-      if (entry) mainHeight.current = Math.max(320, entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height);
-    });
+    const observer =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver((entries) => {
+            const entry = entries[0];
+            if (entry)
+              mainHeight.current = Math.max(
+                320,
+                entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height,
+              );
+          });
     if (main) observer?.observe(main);
     return () => observer?.disconnect();
   }, [location.pathname]);
@@ -81,12 +99,13 @@ export function useRouteJourney(target: Location) {
     hashObserver.current?.disconnect();
     timers.current = [];
     frames.current = [];
-    // Only the keyed reader turns over between courses in the same desk.
-    // The surrounding shelf never fades, scrolls to the top or becomes inert.
+    // Content changes inside a desk or batch keep their surrounding page in place.
     if (
       old.pathname !== target.pathname &&
-      courseDeskFamily(old.pathname) &&
-      courseDeskFamily(old.pathname) === courseDeskFamily(target.pathname)
+      ((courseDeskFamily(old.pathname) &&
+        courseDeskFamily(old.pathname) === courseDeskFamily(target.pathname)) ||
+        (batchViewFamily(old.pathname) &&
+          batchViewFamily(old.pathname) === batchViewFamily(target.pathname)))
     ) {
       deskSwitch.current = true;
       moved.current = false;
@@ -98,6 +117,8 @@ export function useRouteJourney(target: Location) {
     }
     deskSwitch.current = false;
     if (old.pathname === target.pathname) {
+      if (target.state?.welcome)
+        window.scrollTo({ top: 0, behavior: "instant" });
       visible.current = target;
       setLocation(target);
       setPhase("idle");
@@ -164,10 +185,11 @@ export function useRouteJourney(target: Location) {
         currentAction.current === "POP"
           ? `entry:${arrived.key}`
           : `path:${arrived.pathname}`;
-      const top =
-        positions.current.get(key) ??
-        positions.current.get(`path:${arrived.pathname}`) ??
-        0;
+      const top = arrived.state?.welcome
+        ? 0
+        : (positions.current.get(key) ??
+          positions.current.get(`path:${arrived.pathname}`) ??
+          0);
       window.scrollTo({ top, behavior: "instant" });
     }
     if (
@@ -183,9 +205,12 @@ export function useRouteJourney(target: Location) {
         if (arrived.key !== destination.current.key) return;
         setPhase(motionOff() ? "idle" : "arriving");
         timers.current.push(
-          window.setTimeout(() => {
-            if (arrived.key === destination.current.key) setPhase("idle");
-          }, motionOff() ? 0 : 180),
+          window.setTimeout(
+            () => {
+              if (arrived.key === destination.current.key) setPhase("idle");
+            },
+            motionOff() ? 0 : 180,
+          ),
         );
       }),
     );

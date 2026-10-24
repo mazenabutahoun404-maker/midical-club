@@ -1,0 +1,730 @@
+/* Brand and utility island leave the page itself open. Workspace palettes still own rail colours. */
+.app-shell {
+  --arrival-sign: -1;
+}
+html[dir="rtl"] .app-shell {
+  --arrival-sign: 1;
+}
+.rail-brand {
+  position: absolute;
+  z-index: 82;
+  inset-inline-start: var(--shell-gap, 16px);
+  top: 15px;
+  display: grid;
+  grid-template-columns: var(--sidebar-width, 76px) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  max-width: calc(100% - 380px);
+  height: 54px;
+  color: var(--foreground);
+  text-decoration: none;
+}
+.rail-brand img {
+  justify-self: center;
+  flex: none;
+  object-fit: contain;
+  width: 44px;
+  height: 44px;
+}
+.rail-brand > span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.rail-brand strong {
+  font-size: 21px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+.rail-brand small {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+.app-shell[data-nav-hidden="true"] .rail-brand {
+  visibility: hidden;
+  pointer-events: none;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .utility-header {
+  position: fixed;
+  z-index: 81;
+  top: 16px;
+  inset-inline: auto 20px;
+  width: clamp(320px, 20vw, 460px);
+  max-width: calc(100vw - 32px);
+  min-width: 0;
+  height: 52px;
+  min-height: 52px;
+  margin: 0;
+  padding: 4px 6px;
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  border-radius: 17px;
+  border: 1px solid var(--shell-line);
+  background: var(--shell-surface);
+  color: var(--shell-ink);
+  box-shadow: 0 6px 20px -16px
+    color-mix(in srgb, var(--foreground) 40%, transparent);
+  transform-origin: 50% 0;
+}
+html:root[data-palette][data-theme] body .app-shell .utility-header::before,
+html:root[data-palette][data-theme] body .app-shell .utility-header::after {
+  display: none;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell
+  .utility-header
+  > :is(.workspace-actions, .personal-header-actions, .admin-header-actions) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell
+  .utility-header
+  .workspace-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 12px;
+  color: inherit;
+  background: transparent;
+  box-shadow: none;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell
+  .utility-header
+  .workspace-icon:hover {
+  background: color-mix(in srgb, var(--shell-ink) 9%, transparent);
+}
+.header-search-bar {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  height: 42px;
+  padding: 0 11px;
+  border: 1px solid color-mix(in srgb, var(--shell-ink) 16%, transparent);
+  border-radius: 12px;
+  color: inherit;
+  background: color-mix(in srgb, var(--shell-ink) 5%, transparent);
+  text-align: start;
+  cursor: pointer;
+}
+.header-search-bar > :first-child {
+  flex: none;
+}
+.header-search-bar > span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.9375rem;
+}
+.header-search-bar:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--shell-ink) 10%, transparent);
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell
+  .utility-header
+  .mobile-sections-trigger {
+  display: none;
+}
+.notification-guest > p {
+  font-size: 1rem;
+  line-height: 1.7;
+  padding: 14px 18px;
+  margin: 0;
+}
+/* Appearance stays centred; the adjacent, smaller controls belong to the rail. */
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation
+  .rail-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0 0;
+  margin: auto 0 0;
+  flex: none;
+  min-width: 0;
+  border-top: 1px solid var(--shell-line);
+  width: 100%;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .rail-settings {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 3px;
+  min-width: 0;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .rail-settings
+  > .appearance-quick-anchor {
+  display: flex;
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .rail-settings
+  .navigation-preferences {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 7px 3px;
+  background: transparent;
+  color: var(--shell-ink);
+  border-radius: 12px;
+  margin: 0;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .rail-settings
+  .navigation-preferences
+  > span {
+  font-size: 0.9375rem;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .rail-settings
+  :is(.sidebar-toggle, .rail-controls-trigger) {
+  display: grid;
+  place-items: center;
+  position: static;
+  inset: auto;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 36px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  color: var(--shell-ink);
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .rail-settings
+  :is(button:hover, button:focus-visible) {
+  background: color-mix(in srgb, var(--shell-ink) 9%, transparent);
+}
+.rail-controls-popover {
+  z-index: 160;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 10px 30px -15px #0004;
+}
+html body .rail-controls-popover .navigation-reveal-actions {
+  display: flex;
+  position: static;
+  inset: auto;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  gap: 5px;
+}
+html body .rail-controls-popover .navigation-reveal-actions button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--foreground);
+  cursor: pointer;
+}
+.rail-controls-popover > svg {
+  fill: var(--card);
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell[data-navigation]
+  .desktop-navigation
+  .rail-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  margin: 0;
+  padding: 10px;
+  gap: 10px;
+  border-radius: 13px;
+}
+html:root[data-palette][data-theme]
+  body
+  .app-shell
+  .rail-footer
+  .personal-admin-portal {
+  width: 100%;
+  margin: 0;
+  min-height: 48px;
+  padding: 9px;
+}
+@media (min-width: 768px) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation {
+    top: 88px;
+    height: calc(100dvh - 104px);
+    max-height: calc(100dvh - 104px);
+    padding: 14px 12px 12px;
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .desktop-navigation
+    > .navigation-scroll-frame {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]:not([data-study-environment]):not(
+      [data-exam-studio]
+    )
+    > .app-content {
+    padding-top: 86px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]::before {
+    display: none;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-sidebar="collapsed"][data-navigation="vertical"]
+    .rail-settings {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-sidebar="collapsed"][data-navigation="vertical"]
+    .rail-settings
+    > .appearance-quick-anchor {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-sidebar="collapsed"][data-navigation="vertical"]
+    .rail-settings
+    :is(.sidebar-toggle, .rail-controls-trigger) {
+    flex-basis: 25px;
+    width: 25px;
+    height: 30px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-sidebar="collapsed"][data-navigation="vertical"]
+    .rail-profile
+    > span:last-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation {
+    top: 82px;
+    height: 62px;
+    min-height: 62px;
+    max-height: 62px;
+    padding: 7px 12px;
+    gap: 12px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]:not([data-study-environment]):not(
+      [data-exam-studio]
+    )
+    > .app-content {
+    padding-top: 155px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .navigation-scroll-frame {
+    padding-inline-end: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    .rail-footer {
+    flex-direction: row;
+    width: auto;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .rail-settings {
+    width: auto;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .rail-settings
+    > .appearance-quick-anchor {
+    flex: 0 0 44px;
+    width: 44px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .rail-settings
+    .navigation-preferences {
+    width: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .rail-settings
+    .navigation-preferences
+    > span,
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .rail-settings
+    .sidebar-toggle,
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .rail-profile
+    > span:last-child {
+    display: none;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .desktop-navigation
+    .rail-profile {
+    width: 44px;
+    padding: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="horizontal"]
+    .adaptive-navigation-controls {
+    top: 82px;
+  }
+}
+@media (max-width: 767px) {
+  .rail-brand {
+    grid-template-columns: 29px minmax(0, 1fr);
+    top: 13px;
+    inset-inline-start: 10px;
+    height: 46px;
+    gap: 5px;
+    max-width: 94px;
+  }
+  .rail-brand img {
+    width: 29px;
+    height: 29px;
+  }
+  .rail-brand strong {
+    font-size: 17px;
+  }
+  .rail-brand small {
+    display: none;
+  }
+  .personal-shell .rail-brand strong,
+  .admin-shell .rail-brand strong {
+    max-width: 58px;
+    font-size: 14px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation]
+    .utility-header {
+    top: 12px;
+    inset-inline-end: 10px;
+    width: calc(100% - 116px);
+    height: 48px;
+    min-height: 48px;
+    max-width: none;
+    padding: 2px 3px;
+    border-radius: 14px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell
+    .utility-header
+    > :is(.workspace-actions, .personal-header-actions, .admin-header-actions) {
+    gap: 0;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell
+    .utility-header
+    .workspace-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 44px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell
+    .utility-header
+    .mobile-sections-trigger {
+    display: grid;
+  }
+  .header-search-bar {
+    height: 40px;
+    padding-inline: 7px;
+    gap: 5px;
+  }
+  .header-search-bar > span {
+    font-size: 0.875rem;
+  }
+  .header-search-bar > :first-child {
+    width: 17px;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation]:not([data-exam-studio]):not(
+      [data-study-environment]
+    )
+    > .app-content {
+    padding-top: 76px;
+  }
+  .app-shell[data-nav-hidden="true"] .rail-brand {
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+/* A small physical hinge, then the utility island. Nothing waits for these animations. */
+.app-shell[data-shell-enter]:not([data-nav-hidden]) .desktop-navigation {
+  animation: rail-arrival 660ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+.app-shell[data-shell-enter]
+  .utility-header:not([data-header-hidden]):not([data-header-held]) {
+  animation: utility-arrival 540ms 90ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+.app-shell[data-shell-enter] .rail-brand {
+  animation: brand-arrival 450ms ease both;
+}
+@keyframes rail-arrival {
+  from {
+    opacity: 0.2;
+    transform: perspective(1000px) rotateY(calc(var(--arrival-sign) * 16deg))
+      translateX(calc(var(--arrival-sign) * 8px));
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateX(0);
+  }
+}
+.app-shell[data-navigation="horizontal"][data-shell-enter]:not(
+    [data-nav-hidden]
+  )
+  .desktop-navigation {
+  animation-name: rail-horizontal-arrival;
+}
+@keyframes rail-horizontal-arrival {
+  from {
+    opacity: 0.2;
+    transform: perspective(1000px) rotateX(-16deg) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
+  }
+}
+@keyframes utility-arrival {
+  from {
+    opacity: 0.2;
+    transform: perspective(1000px) rotateX(-12deg) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
+  }
+}
+@keyframes brand-arrival {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* A diagnostic aperture opens the campus, followed by its existing living paths. */
+.hero-vital-trace {
+  display: block;
+  width: 180px;
+  height: 24px;
+  margin-bottom: 10px;
+  color: var(--medical-secondary, var(--primary));
+  opacity: 0.55;
+}
+.hero-vital-trace path {
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.campus-hero[data-medical-arrival] .campus-scene-inner {
+  animation: medical-aperture 720ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.campus-hero[data-medical-arrival] .campus-hero-copy > :is(span, h1, p, div) {
+  animation: clinical-copy-arrival 550ms 70ms cubic-bezier(0.2, 0.7, 0.2, 1)
+    both;
+}
+.campus-hero[data-medical-arrival] .campus-hero-actions {
+  animation-delay: 150ms;
+}
+.campus-hero[data-medical-arrival] .hero-vital-trace path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: vital-arrival 650ms ease forwards;
+}
+@keyframes medical-aperture {
+  from {
+    clip-path: inset(49% 0 49% 0 round 12px);
+    opacity: 0.4;
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0);
+    opacity: 1;
+  }
+}
+@keyframes clinical-copy-arrival {
+  from {
+    opacity: 0.3;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes vital-arrival {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.personal-home[data-has-upcoming-exam] .personal-next-hero {
+  grid-template-columns: minmax(0, 1fr);
+}
+.personal-home[data-has-upcoming-exam] .personal-next-copy {
+  width: 100%;
+  max-width: none;
+}
+.personal-campus-finale {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  margin-top: 32px;
+}
+.personal-campus-finale .personal-campus-region {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.personal-campus-finale .personal-campus-window {
+  min-height: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-shell[data-shell-enter]
+    :is(.desktop-navigation, .utility-header, .rail-brand),
+  .campus-hero[data-medical-arrival]
+    :is(.campus-scene-inner, .campus-hero-copy > *, .hero-vital-trace path) {
+    animation: none;
+  }
+}
+@media (min-width: 768px) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .rail-settings
+    > .sidebar-toggle {
+    order: -1;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-sidebar="collapsed"][data-navigation="vertical"]
+    .rail-settings
+    > .sidebar-toggle {
+    order: 1;
+  }
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-sidebar="collapsed"][data-navigation="vertical"]
+    .rail-settings
+    > .rail-controls-trigger {
+    order: 1;
+  }
+}
+@media (min-width: 768px) and (max-width: 959px) {
+  html:root[data-palette][data-theme]
+    body
+    .app-shell[data-navigation="vertical"]
+    .rail-settings
+    .navigation-preferences
+    > span {
+    display: none;
+  }
+}

@@ -86,17 +86,10 @@ export default function ExamHub() {
         <>
           <section className="exam-hub-hero">
             <div>
-              <span className="exam-kicker">
-                <Compass size={17} />
-                {t({
-                  en: "Your practice, with purpose",
-                  ar: "تدريبك بخطوة واضحة",
-                })}
-              </span>
               <h1 data-page-heading tabIndex={-1}>
                 {t({
-                  en: "Train your thinking.\nMake it stick.",
-                  ar: "درّب تفكيرك.\nوثبّت فهمك.",
+                  en: "Electronic exams",
+                  ar: "الامتحانات الإلكترونية",
                 })}
               </h1>
               <p>
@@ -115,7 +108,10 @@ export default function ExamHub() {
                 </AppLink>
               </div>
             </div>
-            <aside className="exam-hero-ledger" data-resumable={!!active || undefined}>
+            <aside
+              className="exam-hero-ledger"
+              data-resumable={!!active || undefined}
+            >
               <ExamLaunchArt />
               {active ? (
                 <>
@@ -138,9 +134,7 @@ export default function ExamHub() {
                     <ArrowUpRight className="directional" size={17} />
                   </AppLink>
                 </>
-              ) : (
-                <span className="exam-launch-caption">{t({en:"Think. Choose. Understand.",ar:"فكّر. اختر. افهم."})}</span>
-              )}
+              ) : null}
             </aside>
           </section>
           <nav
@@ -174,7 +168,11 @@ export default function ExamHub() {
               </span>
               <ArrowUpRight size={19} className="directional" />
             </AppLink>
-            <button type="button" data-intent="quick" onClick={() => setQuickStart("quick")}>
+            <button
+              type="button"
+              data-intent="quick"
+              onClick={() => setQuickStart("quick")}
+            >
               <strong>
                 {t({ en: "I have 5 minutes", ar: "لديّ 5 دقائق" })}
               </strong>
@@ -186,7 +184,11 @@ export default function ExamHub() {
               </span>
               <Sparkles size={19} />
             </button>
-            <button type="button" data-intent="exam" onClick={() => setQuickStart("exam")}>
+            <button
+              type="button"
+              data-intent="exam"
+              onClick={() => setQuickStart("exam")}
+            >
               <strong>
                 {t({ en: "Prepare for an exam", ar: "الاستعداد لامتحان" })}
               </strong>
@@ -201,7 +203,7 @@ export default function ExamHub() {
           </nav>
           <section id="exam-courses" className="exam-catalog">
             <ExamHeading
-              eyebrow={t({ en: "Your question shelves", ar: "رفوف أسئلتك" })}
+              eyebrow=""
               title={t({ en: "Choose your course", ar: "اختر مساقك" })}
               heading="h2"
             />

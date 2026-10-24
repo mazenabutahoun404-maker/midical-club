@@ -1,6 +1,8 @@
+import { useShellArrival } from "../../hooks/useShellArrival";
 import { RouteViewport } from "../router/RouteJourney";
 import {
   AdaptiveNavigation,
+  NavigationProvider,
   useAdaptiveNavigation,
 } from "../../components/navigation/AdaptiveNavigation";
 import { Outlet } from "react-router-dom";
@@ -13,36 +15,40 @@ export function AdminLayout() {
   const { navigation, sidebarCollapsed } = useAppearance();
   const adaptive = useAdaptiveNavigation();
   const { label } = useLocale();
+  const arrival = useShellArrival("admin");
   return (
-    <div
-      className="app-shell admin-shell"
-      data-navigation={navigation}
-      data-sidebar={sidebarCollapsed ? "collapsed" : "expanded"}
-      data-space="admin"
-      data-nav-adaptive={adaptive.secondary ? "section" : "scroll"}
-      data-nav-hidden={adaptive.hidden || undefined}
-      data-nav-manual-hidden={adaptive.manualHidden || undefined}
-      data-nav-pinned={adaptive.pinned || undefined}
-    >
-      <a className="skip-link" href="#main">
-        {label("skip")}
-      </a>
-      <AdaptiveNavigation state={adaptive}>
-        <AdminNavigation />
-      </AdaptiveNavigation>
-      <div className="app-content">
-        <AdminHeader />
-        <p className="container admin-preview-notice" role="status">
-          <ShieldCheckMark />
-          {label("adminPreviewNotice")}
-        </p>
-        <main id="main" tabIndex={-1}>
-          <RouteViewport>
-            <Outlet />
-          </RouteViewport>
-        </main>
+    <NavigationProvider state={adaptive}>
+      <div
+        className="app-shell admin-shell"
+        ref={arrival}
+        data-navigation={navigation}
+        data-sidebar={sidebarCollapsed ? "collapsed" : "expanded"}
+        data-space="admin"
+        data-nav-adaptive={adaptive.secondary ? "section" : "scroll"}
+        data-nav-hidden={adaptive.hidden || undefined}
+        data-nav-manual-hidden={adaptive.manualHidden || undefined}
+        data-nav-pinned={adaptive.pinned || undefined}
+      >
+        <a className="skip-link" href="#main">
+          {label("skip")}
+        </a>
+        <AdaptiveNavigation state={adaptive}>
+          <AdminNavigation />
+        </AdaptiveNavigation>
+        <div className="app-content">
+          <AdminHeader />
+          <p className="container admin-preview-notice" role="status">
+            <ShieldCheckMark />
+            {label("adminPreviewNotice")}
+          </p>
+          <main id="main" tabIndex={-1}>
+            <RouteViewport>
+              <Outlet />
+            </RouteViewport>
+          </main>
+        </div>
       </div>
-    </div>
+    </NavigationProvider>
   );
 }
 

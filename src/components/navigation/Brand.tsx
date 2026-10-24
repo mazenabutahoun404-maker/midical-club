@@ -13,7 +13,9 @@ export function Brand({ brand }: { brand: SiteContent["brand"] }) {
       <img src={logo} width={49} height={49} alt="" />
       <span>
         <span className="brand-title">{brand.name}</span>
-        <span className="brand-caption">{t(brand.caption)}</span>
+        <span className="brand-caption">
+          {t({ en: "The medical student community", ar: "مجتمع طلبة الطب" })}
+        </span>
       </span>
     </AppLink>
   );

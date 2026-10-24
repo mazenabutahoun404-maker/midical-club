@@ -1,10 +1,10 @@
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
-import { BookOpen, Sparkles, Stethoscope } from "lucide-react";
+import { ArrowUpRight, BookOpen, Sparkles, Stethoscope } from "lucide-react";
 import { useBatches, useCourses } from "../../hooks/useContent";
 import { CourseDirectory } from "./CourseDirectory";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { routes } from "../../constants/routes";
-import { AcademicPortalCard } from "../../components/cards/AcademicPortalCard";
+import { AppLink } from "../../components/navigation/AppLink";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 
@@ -55,53 +55,38 @@ export default function LearnLandingPage() {
         </div>
         <HeroArtwork section="learn" />
       </section>
+      <nav className="learning-pathway-frame" aria-label={label("choosePath")}>
+        <AppLink
+          href={routes.basic}
+          className="learning-pathway learning-pathway-basic paper-card"
+        >
+          <BookOpen size={23} aria-hidden="true" />
+          <span>
+            <strong>{label("basic")}</strong>
+            <small>
+              {t({ en: "Batches & semesters", ar: "الدفعات والفصول" })}
+            </small>
+          </span>
+          <ArrowUpRight className="directional" size={19} aria-hidden="true" />
+        </AppLink>
+        <AppLink
+          href={routes.clinical}
+          className="learning-pathway learning-pathway-clinical paper-card"
+        >
+          <Stethoscope size={23} aria-hidden="true" />
+          <span>
+            <strong>{label("clinical")}</strong>
+            <small>
+              {t({
+                en: "Clinical years & rotations",
+                ar: "السنوات والتدريب السريري",
+              })}
+            </small>
+          </span>
+          <ArrowUpRight className="directional" size={19} aria-hidden="true" />
+        </AppLink>
+      </nav>
       <CourseDirectory courses={courses.data} />
-      <details className="learning-pathway-browse">
-        <summary>
-          {t({
-            en: "Browse pathways and batches",
-            ar: "تصفّح المسارات والدفعات",
-          })}
-        </summary>
-        <div className="academic-portals">
-          <AcademicPortalCard
-            href={routes.basic}
-            eyebrow={label("basicEyebrow")}
-            title={label("pathwayBasicTitle")}
-            description={label("basicPortalBody")}
-            action={label("enterBasic")}
-            tone="basic"
-          >
-            <span
-              className="portal-orbit portal-orbit-basic"
-              aria-hidden="true"
-            >
-              <BookOpen />
-              <i />
-              <i />
-              <i />
-            </span>
-          </AcademicPortalCard>
-          <AcademicPortalCard
-            href={routes.clinical}
-            eyebrow={label("clinicalEyebrow")}
-            title={label("pathwayClinicalTitle")}
-            description={label("clinicalPortalBody")}
-            action={label("enterClinical")}
-            tone="clinical"
-          >
-            <span
-              className="portal-orbit portal-orbit-clinical"
-              aria-hidden="true"
-            >
-              <Stethoscope />
-              <i />
-              <i />
-              <i />
-            </span>
-          </AcademicPortalCard>
-        </div>
-      </details>
     </div>
   );
 }

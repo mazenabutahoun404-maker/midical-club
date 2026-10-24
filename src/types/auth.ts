@@ -24,6 +24,7 @@ export interface SignInInput {
 
 export interface RegisterInput {
   fullName: string;
+  universityNumber: string;
   email: string;
   password: string;
   year: number;

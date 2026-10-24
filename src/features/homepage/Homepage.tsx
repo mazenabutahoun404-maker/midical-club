@@ -55,6 +55,7 @@ function Section({
         <div className="home-chapter-heading" data-home-reveal="rise">
           <MedicalMark kind="neuron" />
           <SectionHeading
+            concise
             heading={site.headings.events}
             href="/get-involved"
             linkLabel={t({ en: "Explore all", ar: "استكشف المزيد" })}
@@ -73,7 +74,7 @@ function Section({
       >
         <div className="home-chapter-heading" data-home-reveal="rise">
           <MedicalMark kind="scope" />
-          <SectionHeading heading={site.headings.community} />
+          <SectionHeading concise heading={site.headings.community} />
         </div>
         <Community site={site} />
       </section>
@@ -102,11 +103,19 @@ function Section({
           }
         />
         <SectionHeading
-          heading={site.headings[section.type]}
+          concise
+          heading={
+            section.type === "resources"
+              ? {
+                  eyebrow: { en: "", ar: "" },
+                  title: { en: "Courses", ar: "المساقات" },
+                }
+              : site.headings[section.type]
+          }
           href={href}
           linkLabel={
             section.type === "resources"
-              ? t({ en: "All courses", ar: "جميع المساقات" })
+              ? t({ en: "Explore all courses", ar: "استكشف جميع المساقات" })
               : label("allArticles")
           }
         />

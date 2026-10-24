@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Eye, EyeOff, UserRoundPlus } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "../../components/navigation/AppLink";
@@ -9,17 +9,27 @@ import { authErrorKey, safeReturnTo } from "../../lib/auth";
 import { routes } from "../../constants/routes";
 import { AuthenticatedState } from "./AuthenticatedState";
 import { useAuthJourney } from "./AuthJourney";
-import { authMilestones, isEmailReady, isPasswordReady } from "./auth-progress";
+import {
+  authMilestones,
+  isEmailReady,
+  isPasswordReady,
+  normalizeUniversityNumber,
+  isUniversityNumberReady,
+} from "./auth-progress";
 
 export default function RegisterPage() {
   const auth = useAuth();
   const journey = useAuthJourney();
   const { label, t } = useLocale();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const activePath = useRef(pathname);
+  activePath.current = pathname;
   const [search] = useSearchParams();
   const returnTo = safeReturnTo(search.get("returnTo"));
   const [form, setForm] = useState({
     fullName: "",
+    universityNumber: "",
     email: "",
     batch: "Shifaa",
     year: 3,
@@ -41,6 +51,7 @@ export default function RegisterPage() {
   const readyIds = useMemo(() => {
     const ready = [
       !!form.fullName.trim(),
+      isUniversityNumberReady(form.universityNumber),
       isEmailReady(form.email),
       !!form.batch.trim(),
       form.year >= 1 && form.year <= 6,
@@ -49,6 +60,7 @@ export default function RegisterPage() {
     ];
     const keys = [
       "fullName",
+      "universityNumber",
       "email",
       "batch",
       "year",
@@ -60,9 +72,10 @@ export default function RegisterPage() {
     );
   }, [form, touched, passwordReady]);
   useEffect(() => {
+    if (pathname !== routes.register) return;
     const timer = setTimeout(() => journey.setProgress(readyIds), 180);
     return () => clearTimeout(timer);
-  }, [readyIds, journey.setProgress]);
+  }, [readyIds, journey.setProgress, pathname]);
   useEffect(() => {
     if (lastStep.current !== step)
       document
@@ -96,6 +109,15 @@ export default function RegisterPage() {
     setInvalid(null);
     if (!form.fullName.trim())
       return reject("fullName", label("requiredField"), "register-name");
+    if (!isUniversityNumberReady(form.universityNumber))
+      return reject(
+        "universityNumber",
+        t({
+          en: "Enter your university number using digits (up to 24).",
+          ar: "أدخل الرقم الجامعي بالأرقام، بحد أقصى ٢٤ رقماً.",
+        }),
+        "register-university-number",
+      );
     if (!isEmailReady(form.email))
       return reject("email", label("emailInvalid"), "register-email");
     if (!form.batch.trim())
@@ -114,15 +136,18 @@ export default function RegisterPage() {
     try {
       await auth.register({
         fullName: form.fullName,
+        universityNumber: normalizeUniversityNumber(form.universityNumber),
         email: form.email.trim(),
         password: form.password,
         year: form.year,
         batch: form.batch,
       });
+      if (activePath.current !== routes.register) return;
       navigate(`${routes.verify}?returnTo=${encodeURIComponent(returnTo)}`, {
         replace: true,
       });
     } catch (caught) {
+      if (activePath.current !== routes.register) return;
       journey.setFeedback("error");
       setError(label(authErrorKey(caught)));
     }
@@ -139,7 +164,7 @@ export default function RegisterPage() {
           <UserRoundPlus />
           {label("createAccount")}
         </p>
-        <h2>{label("registerTitle")}</h2>
+        <h2>{label("createAccount")}</h2>
         <p>{label("registerBody")}</p>
       </div>
       <ol
@@ -167,6 +192,31 @@ export default function RegisterPage() {
           </span>
         </li>
       </ol>
+      <div
+        className="auth-account-progress"
+        role="progressbar"
+        aria-label={t({
+          en: "Account details complete",
+          ar: "بيانات الحساب المكتملة",
+        })}
+        aria-valuemin={0}
+        aria-valuemax={authMilestones.length}
+        aria-valuenow={readyIds.length}
+      >
+        <span>
+          {t({ en: "Your account is taking shape", ar: "حسابك يتشكّل" })}
+          <small>
+            {readyIds.length} / {authMilestones.length}
+          </small>
+        </span>
+        <i className="auth-account-progress-track" aria-hidden="true">
+          <i
+            style={{
+              width: `${(readyIds.length / authMilestones.length) * 100}%`,
+            }}
+          />
+        </i>
+      </div>
       <form
         className="auth-form"
         onSubmit={submit}
@@ -175,7 +225,11 @@ export default function RegisterPage() {
       >
         {step === 0 ? (
           <div className="auth-step-fields" key="details">
-            <label className="auth-field" htmlFor="register-name">
+            <label
+              className="auth-field"
+              htmlFor="register-name"
+              data-complete={readyIds.includes("fullName") || undefined}
+            >
               <span>{label("fullName")}</span>
               <input
                 id="register-name"
@@ -188,7 +242,37 @@ export default function RegisterPage() {
                 aria-describedby={described("fullName")}
               />
             </label>
-            <label className="auth-field" htmlFor="register-email">
+            <label
+              className="auth-field"
+              htmlFor="register-university-number"
+              data-complete={readyIds.includes("universityNumber") || undefined}
+            >
+              <span>{t({ en: "University number", ar: "الرقم الجامعي" })}</span>
+              <input
+                id="register-university-number"
+                disabled={auth.isPending}
+                type="text"
+                inputMode="numeric"
+                dir="ltr"
+                autoComplete="off"
+                maxLength={24}
+                value={form.universityNumber}
+                onChange={(event) =>
+                  update(
+                    "universityNumber",
+                    normalizeUniversityNumber(event.target.value),
+                  )
+                }
+                required
+                aria-invalid={invalid === "universityNumber" || undefined}
+                aria-describedby={described("universityNumber")}
+              />
+            </label>
+            <label
+              className="auth-field"
+              htmlFor="register-email"
+              data-complete={readyIds.includes("email") || undefined}
+            >
               <span>{label("email")}</span>
               <input
                 id="register-email"
@@ -205,7 +289,11 @@ export default function RegisterPage() {
               />
             </label>
             <div className="auth-field-pair">
-              <label className="auth-field" htmlFor="register-batch">
+              <label
+                className="auth-field"
+                htmlFor="register-batch"
+                data-complete={readyIds.includes("batch") || undefined}
+              >
                 <span>{label("batchName")}</span>
                 <input
                   id="register-batch"
@@ -220,7 +308,11 @@ export default function RegisterPage() {
                   aria-describedby={described("batch")}
                 />
               </label>
-              <label className="auth-field" htmlFor="register-year">
+              <label
+                className="auth-field"
+                htmlFor="register-year"
+                data-complete={readyIds.includes("year") || undefined}
+              >
                 <span>{label("studyYear")}</span>
                 <select
                   id="register-year"
@@ -253,7 +345,11 @@ export default function RegisterPage() {
                 {t({ en: "Edit", ar: "تعديل" })}
               </button>
             </div>
-            <label className="auth-field" htmlFor="register-password">
+            <label
+              className="auth-field"
+              htmlFor="register-password"
+              data-complete={readyIds.includes("password") || undefined}
+            >
               <span>{label("password")}</span>
               <span className="auth-password-field">
                 <input
@@ -288,7 +384,11 @@ export default function RegisterPage() {
                 {label("passwordRules")}
               </small>
             </label>
-            <label className="auth-field" htmlFor="register-confirm">
+            <label
+              className="auth-field"
+              htmlFor="register-confirm"
+              data-complete={readyIds.includes("confirm") || undefined}
+            >
               <span>{label("confirmPassword")}</span>
               <input
                 id="register-confirm"
@@ -315,11 +415,11 @@ export default function RegisterPage() {
           disabled={auth.isPending}
           className="button button-primary auth-submit"
           onPointerEnter={() => {
-            if (step === 1 && readyIds.length === 6)
+            if (step === 1 && readyIds.length === authMilestones.length)
               journey.finishRestoration();
           }}
           onFocus={() => {
-            if (step === 1 && readyIds.length === 6)
+            if (step === 1 && readyIds.length === authMilestones.length)
               journey.finishRestoration();
           }}
         >

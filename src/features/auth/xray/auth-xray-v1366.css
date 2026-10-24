@@ -1,0 +1,183 @@
+/* Two anatomical layers, with the live form in their physical opening. */
+.auth-xray-shell.auth-lab.auth-shell {
+  --auth-cage-width: calc((var(--auth-frame-width) - 24px) / 0.41);
+  --auth-cage-height: calc((var(--auth-panel-height) - 12px) / 0.62);
+  --xray-body-opacity: 0.3;
+  position: relative;
+  /* The scene clips its artwork, but must not become a hidden scroll container.
+     Input focus may scroll the panel; it must never scroll the whole cage/header. */
+  overflow: clip;
+  background:
+    radial-gradient(ellipse at 8% 18%, #b7dced99, transparent 52%),
+    radial-gradient(ellipse at 95% 84%, #cfa7b76b, transparent 48%),
+    radial-gradient(ellipse at 50% 50%, #ffffff, transparent 62%),
+    linear-gradient(145deg, #e7f1f5, #f4f6f5 46%, #f3e9ed);
+}
+:root[data-theme="dark"] .auth-xray-shell.auth-lab.auth-shell {
+  --xray-body-opacity: 0.27;
+  background:
+    radial-gradient(ellipse at 8% 18%, #244e657a, transparent 55%),
+    radial-gradient(ellipse at 95% 84%, #772d4a4d, transparent 48%),
+    radial-gradient(ellipse at 50% 50%, #112e3d, transparent 62%), #0a1820;
+}
+.auth-xray-shell .auth-panel-frame {
+  border: 1px solid color-mix(in srgb, var(--xray-tint) 36%, transparent);
+  border-radius: 28px;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--card) 88%, transparent),
+    color-mix(in srgb, var(--card) 96%, transparent)
+  );
+  box-shadow:
+    0 28px 90px -35px #1c435375,
+    inset 0 1px #ffffffb0;
+}
+:root[data-theme="dark"] .auth-xray-shell .auth-panel-frame {
+  background: linear-gradient(150deg, #142932eb, #10232bf5);
+  box-shadow:
+    0 28px 90px -35px #000d,
+    inset 0 1px #b9e6f530;
+}
+.auth-xray-stage {
+  width: var(--auth-cage-width);
+  height: var(--auth-cage-height);
+  aspect-ratio: auto;
+  transform: translate(-50%, -57%);
+}
+.auth-xray-stage > img {
+  object-fit: fill;
+}
+.auth-xray-back {
+  z-index: 1;
+  opacity: var(--xray-body-opacity);
+}
+.auth-xray-stage.auth-xray-cage {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  z-index: 9;
+  opacity: 0.96;
+  mask-image: none;
+  mask-composite: add;
+  pointer-events: none;
+}
+.auth-xray-traces {
+  z-index: 10;
+}
+.auth-xray-traces .xray-ray-bed {
+  opacity: 0.02;
+}
+.auth-xray-traces g[data-complete="true"] .xray-ray-bed {
+  stroke-width: 2.5;
+  opacity: 0.8;
+}
+.auth-xray-traces .xray-ray-flow {
+  opacity: 0.13;
+  stroke-width: 2;
+}
+.auth-xray-traces g[data-focused] .xray-ray-flow {
+  opacity: 0.95;
+  stroke-width: 3;
+}
+.auth-xray-front {
+  z-index: 11;
+}
+.auth-xray-front img {
+  opacity: 0.68;
+}
+.auth-xray-halo {
+  inset: -15% -8%;
+  overflow: hidden;
+}
+.auth-xray-halo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #476b7d2c 0.8px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse, #0001 35%, #0009);
+}
+.auth-ambient-anatomy {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.auth-ambient-orbits {
+  stroke: var(--xray-tint);
+  stroke-width: 0.8;
+  opacity: 0.22;
+  transform-origin: center;
+}
+.auth-neural-threads {
+  stroke: var(--xray-wine);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.18;
+}
+.auth-ambient-points {
+  fill: var(--xray-tint);
+  opacity: 0.4;
+}
+.auth-xray[data-running] .auth-ambient-orbits {
+  animation: auth-orbital-breath 12s ease-in-out infinite;
+}
+@keyframes auth-orbital-breath {
+  50% {
+    opacity: 0.36;
+    transform: scale(1.035) rotate(0.6deg);
+  }
+}
+.auth-xray-shell .auth-lab-footer > span:first-child {
+  background: transparent;
+}
+.auth-xray-shell .auth-form-surface {
+  padding-inline: 42px;
+}
+.auth-xray-shell .auth-panel-heading h2 {
+  font-weight: 650;
+  font-size: 27px;
+  letter-spacing: -0.025em;
+}
+.auth-xray-shell .auth-topbar {
+  z-index: 30;
+}
+@media (max-width: 767px) {
+  .auth-xray-shell.auth-lab.auth-shell {
+    --auth-cage-width: calc((var(--auth-frame-width) - 20px) / 0.41);
+    --auth-cage-height: calc((var(--auth-panel-height) - 8px) / 0.62);
+  }
+  .auth-xray-stage.auth-xray-cage {
+    opacity: 0.94;
+  }
+  .auth-xray-shell .auth-form-surface {
+    padding-inline: 30px;
+  }
+  .auth-xray-shell .auth-panel-frame {
+    border-radius: 22px;
+  }
+  .auth-xray-shell .auth-panel-heading h2 {
+    font-size: 25px;
+  }
+  .auth-neural-threads {
+    opacity: 0.12;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-xray-stage {
+    transform: translate(-50%, -57%);
+  }
+  .auth-xray[data-running] .auth-ambient-orbits {
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  .auth-xray-shell.auth-lab.auth-shell {
+    background: Canvas;
+  }
+  .auth-xray-shell .auth-panel-frame {
+    background: Canvas;
+    border: 1px solid CanvasText;
+  }
+}

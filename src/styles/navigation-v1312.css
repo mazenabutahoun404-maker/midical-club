@@ -62,7 +62,7 @@ html
 html:root body .app-shell[data-navigation] .desktop-navigation {
   transform-origin: 0 50%;
   backface-visibility: hidden;
-  transform: perspective(1000px) rotateY(0deg) !important;
+  transform: perspective(1000px) rotateY(0deg);
   transition:
     transform 340ms cubic-bezier(0.22, 0.72, 0.22, 1),
     opacity 220ms ease,
@@ -90,7 +90,7 @@ html[dir="rtl"]
 }
 html:root body .app-shell[data-navigation="horizontal"] .desktop-navigation {
   transform-origin: 50% 0;
-  transform: perspective(1000px) rotateX(0deg) !important;
+  transform: perspective(1000px) rotateX(0deg);
 }
 html:root
   body

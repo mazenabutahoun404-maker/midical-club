@@ -38,7 +38,7 @@
 }
 [dir="rtl"] .brand-caption {
   letter-spacing: 0;
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .artwork-caption {
   direction: rtl;
@@ -48,7 +48,7 @@
   font-size: 23px;
 }
 [dir="rtl"] .artwork-label {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 [dir="rtl"] .resource-body h3 {
   min-height: 3em;
@@ -57,77 +57,77 @@
   flex-wrap: wrap;
 }
 [dir="rtl"] .navigation-item {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 [dir="rtl"] .navigation-version {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .navigation-label {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 [dir="rtl"] .hero-note {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 [dir="rtl"] .hero-eyebrow {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .hero-secondary {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .workspace-welcome {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .search-result-copy {
   line-height: 1.7;
 }
 [dir="rtl"] .section-heading .eyebrow {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .pathway h3 {
   font-size: 14px;
 }
 [dir="rtl"] .pathway p {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .announcement p {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 [dir="rtl"] .announcement p > span {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .journal-card h3 {
   font-size: 25px;
   line-height: 1.6;
 }
 [dir="rtl"] .hero-search-copy strong {
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
 }
 [dir="rtl"] .community h2 {
   font-size: 28px;
 }
 [dir="rtl"] .community p {
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 2;
 }
 [dir="rtl"] .settings-note {
   line-height: 2;
 }
 [dir="rtl"] .layout-option-label {
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
 }
 [dir="rtl"] .layout-option small {
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 [dir="rtl"] .appearance-heading [data-slot="dialog-title"] {
   letter-spacing: 0;
   line-height: 1.5;
 }
 [dir="rtl"] .footer-links {
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
   line-height: 1.9;
 }
 [dir="rtl"] .footer-bottom {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
 }
 [dir="rtl"] .modal-heading [data-slot="dialog-title"] {
   letter-spacing: 0;
@@ -147,28 +147,28 @@
     font-size: 20px;
   }
   [dir="rtl"] .pathway h3 {
-    font-size: 13px;
+    font-size: max(var(--readable-small, .875rem), 13px);
   }
   [dir="rtl"] .pathway p {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .hero-secondary {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .opportunity h3 {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   [dir="rtl"] .navigation-item {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   [dir="rtl"] [data-navigation="horizontal"] .navigation-item {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .navigation-version {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   [dir="rtl"] .hero-search-copy strong {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
 }
 @media (min-width: 768px) and (max-width: 959px) {
@@ -179,7 +179,7 @@
     font-size: 35px;
   }
   [dir="rtl"] .navigation-item {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
 }
 @media (max-width: 767px) {
@@ -189,65 +189,65 @@
     margin-block: 15px;
   }
   [dir="rtl"] .hero-eyebrow {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   [dir="rtl"] .hero-secondary {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .hero-actions {
     gap: 16px;
   }
   [dir="rtl"] .brand-caption {
-    font-size: 9px !important;
+    font-size: max(var(--readable-small, .875rem), 9px) !important;
   }
   [dir="rtl"] .phone-brand .brand-title {
     font-size: 22px;
   }
   [dir="rtl"] .phone-navigation > a,
   [dir="rtl"] .phone-navigation > button {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .phone-search > span:last-child {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .artwork-label {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .hero-search-copy strong {
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   [dir="rtl"] .hero-search-copy > span {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .section-heading h2 {
     font-size: 25px;
   }
   [dir="rtl"] .section-heading .eyebrow {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   [dir="rtl"] .section-heading > .text-link {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .pathway h3 {
-    font-size: 13px;
+    font-size: max(var(--readable-small, .875rem), 13px);
   }
   [dir="rtl"] .pathway p {
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
   }
   [dir="rtl"] .resource-body h3 {
-    font-size: 12px;
+    font-size: max(var(--readable-small, .875rem), 12px);
   }
   [dir="rtl"] .course-title {
     font-size: 14px;
   }
   [dir="rtl"] .resource-meta .tag {
-    font-size: 9px;
+    font-size: max(var(--readable-small, .875rem), 9px);
   }
   [dir="rtl"] .resource-bottom {
-    font-size: 8px;
+    font-size: max(var(--readable-small, .875rem), 8px);
   }
   [dir="rtl"] .filter-tabs > [data-slot="tabs-trigger"] {
-    font-size: 10px !important;
+    font-size: max(var(--readable-small, .875rem), 10px) !important;
     padding-inline: 10px !important;
   }
   [dir="rtl"] .event-card h3 {

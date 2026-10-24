@@ -43,7 +43,7 @@
 }
 .recall-next-course {
   display: block;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   max-width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -144,7 +144,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted-foreground);
@@ -156,12 +156,12 @@
   font-weight: 650;
 }
 .recall-sheet-number small {
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
   font-weight: 400;
   color: var(--muted-foreground);
 }
 .recall-card-course {
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   color: var(--muted-foreground);
 }
 .recall-card-text {
@@ -189,7 +189,7 @@
   align-items: center;
   justify-content: center;
   gap: 9px;
-  font-size: 0.73rem;
+  font-size: max(var(--readable-small, .875rem), 0.73rem);
   color: var(--muted-foreground);
   padding-top: 10px;
   border-top: 1px solid var(--border);
@@ -281,7 +281,7 @@
 }
 .recall-review-stage .recall-grades small {
   display: block;
-  font-size: 0.68rem;
+  font-size: max(var(--readable-small, .875rem), 0.68rem);
   color: var(--muted-foreground);
   margin-top: 4px;
 }
@@ -302,7 +302,7 @@
 }
 .recall-help {
   color: var(--muted-foreground);
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .recall-review-stage .study-source-note {
   display: block;
@@ -361,7 +361,7 @@
   box-shadow: 0 1px 4px #0001;
 }
 .recall-view-tabs small {
-  font-size: 0.7rem;
+  font-size: max(var(--readable-small, .875rem), 0.7rem);
 }
 @media (max-width: 480px) {
   .recall-card-scene {

@@ -189,7 +189,7 @@ export function nextHomeExam(
       (i) =>
         Number.isFinite(Date.parse(i.startsAt)) &&
         Date.parse(i.startsAt) > now &&
-        courses.some((c) => c.id === i.courseId),
+        (!i.courseId || courses.some((c) => c.id === i.courseId)),
     )
     .sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt))[0];
 }

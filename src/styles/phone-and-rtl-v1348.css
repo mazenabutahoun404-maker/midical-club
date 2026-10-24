@@ -105,7 +105,7 @@ html[dir="rtl"] body .opportunity-explorer {
   color: var(--foreground);
   outline: none;
   font: inherit;
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .phone-sections-groups {
   display: grid;
@@ -117,7 +117,7 @@ html[dir="rtl"] body .opportunity-explorer {
 }
 .phone-sections-groups h3 {
   margin: 0 0 8px;
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
   color: var(--muted-foreground);
 }
 .phone-sections-groups section > div {
@@ -137,7 +137,7 @@ html[dir="rtl"] body .opportunity-explorer {
   border: 1px solid var(--border);
   color: var(--foreground);
   background: var(--card);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   overflow-wrap: anywhere;
   transition:
     background 160ms,

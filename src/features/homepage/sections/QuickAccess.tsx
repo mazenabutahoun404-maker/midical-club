@@ -14,7 +14,7 @@ export function QuickAccess({ site }: { site: SiteContent }) {
         <AppLink
           key={item.id}
           href={item.href}
-          className="home-study-shortcut"
+          className="home-study-shortcut paper-card"
           data-home-reveal="rise"
           data-home-step={index % 4}
           data-shortcut-tone={index % 4}

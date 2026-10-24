@@ -93,7 +93,7 @@ html:root
   gap: 8px;
   justify-content: center;
   padding-top: 6px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 18px;
   color: var(--book-ink);
   overflow: hidden;
@@ -118,7 +118,7 @@ html:root
   bdi {
   color: var(--book-muted);
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
 }
 html:root
   body
@@ -239,7 +239,7 @@ html:root
   padding: 5px;
   border: 1px solid #fff7ed42;
   border-radius: 2px;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   color: inherit;
 }
 html:root
@@ -250,7 +250,7 @@ html:root
   .shelf-book-cover
   strong {
   line-height: 1.25;
-  font-size: 11px;
+  font-size: max(var(--readable-small, .875rem), 11px);
 }
 html:root
   body
@@ -259,7 +259,7 @@ html:root
   .study-notebook
   .shelf-book-cover
   small {
-  font-size: 9px;
+  font-size: max(var(--readable-small, .875rem), 9px);
   opacity: 0.82;
 }
 html:root
@@ -504,7 +504,7 @@ html:root
   color: var(--book-ink);
   border-radius: 5px;
   box-shadow: 0 3px 9px #25141818;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   line-height: 16px;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
@@ -611,7 +611,7 @@ html:root
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   padding: 5px 0;
 }
 html:root
@@ -723,7 +723,7 @@ html:root
   b {
   display: block;
   opacity: 1;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
 }
 html:root
   body
@@ -735,7 +735,7 @@ html:root
   display: block;
   opacity: 1;
   max-width: 155px;
-  font-size: 10px;
+  font-size: max(var(--readable-small, .875rem), 10px);
   line-height: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -790,7 +790,7 @@ html:root
     align-items: center;
     gap: 0;
     line-height: 16px;
-    font-size: 11px;
+    font-size: max(var(--readable-small, .875rem), 11px);
   }
   html:root
     body
@@ -1346,7 +1346,7 @@ html:root
     top: 0;
     inset-inline: 0;
     padding-inline: 3px;
-    font-size: 10px;
+    font-size: max(var(--readable-small, .875rem), 10px);
     line-height: 12px;
     font-weight: 600;
     color: #fff7ed;

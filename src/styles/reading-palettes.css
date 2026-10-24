@@ -515,7 +515,7 @@ html:root[data-palette][data-theme]:not([data-palette="medclub"])
   font-size: 0.9rem;
 }
 .appearance-palettes > p {
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   color: var(--muted-foreground);
   margin: 6px 0 12px;
 }
@@ -557,12 +557,12 @@ html:root[data-palette][data-theme]:not([data-palette="medclub"])
 }
 .appearance-palette-option strong {
   display: block;
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   color: var(--foreground);
 }
 .appearance-palette-option small {
   display: block;
-  font-size: 0.67rem;
+  font-size: max(var(--readable-small, .875rem), 0.67rem);
   line-height: 1.5;
   color: var(--muted-foreground);
 }

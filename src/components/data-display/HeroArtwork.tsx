@@ -1,3 +1,4 @@
+import { MedicalFigure, type AnatomyKind } from "../medical/MedicalFigure";
 import art0_640 from "../../assets/section-art/learn-640.webp";
 import art0_1280 from "../../assets/section-art/learn-1280.webp";
 import art1_640 from "../../assets/section-art/community-640.webp";
@@ -43,32 +44,32 @@ const files: Record<string, string> = {
 const descriptions: Record<ArtworkSection, Text> = {
   home: { en: "MedClub medical student campus.", ar: "حرم ميدكلب لطلبة الطب." },
   learn: {
-    en: "An inviting medical library and study desk.",
-    ar: "مكتبة طبية ومكتب دراسة يدعوان للتعلّم.",
+    en: "Medical learning and the anatomy of the human brain.",
+    ar: "التعلّم الطبي وتشريح الدماغ البشري.",
   },
   community: {
-    en: "Medical students sharing ideas in a campus courtyard.",
-    ar: "طلبة طب يتبادلون الأفكار في ساحة الحرم.",
+    en: "The heart of the medical student community.",
+    ar: "قلب مجتمع طلبة الطب.",
   },
   mentorship: {
-    en: "Students learning together with a mentor.",
-    ar: "طلبة يتعلّمون مع مرشد.",
+    en: "Medical knowledge shared through mentorship.",
+    ar: "معرفة طبية تتشاركها العقول عبر الإرشاد.",
   },
   team: {
-    en: "A student team planning a campus project.",
-    ar: "فريق طلابي يخطط لمشروع جامعي.",
+    en: "The team at the heart of MedClub.",
+    ar: "الفريق الذي ينبض به ميدكلب.",
   },
   involved: {
-    en: "A welcoming campus activity and volunteer pavilion.",
-    ar: "جناح جامعي مرحّب للأنشطة والتطوّع.",
+    en: "Bring new life to the medical student community.",
+    ar: "أضف حياة جديدة إلى مجتمع طلبة الطب.",
   },
   store: {
     en: "Notebooks, stationery and clothing in a campus shop.",
     ar: "دفاتر وقرطاسية وملابس في متجر الحرم.",
   },
   "batch-gate": {
-    en: "An open university gateway to a bright library courtyard.",
-    ar: "بوابة جامعية مفتوحة تؤدي إلى ساحة مكتبة مضيئة.",
+    en: "Your next stage of medical learning.",
+    ar: "خطوتك القادمة في التعلّم الطبي.",
   },
 };
 export function usePageArtwork(section: ArtworkSection) {
@@ -89,32 +90,49 @@ export function HeroArtwork({
     query = usePageArtwork(section);
   const large = files["../../assets/section-art/" + section + "-1280.webp"],
     small = files["../../assets/section-art/" + section + "-640.webp"];
+  const anatomical =
+    !query.data && section !== "store" && section !== "batch-gate";
+  const kind: AnatomyKind =
+    section === "learn" || section === "batch-gate" || section === "mentorship"
+      ? "brain"
+      : section === "involved"
+        ? "lungs"
+        : "heart";
   return (
     <figure
+      data-medical-art={anatomical || undefined}
       className={"hero-artwork " + className}
       data-artwork-section={section}
     >
-      <picture>
-        {!query.data && (
-          <source
-            srcSet={small + " 640w, " + large + " 1280w"}
-            sizes="(max-width:1280px) 100vw, 1280px"
+      {anatomical ? (
+        <div className="clinical-hero-object">
+          <MedicalFigure kind={kind} />
+          <span className="clinical-hero-disc" />
+          <span className="clinical-hero-cross" />
+        </div>
+      ) : (
+        <picture>
+          {!query.data && (
+            <source
+              srcSet={small + " 640w, " + large + " 1280w"}
+              sizes="(max-width:1280px) 100vw, 1280px"
+            />
+          )}
+          <img
+            src={query.data?.dataUrl || large}
+            alt={t(query.data?.alt || descriptions[section])}
+            width={1280}
+            height={853}
+            decoding="async"
+            onError={(event) => {
+              if (!event.currentTarget.dataset.fallback) {
+                event.currentTarget.dataset.fallback = "true";
+                event.currentTarget.src = large;
+              }
+            }}
           />
-        )}
-        <img
-          src={query.data?.dataUrl || large}
-          alt={t(query.data?.alt || descriptions[section])}
-          width={1280}
-          height={853}
-          decoding="async"
-          onError={(event) => {
-            if (!event.currentTarget.dataset.fallback) {
-              event.currentTarget.dataset.fallback = "true";
-              event.currentTarget.src = large;
-            }
-          }}
-        />
-      </picture>
+        </picture>
+      )}
       <ArtworkEditor section={section} />
     </figure>
   );

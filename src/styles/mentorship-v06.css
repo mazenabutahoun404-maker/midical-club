@@ -46,7 +46,7 @@
   padding: 7px 14px 7px 9px;
   border-radius: 999px;
   color: var(--tone-ink-muted, #78645e);
-  font-size: 0.84rem;
+  font-size: max(var(--readable-small, .875rem), 0.84rem);
   font-weight: 750;
   transition:
     color 180ms ease,
@@ -212,7 +212,7 @@
   align-items: center;
   gap: 8px;
   color: var(--tone-ink-soft, #d8b9af);
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   font-weight: 750;
   letter-spacing: 0.12em;
 }
@@ -237,7 +237,7 @@
   display: grid;
   gap: 7px;
   color: var(--tone-ink-muted, #765f58);
-  font-size: 0.84rem;
+  font-size: max(var(--readable-small, .875rem), 0.84rem);
   font-weight: 720;
 }
 .mentor-controls input,
@@ -303,7 +303,7 @@
   border: 1px solid var(--tone-line-boundary, #dfd0c7);
   border-radius: 999px;
   color: var(--tone-ink-muted, #755d56);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
   font-weight: 730;
   transition: 180ms ease;
 }
@@ -376,7 +376,7 @@
 }
 .mentor-card-head span {
   color: var(--tone-ink-muted, #8b7169);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
   font-weight: 700;
 }
 .mentor-card-head h2 {
@@ -404,7 +404,7 @@
   border-radius: 999px;
   color: var(--tone-ink-muted, #735b54);
   background: var(--tone-surface-coral, #f1e6df);
-  font-size: 0.77rem;
+  font-size: max(var(--readable-small, .875rem), 0.77rem);
   font-weight: 700;
 }
 .mentor-areas {
@@ -412,7 +412,7 @@
 }
 .mentor-areas > span {
   color: var(--tone-ink-muted, #8d6b63);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -429,7 +429,7 @@
   padding: 6px 10px;
   border: 1px solid var(--tone-line-boundary, #e2d2c9);
   border-radius: 10px;
-  font-size: 0.79rem;
+  font-size: max(var(--readable-small, .875rem), 0.79rem);
 }
 .mentor-capacity {
   display: grid;
@@ -460,7 +460,7 @@
 }
 .mentor-capacity strong {
   color: var(--tone-ink-muted, #755d55);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .mentor-action {
   width: 100%;
@@ -496,7 +496,7 @@
   width: 48px;
   height: 48px;
   border-radius: 17px 17px 24px 17px;
-  font-size: 0.85rem;
+  font-size: max(var(--readable-small, .875rem), 0.85rem);
 }
 .request-mentor-identity div {
   display: grid;
@@ -590,7 +590,7 @@
 }
 .session-date-block span {
   color: var(--tone-ink-soft, #d8b8ad);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .session-card-copy h2 {
   margin: 5px 0 7px;
@@ -613,7 +613,7 @@
   border-radius: 999px;
   color: var(--tone-ink-muted, #765d56);
   background: var(--tone-surface-coral, #f2e7e0);
-  font-size: 0.76rem;
+  font-size: max(var(--readable-small, .875rem), 0.76rem);
   font-weight: 700;
 }
 .session-card-copy > small {
@@ -662,7 +662,7 @@
   padding-top: 14px;
   border-top: 1px solid var(--tone-line-boundary, #eadfd8);
   color: var(--tone-ink-muted, #826960);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .personal-mentorship {
   padding-bottom: 80px;
@@ -688,7 +688,7 @@
   align-items: center;
   gap: 8px;
   color: var(--tone-ink-muted, #795f58);
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
   font-weight: 800;
 }
 .request-status-mark i {
@@ -722,7 +722,7 @@
   width: 48px;
   height: 48px;
   border-radius: 17px 17px 24px 17px;
-  font-size: 0.8rem;
+  font-size: max(var(--readable-small, .875rem), 0.8rem);
 }
 .request-person h3 {
   margin: 0 0 2px;
@@ -731,7 +731,7 @@
 .request-person p {
   margin: 0;
   color: var(--tone-ink-muted, #806861);
-  font-size: 0.82rem;
+  font-size: max(var(--readable-small, .875rem), 0.82rem);
 }
 .request-main dl {
   display: flex;
@@ -745,7 +745,7 @@
 }
 .request-main dt {
   color: var(--tone-ink-muted, #8c746c);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   font-weight: 750;
 }
 .request-main dd {
@@ -762,7 +762,7 @@
   border-radius: 0 13px 13px 0;
   color: var(--tone-ink-muted, #69534d);
   background: var(--tone-surface-coral, #f6ece6);
-  font-size: 0.86rem;
+  font-size: max(var(--readable-small, .875rem), 0.86rem);
 }
 .personal-group-plans {
   margin-top: 42px;
@@ -872,7 +872,7 @@
   border-radius: 50%;
   color: var(--tone-ink-fcf8f4, #fff);
   background: #942029;
-  font-size: 0.75rem;
+  font-size: max(var(--readable-small, .875rem), 0.75rem);
   font-weight: 800;
 }
 .review-workflow h2 {
@@ -976,7 +976,7 @@
   align-items: center;
   gap: 6px;
   color: var(--tone-ink-muted, #795f58);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
   font-weight: 800;
 }
 .contribution-status {
@@ -1005,7 +1005,7 @@
 }
 .contribution-records dt {
   color: var(--tone-ink-muted, #8e746c);
-  font-size: 0.72rem;
+  font-size: max(var(--readable-small, .875rem), 0.72rem);
   font-weight: 750;
 }
 .contribution-records dd {
@@ -1029,7 +1029,7 @@
 }
 .reviewer-feedback span {
   color: var(--tone-ink-muted, #836860);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .contribution-history {
   margin: 20px 0;
@@ -1068,7 +1068,7 @@
 }
 .contribution-history li span {
   color: var(--tone-ink-muted, #806a63);
-  font-size: 0.78rem;
+  font-size: max(var(--readable-small, .875rem), 0.78rem);
 }
 .contribution-records footer {
   display: flex;

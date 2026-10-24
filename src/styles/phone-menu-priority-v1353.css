@@ -8,7 +8,7 @@ html body .phone-sections-dialog .phone-menu-links {
 }
 html body .phone-sections-dialog .phone-menu-links > a {
   min-height: 48px;
-  font-size: 12px;
+  font-size: max(var(--readable-small, .875rem), 12px);
   transition:
     background-color 160ms ease,
     border-color 160ms ease,

@@ -63,13 +63,13 @@ html body .app-shell :is(.store-navigation, .involvement-navigation) {
 }
 html body .app-shell .store-navigation { margin-block: 0 4px; }
 .store-navigation .alive-tabs { display: flex; width: max-content; max-width: none; background: transparent; padding: 0; border: 0; border-radius: 0; margin: 0; }
-html body .app-shell :is(.store-navigation .alive-tabs button, .involvement-navigation a) { flex-shrink: 0; min-height: 38px; padding: 6px 12px; border: 0; border-radius: 10px; font-size: .78rem; gap: 7px; white-space: nowrap; color: var(--foreground); background: transparent; }
+html body .app-shell :is(.store-navigation .alive-tabs button, .involvement-navigation a) { flex-shrink: 0; min-height: 38px; padding: 6px 12px; border: 0; border-radius: 10px; font-size: max(var(--readable-small, .875rem), .78rem); gap: 7px; white-space: nowrap; color: var(--foreground); background: transparent; }
 html body .app-shell :is(.store-navigation .alive-tabs button[aria-pressed="true"], .involvement-navigation a.active) { background: var(--primary); color: var(--primary-foreground); box-shadow: none; }
 html body .app-shell :is(.store-navigation .alive-tabs button, .involvement-navigation a):hover { background: var(--secondary); color: var(--foreground); }
 html body .app-shell :is(.store-navigation .alive-tabs button[aria-pressed="true"], .involvement-navigation a.active):hover { background: var(--primary); color: var(--primary-foreground); }
 .store-navigation .tab-icon { width: 17px; height: 17px; padding: 0; border: 0; background: transparent; }
 @media (max-width: 767px) {
-  html body .app-shell :is(.store-navigation .alive-tabs button, .involvement-navigation a) { min-height: 44px; padding-inline: 10px; font-size: .75rem; }
+  html body .app-shell :is(.store-navigation .alive-tabs button, .involvement-navigation a) { min-height: 44px; padding-inline: 10px; font-size: max(var(--readable-small, .875rem), .75rem); }
 }
 /* Shared statuses retain both text and color. These describe availability, not quality. */
 :root {
@@ -105,9 +105,9 @@ html body .recruitment-position-card .position-card-signal { color: var(--availa
 .batch-gate .passport-stamp { position: absolute; top: 96px; inset-inline-end: 24px; width: 52px; height: 52px; margin: 0; }
 .batch-gate .passport-copy { padding-top: 25px; }
 .batch-gate .passport-copy > strong { font-size: clamp(1.7rem,2.8vw,2.3rem); padding-inline-end: 42px; }
-.batch-gate .passport-copy > span:last-child { font-size: .83rem; min-height: 0; line-height: 1.65; }
+.batch-gate .passport-copy > span:last-child { font-size: max(var(--readable-small, .875rem), .83rem); min-height: 0; line-height: 1.65; }
 .batch-gate .passport-term { margin-top: 22px; }
-.batch-gate .passport-term :is(small,b), .batch-gate .passport-action { font-size: .78rem; }
+.batch-gate .passport-term :is(small,b), .batch-gate .passport-action { font-size: max(var(--readable-small, .875rem), .78rem); }
 .batch-gate .passport-action { min-height: 44px; margin-top: auto; }
 .batch-gate-architecture { position: absolute; top: 44px; left: 50%; transform: translateX(-50%); width: 70px; height: 67px; border: 2px solid var(--batch-color); border-bottom: 4px solid var(--batch-color); border-radius: 36px 36px 0 0; background: color-mix(in srgb, var(--batch-color) 15%, var(--card)); perspective: 240px; overflow: hidden; }
 .batch-gate-architecture i { position: absolute; top: 0; bottom: 0; width: 50%; background: linear-gradient(90deg,var(--card),color-mix(in srgb,var(--batch-color) 25%,var(--card))); border: 1px solid color-mix(in srgb,var(--batch-color) 55%,var(--card)); transition: transform 320ms cubic-bezier(.22,.72,.22,1); }

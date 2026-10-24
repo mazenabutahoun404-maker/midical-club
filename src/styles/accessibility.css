@@ -13,7 +13,7 @@
   background: var(--primary);
   color: var(--tone-ink-fcf8f4, white);
   padding: 12px 22px;
-  font-size: 13px;
+  font-size: max(var(--readable-small, .875rem), 13px);
   font-weight: 700;
   transition: transform 0.15s;
 }

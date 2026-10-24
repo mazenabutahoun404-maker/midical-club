@@ -37,7 +37,7 @@
   max-width:84px;
   gap:2px;
  }
- html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-page-jump > span { display:inline; font-size:11px; }
+ html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] .pdf-page-jump > span { display:inline; font-size:max(var(--readable-small, .875rem), 11px); }
  html:root[dir] body .pdf-book.pdf-book.pdf-controls-ready.pdf-controls-ready .pdf-book-toolbar[data-compact="true"] > .pdf-reader-options {
   flex:0 0 44px;
   width:44px;
