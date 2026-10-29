@@ -1,3 +1,4 @@
+import { PublishedContent } from "../resources/PublishedContent";
 import { ArrowLeft, Clock3, ShieldCheck, UserRound } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -79,9 +80,16 @@ export default function JournalArticlePage() {
           <b />
         </aside>
         <div className="journal-article-body">
-          {item.body.map((paragraph, index) => (
-            <p key={index}>{t(paragraph)}</p>
-          ))}
+          {item.publishedContent && (
+            <PublishedContent
+              hideHeading
+              content={item.publishedContent[locale]}
+            />
+          )}
+          {!item.publishedContent &&
+            item.body.map((paragraph, index) => (
+              <p key={index}>{t(paragraph)}</p>
+            ))}
           <div className="editorial-note">
             <ShieldCheck size={20} />
             <div>

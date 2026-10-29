@@ -1,3 +1,6 @@
+import {GroupSessions as ConnectedPage} from "../membership/Mentorship";
+import {MembershipScope} from "../membership/shared";
+import {useServices} from "../../app/providers/ServicesProvider";
 import { toast } from "sonner";
 import { UsersRound } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -11,7 +14,7 @@ import {
   useMentorshipWorkspace,
 } from "../../hooks/useContent";
 
-export default function GroupSessionsPage() {
+function PreviewGroupSessionsPage() {
   const { label } = useLocale();
   const mentors = useMentors();
   const sessions = useMentorshipSessions();
@@ -78,3 +81,5 @@ export default function GroupSessionsPage() {
     </div>
   );
 }
+
+export default function GroupSessionsPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewGroupSessionsPage/>}

@@ -26,6 +26,13 @@ export type IconName =
   | "users";
 export interface Course {
   id: string;
+  offeringId?: string;
+  subjectId?: string;
+  batchId?: string;
+  semesterId?: string;
+  academicYearId?: string;
+  academicYearName?: string;
+  version?: string;
   slug: string;
   title: Text;
   code: string;
@@ -42,6 +49,7 @@ export interface Course {
   outcomes: Text[];
   sections: CourseSection[];
   publisherNotes?: Text;
+  publishedDocuments?: { en: unknown; ar: unknown };
 }
 export interface CourseSection {
   id: string;
@@ -66,8 +74,13 @@ export interface Batch {
   tagline: Text;
   description: Text;
   graduationYear: number;
+  startDate?: string;
+  expectedGraduationDate?: string;
+  logoAssetId?: string;
+  coverAssetId?: string;
   studyYear: number;
   progress: number;
+  progressAvailable?: boolean;
   accent: "russet" | "red" | "olive";
   terms: AcademicTerm[];
 }
@@ -85,6 +98,10 @@ export interface ClinicalYear {
 }
 export interface Resource {
   id: string;
+  assetId?: string;
+  sourceRevision?: string;
+  previewAllowed?: boolean;
+  downloadAllowed?: boolean;
   title: Text;
   courseId: string;
   kind: ResourceKind;
@@ -173,6 +190,8 @@ export interface Opportunity {
   featured?: boolean;
 }
 export interface Article {
+  publishedContent?: { en: unknown; ar: unknown };
+  readMinutesAvailable?: boolean;
   id: string;
   slug: string;
   title: Text;
@@ -424,6 +443,7 @@ export interface SectionHeading {
   description?: Text;
 }
 export interface SiteContent {
+  publishedHome?: { en: unknown; ar: unknown };
   brand: { name: string; caption: Text; logoAlt: Text; copyright: Text };
   navigation: {
     main: NavItem[];

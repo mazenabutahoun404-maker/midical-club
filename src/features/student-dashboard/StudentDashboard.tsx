@@ -1,3 +1,5 @@
+import { useServices } from "../../app/providers/ServicesProvider";
+import LiveDashboard from "../student-live/Dashboard";
 import { lazy, Suspense, useEffect, useState } from "react";
 import {
   ArrowUpRight,
@@ -30,7 +32,8 @@ const PersonalCampus = lazy(() => import("./PersonalCampus"));
 
 export default function StudentDashboard() {
   const { snapshot } = useAuth();
-  return <PersonalHome key={snapshot.user?.id || "guest"} />;
+  const services = useServices();
+  return services.studentApi ? <LiveDashboard/> : <PersonalHome key={snapshot.user?.id || "guest"} />;
 }
 function PersonalHome() {
   const data = usePersonalHome(),

@@ -32,7 +32,10 @@ export function ArticleCard({ article }: { article: Article }) {
         </span>
         <span>
           <Clock3 size={15} />
-          {article.readMinutes} {label("readMinutes")}
+          {article.readMinutesAvailable === false
+            ? "—"
+            : article.readMinutes}{" "}
+          {label("readMinutes")}
         </span>
         <time dateTime={article.publishedAt}>
           {formatDate(article.publishedAt, locale, {

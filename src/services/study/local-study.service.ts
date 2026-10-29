@@ -88,16 +88,16 @@ export function createLocalStudyService(deps: {
     queue = result.catch(() => {});
     return result;
   }
-  function version<T extends Versioned>(items: T[], id: string, v: number) {
+  function version<T extends Omit<Versioned, "version"> & { version: string | number }>(items: T[], id: string, v: string | number) {
     const r = items.find((x) => x.id === id);
     if (!r) throw new StudyError("NOT_FOUND", 404);
     if (r.version !== v) throw new StudyError("CONFLICT", 409);
     return r;
   }
-  function owned<T extends Versioned & { ownerId: string }>(
+  function owned<T extends Omit<Versioned, "version"> & { version: string | number } & { ownerId: string }>(
     items: T[],
     id: string,
-    v: number,
+    v: string | number,
     owner: string,
   ) {
     const r = version(items, id, v);
@@ -107,7 +107,8 @@ export function createLocalStudyService(deps: {
   function base() {
     return { id: crypto.randomUUID(), version: 1, updatedAt: stamp() };
   }
-  function changed<T extends Versioned>(r: T) {
+  function changed<T extends Omit<Versioned, "version"> & { version: string | number }>(r: T) {
+    if (typeof r.version !== "number") throw new StudyError("INVALID", 400);
     r.version++;
     r.updatedAt = stamp();
     return r;
@@ -198,7 +199,7 @@ export function createLocalStudyService(deps: {
     deleteMargin: (id, v) =>
       run((s, a) => {
         const r = owned(s.margins, id, v, a.id);
-        s.tombstones[id] = r.version;
+        s.tombstones[id] = Number(r.version);
         s.margins = s.margins.filter((n) => n.id !== id);
       }),
     restoreMargin: (n) =>
@@ -210,7 +211,7 @@ export function createLocalStudyService(deps: {
         )
           throw new StudyError("CONFLICT", 409);
         await source(n.courseId, n.anchor);
-        const r = { ...n, version: n.version + 1, updatedAt: stamp() };
+        const r = { ...n, version: Number(n.version) + 1, updatedAt: stamp() };
         s.margins.push(r);
         delete s.tombstones[n.id];
         return r;
@@ -248,7 +249,7 @@ export function createLocalStudyService(deps: {
     deleteRecall: (id, v) =>
       run((s, a) => {
         const r = owned(s.cards, id, v, a.id);
-        s.tombstones[id] = r.version;
+        s.tombstones[id] = Number(r.version);
         s.cards = s.cards.filter((c) => c.id !== id);
       }),
     restoreRecall: (c) =>
@@ -351,7 +352,7 @@ export function createLocalStudyService(deps: {
       run((s, a) => {
         const r = owned(s.claims, id, v, a.id);
         if (r.status === "verified") throw new StudyError("CONFLICT", 409);
-        s.tombstones[id] = r.version;
+        s.tombstones[id] = Number(r.version);
         s.claims = s.claims.filter((c) => c.id !== id);
       }),
     restoreClaim: (c) =>

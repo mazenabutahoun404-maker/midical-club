@@ -23,12 +23,18 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 import { Button } from "../../components/ui/button";
 import type { AuthProfileInput } from "../../types/auth";
 import { routes } from "../../constants/routes";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProfilePage() {
   const profile = useStudentProfile();
   const auth = useAuth();
   const undoNotice = useUndoNotice();
   const services = useServices();
+  const progression = useQuery({
+    queryKey: ["account", "academic-profile", auth.snapshot.user?.id],
+    queryFn: services.account?.academicProfile || (async () => null),
+    enabled: !!services.account && auth.snapshot.status === "authenticated",
+  });
   const navigate = useNavigate();
   const { label, t } = useLocale();
   const [editing, setEditing] = useState(false);
@@ -154,6 +160,20 @@ export default function ProfilePage() {
               </dt>
               <dd>{auth.snapshot.user?.email}</dd>
             </div>
+            {progression.data && (
+              <>
+                <div>
+                  <dt>
+                    {t({ en: "Academic stage", ar: "المرحلة الأكاديمية" })}
+                  </dt>
+                  <dd>{progression.data.stage}</dd>
+                </div>
+                <div>
+                  <dt>{t({ en: "Enrollment", ar: "حالة القيد" })}</dt>
+                  <dd>{progression.data.enrollmentStatus}</dd>
+                </div>
+              </>
+            )}
           </dl>
         </section>
       </div>
@@ -176,6 +196,7 @@ export default function ProfilePage() {
               <span>{label("batchName")}</span>
               <input
                 value={form.batch}
+                readOnly={services.auth.mode === "api"}
                 onChange={(event) => update("batch", event.target.value)}
               />
             </label>
@@ -183,6 +204,7 @@ export default function ProfilePage() {
               <span>{label("studyYear")}</span>
               <select
                 value={form.year}
+                disabled={services.auth.mode === "api"}
                 onChange={(event) => update("year", Number(event.target.value))}
               >
                 {[1, 2, 3, 4, 5, 6].map((year) => (

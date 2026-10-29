@@ -1,3 +1,5 @@
+import { useServices } from "../../app/providers/ServicesProvider";
+import { LiveGpa } from "../student-live/Utilities";
 import { useEffect, useRef, useState } from "react";
 import { Plus, Trash2, Calculator, Undo2, Redo2 } from "lucide-react";
 import { throwToTrash } from "../../components/feedback/action-flight";
@@ -9,7 +11,7 @@ export function GpaCalculator() {
   const { snapshot } = useAuth();
   const userId =
     snapshot.status === "authenticated" ? snapshot.user?.id : undefined;
-  return <CalculatorForm key={userId || "guest"} userId={userId} />;
+  return useServices().studentApi ? <LiveGpa/> : <CalculatorForm key={userId || "guest"} userId={userId} />;
 }
 function CalculatorForm({ userId }: { userId?: string }) {
   const { t } = useLocale(),

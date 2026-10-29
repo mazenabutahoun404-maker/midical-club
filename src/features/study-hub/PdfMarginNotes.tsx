@@ -1,3 +1,4 @@
+import { resourceId, resourceRevision } from "../../lib/resource-identity";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -13,8 +14,8 @@ import "./study-hub.css";
 export function usePdfMargins(item: Resource, page: number) {
   const { owner, service } = useStudyHub(), { t } = useLocale();
   const tools = useStudyTools();
-  const notes = useHubQuery("margins", (signal) => service.listMargins(item.id, { signal }), item.id);
-  const records = useMemo(() => (notes.data || []).filter((note: MarginNote) => note.anchor.resourceRevision === item.updatedAt), [notes.data, item.updatedAt]);
+  const notes = useHubQuery("margins", (signal) => service.listMargins(resourceId(item), { signal }), item.id);
+  const records = useMemo(() => (notes.data || []).filter((note: MarginNote) => note.anchor.resourceRevision === resourceRevision(item)), [notes.data, item.updatedAt, item.sourceRevision]);
   const [open, setOpen] = useState(false);
   const [request, setRequest] = useState<CourseNoteRequest | null>(null);
   const sequence = useRef(0);

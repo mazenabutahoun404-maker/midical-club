@@ -1,7 +1,7 @@
 /* Two anatomical layers, with the live form in their physical opening. */
 .auth-xray-shell.auth-lab.auth-shell {
   --auth-cage-width: calc((var(--auth-frame-width) - 24px) / 0.41);
-  --auth-cage-height: calc((var(--auth-panel-height) - 12px) / 0.62);
+  --auth-cage-height: var(--auth-cage-width);
   --xray-body-opacity: 0.3;
   position: relative;
   /* The scene clips its artwork, but must not become a hidden scroll container.
@@ -40,12 +40,15 @@
 }
 .auth-xray-stage {
   width: var(--auth-cage-width);
-  height: var(--auth-cage-height);
-  aspect-ratio: auto;
+  height: var(--auth-cage-width);
+  aspect-ratio: 1;
   transform: translate(-50%, -57%);
 }
 .auth-xray-stage > img {
-  object-fit: fill;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .auth-xray-back {
   z-index: 1;
@@ -146,7 +149,7 @@
 @media (max-width: 767px) {
   .auth-xray-shell.auth-lab.auth-shell {
     --auth-cage-width: calc((var(--auth-frame-width) - 20px) / 0.41);
-    --auth-cage-height: calc((var(--auth-panel-height) - 8px) / 0.62);
+    --auth-cage-height: var(--auth-cage-width);
   }
   .auth-xray-stage.auth-xray-cage {
     opacity: 0.94;

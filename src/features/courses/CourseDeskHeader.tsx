@@ -10,6 +10,9 @@ import { ArrowLeft, Columns2, Focus } from "lucide-react";
 import type { Course } from "../../types/content";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
+import { academicBackPath } from "../../lib/access-policy";
+import { record } from "../../services/api/mapping";
+import { useLocation } from "react-router-dom";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { AppLink } from "../../components/navigation/AppLink";
 import { AppearanceSettings } from "../../components/navigation/AppearanceSettings";
@@ -71,6 +74,7 @@ export function CourseDeskHeader({
 }) {
   const { t } = useLocale(),
     paths = useWorkspacePaths(),
+    location = useLocation(),
     s = useStudyCopy();
   const { setFocus } = useStudyChrome();
   return (
@@ -95,7 +99,11 @@ export function CourseDeskHeader({
         >
           <AppLink
             className="notebook-back-courses"
-            href={paths.learning}
+            href={academicBackPath(
+              course,
+              paths.personal,
+              record(location.state).from,
+            )}
             aria-label={t({ en: "Back to courses", ar: "العودة إلى المساقات" })}
           >
             <ArrowLeft size={17} className="directional" />

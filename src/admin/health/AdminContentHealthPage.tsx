@@ -1,3 +1,5 @@
+import AdminOperationsPage from "../operations/AdminOperationsPage";
+import {useServices} from "../../app/providers/ServicesProvider";
 import { useMemo, useState, type CSSProperties } from "react";
 import { ArrowUpRight, Download, FileCheck2, Search, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
@@ -22,7 +24,7 @@ const issueKeys: Record<ContentHealthIssueCode, MessageKey> = {
 
 const kinds: ContentHealthRecord["kind"][] = ["resource", "article", "contribution", "homepage", "event", "opportunity"];
 
-export default function AdminContentHealthPage() {
+function PreviewAdminContentHealthPage() {
   const { label, t, locale } = useLocale();
   const query = useContentHealth();
   const [severity, setSeverity] = useState<"all" | ContentHealthRecord["severity"]>("all");
@@ -79,3 +81,5 @@ export default function AdminContentHealthPage() {
     </div>
   );
 }
+
+export default function AdminContentHealthPage(){const services=useServices();return services.operationsApi?<AdminOperationsPage initial="health"/>:<PreviewAdminContentHealthPage/>}

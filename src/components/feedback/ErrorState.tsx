@@ -1,14 +1,35 @@
 import { Button } from "../ui/button";
 import { useLocale } from "../../app/providers/LocaleProvider";
-export function ErrorState({ retry }: { retry: () => void }) {
-  const { label } = useLocale();
+import { ContentPlaceholder } from "./ContentPlaceholder";
+import { ReadFeedback } from "./ReadFeedback";
+export function ErrorState({
+  retry,
+  error,
+}: {
+  retry: () => void;
+  error?: unknown;
+}) {
+  const { label, t } = useLocale();
   return (
-    <div className="container empty-state" role="alert">
-      <h2>{label("errorTitle")}</h2>
-      <p>{label("errorBody")}</p>
-      <Button onClick={retry} className="button button-primary">
-        {label("retry")}
-      </Button>
+    <div className="container">
+      {error ? (
+        <ReadFeedback query={{ isPending: false, error, refetch: retry }} />
+      ) : (
+        <>
+          <ContentPlaceholder
+            error
+            icon="cloud"
+            title={label("errorTitle")}
+            description={t({
+              en: "This section couldn’t load. You can try again or browse another page.",
+              ar: "تعذّر تحميل هذا القسم. يمكنك المحاولة مجدداً أو تصفّح قسم آخر.",
+            })}
+          />
+          <Button onClick={retry} variant="outline">
+            {label("retry")}
+          </Button>
+        </>
+      )}
     </div>
   );
 }

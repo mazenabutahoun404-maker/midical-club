@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {OpportunityDetail} from "../engagement/Opportunities";
 import {
   ArrowLeft,
   CalendarClock,
@@ -16,7 +18,7 @@ import { useOpportunity } from "../../hooks/useContent";
 import { daysFromDemo, opportunityIsOpen } from "../../lib/discovery";
 import { formatDate } from "../../lib/dates";
 
-export default function OpportunityPage() {
+function PreviewOpportunityPage() {
   const { slug } = useParams();
   const query = useOpportunity(slug);
   const { t, label, locale } = useLocale();
@@ -104,3 +106,5 @@ export default function OpportunityPage() {
     </div>
   );
 }
+
+export default function OpportunityPage(){return useServices().engagementApi?<OpportunityDetail/>:<PreviewOpportunityPage/>;}

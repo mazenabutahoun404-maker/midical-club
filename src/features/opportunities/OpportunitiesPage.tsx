@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {OpportunityCatalog} from "../engagement/Opportunities";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState } from "react";
 import {
@@ -18,7 +20,7 @@ import { useOpportunities } from "../../hooks/useContent";
 import { daysFromDemo, opportunityIsOpen } from "../../lib/discovery";
 
 type View = "open" | "soon" | "saved" | "all";
-export default function OpportunitiesPage() {
+function PreviewOpportunitiesPage() {
   const { t, label } = useLocale();
   const query = useOpportunities();
   const workspace = useWorkspace();
@@ -213,3 +215,5 @@ export default function OpportunitiesPage() {
     </div>
   );
 }
+
+export default function OpportunitiesPage(){return useServices().engagementApi?<OpportunityCatalog/>:<PreviewOpportunitiesPage/>;}

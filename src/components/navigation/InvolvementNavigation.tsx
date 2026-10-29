@@ -1,3 +1,6 @@
+import { useAuth } from "../../app/providers/AuthProvider";
+import { useServices } from "../../app/providers/ServicesProvider";
+import { needsSignIn } from "../../lib/access-policy";
 import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { Ticket, Telescope, FilePenLine } from "lucide-react";
@@ -12,7 +15,20 @@ import {
 } from "./involvement";
 const icons = [Ticket, Telescope, FilePenLine];
 export function InvolvementEntry() {
-  return <Navigate to={lastInvolvementPath()} replace />;
+  const auth = useAuth(),
+    live = useServices().contentSnapshot?.kind === "live",
+    last = lastInvolvementPath();
+  if (auth.isPending) return null;
+  return (
+    <Navigate
+      to={
+        auth.snapshot.status !== "authenticated" && needsSignIn(last, live)
+          ? "/events"
+          : last
+      }
+      replace
+    />
+  );
 }
 export function InvolvementNavigation() {
   const { pathname } = useLocation();

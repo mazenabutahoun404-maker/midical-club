@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {PublicationList} from "../publications/Publications";
 import { Camera, CirclePlay, Megaphone } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { CommunityNavigation } from "../../components/navigation/CommunityNavigation";
@@ -14,7 +16,7 @@ const labels = {
   campaign: "campaign",
 } as const;
 
-export default function MediaPage() {
+function PreviewMediaPage() {
   const { t, label, locale } = useLocale();
   const query = useCommunityMedia();
   if (query.isPending) return <LoadingState />;
@@ -64,3 +66,5 @@ export default function MediaPage() {
     </div>
   );
 }
+
+export default function MediaPage(){return useServices().publicationApi?<PublicationList section="campaigns"/>:<PreviewMediaPage/>;}

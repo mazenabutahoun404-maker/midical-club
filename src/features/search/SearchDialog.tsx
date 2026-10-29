@@ -1,3 +1,4 @@
+import { useServices } from "../../app/providers/ServicesProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useOverlays } from "../../app/providers/OverlayProvider";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
@@ -7,7 +8,8 @@ import { SearchPanel } from "./SearchPanel";
 import { useLayoutEffect, useState, type CSSProperties } from "react";
 import { searchPlacement } from "./search-placement";
 export function SearchDialog() {
-  const { label, dir } = useLocale();
+  const { label, dir, t } = useLocale(),
+    live = useServices().contentSnapshot?.kind === "live";
   const paths = useWorkspacePaths();
   const { searchOpen, closeSearch, searchTrigger } = useOverlays();
   const measure = () => {
@@ -60,11 +62,19 @@ export function SearchDialog() {
     <Modal
       open={searchOpen}
       onClose={closeSearch}
+      onEscapeKeyDown={closeSearch}
       title={label(paths.personal ? "personalSearch" : "searchLabel")}
-      description={label("searchMetadataNote")}
+      description={
+        live
+          ? t({
+              en: "Search published content and resources available to you.",
+              ar: "ابحث في المحتوى المنشور والمصادر المتاحة لك.",
+            })
+          : label("searchMetadataNote")
+      }
       className={`search-modal search-anchored search-tethered ${placement.extendsLeft ? "search-opens-left" : "search-opens-right"} ${placement.above ? "search-results-above" : "search-results-below"}`}
       style={style}
-      initialFocus="[cmdk-input]"
+      initialFocus="[data-search-input]"
       hideHeading
       hideClose
     >

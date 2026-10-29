@@ -1,3 +1,5 @@
+import { useServices } from "../../app/providers/ServicesProvider";
+import ContentLibrary from "../content-live/ContentLibrary";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -27,6 +29,13 @@ import { useBuilderActions, useBuilderPages } from "./useBuilder";
 type PageView = "all" | BuilderPageStatus;
 
 export default function BuilderLibraryPage() {
+  return useServices().contentApi ? (
+    <ContentLibrary />
+  ) : (
+    <PreviewBuilderLibraryPage />
+  );
+}
+function PreviewBuilderLibraryPage() {
   const { label, t, locale } = useLocale();
   const query = useBuilderPages();
   const actions = useBuilderActions();

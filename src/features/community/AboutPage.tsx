@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {PublicAbout} from "../publications/Publications";
 import { BookOpenCheck, HeartHandshake, ShieldCheck } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { CommunityNavigation } from "../../components/navigation/CommunityNavigation";
@@ -9,7 +11,7 @@ import logo from "../../assets/brand/medclub-logo.png";
 
 const icons = [BookOpenCheck, HeartHandshake, ShieldCheck];
 
-export default function AboutPage() {
+function PreviewAboutPage() {
   const { t, label } = useLocale();
   const query = useClubValues();
   if (query.isPending) return <LoadingState />;
@@ -63,3 +65,5 @@ export default function AboutPage() {
     </div>
   );
 }
+
+export default function AboutPage(){return useServices().publicationApi?<PublicAbout/>:<PreviewAboutPage/>;}

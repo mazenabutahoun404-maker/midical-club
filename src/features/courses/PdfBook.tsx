@@ -1,3 +1,4 @@
+import { resourceId, resourceRevision } from "../../lib/resource-identity";
 import {
   memo,
   useCallback,
@@ -431,14 +432,14 @@ export function PdfBook({
   const placeMargin = useCallback(
     (number: number, x: number, y: number, quote?: string) =>
       margins.place({
-        resourceId: item.id,
-        resourceRevision: item.updatedAt,
+        resourceId: resourceId(item),
+        resourceRevision: resourceRevision(item),
         page: number,
         x,
         y,
         quote,
       }),
-    [margins.place, item.id, item.updatedAt],
+    [margins.place, item.id, item.updatedAt, item.assetId, item.sourceRevision],
   );
   const marginProps = {
     margins: margins.notes,
@@ -640,8 +641,8 @@ export function PdfBook({
       !pool ||
       !request ||
       handledNoteJump.current === request.token ||
-      request.anchor.resourceId !== item.id ||
-      request.anchor.resourceRevision !== item.updatedAt
+      request.anchor.resourceId !== resourceId(item) ||
+      request.anchor.resourceRevision !== resourceRevision(item)
     )
       return;
     handledNoteJump.current = request.token;
@@ -1165,8 +1166,8 @@ export function PdfBook({
                 onClick={() =>
                   margins.add(
                     {
-                      resourceId: item.id,
-                      resourceRevision: item.updatedAt,
+                      resourceId: resourceId(item),
+                      resourceRevision: resourceRevision(item),
                       page,
                       x: 0.85,
                       y: 0.1,

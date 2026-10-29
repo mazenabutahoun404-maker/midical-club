@@ -49,7 +49,9 @@ export function BatchCard({ batch, index }: { batch: Batch; index: number }) {
         0{index + 1}
       </span>
       <span className="passport-stamp" aria-hidden="true">
-        <span>{batch.progress}%</span>
+        <span>
+          {batch.progressAvailable === false ? "—" : `${batch.progress}%`}
+        </span>
       </span>
       <span className="passport-copy">
         <span className="academic-kicker">{t(batch.classLabel)}</span>
@@ -66,10 +68,10 @@ export function BatchCard({ batch, index }: { batch: Batch; index: number }) {
       </span>
       <span className="passport-route-meta">
         <span>
-          {label("year")} <b>{batch.studyYear}</b>
+          {label("year")} <b>{batch.studyYear || "—"}</b>
         </span>
         <span>
-          {label("graduation")} <b>{batch.graduationYear}</b>
+          {label("graduation")} <b>{batch.graduationYear || "—"}</b>
         </span>
       </span>
       <span className="passport-action">

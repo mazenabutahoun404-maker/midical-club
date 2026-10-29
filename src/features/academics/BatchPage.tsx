@@ -1,3 +1,4 @@
+import { BatchIdentity, batchJourney } from "./BatchIdentity";
 import { NavigationSelection } from "../../components/navigation/NavigationSelection";
 import "../../styles/batch-experience.css";
 import type { CSSProperties } from "react";
@@ -18,9 +19,13 @@ import { CourseCard } from "../../components/cards/CourseCard";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { EmptyState } from "../../components/feedback/EmptyState";
+import { useAuth } from "../../app/providers/AuthProvider";
+import { useServices } from "../../app/providers/ServicesProvider";
 
 export default function BatchPage({ view }: { view: "current" | "archive" }) {
   const { batchSlug } = useParams();
+  const { snapshot } = useAuth();
+  const live = useServices().contentSnapshot?.kind === "live";
   const batches = useBatches(),
     courses = useCourses();
   const { t, label } = useLocale();
@@ -44,6 +49,21 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
       />
     );
   const current = batch.terms.find((term) => term.current);
+  const journey = batchJourney(batch);
+  if (live && snapshot.status !== "authenticated")
+    return (
+      <div className="container section">
+        <EmptyState
+          title={t(batch.name)}
+          description={t({
+            en: "Sign in to open this batch’s courses and archive.",
+            ar: "سجّل الدخول لفتح مساقات الدفعة وأرشيفها.",
+          })}
+          href={`${routes.signIn}?returnTo=${encodeURIComponent(batchPath(batch.slug, view))}`}
+          actionLabel={label("signIn")}
+        />
+      </div>
+    );
   if (view === "current" && !current)
     return <Navigate to={batchPath(batch.slug, "archive")} replace />;
   return (
@@ -70,12 +90,22 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
         <div
           className="batch-progress-seal"
           style={
-            { "--progress": `${batch.progress * 3.6}deg` } as CSSProperties
+            {
+              "--progress": `${(journey?.progress ?? batch.progress) * 3.6}deg`,
+            } as CSSProperties
           }
         >
           <span>
-            <b>{batch.progress}%</b>
-            {label("journeyComplete")}
+            <b>
+              {journey
+                ? `${journey.progress}%`
+                : batch.progressAvailable === false
+                  ? "—"
+                  : `${batch.progress}%`}
+            </b>
+            {journey
+              ? t({ en: "Time elapsed", ar: "التقدم الزمني" })
+              : label("journeyComplete")}
           </span>
         </div>
         <dl className="batch-meta">
@@ -84,14 +114,14 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
               <GraduationCap size={16} />
               {label("graduation")}
             </dt>
-            <dd>{batch.graduationYear}</dd>
+            <dd>{batch.graduationYear || "—"}</dd>
           </div>
           <div>
             <dt>
               <BookOpen size={16} />
               {label("yearNumber")}
             </dt>
-            <dd>{batch.studyYear}</dd>
+            <dd>{batch.studyYear || "—"}</dd>
           </div>
           <div>
             <dt>
@@ -102,6 +132,7 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
           </div>
         </dl>
       </header>
+      <BatchIdentity batch={batch} />
       <nav className="batch-view-switch" aria-label={label("choosePath")}>
         <NavigationSelection />
         <AppLink
@@ -155,8 +186,12 @@ export default function BatchPage({ view }: { view: "current" | "archive" }) {
                   <summary>
                     <span>
                       <small>
-                        {term.academicYear} · {label("semester")}{" "}
-                        {term.semester}
+                        {term.academicYear ||
+                          t({
+                            en: "Academic year label unavailable",
+                            ar: "اسم العام الدراسي غير متاح",
+                          })}{" "}
+                        · {label("semester")} {term.semester}
                       </small>
                       <b>{t(term.label)}</b>
                     </span>

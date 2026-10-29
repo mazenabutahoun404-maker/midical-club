@@ -1,0 +1,293 @@
+.engagement-page {
+  padding-block-end: 4rem;
+  min-width: 0;
+}
+.engagement-heading {
+  padding-block: 1.5rem 0.6rem;
+}
+.engagement-page header h1,
+.engagement-heading h1 {
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  line-height: 1.2;
+  margin-block: 0.6rem;
+}
+.engagement-tabs,
+.engagement-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-block: 1.5rem;
+  align-items: flex-end;
+}
+.engagement-toolbar label {
+  flex: 1;
+  min-width: 180px;
+}
+.engagement-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+.engagement-modal {
+  width: min(920px, 96vw);
+  max-height: 92dvh;
+}
+.engagement-modal form,
+.engagement-form {
+  display: grid;
+  gap: 1rem;
+}
+.engagement-page label,
+.engagement-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+.engagement-page label.engagement-check,
+.engagement-modal label.engagement-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+}
+.engagement-page input:not([type="checkbox"]),
+.engagement-page textarea,
+.engagement-page select,
+.engagement-modal input:not([type="checkbox"]),
+.engagement-modal textarea,
+.engagement-modal select {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.65rem;
+  min-height: 42px;
+}
+.engagement-page input[type="checkbox"],
+.engagement-modal input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--primary);
+  flex: none;
+}
+.engagement-modal textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+.engagement-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.1rem;
+  align-items: center;
+  padding-block: 1.2rem;
+  border-block-end: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+.engagement-row p {
+  margin-block: 0.4rem;
+}
+.engagement-record {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  text-align: start;
+  padding: 1rem;
+  background: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  margin-block: 0.7rem;
+}
+.engagement-record:hover {
+  border-color: var(--primary);
+}
+.engagement-ticket,
+.engagement-opportunity {
+  padding: 1.6rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 5px 0 -2px var(--border);
+}
+.engagement-ticket h2,
+.engagement-opportunity h2 {
+  font-size: 1.3rem;
+  line-height: 1.4;
+  margin-block: 0.7rem;
+}
+.engagement-ticket p,
+.engagement-opportunity p,
+.engagement-page p {
+  line-height: 1.7;
+}
+.engagement-ticket {
+  border-inline-start: 4px solid var(--primary);
+}
+.engagement-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-block: 1rem;
+}
+.engagement-facts dt {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+.engagement-facts dd {
+  margin: 0;
+}
+.engagement-json {
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 0.7rem;
+  margin-block: 1rem;
+  min-width: 0;
+}
+.engagement-json summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.engagement-json pre,
+.engagement-json textarea {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 0.8rem/1.6 monospace;
+  max-height: 420px;
+  overflow: auto;
+}
+.engagement-json textarea {
+  min-height: 190px;
+  margin-block: 1rem;
+}
+.engagement-question-list {
+  display: grid;
+  gap: 1.2rem;
+  margin-block: 1.2rem;
+}
+.engagement-question-list fieldset {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+}
+.engagement-question-list fieldset label {
+  margin-block: 0.6rem;
+}
+.engagement-participation .student-connected-actions {
+  margin-block: 1rem;
+}
+.engagement-participation h2 {
+  font-size: 1.2rem;
+}
+.engagement-pass {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  margin-block: 1rem;
+}
+.engagement-pass svg {
+  background: white;
+  padding: 0;
+  max-width: 100%;
+  height: auto;
+}
+.engagement-asset {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+.engagement-asset [role="status"]:empty {
+  display: none;
+}
+.engagement-opportunity-actions {
+  margin-block-start: 1rem;
+}
+.engagement-opportunity-actions [role="status"]:empty {
+  display: none;
+}
+.engagement-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.8rem;
+  margin-block: 1rem;
+}
+.engagement-metrics > div {
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.engagement-metrics dt {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+.engagement-metrics dd {
+  margin: 0.4rem 0 0;
+  font-weight: 600;
+}
+.engagement-metrics-list > div {
+  border-block-end: 1px solid var(--border);
+  padding-block: 0.6rem;
+}
+.engagement-date-filter {
+  max-width: 220px;
+  margin-block: 1.2rem;
+}
+.engagement-page [data-variant="default"],
+.engagement-modal [data-variant="default"] {
+  color: var(--primary-foreground);
+}
+.engagement-page :focus-visible,
+.engagement-modal :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.engagement-page code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+}
+@media (max-width: 720px) {
+  .engagement-fields {
+    grid-template-columns: 1fr;
+  }
+  .engagement-row,
+  .engagement-record {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .engagement-modal {
+    width: 96vw;
+  }
+  .engagement-ticket,
+  .engagement-opportunity {
+    padding: 1.2rem;
+  }
+  .engagement-tabs {
+    gap: 0.4rem;
+  }
+  .engagement-tabs button {
+    font-size: 0.8rem;
+  }
+  .engagement-facts {
+    gap: 0.7rem;
+  }
+  .engagement-toolbar {
+    align-items: stretch;
+  }
+  .engagement-toolbar label {
+    min-width: 100%;
+  }
+}
+.engagement-page .event-detail-hero .engagement-facts dt {
+  color: inherit;
+  opacity: 0.85;
+}

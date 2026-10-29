@@ -36,7 +36,7 @@ export const v08Messages = {
     authFieldTitle: "A living medical identity field",
     authFieldBody:
       "A responsive WebGL signal inspired by cellular motion and connected learning.",
-    passwordRules: "Use at least 8 characters, one letter and one number.",
+    passwordRules: "Use 15–128 characters. A long, uncommon passphrase works well.",
     verificationCode: "Verification code",
     previewCode: "Preview code: 260908",
     verifyEmail: "Verify and continue",
@@ -109,7 +109,7 @@ export const v08Messages = {
     authFieldTitle: "مجال حيّ للهوية الطبية",
     authFieldBody:
       "إشارة WebGL تفاعلية مستوحاة من الحركة الخلوية والتعلّم المترابط.",
-    passwordRules: "استخدم 8 أحرف على الأقل، وحرفاً ورقماً.",
+    passwordRules: "استخدم من ١٥ إلى ١٢٨ حرفاً. اختر عبارة مرور طويلة وغير شائعة.",
     verificationCode: "رمز التحقّق",
     previewCode: "رمز المعاينة: 260908",
     verifyEmail: "تحقّق وتابع",

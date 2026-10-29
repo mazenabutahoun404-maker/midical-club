@@ -1,3 +1,5 @@
+import { ContentPlaceholder } from "../../components/feedback/ContentPlaceholder";
+import { AcademicRecommendations } from "./AcademicRecommendations";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { ArrowUpRight, BookOpen, Sparkles, Stethoscope } from "lucide-react";
 import { useBatches, useCourses } from "../../hooks/useContent";
@@ -7,8 +9,12 @@ import { routes } from "../../constants/routes";
 import { AppLink } from "../../components/navigation/AppLink";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
+import { useAuth } from "../../app/providers/AuthProvider";
+import { useServices } from "../../app/providers/ServicesProvider";
 
 export default function LearnLandingPage() {
+  const { snapshot } = useAuth();
+  const live = useServices().contentSnapshot?.kind === "live";
   const batches = useBatches(),
     courses = useCourses();
   const { label, t } = useLocale();
@@ -86,7 +92,24 @@ export default function LearnLandingPage() {
           <ArrowUpRight className="directional" size={19} aria-hidden="true" />
         </AppLink>
       </nav>
-      <CourseDirectory courses={courses.data} />
+      <AcademicRecommendations key={snapshot.user?.id || "guest"} />
+      {live && snapshot.status !== "authenticated" ? (
+        <ContentPlaceholder
+          icon="lock"
+          title={t({
+            en: "Your course library is locked",
+            ar: "مكتبة المساقات مقفلة",
+          })}
+          description={t({
+            en: "Sign in to see the courses and files available to your account.",
+            ar: "سجّل الدخول لعرض المساقات والملفات المتاحة لحسابك.",
+          })}
+          href={`${routes.signIn}?returnTo=%2Flearn`}
+          actionLabel={label("signIn")}
+        />
+      ) : (
+        <CourseDirectory courses={courses.data} />
+      )}
     </div>
   );
 }

@@ -9,6 +9,8 @@ export function StudyDeskLinks() {
   const { t } = useLocale();
   return (
     <div className="study-desk-links">
+      <AppLink href="/my/study/plans" className="study-desk-card">{t({en:"Study plans",ar:"خطط الدراسة"})}</AppLink>
+      <AppLink href="/my/study/roadmaps" className="study-desk-card">{t({en:"Learning roadmaps",ar:"مسارات التعلم"})}</AppLink>
       {[
         {
           kind: "recall" as const,

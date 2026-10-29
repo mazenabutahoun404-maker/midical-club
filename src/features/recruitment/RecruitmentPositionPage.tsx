@@ -1,3 +1,6 @@
+import {RecruitmentOpening as ConnectedPage} from "../membership/Recruitment";
+import {MembershipScope} from "../membership/shared";
+import {useServices} from "../../app/providers/ServicesProvider";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -33,7 +36,7 @@ import {
 } from "../../lib/recruitment";
 import { RecruitmentApplicationDialog } from "./RecruitmentApplicationDialog";
 
-export default function RecruitmentPositionPage() {
+function PreviewRecruitmentPositionPage() {
   const { slug } = useParams();
   const { label, t, locale } = useLocale();
   const auth = useAuth();
@@ -223,3 +226,5 @@ export default function RecruitmentPositionPage() {
     </div>
   );
 }
+
+export default function RecruitmentPositionPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewRecruitmentPositionPage/>}

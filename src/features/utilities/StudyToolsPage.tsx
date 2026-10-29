@@ -1,3 +1,5 @@
+import { useServices } from "../../app/providers/ServicesProvider";
+import { PomodoroSettings, UtilityDirectory } from "../student-live/Utilities";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { NotebookPen, Timer, Calculator, Check } from "lucide-react";
@@ -138,6 +140,8 @@ function DeskSession({
   }
   return (
     <>
+      {useServices().studentApi && <UtilityDirectory/>}
+      <PomodoroSettings onApply={(focus, rest) => {if(current.current.startedAt !== null) {setNotice(t({en:"Pause your timer before applying settings.",ar:"أوقف المؤقّت قبل تطبيق الإعدادات."}));return;} setTimer(previous=>({...previous,minutes:focus,remaining:focus*60,phase:"focus",startedAt:null,restMinutes:rest}));}}/>
       <section
         className="study-tools-hero"
         aria-label={t({ en: "Study desk", ar: "مكتب الدراسة" })}

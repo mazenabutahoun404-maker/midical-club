@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {PublicationHub} from "../publications/Publications";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { CommunityOverview } from "./CommunityOverview";
 import {
@@ -33,7 +35,7 @@ const portals = [
   { href: routes.honorPlate, label: "recognition", icon: Award, tone: "red" },
 ] as const;
 
-export default function CommunityPage() {
+function PreviewCommunityPage() {
   const { label, locale } = useLocale();
   const activities = useCommunityActivities();
   const journal = useJournal();
@@ -122,3 +124,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+export default function CommunityPage(){return useServices().publicationApi?<PublicationHub/>:<PreviewCommunityPage/>;}

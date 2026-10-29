@@ -20,7 +20,7 @@ export function createHttpStudyService(
     path: string,
     method = "GET",
     body?: unknown,
-    version?: number,
+    version?: number | string,
     signal?: AbortSignal,
     requestId?: string,
     kind?: ResponseKind,

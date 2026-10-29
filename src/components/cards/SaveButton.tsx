@@ -1,9 +1,11 @@
+import { useServices } from "../../app/providers/ServicesProvider";
+import { LiveBookmark } from "../../features/student-live/Bookmark";
 import { useEffect, useRef, useState } from "react";
 import { Bookmark } from "lucide-react";
 import { useSavedItems } from "../../app/providers/SavedItemsProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { IconButton } from "../ui/IconButton";
-export function SaveButton({ id, title }: { id: string; title: string }) {
+function PreviewSaveButton({ id, title }: { id: string; title: string }) {
   const { saved, toggle, isPending } = useSavedItems();
   const { label } = useLocale();
   const active = saved.includes(id);
@@ -63,3 +65,5 @@ export function SaveButton({ id, title }: { id: string; title: string }) {
     </IconButton>
   );
 }
+
+export function SaveButton(props: {id:string;title:string}) {return useServices().studentApi ? <LiveBookmark {...props}/> : <PreviewSaveButton {...props}/>;}

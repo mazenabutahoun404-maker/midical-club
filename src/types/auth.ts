@@ -29,6 +29,7 @@ export interface RegisterInput {
   password: string;
   year: number;
   batch: string;
+  gender?: "Male" | "Female";
 }
 
 export interface AuthProfileInput {
@@ -45,12 +46,17 @@ export interface PasswordResetResult {
 }
 
 export interface AuthService {
+  mode?: "api" | "preview";
+  reauthenticate?: (password: string) => Promise<AuthSnapshot>;
   getSnapshot: () => Promise<AuthSnapshot>;
   getProfile: () => Promise<StudentProfile>;
   signIn: (input: SignInInput) => Promise<AuthSnapshot>;
   register: (input: RegisterInput) => Promise<AuthSnapshot>;
   verifyEmail: (code: string) => Promise<AuthSnapshot>;
   requestPasswordReset: (email: string) => Promise<PasswordResetResult>;
+  resendVerification?: (email: string) => Promise<void>;
+  verifyPasswordReset?: (code: string) => Promise<void>;
+  resetPassword?: (newPassword: string) => Promise<void>;
   updateProfile: (input: AuthProfileInput) => Promise<AuthSnapshot>;
   /** Restore editable fields only, if the current record still matches. */
   restoreProfile?: (

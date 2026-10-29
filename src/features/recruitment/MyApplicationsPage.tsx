@@ -1,3 +1,6 @@
+import {MyApplications as ConnectedPage} from "../membership/Recruitment";
+import {MembershipScope} from "../membership/shared";
+import {useServices} from "../../app/providers/ServicesProvider";
 import { useMemo, useState, type CSSProperties } from "react";
 import {
   BriefcaseBusiness,
@@ -37,7 +40,7 @@ import { RecruitmentApplicationDialog } from "./RecruitmentApplicationDialog";
 
 type ApplicationView = "all" | "active" | "onboarding" | "past";
 
-export default function MyApplicationsPage() {
+function PreviewMyApplicationsPage() {
   const { label, t, locale } = useLocale();
   const positions = useRecruitmentPositions();
   const workspace = useRecruitmentWorkspace();
@@ -359,3 +362,5 @@ export default function MyApplicationsPage() {
     </div>
   );
 }
+
+export default function MyApplicationsPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewMyApplicationsPage/>}

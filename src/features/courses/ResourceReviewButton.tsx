@@ -1,3 +1,5 @@
+import { useServices } from "../../app/providers/ServicesProvider";
+import { LiveReviewButton } from "../student-live/ReviewButton";
 import { useRef, useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useWorkspace } from "../../app/providers/WorkspaceProvider";
@@ -6,7 +8,7 @@ import {
   ActionReceipt,
   useActionReceipt,
 } from "../../components/feedback/ActionReceipt";
-export function ResourceReviewButton({ id }: { id: string }) {
+function PreviewResourceReviewButton({ id }: { id: string }) {
   const { state, send, isPending } = useWorkspace(),
     { label } = useLocale();
   const feedback = useActionReceipt(),
@@ -39,3 +41,5 @@ export function ResourceReviewButton({ id }: { id: string }) {
     </button>
   );
 }
+
+export function ResourceReviewButton(props:{id:string}) {return useServices().studentApi ? <LiveReviewButton {...props}/> : <PreviewResourceReviewButton {...props}/>;}

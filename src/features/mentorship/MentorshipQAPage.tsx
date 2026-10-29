@@ -1,3 +1,6 @@
+import {PublicQA as ConnectedPage} from "../membership/Mentorship";
+import {MembershipScope} from "../membership/shared";
+import {useServices} from "../../app/providers/ServicesProvider";
 import { useState } from "react";
 import {
   BriefcaseMedical,
@@ -16,7 +19,7 @@ import { formatDate } from "../../lib/dates";
 
 type View =
   "all" | "career" | "research" | "clinical-learning" | "student-life";
-export default function MentorshipQAPage() {
+function PreviewMentorshipQAPage() {
   const { t, label, locale } = useLocale();
   const query = useMentorshipQuestions();
   const [view, setView] = useState<View>("all");
@@ -98,3 +101,5 @@ export default function MentorshipQAPage() {
     </div>
   );
 }
+
+export default function MentorshipQAPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewMentorshipQAPage/>}

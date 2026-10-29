@@ -1,3 +1,4 @@
+import { useServices } from "../../app/providers/ServicesProvider";
 import { BadgePlus, ClipboardList, ContactRound } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../app/providers/AuthProvider";
@@ -6,11 +7,22 @@ import { routes, signInPath } from "../../constants/routes";
 import { AppLink } from "./AppLink";
 
 export function RecruitmentNavigation() {
-  const { label } = useLocale();
+  const { label, t } = useLocale();
   const { pathname } = useLocation();
   const auth = useAuth();
+  const services = useServices();
   const signedIn = auth.snapshot.status === "authenticated";
   const items = [
+    ...(services.membershipApi
+      ? [
+          {
+            href: "/members",
+            label: t({ en: "Club members", ar: "أعضاء النادي" }),
+            icon: ContactRound,
+            active: pathname === "/members",
+          },
+        ]
+      : []),
     {
       href: routes.recruitment,
       label: label("openPositions"),

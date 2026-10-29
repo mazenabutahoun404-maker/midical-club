@@ -21,6 +21,7 @@ export const personalNavigationItems = [
   { href: "/my/library", label: "libraryShort", icon: Bookmark },
   { href: "/my/calendar", label: "calendar", icon: CalendarDays },
   { href: "/my/activities", label: "myActivities", icon: Layers },
+  { href: "/my/engagement", label:"myEngagement",icon:Layers },
   { href: "/my/mentorship", label: "myMentorship", icon: HeartHandshake },
   { href: "/my/orders", label: "myOrders", icon: PackageCheck },
   { href: "/my/applications", label: "myApplications", icon: ClipboardList },

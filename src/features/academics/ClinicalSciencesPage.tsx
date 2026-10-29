@@ -1,3 +1,5 @@
+import { BackLink } from "../../components/navigation/BackLink";
+import { ContentPlaceholder } from "../../components/feedback/ContentPlaceholder";
 import { Activity } from "lucide-react";
 import { useClinicalYears } from "../../hooks/useContent";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -7,11 +9,18 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 
 export default function ClinicalSciencesPage() {
   const query = useClinicalYears();
-  const { label } = useLocale();
+  const { label, t } = useLocale();
   if (query.isPending) return <LoadingState />;
-  if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
+  if (query.isError)
+    return (
+      <ErrorState error={query.error} retry={() => void query.refetch()} />
+    );
   return (
     <div className="container clinical-sciences-page">
+      <BackLink
+        href="/learn"
+        label={t({ en: "Back to learning", ar: "العودة إلى التعلّم" })}
+      />
       <header className="academic-page-hero clinical-page-hero">
         <span className="academic-kicker">
           <Activity size={14} />
@@ -31,6 +40,15 @@ export default function ClinicalSciencesPage() {
           CLINICAL
         </span>
       </header>
+      {!query.data.length && (
+        <ContentPlaceholder
+          icon="books"
+          title={t({
+            en: "Clinical years will appear here",
+            ar: "ستظهر السنوات السريرية هنا",
+          })}
+        />
+      )}
       <div className="clinical-years-path">
         {query.data.map((year) => (
           <ClinicalYearCard year={year} key={year.id} />

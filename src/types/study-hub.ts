@@ -12,7 +12,9 @@ export interface PageAnchor {
   y: number;
   quote?: string;
 }
-export interface MarginNote extends Versioned {
+export interface MarginNote extends Omit<Versioned, "version"> {
+  version: string | number;
+  deleted?: boolean;
   ownerId: string;
   courseId: string;
   anchor: PageAnchor;
@@ -132,9 +134,9 @@ export interface StudyHubService {
   ): Promise<MarginNote[]>;
   saveMargin(
     input: MarginInput,
-    existing?: { id: string; version: number },
+    existing?: { id: string; version: string | number },
   ): Promise<MarginNote>;
-  deleteMargin(id: string, version: number): Promise<void>;
+  deleteMargin(id: string, version: string | number): Promise<void>;
   restoreMargin(note: MarginNote): Promise<MarginNote>;
   listRecall(
     courseId?: string,

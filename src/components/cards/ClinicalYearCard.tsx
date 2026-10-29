@@ -19,12 +19,27 @@ export function ClinicalYearCard({ year }: { year: ClinicalYear }) {
       </span>
       <span className="clinical-year-copy">
         <small>{t(year.label)}</small>
-        <strong>{t(year.tagline)}</strong>
-        <span>{t(year.description)}</span>
+        <strong>
+          {t(year.tagline) ||
+            t({
+              en: `Year ${year.year} clinical courses`,
+              ar: `مساقات السنة ${year.year} السريرية`,
+            })}
+        </strong>
+        <span>
+          {t(year.description) ||
+            t({
+              en: "Published courses and learning materials for this year.",
+              ar: "المساقات والمصادر التعليمية المنشورة لهذه السنة.",
+            })}
+        </span>
       </span>
       <span className="clinical-year-focus">
         <small>{label("currentBlock")}</small>
-        <b>{t(year.currentBlock)}</b>
+        <b>
+          {t(year.currentBlock) ||
+            t({ en: "Not announced yet", ar: "لم يُعلن بعد" })}
+        </b>
       </span>
       <span className="clinical-year-action">
         {label("exploreYear")}{" "}

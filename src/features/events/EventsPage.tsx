@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {EventCatalog} from "../engagement/Events";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState } from "react";
 import {
@@ -17,7 +19,7 @@ import { useEvents } from "../../hooks/useContent";
 import { eventAvailability } from "../../lib/discovery";
 
 type View = "all" | "upcoming" | "open" | "waitlist";
-export default function EventsPage() {
+function PreviewEventsPage() {
   const { t, label } = useLocale();
   const query = useEvents();
   const [view, setView] = useState<View>("upcoming");
@@ -158,3 +160,5 @@ export default function EventsPage() {
     </div>
   );
 }
+
+export default function EventsPage(){return useServices().engagementApi?<EventCatalog/>:<PreviewEventsPage/>;}

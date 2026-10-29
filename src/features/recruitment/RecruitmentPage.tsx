@@ -1,3 +1,6 @@
+import {RecruitmentDirectory as ConnectedPage} from "../membership/Recruitment";
+import {MembershipScope} from "../membership/shared";
+import {useServices} from "../../app/providers/ServicesProvider";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState, type CSSProperties } from "react";
 import {
@@ -32,7 +35,7 @@ const teamIcons = {
   operations: Network,
 };
 
-export default function RecruitmentPage() {
+function PreviewRecruitmentPage() {
   const { label, t } = useLocale();
   const positions = useRecruitmentPositions();
   const [team, setTeam] = useState<TeamView>("all");
@@ -183,3 +186,5 @@ export default function RecruitmentPage() {
     </div>
   );
 }
+
+export default function RecruitmentPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewRecruitmentPage/>}

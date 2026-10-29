@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {PublicationList} from "../publications/Publications";
 import { useMemo, useState } from "react";
 import {
   Activity,
@@ -18,7 +20,7 @@ import { useCommunityActivities } from "../../hooks/useContent";
 type View =
   "all" | "health-campaign" | "peer-learning" | "volunteering" | "student-life";
 
-export default function ActivitiesPage() {
+function PreviewActivitiesPage() {
   const { t, label } = useLocale();
   const query = useCommunityActivities();
   const [view, setView] = useState<View>("all");
@@ -109,3 +111,5 @@ export default function ActivitiesPage() {
     </div>
   );
 }
+
+export default function ActivitiesPage(){return useServices().publicationApi?<PublicationList section="activities"/>:<PreviewActivitiesPage/>;}

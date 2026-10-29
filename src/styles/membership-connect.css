@@ -1,0 +1,123 @@
+@import "./operations-connect.css";
+.membership-connected {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: 2rem;
+  min-width: 0;
+}
+.membership-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+}
+.membership-card {
+  padding: 1.25rem;
+  border: 1px solid var(--color-border, #d8d1c2);
+  border-radius: 20px;
+  background: var(--color-card, #fffdf9);
+  box-shadow: 0 4px 0 #b6a88d30;
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+  min-width: 0;
+}
+.membership-card h3 {
+  margin: 0;
+}
+.membership-actions,
+.membership-toolbar,
+.membership-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin-block: 0.65rem;
+}
+.membership-connected label,
+.membership-editor label {
+  display: grid;
+  gap: 0.35rem;
+}
+.membership-connected input:not([type="checkbox"]),
+.membership-connected select,
+.membership-connected textarea,
+.membership-editor input:not([type="checkbox"]),
+.membership-editor select,
+.membership-editor textarea {
+  color: inherit;
+  background: var(--color-background, #fffdf7);
+  border: 1px solid var(--color-border, #d8d1c2);
+  border-radius: 12px;
+  padding: 0.65rem 0.8rem;
+  max-width: 100%;
+  min-width: 0;
+}
+.membership-editor .engagement-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  border: 0;
+  padding: 0;
+}
+.membership-wide {
+  grid-column: 1/-1;
+}
+.membership-editor fieldset {
+  border: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.membership-editor .engagement-check,
+.membership-connected .engagement-check {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.membership-private {
+  padding: 0.65rem;
+  border: 1px dashed #b6a88d66;
+  border-radius: 12px;
+}
+.membership-connected p,
+.membership-connected a {
+  overflow-wrap: anywhere;
+}
+.membership-connected pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 22rem;
+  overflow: auto;
+  font-size: 0.8rem;
+}
+.membership-connected .operations-table {
+  max-width: 100%;
+}
+.membership-connected h2 {
+  margin-block: 0 1rem;
+}
+.membership-stage {
+  font-size: 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 0.25rem 0.6rem;
+  justify-self: start;
+}
+.membership-connected .membership-toolbar label {
+  min-width: 150px;
+  flex: 1;
+}
+.membership-editor textarea {
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .membership-editor .engagement-fields {
+    grid-template-columns: 1fr;
+  }
+  .membership-toolbar > * {
+    width: 100%;
+  }
+  .membership-actions button {
+    flex: 1;
+  }
+}

@@ -1,3 +1,5 @@
+import {useServices} from "../../app/providers/ServicesProvider";
+import {StoreProduct} from "../store-live/Catalog";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Boxes, Minus, Plus, ShoppingCart } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -13,6 +15,9 @@ import { formatStorePrice, productStock } from "../../lib/store";
 import { ProductVisual } from "./ProductVisual";
 
 export default function ProductPage() {
+ const services=useServices();return services.storeApi?<StoreProduct/>:<PreviewProductPage/>;
+}
+function PreviewProductPage() {
   const { slug } = useParams();
   const { label, t, locale } = useLocale();
   const query = useStoreProduct(slug);
