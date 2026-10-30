@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/ETHK-B5-H-1MLb5v9x.bcmap`;export{e as default};

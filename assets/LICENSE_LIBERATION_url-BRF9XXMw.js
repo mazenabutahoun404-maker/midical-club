@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/LICENSE_LIBERATION-DvFkOp_c.`;export{e as default};

@@ -1,0 +1,1 @@
+import{h as e,l as t,u as n}from"./createLucideIcon-bkl7guyy.js";import{n as r}from"./chunk-BV7QT456-BF2Xruga.js";var i=e(n(),1),a=t(),o=(0,i.forwardRef)(function({href:e,children:t,...n},i){return(0,a.jsx)(r,{ref:i,to:e,...n,children:t})});export{o as t};

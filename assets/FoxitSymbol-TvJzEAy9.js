@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/FoxitSymbol-BVtbc20u.pfb`;export{e as default};

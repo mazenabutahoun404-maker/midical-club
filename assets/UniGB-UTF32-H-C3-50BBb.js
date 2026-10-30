@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniGB-UTF32-H-Behfouj5.bcmap`;export{e as default};

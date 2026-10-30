@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/Adobe-CNS1-UCS2-fO900upv.bcmap`;export{e as default};

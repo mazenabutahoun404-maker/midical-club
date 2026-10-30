@@ -1,0 +1,1 @@
+import{l as e}from"./createLucideIcon-bkl7guyy.js";import{t}from"./AppLink-CgWXQSLJ.js";import{t as n}from"./button-h4S37h5e.js";var r=e();function i({href:e,children:i,variant:a=`primary`}){return(0,r.jsx)(n,{asChild:!0,className:`button button-${a}`,variant:a===`primary`?`default`:`outline`,children:(0,r.jsx)(t,{href:e,children:i})})}export{i as t};

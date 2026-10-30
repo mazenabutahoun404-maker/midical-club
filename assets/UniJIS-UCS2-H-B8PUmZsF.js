@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniJIS-UCS2-H-2DbZ0MaQ.bcmap`;export{e as default};

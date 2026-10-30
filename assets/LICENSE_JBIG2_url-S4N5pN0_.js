@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/LICENSE_JBIG2-C_izpuvI.`;export{e as default};

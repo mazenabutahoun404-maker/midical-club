@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/Adobe-Korea1-UCS2-BEQZuOdo.bcmap`;export{e as default};

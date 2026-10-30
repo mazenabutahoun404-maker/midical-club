@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/GBKp-EUC-H-CElrnV5g.bcmap`;export{e as default};

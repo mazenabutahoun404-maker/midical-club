@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/FoxitFixedBoldItalic-BqlXQ_Yv.pfb`;export{e as default};

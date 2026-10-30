@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/LiberationSans-Italic-5QhGB3P9.ttf`;export{e as default};

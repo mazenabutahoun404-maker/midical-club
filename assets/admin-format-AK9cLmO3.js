@@ -1,0 +1,1 @@
+function e(e){return e===`under-review`?`underReview`:e===`changes-requested`?`changesRequested`:e===`published`?`publishedStatus`:e}function t(e){return e===`contribution`?`adminKindContribution`:e===`resource`?`adminKindResource`:e===`article`?`adminKindArticle`:e===`homepage`?`adminKindHomepage`:e===`event`?`adminKindEvent`:`adminKindOpportunity`}export{e as n,t};

@@ -1,0 +1,1 @@
+var e=(e,t)=>({en:e,ar:t});export{e as t};

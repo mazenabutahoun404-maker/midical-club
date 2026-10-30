@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/FoxitSerifBoldItalic-DSQtwd_X.pfb`;export{e as default};

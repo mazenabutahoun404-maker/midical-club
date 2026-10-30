@@ -1,0 +1,1 @@
+import{h as e,l as t,u as n}from"./createLucideIcon-bkl7guyy.js";var r=e(n(),1),i=t();function a({label:e,children:t,...n}){let a=(0,r.useId)();return(0,i.jsxs)(`label`,{className:`workspace-field`,htmlFor:a,children:[(0,i.jsx)(`span`,{children:e}),(0,i.jsx)(`select`,{id:a,...n,children:t})]})}export{a as t};

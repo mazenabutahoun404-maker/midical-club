@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/quickjs-eval-zJSp5SB4.wasm`;export{e as default};

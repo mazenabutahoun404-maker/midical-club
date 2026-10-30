@@ -1,0 +1,1 @@
+import{l as e}from"./createLucideIcon-bkl7guyy.js";import{t}from"./info-CeUXEP6u.js";var n=e();function r({children:e}){return(0,n.jsxs)(`div`,{className:`demo-note`,children:[(0,n.jsx)(t,{size:18,"aria-hidden":`true`}),(0,n.jsx)(`span`,{children:e})]})}export{r as t};

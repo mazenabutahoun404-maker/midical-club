@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/Adobe-Japan1-UCS2-BL-4M2vS.bcmap`;export{e as default};

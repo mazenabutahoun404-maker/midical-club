@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/LiberationSans-BoldItalic-Bj53-jFw.ttf`;export{e as default};

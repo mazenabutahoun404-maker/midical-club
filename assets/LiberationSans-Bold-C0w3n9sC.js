@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/LiberationSans-Bold-BPt4bU5Z.ttf`;export{e as default};

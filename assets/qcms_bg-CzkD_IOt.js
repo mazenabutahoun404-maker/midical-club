@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/qcms_bg-3PJi_GXR.wasm`;export{e as default};

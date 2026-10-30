@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/openjpeg_nowasm_fallback-CmMvpOQT.js`;export{e as default};

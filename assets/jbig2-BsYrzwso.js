@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/jbig2-BUnLb-NU.wasm`;export{e as default};

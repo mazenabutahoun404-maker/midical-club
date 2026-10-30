@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniJIS-UTF8-H-CGusholx.bcmap`;export{e as default};

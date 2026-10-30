@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/KSC-Johab-H-CGtV3MPT.bcmap`;export{e as default};

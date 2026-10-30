@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniCNS-UTF32-H-IE_GrH2i.bcmap`;export{e as default};

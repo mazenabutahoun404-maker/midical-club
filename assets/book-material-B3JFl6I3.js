@@ -1,0 +1,1 @@
+var e=[`pebbled`,`smooth`,`saffiano`,`suede`,`embossed`,`woven`,`ostrich`,`fluted`];function t(t){let n=2166136261;for(let e of t)n=Math.imul(n^e.charCodeAt(0),16777619)>>>0;return e[n%e.length]}export{t};

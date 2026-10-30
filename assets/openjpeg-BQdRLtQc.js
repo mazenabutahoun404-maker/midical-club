@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/openjpeg-tw7Aizcv.wasm`;export{e as default};

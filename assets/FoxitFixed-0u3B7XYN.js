@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/FoxitFixed-Dyd5Nipw.pfb`;export{e as default};

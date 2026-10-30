@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniJIS-UTF16-H-BlDDPdCK.bcmap`;export{e as default};

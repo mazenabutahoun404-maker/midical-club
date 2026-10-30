@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/FoxitSerif-qbgiDIe-.pfb`;export{e as default};

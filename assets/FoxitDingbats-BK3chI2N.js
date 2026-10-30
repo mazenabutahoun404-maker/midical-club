@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/FoxitDingbats-BaQLufoW.pfb`;export{e as default};

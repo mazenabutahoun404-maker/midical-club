@@ -1,0 +1,1 @@
+import{a as e}from"./createLucideIcon-bkl7guyy.js";function t(t,n,r={day:`numeric`,month:`short`}){return new Intl.DateTimeFormat(n===`ar`?`ar-JO`:`en-GB`,{timeZone:e,...r}).format(new Date(t))}export{t};

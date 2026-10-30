@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniKS-UTF32-H-olR_LtmR.bcmap`;export{e as default};

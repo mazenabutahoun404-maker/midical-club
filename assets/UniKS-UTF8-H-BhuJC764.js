@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniKS-UTF8-H-CbpebD-y.bcmap`;export{e as default};

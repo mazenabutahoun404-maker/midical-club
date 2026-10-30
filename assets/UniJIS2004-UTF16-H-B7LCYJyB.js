@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniJIS2004-UTF16-H-KXixH-HI.bcmap`;export{e as default};

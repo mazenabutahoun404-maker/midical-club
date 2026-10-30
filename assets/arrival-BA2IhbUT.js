@@ -1,0 +1,1 @@
+var e=new WeakMap;function t(t){return e.get(document)?.has(t)??!1}function n(t){let n=e.get(document);n||(n=new Set,e.set(document,n)),n.add(t)}export{n,t};

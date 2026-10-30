@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/jbig2_nowasm_fallback-DHGs-rAY.js`;export{e as default};

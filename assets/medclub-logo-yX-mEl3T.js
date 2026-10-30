@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/medclub-logo-D4Qvvkkh.png`;export{e as t};

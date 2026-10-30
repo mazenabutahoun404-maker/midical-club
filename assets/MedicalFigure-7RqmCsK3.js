@@ -1,0 +1,1 @@
+import{l as e}from"./createLucideIcon-bkl7guyy.js";var t=`/midical-club/assets/anatomy-atlas-v1362-OK7-oLaW.webp`,n=e();function r({kind:e=`heart`,className:r=``}){return(0,n.jsx)(`span`,{className:`medical-figure ${r}`,"data-anatomy":e,"aria-hidden":`true`,style:{"--anatomy-atlas":`url("${t}")`}})}export{r as t};

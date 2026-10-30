@@ -1,0 +1,1 @@
+import{l as e}from"./createLucideIcon-bkl7guyy.js";import{t}from"./AppearanceSettings-fKMU28RI.js";import{t as n}from"./HeaderNotes-CpjMiRSS.js";var r=e();function i(){return(0,r.jsxs)(`div`,{className:`studio-tools`,children:[(0,r.jsx)(n,{}),(0,r.jsx)(t,{compact:!0})]})}export{i as t};

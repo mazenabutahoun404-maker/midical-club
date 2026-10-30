@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/quickjs-eval-CRWuirmK.js`;export{e as default};

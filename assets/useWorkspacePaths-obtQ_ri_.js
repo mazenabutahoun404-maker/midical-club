@@ -1,0 +1,1 @@
+import{c as e}from"./chunk-BV7QT456-BF2Xruga.js";import{i as t,o as n,s as r,u as i}from"./routes-BAVTIPsV.js";function a(){let a=e().pathname,o=r(a),s=n(a);return{personal:o,admin:s,home:s?`/admin`:o?`/my`:`/`,learning:o?`/my/learning`:`/learn`,course:o?i:t}}export{a as t};

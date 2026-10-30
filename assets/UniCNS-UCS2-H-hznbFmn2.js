@@ -1,0 +1,1 @@
+var e=`/midical-club/assets/UniCNS-UCS2-H-DWzv8UhH.bcmap`;export{e as default};
