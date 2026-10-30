@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import LiveCalendar from "../schedule/CalendarPage";
 import { useState, type KeyboardEvent } from "react";
 import {
   CalendarDays,
@@ -36,7 +34,7 @@ export const calendarKindLabels = {
   mentorship: "mentorship",
   recruitment: "recruitment",
 } as const;
-function PreviewCalendarPage() {
+export default function CalendarPage() {
   const { label, t, locale, dir } = useLocale();
   const workspace = useWorkspace(),
     calendar = useCalendar();
@@ -343,5 +341,3 @@ function PreviewCalendarPage() {
     </div>
   );
 }
-
-export default function CalendarPage(){return useServices().scheduleApi ? <LiveCalendar/> : <PreviewCalendarPage/>;}

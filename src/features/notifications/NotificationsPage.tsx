@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import LiveNotifications from "../schedule/NotificationsPage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -21,7 +19,7 @@ import { LoadingState } from "../../components/feedback/LoadingState";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { formatDate } from "../../lib/dates";
 import type { StudentNotification } from "../../types/workspace";
-function PreviewNotificationsPage() {
+export default function NotificationsPage() {
   const { label, t, locale } = useLocale(),
     { state, send } = useWorkspace();
   const notifications = useNotifications(),
@@ -162,5 +160,3 @@ function PreviewNotificationsPage() {
     </div>
   );
 }
-
-export default function NotificationsPage(){return useServices().scheduleApi ? <LiveNotifications/> : <PreviewNotificationsPage/>;}

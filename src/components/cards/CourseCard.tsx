@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import { MedicalFigure } from "../medical/MedicalFigure";
 import { bookMaterial } from "../../features/courses/book-material";
 import { ArrowRight } from "lucide-react";
@@ -15,14 +14,12 @@ export function CourseCard({
   course: Course;
   tabIndex?: number;
 }) {
-  const paths = useWorkspacePaths(),
-    location = useLocation();
+  const paths = useWorkspacePaths();
   const { t, label } = useLocale();
   return (
     <AppLink
       className={`course-card course-volume tone-${c.accent}`}
       href={paths.course(c.slug)}
-      state={{ from: location.pathname + location.search }}
       data-leather={bookMaterial(c.id)}
       data-course-volume
       tabIndex={tabIndex}
@@ -40,7 +37,7 @@ export function CourseCard({
           {label("semester")} {c.semester}
         </small>
         <strong>
-          {t({en:"Course resources",ar:"مصادر المساق"})}
+          {c.sections.length} {label("materials")}
         </strong>
       </span>
       <div className="course-volume-cover">

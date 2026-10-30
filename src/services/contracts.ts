@@ -45,37 +45,6 @@ import type {
   SearchFilters,
 } from "../types/content";
 export interface MedClubServices {
-  healthApi?: import("./api/health-api").HealthApi;
-  membershipApi?: import("./api/membership-api").MembershipApi;
-  operationsApi?: import("./api/operations-api").OperationsApi;
-  storeApi?: import("./api/store-api").StoreApi;
-  contributionApi?: import("./api/contribution-api").ContributionApi;
-  /** P09 foundation; screen migration is pending. */
-  communityApi?: import("./api/community-api.generated").CommunityApi;
-  engagementApi?: import("./api/engagement-api").EngagementApi;
-  publicationApi?: import("./api/publication-api").PublicationApi;
-  scheduleApi?: import("./api/schedule-api").ScheduleApi;
-  studentApi?: import("./api/student-api").StudentApi;
-  assets?: import("./api/assets").AssetsService;
-  contentApi?: import("./api/content-api").ContentApi;
-  academicAdmin?: import("./api/academic-admin").AcademicAdminService;
-  academicCatalog?: ReturnType<
-    typeof import("./api/academic-catalog").createHttpAcademicCatalog
-  >;
-  account?: import("../types/accounts").AccountService;
-  accessAdmin?: import("../types/accounts").AccessAdminService;
-  api?: import("./api/client").ApiClient;
-  files?: {
-    previewUrl: (
-      assetId: string,
-    ) => Promise<{ url: string; expiresAt: string }>;
-    downloadUrl: (
-      assetId: string,
-    ) => Promise<{ url: string; expiresAt: string }>;
-  };
-  courseContent?: (
-    course: Course,
-  ) => Promise<{ course: Course; resources: Resource[] }>;
   exams?: import("../types/exams").ExamService;
   studyHub?: import("../types/study-hub").StudyHubService;
   artwork?: import("../types/artwork").ArtworkService;
@@ -90,10 +59,7 @@ export interface MedClubServices {
   calendar: { list: () => Promise<CalendarItem[]> };
   notifications: { list: () => Promise<StudentNotification[]> };
   personal: { getProfile: () => Promise<StudentProfile> };
-  site: {
-    get: () => Promise<SiteContent>;
-    getPublished?: () => Promise<SiteContent | null>;
-  };
+  site: { get: () => Promise<SiteContent> };
   academics: {
     listCourses: () => Promise<Course[]>;
     listBatches: () => Promise<Batch[]>;

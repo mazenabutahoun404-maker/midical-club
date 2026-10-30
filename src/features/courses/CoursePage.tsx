@@ -1,16 +1,7 @@
-import { BackLink } from "../../components/navigation/BackLink";
-import { academicBackPath } from "../../lib/access-policy";
-import { record } from "../../services/api/mapping";
-import type { ReactNode } from "react";
-import { PublishedContent } from "../resources/PublishedContent";
-import {
-  PrivateCourseFiles,
-  usePrivateCourseFiles,
-} from "./PrivateCourseFiles";
 import { useServices } from "../../app/providers/ServicesProvider";
 import { useRef } from "react";
 import { offerUndo } from "../../components/feedback/undo-action";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useWorkspacePaths } from "../../hooks/useWorkspacePaths";
 import { useCourses, useResources } from "../../hooks/useContent";
 import { useLocale } from "../../app/providers/LocaleProvider";
@@ -24,103 +15,48 @@ import { useLocalCoursePdfs } from "./useLocalCoursePdfs";
 import { useAccess } from "../../admin/governance/useGovernance";
 
 import { StudyEnvironment } from "./StudyEnvironment";
-import { useQuery } from "@tanstack/react-query";
-import { ApiError } from "../../services/api/client";
 import "../../styles/course-notebook.css";
 import "../../styles/notebook-reader.css";
 
 export default function CoursePage() {
-  const paths = useWorkspacePaths(),
-    location = useLocation();
+  const paths = useWorkspacePaths();
   const services = useServices();
   const { slug } = useParams();
   const courses = useCourses(),
     resources = useResources();
-  const { label, t, locale } = useLocale();
+  const { label, t } = useLocale();
   const { snapshot } = useAuth();
   const course = courses.data?.find((item) => item.slug === slug);
-  const published = useQuery({
-    queryKey: [
-      "course-content",
-      snapshot.user?.id,
-      course?.id,
-      course?.version,
-    ],
-    enabled: !!course && !!services.courseContent,
-    queryFn: async () => {
-      try {
-        return await services.courseContent!(course!);
-      } catch (error) {
-        if (error instanceof ApiError && error.status === 404)
-          return {
-            course: course!,
-            resources:
-              resources.data?.filter((item) => item.courseId === course!.id) ||
-              [],
-          };
-        throw error;
-      }
-    },
-  });
-  const live = services.contentSnapshot?.kind === "live";
-  const localPdfs = useLocalCoursePdfs(course?.id || "", !live);
+  const localPdfs = useLocalCoursePdfs(course?.id || "");
+
   const access = useAccess();
-  const canPrivateFiles =
-    live &&
-    !!access.data?.permissions?.includes("study.use") &&
-    !!access.data?.permissions?.includes("academics.read");
-  const privateFiles = usePrivateCourseFiles(course?.id || "", canPrivateFiles);
   const authorization = useRef({ snapshot, access: access.data });
   authorization.current = { snapshot, access: access.data };
-  const backHref = academicBackPath(
-    course,
-    paths.personal,
-    record(location.state).from,
-  );
-  const frame = (child: ReactNode) => (
-    <div className="course-page-route">
-      <div className="container">
-        <BackLink
-          href={backHref}
-          label={t({ en: "Back to courses", ar: "العودة إلى المساقات" })}
-        />
-      </div>
-      {child}
-    </div>
-  );
-  if (
-    courses.isPending ||
-    resources.isPending ||
-    (services.courseContent && course && published.isPending)
-  )
-    return frame(<LoadingState />);
-  if (courses.isError || resources.isError || published.isError)
-    return frame(
+  if (courses.isPending || resources.isPending) return <LoadingState />;
+  if (courses.isError || resources.isError)
+    return (
       <ErrorState
-        error={courses.error || resources.error || published.error}
         retry={() => {
           void courses.refetch();
           void resources.refetch();
-          if (services.courseContent) void published.refetch();
         }}
-      />,
+      />
     );
   if (!course)
-    return frame(
+    return (
       <div className="container section">
         <EmptyState
           title={label("notFound")}
           description={label("notFoundBody")}
           href={paths.learning}
         />
-      </div>,
+      </div>
     );
   const key = studyStorageKey(
     snapshot.status === "authenticated" ? snapshot.user!.id : "guest",
     course.id,
   );
   const canImport =
-    services.contentSnapshot?.kind !== "live" &&
     snapshot.status === "authenticated" &&
     !!access.data?.capabilities.some((capability) =>
       ["content.review", "content.publish", "builder.manage"].includes(
@@ -128,33 +64,17 @@ export default function CoursePage() {
       ),
     );
   const courseResources = [
-    ...(published.data?.resources ||
-      resources.data.filter((item) => item.courseId === course.id)),
-    ...(!live ? localPdfs.resources : []),
-    ...privateFiles.resources,
+    ...resources.data.filter((item) => item.courseId === course.id),
+    ...localPdfs.resources,
   ];
-  return frame(
+  return (
     <div
       className={`container course-atlas course-atlas-${course.accent} course-study-edition`}
     >
-      {published.data?.course.publishedDocuments && (
-        <details className="content-editor-item" open>
-          <summary>
-            {t({ en: "Published course content", ar: "محتوى المساق المنشور" })}
-          </summary>
-          <PublishedContent
-            content={published.data.course.publishedDocuments[locale]}
-            hideHeading
-          />
-        </details>
-      )}
-      <StudyEnvironment
-        course={published.data?.course || course}
-        storageKey={key}
-      >
+      <StudyEnvironment course={course} storageKey={key}>
         <CourseNotebook
           key={key}
-          course={published.data?.course || course}
+          course={course}
           resources={courseResources}
           fileSourcesPending={localPdfs.loading}
           storageKey={key}
@@ -222,15 +142,6 @@ export default function CoursePage() {
           }}
         />
       </StudyEnvironment>
-      {canPrivateFiles &&
-        snapshot.status === "authenticated" &&
-        services.assets && (
-          <PrivateCourseFiles
-            key={snapshot.user?.id + course.id}
-            offeringId={course.id}
-            query={privateFiles.query}
-          />
-        )}
-    </div>,
+    </div>
   );
 }

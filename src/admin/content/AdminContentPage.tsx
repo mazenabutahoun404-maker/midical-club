@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import { ContentReviewPanel } from "../content-live/ContentReviewPanel";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -33,15 +31,6 @@ type QueueView =
   "all" | "under-review" | "changes-requested" | "approved" | "published";
 
 export default function AdminContentPage() {
-  return useServices().contentApi ? (
-    <div className="container academic-admin">
-      <ContentReviewPanel />
-    </div>
-  ) : (
-    <PreviewAdminContentPage />
-  );
-}
-function PreviewAdminContentPage() {
   const { label, t, locale } = useLocale();
   const query = useAdminContent();
   const actions = useAdminActions();

@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {EventDetail} from "../engagement/Events";
 import {
   ArrowLeft,
   CalendarDays,
@@ -19,7 +17,7 @@ import { eventAvailability, eventPlacesLeft } from "../../lib/discovery";
 import { formatDate } from "../../lib/dates";
 import { EventRegistrationAction } from "./EventRegistrationAction";
 
-function PreviewEventPage() {
+export default function EventPage() {
   const { slug } = useParams();
   const query = useEvent(slug);
   const { t, label, locale } = useLocale();
@@ -117,5 +115,3 @@ function PreviewEventPage() {
     </div>
   );
 }
-
-export default function EventPage(){return useServices().engagementApi?<EventDetail/>:<PreviewEventPage/>;}

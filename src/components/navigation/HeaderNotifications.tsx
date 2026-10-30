@@ -1,7 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {useInbox} from "../../features/schedule/notifications";
-import {useScheduleConnection,useScheduleAction,QueryStatus} from "../../features/schedule/shared";
-import {canonicalPath} from "../../services/api/learning-target";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { Popover } from "radix-ui";
@@ -156,9 +152,8 @@ function BellIcon() {
 /** Guest bells never mount account queries. */
 export function HeaderNotifications() {
   const { snapshot } = useAuth();
-  const services = useServices();
   return snapshot.status === "authenticated" ? (
-    services.scheduleApi ? <LiveAccountNotifications key={snapshot.user?.id}/> : <AccountNotifications />
+    <AccountNotifications />
   ) : (
     <GuestNotifications />
   );
@@ -344,17 +339,4 @@ function AccountNotifications() {
       </Popover.Portal>
     </Popover.Root>
   );
-}
-
-function LiveAccountNotifications(){
- const {label,t,dir,locale}=useLocale(),{api,owner}=useScheduleConnection(),action=useScheduleAction(),navigate=useNavigate(),{key}=useLocation();
- const [open,setOpen]=useState(false),{inbox,unread}=useInbox(1,5,open),{bell,ringBell,bellAnimation}=useBellMotion();
- const previous=useRef<{owner:string|undefined;count:number}|null>(null);
- useEffect(()=>setOpen(false),[key]);
- useEffect(()=>{if(unread.isPending||unread.error||!unread.data)return;const count=unread.data.unreadCount;if(previous.current&&previous.current.owner===owner&&count>previous.current.count)ringBell("arrival");if(previous.current?.owner!==owner)bellAnimation.current?.cancel();previous.current={owner,count};},[owner,unread.data,unread.error,unread.isPending,ringBell]);
- const count=unread.error?undefined:unread.data?.unreadCount;
- return <Popover.Root open={open} onOpenChange={setOpen}><Popover.Trigger asChild><button type="button" className="workspace-icon notification-bell" aria-label={label("notifications")} onMouseEnter={()=>ringBell("hover")} onFocus={e=>{if(e.currentTarget.matches(":focus-visible"))ringBell("hover");}} onClick={()=>ringBell("click")}><span ref={bell} className="notification-bell-motion" aria-hidden="true"><BellIcon/></span>{count!==undefined&&count>0&&<span className="notification-badge" aria-label={`${count} ${label("unreadUpdates")}`}>{count>99?"99+":count}</span>}</button></Popover.Trigger>
- <Popover.Portal><Popover.Content className="notification-preview" dir={dir} side="bottom" align="end" sideOffset={8} collisionPadding={10} aria-label={label("notifications")}><header><h2>{label("notifications")}</h2><Popover.Close aria-label={label("close")}><X size={18}/></Popover.Close></header><QueryStatus query={unread}/><QueryStatus query={inbox}/>
- {!inbox.isPending&&!inbox.error&&<div className="notification-preview-list">{inbox.data?.items.map(item=>{const path=canonicalPath(item.deepLink);return <article className="notification-preview-row" key={item.id} data-unread={!item.readAt||undefined}><strong>{item.title}</strong><p>{item.body}</p><time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleDateString(locale)}</time><div className="student-connected-actions">{path&&<button type="button" className="text-link" disabled={action.busy} onClick={()=>void action.run(async()=>{if(!item.readAt)await api.patch_api_v1_notifications_by_id_read({path:{id:item.id}});},()=>{setOpen(false);navigate(path);},"")}>{label("notificationAction")}<ArrowUpRight size={15} className="directional"/></button>}{!item.readAt&&<button type="button" className="quiet-button" disabled={action.busy} onClick={()=>void action.run(()=>api.patch_api_v1_notifications_by_id_read({path:{id:item.id}}))}>{label("markRead")}</button>}</div></article>;})}{!inbox.data?.items.length&&<p className="notification-preview-empty">{label("noNotifications")}</p>}</div>}
- {action.feedback}<AppLink href="/my/notifications" className="notification-preview-all" onClick={()=>setOpen(false)}>{t({en:"View all notifications",ar:"عرض جميع الإشعارات"})}<ArrowUpRight size={16} className="directional"/></AppLink><Popover.Arrow className="notification-preview-arrow"/></Popover.Content></Popover.Portal></Popover.Root>;
 }

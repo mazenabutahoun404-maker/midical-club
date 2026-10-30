@@ -9,8 +9,7 @@ export function ArticleDetails({ item }: { item: Article }) {
       <div className="article-detail-meta">
         <span className="tag">
           <Clock size={14} />
-          {item.readMinutesAvailable === false ? "—" : item.readMinutes}{" "}
-          {label("readMinutes")}
+          {item.readMinutes} {label("readMinutes")}
         </span>
         <span>
           <UserRound size={14} /> {t(item.author)}

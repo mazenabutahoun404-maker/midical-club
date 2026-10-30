@@ -5,9 +5,7 @@ import { useAuth } from "../../app/providers/AuthProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "../../components/navigation/AppLink";
 import { Button } from "../../components/ui/button";
-import { authErrorKey, authErrorMessage, safeReturnTo } from "../../lib/auth";
-import { useServices } from "../../app/providers/ServicesProvider";
-import { useBatches } from "../../hooks/useContent";
+import { authErrorKey, safeReturnTo } from "../../lib/auth";
 import { routes } from "../../constants/routes";
 import { AuthenticatedState } from "./AuthenticatedState";
 import { useAuthJourney } from "./AuthJourney";
@@ -21,10 +19,8 @@ import {
 
 export default function RegisterPage() {
   const auth = useAuth();
-  const live = useServices().auth.mode === "api";
-  const batches = useBatches();
   const journey = useAuthJourney();
-  const { label, t, locale } = useLocale();
+  const { label, t } = useLocale();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const activePath = useRef(pathname);
@@ -35,8 +31,7 @@ export default function RegisterPage() {
     fullName: "",
     universityNumber: "",
     email: "",
-    batch: live ? "" : "Shifaa",
-    gender: "",
+    batch: "Shifaa",
     year: 3,
     password: "",
     confirm: "",
@@ -125,10 +120,7 @@ export default function RegisterPage() {
       );
     if (!isEmailReady(form.email))
       return reject("email", label("emailInvalid"), "register-email");
-    if (
-      !form.batch.trim() ||
-      (live && !batches.data?.some((batch) => batch.id === form.batch))
-    )
+    if (!form.batch.trim())
       return reject("batch", label("requiredField"), "register-batch");
     if (step === 0) {
       setTouched((current) => ({ ...current, batch: true, year: true }));
@@ -139,8 +131,6 @@ export default function RegisterPage() {
       return reject("password", label("passwordRules"), "register-password");
     if (form.password !== form.confirm)
       return reject("confirm", label("passwordMismatch"), "register-confirm");
-    if (live && !["Male", "Female"].includes(form.gender))
-      return reject("gender", label("requiredField"), "register-gender");
     journey.finishRestoration();
     journey.setFeedback("submitting");
     try {
@@ -151,7 +141,6 @@ export default function RegisterPage() {
         password: form.password,
         year: form.year,
         batch: form.batch,
-        ...(live ? { gender: form.gender as "Male" | "Female" } : {}),
       });
       if (activePath.current !== routes.register) return;
       navigate(`${routes.verify}?returnTo=${encodeURIComponent(returnTo)}`, {
@@ -160,7 +149,7 @@ export default function RegisterPage() {
     } catch (caught) {
       if (activePath.current !== routes.register) return;
       journey.setFeedback("error");
-      setError(authErrorMessage(caught, locale, label(authErrorKey(caught))));
+      setError(label(authErrorKey(caught)));
     }
   };
   const described = (key: keyof typeof form) =>
@@ -306,41 +295,18 @@ export default function RegisterPage() {
                 data-complete={readyIds.includes("batch") || undefined}
               >
                 <span>{label("batchName")}</span>
-                {live ? (
-                  <select
-                    id="register-batch"
-                    disabled={auth.isPending || batches.isPending}
-                    value={form.batch}
-                    onChange={(event) => update("batch", event.target.value)}
-                    required
-                    aria-invalid={invalid === "batch" || undefined}
-                    aria-describedby={described("batch")}
-                  >
-                    <option value="">
-                      {batches.isPending
-                        ? t({ en: "Loading batches…", ar: "تحميل الدفعات…" })
-                        : t({ en: "Choose your batch", ar: "اختر دفعتك" })}
-                    </option>
-                    {batches.data?.map((batch) => (
-                      <option key={batch.id} value={batch.id}>
-                        {t(batch.name)}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    id="register-batch"
-                    disabled={auth.isPending}
-                    value={form.batch}
-                    onBlur={() =>
-                      setTouched((current) => ({ ...current, batch: true }))
-                    }
-                    onChange={(event) => update("batch", event.target.value)}
-                    required
-                    aria-invalid={invalid === "batch" || undefined}
-                    aria-describedby={described("batch")}
-                  />
-                )}
+                <input
+                  id="register-batch"
+                  disabled={auth.isPending}
+                  value={form.batch}
+                  onBlur={() =>
+                    setTouched((current) => ({ ...current, batch: true }))
+                  }
+                  onChange={(event) => update("batch", event.target.value)}
+                  required
+                  aria-invalid={invalid === "batch" || undefined}
+                  aria-describedby={described("batch")}
+                />
               </label>
               <label
                 className="auth-field"
@@ -367,42 +333,9 @@ export default function RegisterPage() {
                 </select>
               </label>
             </div>
-            {live && !batches.isPending && !batches.data?.length && (
-              <p className="auth-form-error" role="status">
-                {t({
-                  en: batches.isError
-                    ? "Could not load batches. Please retry."
-                    : "No batches are available for registration yet.",
-                  ar: batches.isError
-                    ? "تعذّر تحميل الدفعات. حاول مجدداً."
-                    : "لا توجد دفعات متاحة للتسجيل حالياً.",
-                })}{" "}
-                <button type="button" onClick={() => void batches.refetch()}>
-                  {label("retry")}
-                </button>
-              </p>
-            )}
           </div>
         ) : (
           <div className="auth-step-fields" key="account">
-            {live && (
-              <label className="auth-field" htmlFor="register-gender">
-                <span>{t({ en: "Gender", ar: "الجنس" })}</span>
-                <select
-                  id="register-gender"
-                  value={form.gender}
-                  onChange={(event) => update("gender", event.target.value)}
-                  disabled={auth.isPending}
-                  required
-                >
-                  <option value="">{t({ en: "Choose", ar: "اختر" })}</option>
-                  <option value="Male">{t({ en: "Male", ar: "ذكر" })}</option>
-                  <option value="Female">
-                    {t({ en: "Female", ar: "أنثى" })}
-                  </option>
-                </select>
-              </label>
-            )}
             <div className="auth-account-summary">
               <div>
                 <strong>{form.fullName}</strong>

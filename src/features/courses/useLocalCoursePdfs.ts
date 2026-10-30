@@ -169,38 +169,32 @@ function resourceFrom(item: StoredPdf, url: string): Resource {
   };
 }
 
-export function useLocalCoursePdfs(courseId: string, enabled = true) {
+export function useLocalCoursePdfs(courseId: string) {
   const [records, setRecords] = useState<StoredPdf[]>([]);
   const [pending, setPending] = useState(false);
-  const [loading, setLoading] = useState(enabled && !!courseId);
+  const [loading, setLoading] = useState(!!courseId);
   const [error, setError] = useState(false);
   const urls = useRef(new Map<string, string>());
 
   useEffect(() => {
     let alive = true;
     setError(false);
-    setLoading(enabled && !!courseId);
-    if (!courseId || !enabled) {
+    setLoading(!!courseId);
+    if (!courseId) {
       setRecords([]);
       return;
     }
     void readCourse(courseId)
       .then((items) => {
-        if (alive) {
-          setRecords(items);
-          setLoading(false);
-        }
+        if (alive) { setRecords(items); setLoading(false); }
       })
       .catch(() => {
-        if (alive) {
-          setError(true);
-          setLoading(false);
-        }
+        if (alive) { setError(true); setLoading(false); }
       });
     return () => {
       alive = false;
     };
-  }, [courseId, enabled]);
+  }, [courseId]);
 
   useEffect(
     () => () => {

@@ -1,5 +1,3 @@
-import { BackLink } from "../../components/navigation/BackLink";
-import { ContentPlaceholder } from "../../components/feedback/ContentPlaceholder";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { Sparkles } from "lucide-react";
 import { useBatches } from "../../hooks/useContent";
@@ -13,16 +11,9 @@ export default function BasicSciencesPage() {
   const query = useBatches();
   const { label, t } = useLocale();
   if (query.isPending) return <LoadingState />;
-  if (query.isError)
-    return (
-      <ErrorState error={query.error} retry={() => void query.refetch()} />
-    );
+  if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
   return (
     <div className="container basic-sciences-page batch-atrium">
-      <BackLink
-        href="/learn"
-        label={t({ en: "Back to learning", ar: "العودة إلى التعلّم" })}
-      />
       <header className="academic-page-hero basic-page-hero batch-gateway-hero">
         <div className="batch-gateway-copy">
           <span className="academic-kicker">
@@ -58,15 +49,6 @@ export default function BasicSciencesPage() {
           <h2 id="batch-heading">{label("chooseBatch")}</h2>
           <i />
         </div>
-        {!query.data.length && (
-          <ContentPlaceholder
-            icon="books"
-            title={t({
-              en: "No batches published yet",
-              ar: "لم تُنشر دفعات بعد",
-            })}
-          />
-        )}
         <div className="batch-passport-grid">
           {query.data.map((batch, index) => (
             <BatchCard batch={batch} index={index} key={batch.id} />

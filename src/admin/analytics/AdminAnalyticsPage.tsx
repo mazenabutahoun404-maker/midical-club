@@ -1,5 +1,3 @@
-import AdminOperationsPage from "../operations/AdminOperationsPage";
-import {useServices} from "../../app/providers/ServicesProvider";
 import { useState } from "react";
 import { Activity, Bookmark, Download, Search, UsersRound } from "lucide-react";
 import { toast } from "sonner";
@@ -14,7 +12,7 @@ import type { AnalyticsRange } from "../../types/insights";
 
 const ranges: AnalyticsRange[] = ["7d", "30d", "90d"];
 
-function PreviewAdminAnalyticsPage() {
+export default function AdminAnalyticsPage() {
   const { label, t, locale } = useLocale();
   const [range, setRange] = useState<AnalyticsRange>("30d");
   const query = useAdminAnalytics(range);
@@ -79,5 +77,3 @@ function PreviewAdminAnalyticsPage() {
     </div>
   );
 }
-
-export default function AdminAnalyticsPage(){const services=useServices();return services.operationsApi?<AdminOperationsPage initial="analytics"/>:<PreviewAdminAnalyticsPage/>}

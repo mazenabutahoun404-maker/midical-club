@@ -6,15 +6,13 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { AppLink } from "../../components/navigation/AppLink";
 import { Button } from "../../components/ui/button";
 import { PREVIEW_CREDENTIALS } from "../../services/local-auth.service";
-import { authErrorKey, authErrorMessage, safeReturnTo } from "../../lib/auth";
-import { useServices } from "../../app/providers/ServicesProvider";
+import { authErrorKey, safeReturnTo } from "../../lib/auth";
 import { routes } from "../../constants/routes";
 import { AuthenticatedState } from "./AuthenticatedState";
 import { useAuthJourney } from "./AuthJourney";
 
 export default function SignInPage() {
   const auth = useAuth();
-  const preview = useServices().auth.mode !== "api";
   const journey = useAuthJourney();
   const [welcoming, setWelcoming] = useState(false);
   const mounted = useRef(true);
@@ -24,7 +22,7 @@ export default function SignInPage() {
       mounted.current = false;
     };
   }, []);
-  const { label, locale, t } = useLocale();
+  const { label } = useLocale();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const activePath = useRef(pathname);
@@ -57,14 +55,7 @@ export default function SignInPage() {
     setWelcoming(true);
     journey.setFeedback("submitting");
     try {
-      const next = await auth.signIn({ email, password });
-      if (next.status === "verification-required") {
-        journey.stopWelcome();
-        navigate(`${routes.verify}?returnTo=${encodeURIComponent(returnTo)}`, {
-          replace: true,
-        });
-        return;
-      }
+      await auth.signIn({ email, password });
       if (!mounted.current || activePath.current !== routes.signIn) return;
       await journey.startWelcome();
       if (mounted.current && activePath.current === routes.signIn)
@@ -73,8 +64,7 @@ export default function SignInPage() {
       if (activePath.current !== routes.signIn) return;
       journey.stopWelcome();
       journey.setFeedback("error");
-      if (mounted.current)
-        setError(authErrorMessage(caught, locale, label(authErrorKey(caught))));
+      if (mounted.current) setError(label(authErrorKey(caught)));
     } finally {
       if (mounted.current) setWelcoming(false);
     }
@@ -90,14 +80,6 @@ export default function SignInPage() {
         <h2>{label("signInTitle")}</h2>
         <p>{label("signInBody")}</p>
       </div>
-      {search.get("verified") === "1" && (
-        <p role="status">
-          {t({
-            en: "Email verified. Sign in to continue.",
-            ar: "تم تأكيد البريد. سجّل الدخول للمتابعة.",
-          })}
-        </p>
-      )}
       <form
         className="auth-form"
         onSubmit={submit}
@@ -152,21 +134,19 @@ export default function SignInPage() {
         </label>
         <div className="auth-form-between">
           <AppLink href={routes.recover}>{label("forgotPassword")}</AppLink>
-          {preview && (
-            <button
-              type="button"
-              className="auth-demo-fill"
-              disabled={auth.isPending || welcoming}
-              onClick={() => {
-                setEmail(PREVIEW_CREDENTIALS.email);
-                setPassword(PREVIEW_CREDENTIALS.password);
-                setError(null);
-              }}
-            >
-              <KeyRound />
-              {label("useDemoCredentials")}
-            </button>
-          )}
+          <button
+            type="button"
+            className="auth-demo-fill"
+            disabled={auth.isPending || welcoming}
+            onClick={() => {
+              setEmail(PREVIEW_CREDENTIALS.email);
+              setPassword(PREVIEW_CREDENTIALS.password);
+              setError(null);
+            }}
+          >
+            <KeyRound />
+            {label("useDemoCredentials")}
+          </button>
         </div>
         {error && (
           <p id="signin-error" className="auth-form-error" role="alert">
@@ -182,9 +162,7 @@ export default function SignInPage() {
           <ArrowRight size={18} className="directional" />
         </Button>
       </form>
-      {preview && (
-        <p className="auth-demo-hint">{label("demoCredentialHint")}</p>
-      )}
+      <p className="auth-demo-hint">{label("demoCredentialHint")}</p>
       <p className="auth-switch">
         {label("newHere")}{" "}
         <AppLink
@@ -193,12 +171,10 @@ export default function SignInPage() {
           {label("createAccount")}
         </AppLink>
       </p>
-      {preview && (
-        <details className="auth-boundary-note">
-          <summary>{label("authPreview")}</summary>
-          <span>{label("authPreviewBody")}</span>
-        </details>
-      )}
+      <details className="auth-boundary-note">
+        <summary>{label("authPreview")}</summary>
+        <span>{label("authPreviewBody")}</span>
+      </details>
     </section>
   );
 }

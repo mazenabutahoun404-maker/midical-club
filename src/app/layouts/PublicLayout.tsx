@@ -17,7 +17,6 @@ import {
   useAdaptiveNavigation,
 } from "../../components/navigation/AdaptiveNavigation";
 import { useLocale } from "../providers/LocaleProvider";
-import { VisitorBoundary } from "../router/VisitorBoundary";
 export function PublicLayout() {
   const site = useSiteContent();
   const { navigation, sidebarCollapsed } = useAppearance();
@@ -52,9 +51,7 @@ export function PublicLayout() {
         <div className="app-content">
           <main id="main" tabIndex={-1}>
             <RouteViewport>
-              <VisitorBoundary>
-                <Outlet />
-              </VisitorBoundary>
+              <Outlet />
             </RouteViewport>
           </main>
         </div>
@@ -86,9 +83,7 @@ export function PublicLayout() {
           <main id="main" tabIndex={-1}>
             <InvolvementNavigation />
             <RouteViewport>
-              <VisitorBoundary>
-                <Outlet />
-              </VisitorBoundary>
+              <Outlet />
             </RouteViewport>
           </main>
           {!adaptive.studying && (

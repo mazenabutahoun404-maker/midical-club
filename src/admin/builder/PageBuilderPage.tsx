@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import ContentPageEditor from "../content-live/ContentPageEditor";
 import { throwToTrash } from "../../components/feedback/action-flight";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -48,13 +46,6 @@ import {
 } from "./useBuilder";
 
 export default function PageBuilderPage() {
-  return useServices().contentApi ? (
-    <ContentPageEditor />
-  ) : (
-    <PreviewPageBuilderPage />
-  );
-}
-function PreviewPageBuilderPage() {
   const { pageId } = useParams();
   const { label, t } = useLocale();
   const query = useBuilderPage(pageId);

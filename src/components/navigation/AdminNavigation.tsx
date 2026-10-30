@@ -44,26 +44,6 @@ type NavItem = {
   badge?: boolean;
 };
 const operations: NavItem[] = [
- {href:"/admin/membership",label:"membershipAdmin",icon:UsersRound,capability:"membership.manage"},
-  {href:"/admin/operations",label:"operationsAdmin",icon:ChartNoAxesCombined,capability:"operations.manage"},
-  {href:"/admin/store",label:"storeAdmin",icon:BadgeCheck,capability:"store.manage"},
-  {href:"/admin/contributions",label:"contributionsAdmin",icon:FileCheck,capability:"contributions.manage"},
-  {href:"/admin/engagement",label:"engagementAdmin",icon:BadgeCheck,capability:"engagement.manage"},
-  {href:"/admin/publications",label:"publicationsAdmin",icon:PanelsTopLeft,capability:"publications.manage"},
-  {href:"/admin/schedule",label:"scheduleAdmin",icon:FileClock,capability:"schedule.manage"},
-  {href: "/admin/student-tools", label: "studyToolsAdmin", icon: Stethoscope, capability: "study-tools.manage"},
-  {
-    href: "/admin/assets",
-    label: "assetAdmin",
-    icon: FileSearch,
-    capability: "assets.manage",
-  },
-  {
-    href: "/admin/academics",
-    label: "academicAdmin",
-    icon: Stethoscope,
-    capability: "academics.manage",
-  },
   {
     href: "/admin",
     label: "adminOverview",
@@ -121,13 +101,7 @@ const safety: NavItem[] = [
     href: "/admin/roles",
     label: "governanceRoles",
     icon: KeyRound,
-    capability: "roles.view",
-  },
-  {
-    href: "/admin/teams",
-    label: "accessTeams",
-    icon: UsersRound,
-    capability: "teams.view",
+    capability: "roles.manage",
   },
   {
     href: "/admin/approvals",
@@ -203,11 +177,7 @@ export function AdminNavigation() {
     </NavigationHint>
   );
   const allowed = (item: NavItem) =>
-    (access.data?.capabilities.includes(item.capability) ||
-      (!access.data?.permissions &&
-        item.capability === "roles.view" &&
-        access.data?.capabilities.includes("roles.manage"))) ??
-    false;
+    access.data?.capabilities.includes(item.capability) ?? false;
   const visibleOperations = operations.filter(allowed);
   const visibleInsights = insights.filter(allowed);
   const visibleSafety = safety.filter(allowed);

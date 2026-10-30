@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import LiveSearch from "../student-live/Search";
 import { useState, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -73,7 +71,7 @@ const icons = {
 function keepControlKeys(event: KeyboardEvent<HTMLElement>) {
   if (event.key !== "Escape") event.stopPropagation();
 }
-function PreviewSearchPanel({
+export function SearchPanel({
   compact = false,
   anchored = false,
   initialQuery = "",
@@ -129,7 +127,6 @@ function PreviewSearchPanel({
     >
       <Command shouldFilter={false} label={label("search")} loop>
         <CommandInput
-          data-search-input
           value={query}
           onValueChange={setQuery}
           placeholder={label(anchored ? "search" : "searchPlaceholder")}
@@ -342,17 +339,5 @@ function PreviewSearchPanel({
         <p className="workspace-note">{label("searchMetadataNote")}</p>
       )}
     </div>
-  );
-}
-
-export function SearchPanel(props: {
-  compact?: boolean;
-  anchored?: boolean;
-  initialQuery?: string;
-}) {
-  return useServices().studentApi ? (
-    <LiveSearch {...props} />
-  ) : (
-    <PreviewSearchPanel {...props} />
   );
 }

@@ -1,7 +1,3 @@
-import { publishedSections } from "../resources/content-model";
-import { ReadFeedback } from "../../components/feedback/ReadFeedback";
-import { PublishedContent } from "../resources/PublishedContent";
-import { useServices } from "../../app/providers/ServicesProvider";
 import { MedicalMark } from "../../components/medical/MedicalMark";
 import { useRef } from "react";
 import type { SiteContent, HomeSection } from "../../types/content";
@@ -18,7 +14,6 @@ import { Journal } from "./sections/Journal";
 import { Community } from "./sections/Community";
 import { useHomeReveal } from "./useHomeReveal";
 import "./home-studio-v1355.css";
-import "./home-live-layout.css";
 
 const registry = {
   pathways: QuickAccess,
@@ -132,10 +127,8 @@ function Section({
   );
 }
 export default function Homepage() {
-  const home = useSiteContent();
-  const live = useServices().contentSnapshot?.kind === "live";
-  const { data: site } = home,
-    { dir, locale, t } = useLocale();
+  const { data: site } = useSiteContent(),
+    { dir } = useLocale();
   const root = useRef<HTMLDivElement>(null);
   useHomeReveal(root, !!site);
   if (!site) return null;
@@ -146,41 +139,16 @@ export default function Homepage() {
       <Hero
         hero={site.hero}
         brand={site.brand}
-        nextSectionId={
-          live
-            ? "published-home-content"
-            : sections.find((s) => s.type !== "announcement")?.id
-        }
+        nextSectionId={sections.find((s) => s.type !== "announcement")?.id}
       />
-      <div id="published-home-content">
-        {live && (home.publishedPending || home.publishedError) && (
-          <div className="home-chapter home-content-status">
-            <ReadFeedback
-              query={{
-                isPending: home.publishedPending,
-                error: home.publishedError,
-                refetch: home.refreshPublished,
-              }}
-            />
-          </div>
-        )}
-        {live && publishedSections(site.publishedHome?.[locale]).length > 0 && (
-          <div className="home-chapter home-published-updates">
-            <PublishedContent
-              content={site.publishedHome?.[locale]}
-              hideHeading
-            />
-          </div>
-        )}
-        {sections.map((section) => (
-          <Section
-            key={section.id}
-            section={section}
-            site={site}
-            participation={participation}
-          />
-        ))}
-      </div>
+      {sections.map((section) => (
+        <Section
+          key={section.id}
+          section={section}
+          site={site}
+          participation={participation}
+        />
+      ))}
     </div>
   );
 }

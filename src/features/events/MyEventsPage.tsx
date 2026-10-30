@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {MyEventRegistrations} from "../engagement/Events";
 import { CalendarCheck, PartyPopper } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useWorkspace } from "../../app/providers/WorkspaceProvider";
@@ -11,7 +9,7 @@ import { LoadingState } from "../../components/feedback/LoadingState";
 import { AppLink } from "../../components/navigation/AppLink";
 import { useEventRegistrations, useEvents } from "../../hooks/useContent";
 
-function PreviewMyEventsPage() {
+export default function MyEventsPage() {
   const { label } = useLocale();
   const events = useEvents();
   const registrations = useEventRegistrations();
@@ -98,5 +96,3 @@ function PreviewMyEventsPage() {
     </div>
   );
 }
-
-export default function MyEventsPage(){return useServices().engagementApi?<MyEventRegistrations/>:<PreviewMyEventsPage/>;}

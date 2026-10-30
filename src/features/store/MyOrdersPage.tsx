@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {MyStoreOrders} from "../store-live/Orders";
 import { useState } from "react";
 import {
   CheckCircle2,
@@ -24,9 +22,6 @@ import type { StoreOrder } from "../../types/content";
 
 const progress = ["reserved", "confirmed", "ready", "collected"] as const;
 export default function MyOrdersPage() {
- const services=useServices();return services.storeApi?<MyStoreOrders/>:<PreviewMyOrdersPage/>;
-}
-function PreviewMyOrdersPage() {
   const { label, t, locale } = useLocale();
   const store = useStoreWorkspace();
   const [cancelling, setCancelling] = useState<StoreOrder | null>(null);

@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import { PublishedContributions } from "../community-live/Contributions";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import {
   ArrowUpRight,
@@ -14,7 +12,6 @@ import { routes } from "../../constants/routes";
 
 export default function ContributionsPage() {
   const { label } = useLocale();
-  const services = useServices();
   const steps = [
     ["draft", "workflowDraftBody"],
     ["underReview", "workflowReviewBody"],
@@ -40,7 +37,6 @@ export default function ContributionsPage() {
         </div>
         <HeroArtwork section="involved" />
       </header>
-      {services.contributionApi && <PublishedContributions />}
       <section className="workflow-section">
         <span className="eyebrow">{label("contributionWorkflow")}</span>
         <div className="review-workflow">

@@ -154,7 +154,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                   aria-current={active("/") ? "page" : undefined}
                 >
                   <MorphIcon icon={House} size={20} />
-                  <span className="navigation-item-label">{label("home")}</span>
+                  <span>{label("home")}</span>
                 </AppLink>
               </NavigationHint>
               <div
@@ -198,7 +198,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                       className="learn-disclosure-indicator"
                       aria-hidden="true"
                     />
-                    <span className="navigation-item-label learn-destination-label">
+                    <span className="learn-destination-label">
                       {label("learn")}
                     </span>
                   </AppLink>
@@ -224,9 +224,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                         to={item.id === "get-involved" ? Signpost : undefined}
                         size={20}
                       />
-                      <span className="navigation-item-label">
-                        {t(item.label)}
-                      </span>
+                      <span>{t(item.label)}</span>
                     </AppLink>
                   </NavigationHint>
                 );
@@ -241,9 +239,7 @@ export function DesktopNavigation({ site }: { site: SiteContent }) {
                   aria-current={active("/utilities") ? "page" : undefined}
                 >
                   <MorphIcon icon={Timer} size={20} />
-                  <span className="navigation-item-label">
-                    {label("studyToolsShort")}
-                  </span>
+                  <span>{label("studyToolsShort")}</span>
                 </AppLink>
               </NavigationHint>
             </div>

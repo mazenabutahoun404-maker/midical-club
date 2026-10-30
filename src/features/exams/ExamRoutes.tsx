@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import ExaminationLanding from "./ExaminationLanding";
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { LoadingState } from "../../components/feedback/LoadingState";
@@ -14,8 +12,6 @@ const Search = lazy(() => import("./ExamSearch"));
 const Print = lazy(() => import("./ExamPrint"));
 const Recall = lazy(() => import("./ExamRecall"));
 export default function ExamRoutes() {
-  const services = useServices();
-  if (services.contentSnapshot?.kind === "live") return <ExaminationLanding />;
   return (
     <ExamFrame>
       <Suspense fallback={<LoadingState />}>

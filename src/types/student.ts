@@ -1,8 +1,6 @@
 import type { Text } from "./content";
 export interface StudentProfile {
   id: string;
-  batchId?: string;
-  profileVersion?: string;
   /** Optional on existing accounts; collected for new registrations. */
   universityNumber?: string;
   name: Text;

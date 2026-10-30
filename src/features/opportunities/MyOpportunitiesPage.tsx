@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {OpportunityCatalog} from "../engagement/Opportunities";
 import { BookmarkCheck } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { useWorkspace } from "../../app/providers/WorkspaceProvider";
@@ -10,7 +8,7 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 import { LoadingState } from "../../components/feedback/LoadingState";
 import { useOpportunities } from "../../hooks/useContent";
 
-function PreviewMyOpportunitiesPage() {
+export default function MyOpportunitiesPage() {
   const { label } = useLocale();
   const opportunities = useOpportunities();
   const workspace = useWorkspace();
@@ -60,5 +58,3 @@ function PreviewMyOpportunitiesPage() {
     </div>
   );
 }
-
-export default function MyOpportunitiesPage(){return useServices().engagementApi?<OpportunityCatalog saved/>:<PreviewMyOpportunitiesPage/>;}

@@ -1,4 +1,3 @@
-import { ReaderProgress } from "../student-live/ReaderProgress";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { ArrowUpRight, BookOpen, FileText, X } from "lucide-react";
 import type { Resource } from "../../types/content";
@@ -12,9 +11,6 @@ import { AnnotatedPdfBook } from "./AnnotatedPdfBook";
 import { useStudyChrome } from "../../app/providers/StudyChromeProvider";
 import { useStudyTools } from "./StudyTools";
 import { PdfToolButton } from "./PdfToolButton";
-import { useServices } from "../../app/providers/ServicesProvider";
-import { useAuth } from "../../app/providers/AuthProvider";
-import { useQuery } from "@tanstack/react-query";
 
 export function resourceMediaType(item: Resource) {
   if (item.mediaType) return item.mediaType;
@@ -114,8 +110,6 @@ export function StudyResourceViewer({
   companion?: boolean;
 }) {
   const { t } = useLocale();
-  const services = useServices();
-  const { snapshot } = useAuth();
   const s = useStudyCopy();
   const tools = useStudyTools();
   const { focus } = useStudyChrome();
@@ -127,34 +121,7 @@ export function StudyResourceViewer({
   save.current = onPosition;
   const [page, setPage] = useState(position?.page || 1);
   const [error, setError] = useState(false);
-  const signedUrl = useQuery({
-    queryKey: [
-      "file-preview",
-      snapshot.user?.id,
-      item.assetId,
-      item.sourceRevision,
-    ],
-    queryFn: () => services.files!.previewUrl(item.assetId!),
-    enabled:
-      !!item.assetId && !!services.files && item.previewAllowed !== false,
-    staleTime: 0,
-    refetchInterval: (query) =>
-      query.state.data
-        ? Math.max(
-            15000,
-            Date.parse(query.state.data.expiresAt) - Date.now() - 30000,
-          )
-        : false,
-    retry: 1,
-  });
-  const url = safeResourceUrl(
-    item.assetId
-      ? signedUrl.isError
-        ? null
-        : signedUrl.data?.url
-      : item.fileUrl,
-  );
-  useEffect(() => setError(false), [url]);
+  const url = safeResourceUrl(item.fileUrl);
   const type = resourceMediaType(item);
   const ReaderButton = type === "pdf" ? PdfToolButton : "button";
   const thumbnail = safeResourceUrl(item.preview?.thumbnailUrl);
@@ -209,7 +176,6 @@ export function StudyResourceViewer({
       data-media={type}
       aria-labelledby={titleId}
     >
-      <ReaderProgress item={item} page={page}/>
       {focus && (
         <h3 id={titleId} className="sr-only">
           {t(item.title)}
@@ -263,11 +229,7 @@ export function StudyResourceViewer({
           onPosition({ scroll: event.currentTarget.scrollTop })
         }
       >
-        {item.assetId && signedUrl.isFetching && !signedUrl.data ? (
-          <p className="study-file-notice" role="status">
-            {t({ en: "Opening the file…", ar: "جارٍ فتح الملف…" })}
-          </p>
-        ) : url && !error ? (
+        {url && !error ? (
           <>
             {type === "video" && (
               <video
@@ -331,14 +293,7 @@ export function StudyResourceViewer({
         ) : (
           <div className="study-file-notice">
             <BookOpen size={26} aria-hidden="true" />
-            <p>
-              {error || signedUrl.isError ? s("fileError") : s("unavailable")}
-            </p>
-            {signedUrl.isError && (
-              <button type="button" onClick={() => void signedUrl.refetch()}>
-                {t({ en: "Try again", ar: "حاول مجدداً" })}
-              </button>
-            )}
+            <p>{error ? s("fileError") : s("unavailable")}</p>
             {error && url && (
               <a href={url} target="_blank" rel="noopener noreferrer">
                 {s("openFile")}

@@ -1,15 +1,18 @@
-import { HomeSectionState } from "./HomeSectionState";
 import { ArrowRight, BookOpenText, HeartPulse } from "lucide-react";
 import { useJournal } from "../../../hooks/useContent";
 import { useLocale } from "../../../app/providers/LocaleProvider";
+import { LoadingState } from "../../../components/feedback/LoadingState";
+import { ErrorState } from "../../../components/feedback/ErrorState";
+import { EmptyState } from "../../../components/feedback/EmptyState";
 import { AppLink } from "../../../components/navigation/AppLink";
 import { articlePath } from "../../../constants/routes";
 import { formatDate } from "../../../lib/dates";
 export function Journal() {
   const query = useJournal(),
     { t, label, locale } = useLocale();
-  if (query.isPending || query.isError || !query.data.length)
-    return <HomeSectionState kind="journal" query={query} />;
+  if (query.isPending) return <LoadingState />;
+  if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
+  if (!query.data.length) return <EmptyState />;
   const lead = query.data.find((a) => a.featured) || query.data[0],
     rest = query.data.filter((a) => a.id !== lead.id).slice(0, 2);
   return (
@@ -26,8 +29,7 @@ export function Journal() {
           <BookOpenText size={19} aria-hidden="true" />
           <span>{t(lead.category)}</span>
           <span>
-            {lead.readMinutesAvailable === false ? "—" : lead.readMinutes}{" "}
-            {label("readMinutes")}
+            {lead.readMinutes} {label("readMinutes")}
           </span>
         </div>
         <h3>
@@ -59,10 +61,7 @@ export function Journal() {
               </span>
               <div>
                 <span className="eyebrow">
-                  {t(story.category)} ·{" "}
-                  {story.readMinutesAvailable === false
-                    ? "—"
-                    : story.readMinutes}{" "}
+                  {t(story.category)} · {story.readMinutes}{" "}
                   {label("readMinutes")}
                 </span>
                 <h3>

@@ -1,6 +1,3 @@
-import {MyMentorship as ConnectedPage} from "../membership/MentorWorkspace";
-import {MembershipScope} from "../membership/shared";
-import {useServices} from "../../app/providers/ServicesProvider";
 import {
   CalendarCheck,
   Clock3,
@@ -23,7 +20,7 @@ import {
 } from "../../hooks/useContent";
 import { formatDate } from "../../lib/dates";
 
-function PreviewMyMentorshipPage() {
+export default function MyMentorshipPage() {
   const { t, label, locale } = useLocale();
   const mentors = useMentors();
   const sessions = useMentorshipSessions();
@@ -186,5 +183,3 @@ function PreviewMyMentorshipPage() {
     </div>
   );
 }
-
-export default function MyMentorshipPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewMyMentorshipPage/>}

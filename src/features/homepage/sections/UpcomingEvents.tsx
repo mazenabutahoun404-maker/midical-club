@@ -1,7 +1,9 @@
-import { HomeSectionState } from "./HomeSectionState";
 import { ArrowUpRight, Clock3, MapPin, Ticket } from "lucide-react";
 import { useEvents } from "../../../hooks/useContent";
 import { useLocale } from "../../../app/providers/LocaleProvider";
+import { LoadingState } from "../../../components/feedback/LoadingState";
+import { ErrorState } from "../../../components/feedback/ErrorState";
+import { EmptyState } from "../../../components/feedback/EmptyState";
 import { AppLink } from "../../../components/navigation/AppLink";
 import { SaveButton } from "../../../components/cards/SaveButton";
 import { eventPath } from "../../../constants/routes";
@@ -17,8 +19,9 @@ const statusKeys = {
 export function UpcomingEvents() {
   const query = useEvents(),
     { t, label, locale } = useLocale();
-  if (query.isPending || query.isError || !query.data.length)
-    return <HomeSectionState kind="events" query={query} />;
+  if (query.isPending) return <LoadingState />;
+  if (query.isError) return <ErrorState retry={() => void query.refetch()} />;
+  if (!query.data.length) return <EmptyState />;
   const featured = query.data.find((e) => e.featured) || query.data[0];
   const upcoming = query.data.filter((e) => e.id !== featured.id).slice(0, 2);
   return (

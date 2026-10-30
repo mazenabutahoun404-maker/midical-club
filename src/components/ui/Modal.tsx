@@ -20,7 +20,6 @@ export function Modal({
   onAfterClose,
   initialFocus,
   style,
-  onEscapeKeyDown,
 }: {
   open: boolean;
   onClose: () => void;
@@ -33,7 +32,6 @@ export function Modal({
   onAfterClose?: () => void;
   initialFocus?: string;
   style?: CSSProperties;
-  onEscapeKeyDown?: () => void;
 }) {
   const { dir, label } = useLocale();
   const dialog = useRef<HTMLDialogElement>(null);
@@ -68,13 +66,6 @@ export function Modal({
       className={`medclub-modal medclub-native-modal ${className}`}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      onKeyDownCapture={(event) => {
-        if (event.key === "Escape" && onEscapeKeyDown) {
-          event.preventDefault();
-          event.stopPropagation();
-          onEscapeKeyDown();
-        }
-      }}
       onCancel={(event) => {
         event.preventDefault();
         onClose();

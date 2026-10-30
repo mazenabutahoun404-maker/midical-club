@@ -3,8 +3,6 @@ import { useLocale } from "../../app/providers/LocaleProvider";
 import { useAppearance } from "../../app/providers/AppearanceProvider";
 import { AppearanceSettings } from "../../components/navigation/AppearanceSettings";
 import { PageIntro } from "../../components/data-display/PageIntro";
-import { AccountSecurity } from "./AccountSecurity";
-import { AccountAccessRequests } from "./AccountAccessRequests";
 export default function SettingsPage() {
   const { label, locale } = useLocale();
   const { navigation, sidebarCollapsed, setSidebarCollapsed, persisted } =
@@ -62,8 +60,6 @@ export default function SettingsPage() {
       <p className="personal-setting-notice" role="status">
         {label(persisted ? "preferencesSaved" : "sessionOnly")}
       </p>
-      <AccountSecurity />
-      <AccountAccessRequests />
     </div>
   );
 }

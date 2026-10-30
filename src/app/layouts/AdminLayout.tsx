@@ -10,13 +10,11 @@ import { AdminHeader } from "../../components/navigation/AdminHeader";
 import { AdminNavigation } from "../../components/navigation/AdminNavigation";
 import { useAppearance } from "../providers/AppearanceProvider";
 import { useLocale } from "../providers/LocaleProvider";
-import { useServices } from "../providers/ServicesProvider";
 
 export function AdminLayout() {
   const { navigation, sidebarCollapsed } = useAppearance();
   const adaptive = useAdaptiveNavigation();
   const { label } = useLocale();
-  const preview = useServices().contentSnapshot?.kind !== "live";
   const arrival = useShellArrival("admin");
   return (
     <NavigationProvider state={adaptive}>
@@ -39,12 +37,10 @@ export function AdminLayout() {
         </AdaptiveNavigation>
         <div className="app-content">
           <AdminHeader />
-          {preview && (
-            <p className="container admin-preview-notice" role="status">
-              <ShieldCheckMark />
-              {label("adminPreviewNotice")}
-            </p>
-          )}
+          <p className="container admin-preview-notice" role="status">
+            <ShieldCheckMark />
+            {label("adminPreviewNotice")}
+          </p>
           <main id="main" tabIndex={-1}>
             <RouteViewport>
               <Outlet />

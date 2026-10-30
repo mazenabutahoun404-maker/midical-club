@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {PublicationList} from "../publications/Publications";
 import { Award, Landmark } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { CommunityNavigation } from "../../components/navigation/CommunityNavigation";
@@ -9,7 +7,7 @@ import { EmptyState } from "../../components/feedback/EmptyState";
 import { Notice } from "../../components/feedback/Notice";
 import { useRecognitions } from "../../hooks/useContent";
 
-function PreviewRecognitionPage({
+export default function RecognitionPage({
   kind,
 }: {
   kind: "honor-plate" | "hall-of-honor";
@@ -71,5 +69,3 @@ function PreviewRecognitionPage({
     </div>
   );
 }
-
-export default function RecognitionPage({kind}:{kind:"honor-plate"|"hall-of-honor"}){return useServices().publicationApi?<PublicationList section="honor-plate"/>:<PreviewRecognitionPage kind={kind}/>;}

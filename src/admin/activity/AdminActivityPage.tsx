@@ -1,5 +1,3 @@
-import AdminOperationsPage from "../operations/AdminOperationsPage";
-import {useServices} from "../../app/providers/ServicesProvider";
 import { useMemo, useState } from "react";
 import {
   Activity,
@@ -20,7 +18,7 @@ import { useAdminActivity } from "../useAdmin";
 
 type RiskFilter = "all" | AdminActivityRecord["risk"];
 
-function PreviewAdminActivityPage() {
+export default function AdminActivityPage() {
   const { label, t, locale } = useLocale();
   const activity = useAdminActivity();
   const [search, setSearch] = useState("");
@@ -217,5 +215,3 @@ function ActivityDetail({ record }: { record: AdminActivityRecord }) {
     </article>
   );
 }
-
-export default function AdminActivityPage(){const services=useServices();return services.operationsApi?<AdminOperationsPage initial="audit"/>:<PreviewAdminActivityPage/>}

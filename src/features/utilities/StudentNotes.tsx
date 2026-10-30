@@ -1,5 +1,3 @@
-import { createRecordId } from "../../lib/record-id";
-import { resourceId, resourceRevision } from "../../lib/resource-identity";
 import { memo, useEffect, useId, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Download, Plus, Save, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
@@ -87,7 +85,7 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
     ...(request ? [request.resource] : []), ...(reader ? [reader.resource] : []),
     ...remoteItems, ...local.resources, ...supplied,
   ].map((item) => [item.id, item])).values()];
-  const selected = draft?.kind === "course" ? candidates.find((item) => (item.id === draft.resourceId || resourceId(item) === draft.resourceId) && item.courseId === draft.courseId) : undefined;
+  const selected = draft?.kind === "course" ? candidates.find((item) => item.id === draft.resourceId && item.courseId === draft.courseId) : undefined;
   const knownCount = selected && reader && reader.id === selected.id && reader.resource.updatedAt === selected.updatedAt
     ? reader.pageCount : selected && request && request.resource.id === selected.id && request.resource.updatedAt === selected.updatedAt ? request.pageCount : undefined;
   const pdf = useNotePdfCount(selected, knownCount);
@@ -115,7 +113,7 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
       setMessage(t({ en: "Save or cancel your current draft, then press Add note again. Your draft has been kept.", ar: "احفظ المسودة الحالية أو ألغها ثم اضغط إضافة ملاحظة مجدداً. احتفظنا بمسودتك." }));
       return;
     }
-    setDraft({ key: createRecordId(), kind: "course", title: "", body: "", courseId: request.courseId,
+    setDraft({ key: crypto.randomUUID(), kind: "course", title: "", body: "", courseId: request.courseId,
       resourceId: request.anchor.resourceId, revision: request.anchor.resourceRevision, page: String(request.anchor.page),
       anchor: request.anchor, color: "amber", dirty: false });
     setErrors({}); setDiscard(false); setMessage("");
@@ -146,7 +144,7 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
   }
   function create(kind: Draft["kind"] = "general") {
     if (draft?.dirty) { setMessage(t({ en: "Save or cancel your draft first.", ar: "احفظ المسودة أو ألغها أولاً." })); return; }
-    setDraft({ key: createRecordId(), kind, title: "", body: "", courseId: courseId || "", resourceId: "", revision: "", page: "1", color: "amber", dirty: false });
+    setDraft({ key: crypto.randomUUID(), kind, title: "", body: "", courseId: courseId || "", resourceId: "", revision: "", page: "1", color: "amber", dirty: false });
     setErrors({}); setDiscard(false); setMessage("");
   }
   function edit(note: StudentNote | MarginNote) {
@@ -188,9 +186,9 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
       let saved: StudentNote | MarginNote;
       if (snapshot.kind === "course") {
         const old = before && isMargin(before) ? before : undefined;
-        const sameAnchor = snapshot.anchor && snapshot.anchor.resourceId === resourceId(selected!) && snapshot.anchor.resourceRevision === resourceRevision(selected!) && snapshot.anchor.page === Number(snapshot.page);
+        const sameAnchor = snapshot.anchor && snapshot.anchor.resourceId === selected!.id && snapshot.anchor.resourceRevision === selected!.updatedAt && snapshot.anchor.page === Number(snapshot.page);
         saved = await hub.service.saveMargin({ courseId: snapshot.courseId, body: snapshot.body, color: snapshot.color,
-          anchor: sameAnchor ? snapshot.anchor! : { resourceId: resourceId(selected!), resourceRevision: resourceRevision(selected!), page: Number(snapshot.page), x: .85, y: .1 } },
+          anchor: sameAnchor ? snapshot.anchor! : { resourceId: selected!.id, resourceRevision: selected!.updatedAt, page: Number(snapshot.page), x: .85, y: .1 } },
           old ? { id: old.id, version: old.version } : undefined);
         await hub.refresh();
       } else {
@@ -266,11 +264,11 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
     finally { writing.current = false; if (alive.current) { setRemoving(null); setBusy(false); } }
   }
   function open(note: MarginNote) {
-    const resource = candidates.find((item) => resourceId(item) === note.anchor.resourceId);
+    const resource = candidates.find((item) => item.id === note.anchor.resourceId);
     if (resource && !isNotePdf(resource)) {
       toast.error(t({ en: "This PDF is no longer available. The note is still saved.", ar: "ملف PDF لم يعد متاحاً. الملاحظة ما زالت محفوظة." })); return;
     }
-    if (resource && (resource.courseId !== note.courseId || resourceRevision(resource) !== note.anchor.resourceRevision)) {
+    if (resource && (resource.courseId !== note.courseId || resource.updatedAt !== note.anchor.resourceRevision)) {
       toast.error(t({ en: "This note belongs to an earlier PDF revision. Its text is preserved; edit the attachment to use the current file.", ar: "ترتبط الملاحظة بإصدار PDF سابق. النص محفوظ؛ عدّل الربط لاستخدام الملف الحالي." })); return;
     }
     const course = courseItems.find((item) => item.id === note.courseId);
@@ -287,7 +285,6 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
     `${isMargin(note) ? "" : note.title} ${note.body}`.toLocaleLowerCase().includes(query.toLocaleLowerCase().trim())), [all, onlyCourse, courseId, query]);
   const fieldError = (key: string) => errors[key] ? <small id={`${fieldId}-${key}`} className="note-field-error" role="alert">{errors[key]}</small> : null;
   return <section ref={root} className="student-notes unified-notes" aria-label={t({ en: "Private notes", ar: "ملاحظات خاصة" })}>
-    <p className="workspace-note">{t(hub.service.source === "api" ? {en:"General notes stay on this device. Course PDF notes sync to your account when saved.",ar:"تبقى الملاحظات العامة على هذا الجهاز. تُزامن ملاحظات PDF المساق مع حسابك عند الحفظ."} : {en:"Notes in this preview stay on this device.",ar:"تبقى ملاحظات هذه المعاينة على هذا الجهاز."})}</p>
     <div className="student-notes-top"><strong>{t({ en: "My notes", ar: "ملاحظاتي" })}</strong>
       <button type="button" className="student-note-add" aria-label={t({ en: "Add note", ar: "إضافة ملاحظة" })} title={t({ en: "Add note", ar: "إضافة ملاحظة" })} onClick={() => create()}><Plus size={19} className="note-add-plus" aria-hidden="true" /><svg className="note-add-sheet" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 11h5M8 15h3" /></svg></button>
       <ActionReceipt receipt={feedback.receipt} />
@@ -309,13 +306,13 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
           <label>{t({ en: "Course", ar: "المساق" })}<select value={draft.courseId} aria-invalid={!!errors.course} aria-describedby={errors.course ? `${fieldId}-course` : undefined} onChange={(event) => patch({ courseId: event.target.value, resourceId: "", revision: "", page: "1", anchor: undefined })}>
             <option value="">{t({ en: "Choose a course", ar: "اختر مساقاً" })}</option>{courseItems.map((item) => <option key={item.id} value={item.id}>{t(item.title)}</option>)}
           </select>{fieldError("course")}</label>
-          <label>{t({ en: "PDF", ar: "ملف PDF" })}<select value={selected?.id || draft.resourceId} disabled={!draft.courseId || local.loading} aria-invalid={!!errors.pdf} aria-describedby={errors.pdf ? `${fieldId}-pdf` : undefined} onChange={(event) => { const item = candidates.find((value) => value.id === event.target.value); patch({ resourceId: item?.id || "", revision: item ? resourceRevision(item) : "", page: "1", anchor: undefined }); }}>
+          <label>{t({ en: "PDF", ar: "ملف PDF" })}<select value={draft.resourceId} disabled={!draft.courseId || local.loading} aria-invalid={!!errors.pdf} aria-describedby={errors.pdf ? `${fieldId}-pdf` : undefined} onChange={(event) => { const item = candidates.find((value) => value.id === event.target.value); patch({ resourceId: item?.id || "", revision: item?.updatedAt || "", page: "1", anchor: undefined }); }}>
             <option value="">{t({ en: "Choose a PDF", ar: "اختر ملف PDF" })}</option>{candidates.filter((item) => item.courseId === draft.courseId && isNotePdf(item)).map((item) => <option key={item.id} value={item.id}>{t(item.title)}</option>)}
           </select>{fieldError("pdf")}</label>
           <label>{t({ en: "Page", ar: "الصفحة" })}<input type="number" inputMode="numeric" min="1" max={pdf.count ? Math.min(pdf.count, 20000) : undefined} step="1" value={draft.page} aria-invalid={!!errors.page} aria-describedby={errors.page ? `${fieldId}-page` : undefined} onChange={(event) => patch({ page: event.target.value })} />{fieldError("page")}</label>
           <p className="note-file-status" role="status">{pdf.pending ? t({ en: "Checking PDF pages…", ar: "جارٍ التحقق من صفحات PDF…" }) : pdf.count ? t({ en: `${pdf.count} pages`, ar: `${pdf.count} صفحات` }) : ""}</p>
           {pdf.error && <p className="note-field-error" role="alert">{t({ en: "This PDF could not be opened. If it is password-protected, open it in the reader first.", ar: "تعذر فتح PDF. إذا كان محمياً بكلمة مرور فافتحه في القارئ أولاً." })}<button type="button" onClick={pdf.retry}>{t({ en: "Retry", ar: "أعد المحاولة" })}</button></p>}
-          {draft.revision && selected && draft.revision !== resourceRevision(selected) && <p role="alert">{t({ en: "This attachment points to an older file. Select the current PDF again to reattach it.", ar: "يشير الربط إلى ملف سابق. اختر ملف PDF الحالي مجدداً لإعادة الربط." })}<button type="button" onClick={() => patch({ revision: resourceRevision(selected), anchor: undefined })}>{t({ en: "Use current PDF", ar: "استخدم PDF الحالي" })}</button></p>}
+          {draft.revision && selected && draft.revision !== selected.updatedAt && <p role="alert">{t({ en: "This attachment points to an older file. Select the current PDF again to reattach it.", ar: "يشير الربط إلى ملف سابق. اختر ملف PDF الحالي مجدداً لإعادة الربط." })}<button type="button" onClick={() => patch({ revision: selected.updatedAt, anchor: undefined })}>{t({ en: "Use current PDF", ar: "استخدم PDF الحالي" })}</button></p>}
         </div>}
       {draft.anchor?.quote && <blockquote>{draft.anchor.quote}</blockquote>}
       <label>{t({ en: "Note", ar: "الملاحظة" })}<textarea rows={5} maxLength={draft.kind === "course" ? 3000 : 25000} value={draft.body} aria-invalid={!!errors.body} aria-describedby={errors.body ? `${fieldId}-body` : undefined} placeholder={t({ en: "Write your note…", ar: "اكتب ملاحظتك…" })} onChange={(event) => patch({ body: event.target.value })} />{fieldError("body")}</label>
@@ -328,18 +325,18 @@ function NotesWorkspace({ userId, courseId, legacyKey, reference, onlyCourse = f
       </div>
     </form> : <div className="student-notes-list">
       {all.length > 4 && <input aria-label={t({ en: "Find a note", ar: "البحث عن ملاحظة" })} placeholder={t({ en: "Find a note…", ar: "ابحث عن ملاحظة…" })} value={query} onChange={(event) => { setQuery(event.target.value); setLimit(20); }} />}
-      {visible.slice(0,limit).map((note) => { const linked = isMargin(note); const source = linked ? candidates.find((item) => resourceId(item) === note.anchor.resourceId) : undefined;
+      {visible.slice(0,limit).map((note) => { const linked = isMargin(note); const source = linked ? candidates.find((item) => item.id === note.anchor.resourceId) : undefined;
         const display: StudentNote = linked ? { id: note.id, title: t({ en: `Page ${note.anchor.page}`, ar: `صفحة ${note.anchor.page}` }), body: note.body, courseId: note.courseId, updatedAt: note.updatedAt } : note;
         const title = note.courseId ? courseItems.find((item) => item.id === note.courseId)?.title : undefined;
         return <NoteCard key={`${linked ? "pdf" : "general"}:${note.id}`} note={display} courseTitle={title ? t(title) : undefined}
           linked={linked} color={linked ? note.color : undefined} fileTitle={linked ? source ? t(source.title) : t({ en: "PDF currently unavailable", ar: "PDF غير متاح حالياً" }) : undefined}
-          outdated={linked && !!source && resourceRevision(source) !== note.anchor.resourceRevision}
+          outdated={linked && !!source && source.updatedAt !== note.anchor.resourceRevision}
           onOpen={linked ? () => open(note) : undefined} onEdit={() => edit(note)} onDelete={() => erase(note)} removing={removing === note.id} busy={busy}
-          onRecall={linked && hub.service.source === "device-preview" ? async () => { if (writing.current) return; writing.current = true; setBusy(true); try { await hub.service.saveRecall({ courseId: note.courseId, prompt: note.anchor.quote ? `Explain: ${note.anchor.quote.slice(0,180)}` : t({ en: "What do you remember about this point?", ar: "ماذا تتذكر عن هذه النقطة؟" }), answer: note.body, source: note.anchor }); await hub.refresh(); toast.success(t({ en: "Recall card created", ar: "أُنشئت بطاقة استرجاع" })); } catch (error) { toast.error(errorText(error)); } finally { writing.current = false; if (alive.current) setBusy(false); } } : undefined} />;
+          onRecall={linked ? async () => { if (writing.current) return; writing.current = true; setBusy(true); try { await hub.service.saveRecall({ courseId: note.courseId, prompt: note.anchor.quote ? `Explain: ${note.anchor.quote.slice(0,180)}` : t({ en: "What do you remember about this point?", ar: "ماذا تتذكر عن هذه النقطة؟" }), answer: note.body, source: note.anchor }); await hub.refresh(); toast.success(t({ en: "Recall card created", ar: "أُنشئت بطاقة استرجاع" })); } catch (error) { toast.error(errorText(error)); } finally { writing.current = false; if (alive.current) setBusy(false); } } : undefined} />;
       })}
       {margins.isPending && <p role="status">{t({ en: "Loading attached notes…", ar: "جارٍ تحميل الملاحظات المرتبطة…" })}</p>}
       {margins.isError && <p role="alert">{t({ en: "PDF notes could not be loaded. General notes remain available.", ar: "تعذر تحميل ملاحظات PDF. الملاحظات العامة ما زالت متاحة." })}<button type="button" onClick={() => void margins.refetch()}>{t({ en: "Reload notes", ar: "أعد تحميل الملاحظات" })}</button></p>}
-      {!visible.length && !margins.isPending && !margins.isError && <p className="student-tool-empty">{t({ en: "No notes here yet. Add a general note or attach one to a course PDF.", ar: "لا توجد ملاحظات هنا بعد. أضف ملاحظة عامة أو اربطها بملف PDF للمساق." })}</p>}
+      {!visible.length && !margins.isPending && <p className="student-tool-empty">{t({ en: "No notes here yet. Add a general note or attach one to a course PDF.", ar: "لا توجد ملاحظات هنا بعد. أضف ملاحظة عامة أو اربطها بملف PDF للمساق." })}</p>}
       {visible.length > limit && <button type="button" className="student-note-more" onClick={() => setLimit((value) => value + 20)}>{t({ en: "Show more notes", ar: "عرض المزيد من الملاحظات" })}</button>}
     </div>}
     {(courses.isError || resources.isError) && <p role="alert">{t({ en: "Course or file choices could not be loaded.", ar: "تعذر تحميل خيارات المساقات أو الملفات." })}<button type="button" onClick={() => { void courses.refetch(); void resources.refetch(); }}>{t({ en: "Reload choices", ar: "أعد تحميل الخيارات" })}</button></p>}

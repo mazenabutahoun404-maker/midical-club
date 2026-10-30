@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import { MyContributions } from "../community-live/Contributions";
 import { throwToTrash } from "../../components/feedback/action-flight";
 import { useState } from "react";
 import {
@@ -39,14 +37,6 @@ const statusKey = (status: ContributionStatus) =>
         ? ("publishedStatus" as const)
         : status;
 export default function MyContributionsPage() {
-  const services = useServices();
-  return services.contributionApi ? (
-    <MyContributions key={services.api?.session.get()?.sessionId} />
-  ) : (
-    <PreviewMyContributionsPage />
-  );
-}
-function PreviewMyContributionsPage() {
   const { label, t, locale } = useLocale();
   const contributions = useContributions();
   const [view, setView] = useState<View>("all");

@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import Collections from "../student-live/Collections";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -29,7 +27,7 @@ import {
   type CollectionAction,
 } from "./CollectionDialogs";
 import { filterLibrary } from "./library-selectors";
-function PreviewLibraryPage() {
+export default function LibraryPage() {
   const { label, t, locale } = useLocale();
   const [params] = useSearchParams();
   const library = useLibraryContent();
@@ -282,5 +280,3 @@ function PreviewLibraryPage() {
     </div>
   );
 }
-
-export default function LibraryPage() {const services=useServices(); return services.studentApi ? <Collections/> : <PreviewLibraryPage/>;}

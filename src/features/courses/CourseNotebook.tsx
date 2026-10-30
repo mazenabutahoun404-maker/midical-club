@@ -1,4 +1,3 @@
-import { resourceId, resourceRevision } from "../../lib/resource-identity";
 import { bookMaterial } from "./book-material";
 import { useLocation } from "react-router-dom";
 import { toast } from "sonner";
@@ -210,8 +209,8 @@ export function CourseNotebook({
     resources[0];
   useEffect(() => {
     tools?.registerNoteOpener((anchor: PageAnchor, ownerCourse: string) => {
-      const resource = resources.find((item) => resourceId(item) === anchor.resourceId);
-      if (ownerCourse !== course.id || !resource || resourceRevision(resource) !== anchor.resourceRevision || (!resource.assetId && !safeResourceUrl(resource.fileUrl))) return false;
+      const resource = resources.find((item) => item.id === anchor.resourceId);
+      if (ownerCourse !== course.id || !resource || resource.updatedAt !== anchor.resourceRevision || !safeResourceUrl(resource.fileUrl)) return false;
       open(resource, false);
       return true;
     });
@@ -221,16 +220,16 @@ export function CourseNotebook({
     const query = new URLSearchParams(location.search);
     const id = query.get("pdf");
     if (!id || fileSourcesPending || incomingNote.current === location.search) return;
-    const resource = resources.find((item) => item.id === id || resourceId(item) === id);
+    const resource = resources.find((item) => item.id === id);
     const requested = Number(query.get("page"));
     const revision = query.get("revision");
     incomingNote.current = location.search;
-    if (!resource || (!resource.assetId && !safeResourceUrl(resource.fileUrl)) || !Number.isSafeInteger(requested) || requested < 1 || (revision && revision !== resourceRevision(resource) && revision !== resource.updatedAt)) {
+    if (!resource || !safeResourceUrl(resource.fileUrl) || !Number.isSafeInteger(requested) || requested < 1 || (revision && revision !== resource.updatedAt)) {
       toast.error(t(query.get("resume") === "1" ? { en: "This study file is unavailable or has changed. Open the course materials to choose another.", ar: "ملف الدراسة غير متاح أو تغيّر. افتح مواد المساق لاختيار ملف آخر." } : { en: "The note's PDF page is unavailable or its file has changed. The note is still saved.", ar: "صفحة PDF المرتبطة غير متاحة أو تغيّر الملف. الملاحظة ما زالت محفوظة." })); return;
     }
     study.update((previous) => ({ ...previous, resources: { ...previous.resources, [resource.id]: { scroll: 0, seconds: previous.resources[resource.id]?.seconds || 0, page: requested } } }));
     open(resource, false);
-    if (query.get("resume") !== "1") tools?.openNote({ resourceId: resourceId(resource), resourceRevision: resourceRevision(resource), page: requested, x: .85, y: .1 }, course.id);
+    if (query.get("resume") !== "1") tools?.openNote({ resourceId: resource.id, resourceRevision: resource.updatedAt, page: requested, x: .85, y: .1 }, course.id);
   }, [location.search, resources, fileSourcesPending]);
 
   const incomingSection = useRef("");

@@ -1,5 +1,3 @@
-import { useServices } from "../../app/providers/ServicesProvider";
-import { ContentRollbackPanel } from "../content-live/ContentReviewPanel";
 import { useEffect, useState } from "react";
 import {
   ArrowRightLeft,
@@ -26,15 +24,6 @@ import {
 } from "../useAdmin";
 
 export default function AdminVersionsPage() {
-  return useServices().contentApi ? (
-    <div className="container academic-admin">
-      <ContentRollbackPanel />
-    </div>
-  ) : (
-    <PreviewAdminVersionsPage />
-  );
-}
-function PreviewAdminVersionsPage() {
   const { label, t, locale } = useLocale();
   const content = useAdminContent();
   const [itemId, setItemId] = useState<string>();

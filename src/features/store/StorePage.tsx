@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {StoreCatalog} from "../store-live/Catalog";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useMemo, useState } from "react";
 import {
@@ -22,9 +20,6 @@ import type { ProductCategory } from "../../types/content";
 
 type View = "all" | ProductCategory;
 export default function StorePage() {
- const services=useServices();return services.storeApi?<StoreCatalog/>:<PreviewStorePage/>;
-}
-function PreviewStorePage() {
   const { label, t } = useLocale();
   const products = useStoreProducts();
   const store = useStoreWorkspace();

@@ -9,25 +9,13 @@ export type Capability =
   | "users.view"
   | "users.manage"
   | "roles.manage"
-  | "roles.view"
-  | "teams.view"
-  | "academics.manage"
-  | "assets.manage"
-  | "study-tools.manage"
-  | "schedule.manage"
-  | "publications.manage"
-  | "engagement.manage"
-  | "contributions.manage"
   | "governance.approve"
   | "activity.view"
   | "versions.restore"
   | "events.manage"
-  | "membership.manage"
-  | "operations.manage"
   | "store.manage";
 
-export type CapabilityGroup =
-  "content" | "people" | "governance" | "operations";
+export type CapabilityGroup = "content" | "people" | "governance" | "operations";
 
 export interface CapabilityDefinition {
   id: Capability;
@@ -39,8 +27,6 @@ export interface CapabilityDefinition {
 
 export interface RoleDefinition {
   id: string;
-  version?: string;
-  permissions?: import("./accounts").PermissionRecord[];
   name: Text;
   description: Text;
   capabilities: Capability[];
@@ -52,15 +38,11 @@ export interface RoleDefinition {
 export interface TeamMembership {
   team: Text;
   positions: Text[];
-  volunteerHours: number | null;
-  positionsVisible?: boolean;
-  hoursVisible?: boolean;
+  volunteerHours: number;
 }
 
 export interface GovernanceUser {
   id: string;
-  version?: string;
-  accountStatus?: string;
   name: Text;
   email: string;
   initials: string;
@@ -69,7 +51,6 @@ export interface GovernanceUser {
   roleIds: string[];
   memberships: TeamMembership[];
   symbolicTitles: Text[];
-  symbolicTitleIds?: string[];
   lastActiveAt: string;
 }
 
@@ -85,8 +66,6 @@ export interface AccessApproval {
 
 export interface AccessChangeRequest {
   id: string;
-  version?: string;
-  decisionsLoaded?: boolean;
   targetUserId: string;
   targetUser: Text;
   requestedById: string;
@@ -106,15 +85,14 @@ export interface AccessSnapshot {
   actorId: string;
   roleIds: string[];
   capabilities: Capability[];
-  permissions?: string[];
 }
 
 export interface GovernanceOverview {
-  protectedFounders: number | null;
-  activeUsers: number | null;
-  roles: number | null;
-  pendingRequests: number | null;
-  highRiskRequests: number | null;
+  protectedFounders: number;
+  activeUsers: number;
+  roles: number;
+  pendingRequests: number;
+  highRiskRequests: number;
   generatedAt: string;
 }
 
@@ -123,7 +101,6 @@ export interface AccessChangeInput {
   addRoleIds: string[];
   removeRoleIds: string[];
   reason: string;
-  targetVersion?: string;
 }
 
 export interface AccessDecisionInput {
@@ -131,20 +108,9 @@ export interface AccessDecisionInput {
   actorId: string;
   decision: "approve" | "reject";
   note?: string;
-  version?: string;
 }
 
 export interface GovernanceService {
-  mode?: "api" | "preview";
-  getUser?: (id: string) => Promise<GovernanceUser>;
-  listPermissions?: () => Promise<import("./accounts").PermissionRecord[]>;
-  updateRolePermissions?: (
-    id: string,
-    permissionIds: string[],
-    version: string,
-  ) => Promise<void>;
-  getRequest?: (id: string) => Promise<AccessChangeRequest>;
-  listMyRequests?: () => Promise<AccessChangeRequest[]>;
   getAccess: () => Promise<AccessSnapshot>;
   getOverview: () => Promise<GovernanceOverview>;
   listCapabilities: () => Promise<CapabilityDefinition[]>;
@@ -155,12 +121,7 @@ export interface GovernanceService {
     roleId: string,
     capabilities: Capability[],
   ) => Promise<RoleDefinition>;
-  requestAccessChange: (
-    input: AccessChangeInput,
-  ) => Promise<AccessChangeRequest>;
+  requestAccessChange: (input: AccessChangeInput) => Promise<AccessChangeRequest>;
   decideRequest: (input: AccessDecisionInput) => Promise<AccessChangeRequest>;
-  suspendUser: (
-    userId: string,
-    version?: string,
-  ) => Promise<GovernanceUser | void>;
+  suspendUser: (userId: string) => Promise<GovernanceUser>;
 }

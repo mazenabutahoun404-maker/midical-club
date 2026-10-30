@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useAppearance } from "../../app/providers/AppearanceProvider";
 import { useLocale } from "../../app/providers/LocaleProvider";
-import { useServices } from "../../app/providers/ServicesProvider";
 import { footerBuildingForPath, type FooterBuilding } from "./footer-scene";
 import day from "../../assets/home/three-campus-day-1672.webp";
 import night from "../../assets/home/three-campus-night-1672.webp";
@@ -57,9 +56,8 @@ export function PoweredByOctagram() {
 }
 export function CampusFootnote() {
   const { pathname } = useLocation(),
-    { label, t } = useLocale(),
+    { label } = useLocale(),
     building = footerBuildingForPath(pathname);
-  const live = useServices().contentSnapshot?.kind === "live";
   return (
     <footer
       className="personal-footnote campus-personal-footer container"
@@ -67,11 +65,7 @@ export function CampusFootnote() {
     >
       <FooterScene building={building} />
       <div className="campus-personal-footer-copy">
-        <p>
-          {live
-            ? t({ en: "Your MedClub account", ar: "حسابك في النادي الطبي" })
-            : label("personalFootnote")}
-        </p>
+        <p>{label("personalFootnote")}</p>
         <PoweredByOctagram />
       </div>
     </footer>

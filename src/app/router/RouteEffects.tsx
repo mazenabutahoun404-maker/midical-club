@@ -56,17 +56,6 @@ export function RouteEffects({ location }: { location: Location }) {
       "/auth/verify": "verifyEmail",
       "/auth/recover": "forgotPassword",
       "/admin": "adminOverview",
-      "/admin/engagement": "engagementAdmin",
-      "/admin/contributions": "contributionsAdmin",
-      "/admin/membership":"membershipAdmin",
-      "/my/engagement":"myEngagement",
-      "/members":"clubMembers",
-      "/admin/operations": "operationsAdmin",
-  "/admin/store": "storeAdmin",
-      "/my/certificates": "certificatesTitle",
-      "/my/volunteer-hours": "volunteerHoursTitle",
-      "/certificates/verify": "certificatesTitle",
-      "/admin/publications": "publicationsAdmin",
       "/admin/content": "adminContent",
       "/admin/builder": "builderNavigation",
       "/admin/activity": "adminActivity",
@@ -85,7 +74,7 @@ export function RouteEffects({ location }: { location: Location }) {
       /^\/learn\/clinical-sciences\/(fourth|fifth|sixth)-year$/.test(
         location.pathname,
       );
-    document.title = `${key ? label(key) : label(["/my/exams", "/admin/exams", "/learn/electronic-exams"].some(path => location.pathname === path || location.pathname.startsWith(path + "/")) ? "exams" : location.pathname.startsWith("/certificates/verify/") ? "certificatesTitle" : location.pathname.startsWith("/community/publications/") ? "publicationsAdmin" : location.pathname.startsWith("/portfolio/") ? "campusPortfolio" : location.pathname.startsWith("/admin/builder/") ? "builderEditor" : location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/store/products/") ? "product" : location.pathname.startsWith("/recruitment/") ? "position" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
+    document.title = `${key ? label(key) : label(["/my/exams", "/admin/exams", "/learn/electronic-exams"].some(path => location.pathname === path || location.pathname.startsWith(path + "/")) ? "exams" : location.pathname.startsWith("/portfolio/") ? "campusPortfolio" : location.pathname.startsWith("/admin/builder/") ? "builderEditor" : location.pathname.startsWith("/events/") ? "event" : location.pathname.startsWith("/opportunities/") ? "opportunity" : location.pathname.startsWith("/journal/") ? "journal" : location.pathname.startsWith("/store/products/") ? "product" : location.pathname.startsWith("/recruitment/") ? "position" : location.pathname.startsWith("/learn/courses/") || location.pathname.startsWith("/my/learning/") ? "course" : academicChild ? "academic" : "notFound")} | MedClub`;
   }, [location.pathname, locale, label]);
   return null;
 }

@@ -1,6 +1,3 @@
-import {MentorshipDirectory as ConnectedPage} from "../membership/Mentorship";
-import {MembershipScope} from "../membership/shared";
-import {useServices} from "../../app/providers/ServicesProvider";
 import { HeroArtwork } from "../../components/data-display/HeroArtwork";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -15,7 +12,7 @@ import { useMentors, useMentorshipWorkspace } from "../../hooks/useContent";
 import type { Mentor } from "../../types/content";
 import { MentorRequestDialog } from "./MentorRequestDialog";
 
-function PreviewMentorshipPage() {
+export default function MentorshipPage() {
   const { t, label } = useLocale();
   const mentors = useMentors();
   const workspace = useMentorshipWorkspace();
@@ -156,5 +153,3 @@ function PreviewMentorshipPage() {
     </div>
   );
 }
-
-export default function MentorshipPage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage /></MembershipScope>:<PreviewMentorshipPage/>}

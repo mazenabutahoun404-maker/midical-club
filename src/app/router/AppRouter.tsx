@@ -1,20 +1,3 @@
-const AdminMembershipPage=lazy(()=>import("../../features/membership/AdminMembershipPage"));
-const PublicMembers=lazy(()=>import("../../features/membership/Routes").then(m=>({default:m.PublicMembers})));
-const MyEngagement=lazy(()=>import("../../features/membership/Routes").then(m=>({default:m.MyEngagement})));
-const AdminOperationsPage=lazy(()=>import("../../admin/operations/AdminOperationsPage"));
-const AdminStorePage=lazy(()=>import("../../admin/store/AdminStorePage"));
-const AdminContributionsPage=lazy(()=>import("../../admin/community/AdminContributionsPage"));
-const AdminEngagementPage=lazy(()=>import("../../admin/engagement/AdminEngagementPage"));
-const MyCertificates=lazy(()=>import("../../features/engagement/Certificates").then(m=>({default:m.MyCertificates})));
-const VerifyCertificate=lazy(()=>import("../../features/engagement/Certificates").then(m=>({default:m.VerifyCertificate})));
-const MyVolunteerHours=lazy(()=>import("../../features/engagement/VolunteerHours").then(m=>({default:m.MyVolunteerHours})));
-import {PublicationList,PublicationDetail} from "../../features/publications/Publications";
-const AdminPublicationsPage = lazy(() => import("../../admin/publications/AdminPublicationsPage"));
-const AdminSchedulePage = lazy(() => import("../../admin/schedule/AdminSchedulePage"));
-const AdminStudentToolsPage = lazy(() => import("../../admin/student-tools/AdminStudentTools"));
-const PlansPage = lazy(() => import("../../features/student-live/Plans"));
-const RoadmapsPage = lazy(() => import("../../features/student-live/Roadmaps"));
-import { useServices } from "../providers/ServicesProvider";
 import { PersonalActivitiesLayout } from "../../components/navigation/PersonalActivitiesLayout";
 import { RouteJourneyContext, useRouteJourney } from "./RouteJourney";
 import { lazy, Suspense } from "react";
@@ -190,16 +173,6 @@ const GovernancePage = lazy(
   () => import("../../admin/governance/GovernancePage"),
 );
 const AdminUsersPage = lazy(() => import("../../admin/users/AdminUsersPage"));
-const AdminAssetsPage = lazy(
-  () => import("../../admin/assets/AdminAssetsPage"),
-);
-const PublishedPage = lazy(
-  () => import("../../features/resources/PublishedContent"),
-);
-const AdminAcademicsPage = lazy(
-  () => import("../../admin/academics/AdminAcademicsPage"),
-);
-const AdminTeamsPage = lazy(() => import("../../admin/teams/AdminTeamsPage"));
 const AdminRolesPage = lazy(() => import("../../admin/roles/AdminRolesPage"));
 const AdminApprovalsPage = lazy(
   () => import("../../admin/approvals/AdminApprovalsPage"),
@@ -210,10 +183,6 @@ const AdminAnalyticsPage = lazy(
 const AdminContentHealthPage = lazy(
   () => import("../../admin/health/AdminContentHealthPage"),
 );
-function AdminOverviewEntry() {
-  const live = useServices().governance.mode === "api";
-  return live ? <GovernancePage /> : <AdminDashboardPage />;
-}
 function NotFound({
   personal = false,
   admin = false,
@@ -260,11 +229,8 @@ export function AppRouter() {
             </Route>
             <Route element={<PublicLayout />}>
               <Route index element={<Homepage />} />
-              <Route path="community/publications/:section" element={<MedicalTransition><PublicationList/></MedicalTransition>}/>
-              <Route path="community/publications/:section/:slug" element={<MedicalTransition><PublicationDetail/></MedicalTransition>}/>
               <Route path="search" element={<SearchPage />} />
               <Route path="get-involved" element={<InvolvementEntry />} />
-              <Route path="certificates/verify" element={<VerifyCertificate/>}/><Route path="certificates/verify/:code" element={<VerifyCertificate/>}/>
               <Route path="events" element={<EventsPage />} />
               <Route path="events/:slug" element={<EventPage />} />
               <Route path="opportunities" element={<OpportunitiesPage />} />
@@ -326,14 +292,6 @@ export function AppRouter() {
                 }
               />
               <Route
-                path="content/:slug"
-                element={
-                  <MedicalTransition>
-                    <PublishedPage />
-                  </MedicalTransition>
-                }
-              />
-              <Route
                 path="journal"
                 element={
                   <MedicalTransition>
@@ -350,8 +308,7 @@ export function AppRouter() {
                 }
               />
               <Route
-                path="members" element={<PublicMembers/>}/>
-              <Route path="mentorship"
+                path="mentorship"
                 element={
                   <MedicalTransition>
                     <MentorshipPage />
@@ -527,7 +484,7 @@ export function AppRouter() {
                     path="activities"
                     element={<Navigate to="/my/events" replace />}
                   />
-                  <Route path="certificates" element={<MyCertificates/>}/><Route path="volunteer-hours" element={<MyVolunteerHours/>}/><Route path="events" element={<MyEventsPage />} />
+                  <Route path="events" element={<MyEventsPage />} />
                   <Route
                     path="opportunities"
                     element={<MyOpportunitiesPage />}
@@ -537,7 +494,6 @@ export function AppRouter() {
                     element={<MyContributionsPage />}
                   />
                 </Route>
-                <Route path="engagement" element={<MyEngagement/>}/>
                 <Route path="mentorship" element={<MyMentorshipPage />} />
                 <Route path="orders" element={<MyOrdersPage />} />
                 <Route path="applications" element={<MyApplicationsPage />} />
@@ -547,8 +503,6 @@ export function AppRouter() {
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="study" element={<StudyDeskPage />} />
-                <Route path="study/plans" element={<PlansPage />} />
-                <Route path="study/roadmaps" element={<RoadmapsPage />} />
                 <Route path="study/recall" element={<RecallDeskPage />} />
                 <Route path="study/offline" element={<OfflinePacksPage />} />
                 <Route path="study/rooms" element={<QuietRoomsPage />} />
@@ -556,30 +510,6 @@ export function AppRouter() {
                 <Route path="*" element={<NotFound personal />} />
               </Route>
               <Route path="admin" element={<AdminLayout />}>
-                <Route path="membership" element={<CapabilityGate capability="membership.manage"><AdminMembershipPage/></CapabilityGate>}/>
-                <Route path="operations" element={<CapabilityGate capability="operations.manage"><AdminOperationsPage/></CapabilityGate>}/>
-                <Route path="store" element={<CapabilityGate capability="store.manage"><AdminStorePage/></CapabilityGate>}/>
-                <Route path="contributions" element={<CapabilityGate capability="contributions.manage"><AdminContributionsPage/></CapabilityGate>}/>
-                <Route path="engagement" element={<CapabilityGate capability="engagement.manage"><AdminEngagementPage/></CapabilityGate>}/>
-                <Route path="publications" element={<CapabilityGate capability="publications.manage"><AdminPublicationsPage/></CapabilityGate>}/>
-                <Route path="schedule" element={<CapabilityGate capability="schedule.manage"><AdminSchedulePage/></CapabilityGate>}/>
-                <Route path="student-tools" element={<CapabilityGate capability="study-tools.manage"><AdminStudentToolsPage/></CapabilityGate>}/>
-                <Route
-                  path="assets"
-                  element={
-                    <CapabilityGate capability="assets.manage">
-                      <AdminAssetsPage />
-                    </CapabilityGate>
-                  }
-                />
-                <Route
-                  path="academics"
-                  element={
-                    <CapabilityGate capability="academics.manage">
-                      <AdminAcademicsPage />
-                    </CapabilityGate>
-                  }
-                />
                 <Route
                   path="exams"
                   element={
@@ -592,7 +522,7 @@ export function AppRouter() {
                   index
                   element={
                     <CapabilityGate capability="admin.access">
-                      <AdminOverviewEntry />
+                      <AdminDashboardPage />
                     </CapabilityGate>
                   }
                 />
@@ -655,16 +585,8 @@ export function AppRouter() {
                 <Route
                   path="roles"
                   element={
-                    <CapabilityGate capability="roles.view">
+                    <CapabilityGate capability="roles.manage">
                       <AdminRolesPage />
-                    </CapabilityGate>
-                  }
-                />
-                <Route
-                  path="teams"
-                  element={
-                    <CapabilityGate capability="teams.view">
-                      <AdminTeamsPage />
                     </CapabilityGate>
                   }
                 />
@@ -679,7 +601,7 @@ export function AppRouter() {
                 <Route
                   path="analytics"
                   element={
-                    <CapabilityGate capability="operations.manage">
+                    <CapabilityGate capability="activity.view">
                       <AdminAnalyticsPage />
                     </CapabilityGate>
                   }

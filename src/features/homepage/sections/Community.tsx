@@ -1,4 +1,3 @@
-import { HomeSectionState } from "./HomeSectionState";
 import { ArrowUpRight, Compass, Users } from "lucide-react";
 import type { SiteContent } from "../../../types/content";
 import { useLocale } from "../../../app/providers/LocaleProvider";
@@ -46,10 +45,7 @@ export function Community({ site }: { site: SiteContent }) {
         {mentors.isPending ? (
           <LoadingState />
         ) : mentors.isError ? (
-          <ErrorState
-            error={mentors.error}
-            retry={() => void mentors.refetch()}
-          />
+          <ErrorState retry={() => void mentors.refetch()} />
         ) : mentors.data.length ? (
           <ul>
             {mentors.data.slice(0, 3).map((mentor, index) => (
@@ -72,7 +68,12 @@ export function Community({ site }: { site: SiteContent }) {
             ))}
           </ul>
         ) : (
-          <HomeSectionState kind="mentors" />
+          <p className="home-quiet-state">
+            {t({
+              en: "Mentor profiles will appear here.",
+              ar: "ستظهر ملفات المرشدين هنا.",
+            })}
+          </p>
         )}
       </div>
     </div>

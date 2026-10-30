@@ -4,27 +4,7 @@ import { useServices } from "../app/providers/ServicesProvider";
 import { useAuth } from "../app/providers/AuthProvider";
 export function useSiteContent() {
   const s = useServices();
-  const shell = useQuery({ queryKey: ["site", "shell"], queryFn: s.site.get });
-  const published = useQuery({
-    queryKey: ["site", "published"],
-    queryFn: s.site.getPublished || (async () => null),
-    enabled: !!s.site.getPublished,
-    retry: false,
-  });
-  return shell.isSuccess
-    ? {
-        ...shell,
-        data: published.data || shell.data,
-        publishedPending: published.isPending,
-        publishedError: published.error,
-        refreshPublished: published.refetch,
-      }
-    : {
-        ...shell,
-        publishedPending: published.isPending,
-        publishedError: published.error,
-        refreshPublished: published.refetch,
-      };
+  return useQuery({ queryKey: ["site"], queryFn: s.site.get });
 }
 export function useCourses() {
   const s = useServices();

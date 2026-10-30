@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {PublicationList} from "../publications/Publications";
 import { ChevronDown, ShieldCheck } from "lucide-react";
 import { useLocale } from "../../app/providers/LocaleProvider";
 import { CommunityNavigation } from "../../components/navigation/CommunityNavigation";
@@ -8,7 +6,7 @@ import { ErrorState } from "../../components/feedback/ErrorState";
 import { Notice } from "../../components/feedback/Notice";
 import { useExecutiveBodies } from "../../hooks/useContent";
 
-function PreviewExecutiveBodiesPage() {
+export default function ExecutiveBodiesPage() {
   const { t, label } = useLocale();
   const query = useExecutiveBodies();
   if (query.isPending) return <LoadingState />;
@@ -82,5 +80,3 @@ function PreviewExecutiveBodiesPage() {
     </div>
   );
 }
-
-export default function ExecutiveBodiesPage(){return useServices().publicationApi?<PublicationList section="executive-bodies"/>:<PreviewExecutiveBodiesPage/>;}

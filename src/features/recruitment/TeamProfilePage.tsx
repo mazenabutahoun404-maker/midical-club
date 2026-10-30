@@ -1,6 +1,3 @@
-import {Members as ConnectedPage} from "../membership/Members";
-import {MembershipScope} from "../membership/shared";
-import {useServices} from "../../app/providers/ServicesProvider";
 import {
   BadgeCheck,
   Clock3,
@@ -23,7 +20,7 @@ import {
 import { formatDate } from "../../lib/dates";
 import { teamKey } from "../../lib/recruitment";
 
-function PreviewTeamProfilePage() {
+export default function TeamProfilePage() {
   const { label, t, locale } = useLocale();
   const workspace = useRecruitmentWorkspace();
   const student = useStudentProfile();
@@ -171,5 +168,3 @@ function PreviewTeamProfilePage() {
     </div>
   );
 }
-
-export default function TeamProfilePage(){const services=useServices();return services.membershipApi?<MembershipScope><ConnectedPage mine/></MembershipScope>:<PreviewTeamProfilePage/>}

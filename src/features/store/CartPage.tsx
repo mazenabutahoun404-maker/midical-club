@@ -1,5 +1,3 @@
-import {useServices} from "../../app/providers/ServicesProvider";
-import {StoreCart} from "../store-live/Catalog";
 import { throwToTrash } from "../../components/feedback/action-flight";
 import { useState, useRef } from "react";
 import { Minus, PackageCheck, Plus, Trash2 } from "lucide-react";
@@ -17,9 +15,6 @@ import { cartSubtotal, formatStorePrice } from "../../lib/store";
 import { ProductVisual } from "./ProductVisual";
 
 export default function CartPage() {
- const services=useServices();return services.storeApi?<StoreCart/>:<PreviewCartPage/>;
-}
-function PreviewCartPage() {
   const { label, t, locale } = useLocale();
   const navigate = useNavigate();
   const products = useStoreProducts();
